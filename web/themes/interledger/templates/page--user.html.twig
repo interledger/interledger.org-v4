@@ -8,14 +8,8 @@
 
 <main role="main">
   <a id="main-content" tabindex="-1"></a>
-  <div class="error-block">
-    <h1>{{ error_code }}</h1>
-    {% if error_code == '404' %}
-    <p>{{ "Oh dear, we can't find the page you're looking for."|t }}</p>
-    {% endif %}
-    {% if error_code == '403' %}
-      <p>{{ "Unfortunately, you are not authorized to view this page. Try logging in first."|t }}</p>
-      {% endif %}
+  <div class="content-wrapper user-wrapper">
+    {{ page.content }}
   </div>
 </main>
 
