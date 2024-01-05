@@ -1,0 +1,8 @@
+<section class="testimonial node--{{ node.id }}">
+  <div class="content-wrapper">
+    <blockquote>
+      {{ node.field_testimonial_content.0.value|raw }}
+      <cite>{{ node.field_testimonial_source.0.value|raw }}</cite>
+    </blockquote>
+  </div>
+</section>

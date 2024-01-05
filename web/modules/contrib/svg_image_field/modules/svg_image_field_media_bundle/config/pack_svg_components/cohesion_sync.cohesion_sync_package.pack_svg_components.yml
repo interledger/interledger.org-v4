@@ -1,0 +1,35 @@
+uuid: 2250ba1f-5887-4332-9644-151783ec0e84
+langcode: en
+status: true
+dependencies: {  }
+id: pack_svg_components
+label: 'SVG Components'
+description: 'Components for using Site Studio with SVG Image Field Media Bundle'
+excluded_entity_types: '[]'
+settings: |
+  {
+      "1cee935e-fb85-48a3-8ae4-ffa930b23b9f": {
+          "type": "cohesion_component",
+          "items": {
+              "1cee935e-fb85-48a3-8ae4-ffa930b23b9f": {
+                  "type": "cohesion_component"
+              },
+              "97a42030-e1d1-4288-b23c-2ee4ddd85c8e": {
+                  "type": "file"
+              }
+          },
+          "checked": true
+      },
+      "729f8d52-7abc-4138-9531-3fa36b553e49": {
+          "type": "cohesion_component",
+          "items": {
+              "729f8d52-7abc-4138-9531-3fa36b553e49": {
+                  "type": "cohesion_component"
+              },
+              "027afc2d-1474-4158-84ae-81c10506a4ce": {
+                  "type": "file"
+              }
+          },
+          "checked": true
+      }
+  }

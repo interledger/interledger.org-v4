@@ -1,0 +1,7 @@
+-
+  type: default_module_package
+  source:
+    module_name: svg_components
+    path: config/pack_svg_components
+  options:
+    extra-validation: false

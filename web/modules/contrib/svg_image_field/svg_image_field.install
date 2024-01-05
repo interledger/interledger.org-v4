@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for svg_image_field module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_requirements().
+ */
+function svg_image_field_requirements($phase) {
+  $requirements = [];
+
+  if (!class_exists('\enshrined\svgSanitize\Sanitizer')) {
+    $requirements['svg_image_field_dependencies'] = [
+      'title' => t('SVG image field'),
+      'description' => \t('SVG Image Field has unmet Composer dependencies. Read the <a href="@url">documentation</a> on how to install them.', [
+        '@url' => 'https://www.drupal.org/node/2627292',
+      ]),
+      'severity' => \REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $requirements;
+}

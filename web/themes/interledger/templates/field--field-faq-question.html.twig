@@ -1,0 +1,13 @@
+{% for index, item in items %}
+<button 
+  data-faq-toggle
+  type="button"
+  aria-expanded="true"
+  aria-controls="ans{{index}}"
+  class="faq__qns"
+>
+  <h3{{ item.attributes }} itemprop="name">
+  <span>{{ item.content }}</span>
+  </h3>
+</button>
+{% endfor %}

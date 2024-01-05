@@ -1,0 +1,14 @@
+name: 'Weight Test Views'
+type: module
+description: 'Provides default views for views weight tests.'
+package: Testing
+dependencies:
+  - drupal:node
+  - drupal:views
+  - drupal:language
+  - drupal:weight
+
+# Information added by Drupal.org packaging script on 2023-02-21
+version: '8.x-3.4'
+project: 'weight'
+datestamp: 1676997701

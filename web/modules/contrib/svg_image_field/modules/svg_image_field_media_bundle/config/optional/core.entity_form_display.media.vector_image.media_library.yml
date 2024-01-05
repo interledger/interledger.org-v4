@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.vector_image.field_media_svg
+    - media.type.vector_image
+  module:
+    - svg_image_field
+id: media.vector_image.media_library
+targetEntityType: media
+bundle: vector_image
+mode: media_library
+content:
+  field_media_svg:
+    type: svg_image_field_widget
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_max_width: 300
+      preview_image_max_height: 300
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  status: true
+  uid: true

@@ -1,0 +1,8 @@
+{
+  "require": {
+    "enshrined/svg-sanitize": {
+      "version": "0.15.4",
+      "url": "https://github.com/darylldoyle/svg-sanitizer/archive/0.15.4.zip"
+    }
+  }
+}

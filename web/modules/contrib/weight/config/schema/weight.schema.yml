@@ -1,0 +1,23 @@
+field.storage_settings.weight:
+  type: mapping
+  label: 'Weight field storage settings'
+  mapping:
+    unsigned:
+      type: boolean
+      label: 'Unsigned'
+
+field.field_settings.weight:
+  type: mapping
+  label: 'Weight field settings'
+  mapping:
+    range:
+      type: string
+      label: 'Range'
+
+field.value.weight:
+  type: mapping
+  label: 'Weight field value'
+  mapping:
+    value:
+      type: string
+      label: 'Weight'

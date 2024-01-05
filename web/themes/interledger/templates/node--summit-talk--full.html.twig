@@ -1,0 +1,29 @@
+{% set startDate = node.field_talk_start.0.value|raw %}
+{% set endDate = node.field_talk_end.0.value|raw %}
+{% set difference = endDate|date('U') - startDate|date('U') %}
+{% set duration = (difference / 60) %}
+
+<div class="talk node--{{ node.id }} content-wrapper">
+  <header class="talk__header">
+    <h1>{{ node.field_talk_title.0.value|raw }}</h1>
+    <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span></p>
+  </header>
+  
+  {% if content.field_talk_video[0]['#media'] is defined %}
+  <div class="talk__video">
+    {{ content.field_talk_video }}
+  </div>
+  {% endif %}
+  
+  <div class="talk__info">
+    {% if node.field_talk_description.0.value is defined %}
+    <div class="talk__description">
+      {{ node.field_talk_description.0.value|nl2br }}
+    </div>
+    {% endif %}
+
+    <div class="talk__speakers">
+      {{ content.field_talk_speaker_entities }}
+    </div>
+  </div>
+</div>

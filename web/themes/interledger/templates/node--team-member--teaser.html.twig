@@ -1,0 +1,7 @@
+{% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
+
+<a href="{{ nodeLink }}">
+  {{ content.field_photo }}
+  <h2>{{ node.field_name.0.value|raw }}</h2>
+  <p>{{ node.field_position.0.value|raw }}</p>
+</a>

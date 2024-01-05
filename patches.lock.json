@@ -1,0 +1,15 @@
+{
+    "_hash": "a4aea71e3588d85101ce6d538d9bb5ca121a6b92193164a389148a57955767cb",
+    "patches": {
+        "drupal/ds": [
+            {
+                "package": "drupal/ds",
+                "description": "Notice: Undefined index: #type in _ds_field_ui_table_layouts",
+                "url": "https://www.drupal.org/files/issues/2023-01-23/3091319-34.patch",
+                "sha256": "ffa945427c9d6cc8be7291d0e81524365405950a0d528c0829f6ba647668811c",
+                "depth": 1,
+                "extra": []
+            }
+        ]
+    }
+}

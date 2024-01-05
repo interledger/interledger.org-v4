@@ -1,0 +1,24 @@
+<article class="news-article" itemscope itemtype="https://schema.org/NewsArticle">
+  <header class="content-wrapper">
+    <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
+    <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
+  </header>
+  
+  <div class="content-wrapper">
+    {{ content.field_feature_image }}
+    {{ content.body }}
+    <footer>
+      <ul class="news-tags">
+      {% for tag in node.field_tags %}
+        <li>
+          <a href="/news?field_tags_target_id={{ tag.entity.tid.value|raw }}">#{{ tag.entity.label|raw }}</a>
+        </li>
+      {% endfor %}
+      </ul>
+    </footer>
+  </div>
+</article>
+
+
+
+

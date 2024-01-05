@@ -1,0 +1,22 @@
+{% set imageUrl = file_url(node.field_speaker_image.0.value|raw) %}
+{% set imageAlt = node.field_speaker_name.0.value|raw %}
+
+<div class="speaker node--{{ node.id }}">
+  <header class="speaker__header">
+    <div class="speaker__text">
+      <h1>{{ node.field_speaker_name.0.value|raw }}</h1>
+      <p>{{ node.field_speaker_tagline.0.value|raw }}</p>
+    </div>
+    <div class="speaker__img">
+      <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+    </div>
+  </header>
+
+  <div class="speaker__info content-wrapper">
+    <p>{{ node.field_speaker_bio.0.value|raw }}</p>
+
+    <div class="speaker__talks">
+      {{ content.field_speaker_talk_entities }}
+    </div>
+  </div>
+</div>

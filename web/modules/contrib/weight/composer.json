@@ -1,0 +1,14 @@
+{
+    "name": "drupal/weight",
+    "description": "Allows arbitrary ordering of entities.",
+    "type": "drupal-module",
+    "keywords": ["Drupal"],
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/weight",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/weight",
+        "source": "http://cgit.drupalcode.org/weight"
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}

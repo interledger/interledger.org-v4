@@ -1,0 +1,11 @@
+{% for index, item in items %}
+  <div 
+    itemscope
+    itemprop="acceptedAnswer"
+    itemtype="https://schema.org/Answer"
+    id=ans{{index}}
+    class="faq__ans-wrapper"
+  >
+    <div itemprop="text" class="faq__ans">{{ item.content }}</div>
+  </div>
+{% endfor %}

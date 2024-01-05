@@ -1,0 +1,16 @@
+name: Interledger
+type: theme
+base theme: false
+description: Custom Drupal theme for the Interledger Foundation website.
+alt text: Screenshot of the Interledger custom theme.
+package: Core
+version: VERSION
+core_version_requirement: ^10
+generator: "stark:10.1.6"
+libraries:
+  - interledger/global-styling
+
+regions:
+  header: "Header"
+  admin: "Admin"
+  content: "Main Content"

@@ -1,0 +1,15 @@
+type: module
+name: 'Display Suite'
+description: 'Extend the display options for every entity type.'
+core_version_requirement: ^9 || ^10
+package: 'Display Suite'
+configure: ds.structure
+dependencies:
+  - drupal:layout_discovery
+test_dependencies:
+  - classy:classy
+
+# Information added by Drupal.org packaging script on 2023-12-22
+version: '8.x-3.16'
+project: 'ds'
+datestamp: 1703256185

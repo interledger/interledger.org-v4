@@ -1,0 +1,7 @@
+block.settings.entity_block:*:
+  type: block_settings
+  label: 'Entity Block'
+  mapping:
+    entity:
+      type: string
+      label: 'Entity'

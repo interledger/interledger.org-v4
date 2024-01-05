@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Contains layout_builder_admin_theme.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function layout_builder_admin_theme_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main layout_builder_admin_theme help page.
+    case 'help.page.layout_builder_admin_theme':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The "Layout Builder Admin Theme" module forces your Drupal site to use the admin theme when using Layout Manager.') . '</p>';
+      return $output;
+  }
+}

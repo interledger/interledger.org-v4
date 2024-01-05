@@ -1,0 +1,14 @@
+{% if link_url %}
+  <a href="{{ link_url }}">
+{% endif %}
+{% if inline %}
+  {% if twig_debug %}
+  <!-- INLINE SVG FILE PATH: '{{ file_url(uri) }}' -->
+  {% endif %}
+  {{ svg_data|raw }}
+{% else %}
+  <img{{ attributes }} src="{{ file_url(uri) }}" />
+{% endif %}
+{% if link_url %}
+  </a>
+{% endif %}

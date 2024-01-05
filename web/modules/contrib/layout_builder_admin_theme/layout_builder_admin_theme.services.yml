@@ -1,0 +1,6 @@
+services:
+  theme.negotiator.layout_builder_admin_theme:
+    class: Drupal\layout_builder_admin_theme\Theme\LBATAdminNegotiator
+    arguments: ['@config.factory']
+    tags:
+      - { name: theme_negotiator, priority: 501 }

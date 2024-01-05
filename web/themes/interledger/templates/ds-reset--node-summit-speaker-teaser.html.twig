@@ -1,0 +1,9 @@
+{% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
+{% set imageUrl = file_url(node.field_speaker_image.0.value|raw) %}
+{% set imageAlt = node.field_speaker_name.0.value|raw %}
+
+<a href="{{ nodeLink }}">
+  <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+  <h2>{{ node.field_speaker_name.0.value|raw }}</h2>
+  <p>{{ node.field_speaker_tagline.0.value|raw }}</p>
+</a>

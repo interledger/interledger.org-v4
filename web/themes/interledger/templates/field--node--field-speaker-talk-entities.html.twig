@@ -1,0 +1,7 @@
+{% for item in items %}
+  {% set talkDescription = item.content['#node'].field_talk_description[0].value %}
+  <div class="speaker__talk">
+    <h3>{{ item.content }}</h3>
+    <p>{{ talkDescription|length > 400 ? talkDescription|slice(0, 400)|raw ~ '…' : talkDescription|raw }}</p>
+</div>
+{% endfor %}
