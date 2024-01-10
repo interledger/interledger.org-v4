@@ -1147,10 +1147,17 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .news-article h1 {
   font-size: var(--step-4);
   line-height: 1.2;
+  margin-block-end: var(--space-3xs);
 }
 
 .news-article time {
   font-size: var(--step--1);
+}
+
+.news-article address {
+  font-style: normal;
+  font-weight: bold;
+  margin-block-end: var(--space-xs);
 }
 
 .news-article p,
@@ -1174,6 +1181,23 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   .news-article figure {
     max-width: 75%;
   }
+}
+
+.news-profile {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  margin-block-end: var(--space-s);
+}
+
+.news-profile:first-of-type {
+  margin-block-start: var(--space-m);
+  padding-block-start: var(--space-m);
+  border-block-start: 1px solid green;
+}
+
+.news-profile p {
+  font-style: italic;
 }
 
 .news-tags {
