@@ -646,7 +646,7 @@ a.switch-link {
 /* Spacer block styles */
 .layout-spacer {
   border: 0;
-  padding-block: var(--space-l);
+  padding-block: var(--space-m);
 }
 
 /* Hero content type styles */
@@ -704,7 +704,9 @@ a.switch-link {
 
 @media screen and (max-width: 1600px) {
   .hero--photography .content-wrapper {
-    margin: initial;
+    width: var(--max-content-width);
+    position: relative;
+    left: calc(-1 * var(--space-m));
   }
 }
 
@@ -830,6 +832,10 @@ a.switch-link {
   .text__body {
     flex: 50%;
   }
+
+  .text__body p {
+    text-align: justify;
+  }
 }
 
 /* Card content type styles */
@@ -905,6 +911,11 @@ a.switch-link {
 }
 
 /* FAQ content type styles */
+.faqs-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
 .faq-item {
   max-width: 50rem;
 }
