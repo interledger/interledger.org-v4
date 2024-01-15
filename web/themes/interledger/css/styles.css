@@ -53,6 +53,7 @@
     0px 2px 2px hsla(0, 0%, 0%, 0.06);
   --color-white: #fff;
   --color-black: #000;
+  --color-gray: #eee;
 
   --color-primary-fallback: #6d00cc;
   --color-primary: oklch(45.77% 0.248 297.11);
@@ -372,10 +373,8 @@ section {
   position: sticky;
   top: 0;
   z-index: 1;
-  border-block-start: 2px solid var(--color-primary-fallback);
-  border-block-start: 2px solid var(--color-primary);
-  box-shadow: 0px 0px 12px -4px var(--color-primary-fallback);
-  box-shadow: 0px 0px 12px -4px var(--color-primary);
+  border-block-start: 2px solid var(--color-gray);
+  box-shadow: 0px 0px 12px -4px var(--color-gray);
 }
 
 .site-nav {
@@ -409,8 +408,7 @@ section {
 }
 
 .site-nav__links a:hover {
-  background-color: var(--color-primary-bg-fallback);
-  background-color: var(--color-primary-bg);
+  background-color: var(--color-gray);
 }
 
 .menu-item--level-1 > a {
@@ -426,11 +424,6 @@ section {
   justify-self: end;
   grid-area: site;
   padding-block: var(--space-s)
-}
-
-a.switch-link {
-  color: var(--color-primary-fallback);
-  color: var(--color-primary);
 }
 
 @media screen and (max-width: 479px) {
@@ -452,8 +445,7 @@ a.switch-link {
     top: var(--site-header-height);
     right: 0;
     transition: transform 300ms ease-in-out;
-    border-block-start: 1px solid var(--color-primary-fallback);
-    border-block-start: 1px solid var(--color-primary);
+    border-block-start: 1px solid var(--color-gray);
   }
 
   .site-links-wrapper.offscreen {
@@ -473,8 +465,7 @@ a.switch-link {
   }
 
   .menu-item--level-1 > .is-active {
-    border-inline-start: 2px solid var(--color-primary-fallback);
-    border-inline-start: 2px solid var(--color-primary);
+    border-inline-start: 2px solid var(--color-gray);
   }
 
   .menu-item--level-2 > .is-active {
@@ -482,8 +473,7 @@ a.switch-link {
   }
 
   .switch-link:hover {
-    background-color: var(--color-primary-bg-fallback);
-    background-color: var(--color-primary-bg);
+    background-color: var(--color-gray);
   }
 
   .site-nav__toggle {
@@ -506,8 +496,7 @@ a.switch-link {
     position: absolute;
     height: 4px;
     width: 100%;
-    background: var(--color-primary-fallback);
-    background: var(--color-primary);
+    background: currentColor;
     border-radius: 4px;
     opacity: 1;
     left: 0;
@@ -577,9 +566,9 @@ a.switch-link {
 
   .site-nav__links .is-active {
     text-decoration-color: var(--color-primary-fallback);
-    text-decoration-color: var(--color-primary);
-    color: var(--color-primary-fallback);
-    color: var(--color-primary);
+    text-decoration-color: currentColor;
+    /* color: var(--color-primary-fallback);
+    color: var(--color-primary); */
   }
 
   .has-submenu {
@@ -589,8 +578,7 @@ a.switch-link {
   .site-nav .menu--level-2 {
     background-color: var(--color-header-bg);
     position: absolute;
-    border-inline-start: 2px solid var(--color-primary-fallback);
-    border-inline-start: 2px solid var(--color-primary);
+    border-inline-start: 2px solid var(--color-gray);
     transition: opacity 150ms ease-in;
   }
 
@@ -610,10 +598,8 @@ a.switch-link {
     min-width: 100%;
     left: 0;
     top: calc(1.3em + var(--space-s) * 1.98);
-    box-shadow: 2px 3px 6px -3px var(--color-primary-fallback),
-    -2px 3px 6px -3px var(--color-primary-fallback);
-    box-shadow: 2px 3px 6px -3px var(--color-primary),
-    -2px 3px 6px -3px var(--color-primary);
+    box-shadow: 2px 3px 6px -3px var(--color-gray),
+    -2px 3px 6px -3px var(--color-gray);
   }
 
   .site-nav__toggle {
@@ -628,7 +614,7 @@ a.switch-link {
   margin-block-start: var(--space-l);
   text-align: center;
   border-block-start: 1px solid var(--color-primary-fallback);
-  border-block-start: 1px solid var(--color-primary);
+  border-block-start: 1px solid ;
 }
 
 .site-footer ul {
@@ -651,6 +637,11 @@ a.switch-link {
 .social-links svg {
   height: 2em;
   width: 2em;
+  transition: transform 200ms ease-in-out;
+}
+
+.social-links a:hover svg {
+  transform: scale(1.15);
 }
 
 .site-footer p {
@@ -660,6 +651,13 @@ a.switch-link {
 .footer-links a {
   padding: 0 var(--space-s);
   white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-style:dotted;
+  color: currentColor;
+}
+
+.footer-links a:hover {
+  text-decoration-style:solid;
 }
 
 @media screen and (max-width: 479px) {
