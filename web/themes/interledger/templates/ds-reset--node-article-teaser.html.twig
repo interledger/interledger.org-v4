@@ -1,6 +1,6 @@
 {% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
 
-{{ content.field_feature_image }}
+{{ content.field_article_thumbnail }}
 <div class="article-teaser-text">
   <h2><a href="{{ nodeLink }}">{{ node.title.0.value|raw }}</a></h2>
   <time datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
