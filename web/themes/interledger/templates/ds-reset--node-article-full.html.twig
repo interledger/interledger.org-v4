@@ -1,11 +1,11 @@
-<article class="news-article" itemscope itemtype="https://schema.org/NewsArticle">
-  <header class="content-wrapper">
-    <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
-    <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
-  </header>
-  
+<article class="news-article" itemscope itemtype="https://schema.org/NewsArticle" data-pillar="{{ node.field_pillar.0.value|raw }}">
   <div class="content-wrapper">
-    {{ content.field_feature_image }}
+    <header>
+      {{ content.field_feature_image }}
+      <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
+      <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
+    </header>
+  
     {% if node.field_byline.0.value %}
     <address>Written by  {{ node.field_byline.0.value|raw }}</address>
     {% endif %}
