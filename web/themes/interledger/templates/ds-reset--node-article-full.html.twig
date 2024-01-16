@@ -1,6 +1,6 @@
 <article class="news-article" itemscope itemtype="https://schema.org/NewsArticle" data-pillar="{{ node.field_pillar.0.value|raw }}">
   <div class="content-wrapper">
-    <header>
+    <header data-gradient="{{ node.field_gradient_style.0.value|raw }}">
       {{ content.field_feature_image }}
       <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
       <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
