@@ -27,6 +27,7 @@
 :root {
   --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --step--2: clamp(0.72rem, 0.6261rem + 0.4174vw, 0.96rem);
   --step--1: clamp(0.9rem, 0.7826rem + 0.5217vw, 1.2rem);
   --step-0: clamp(1.125rem, 0.9783rem + 0.6522vw, 1.5rem);
   --step-1: clamp(1.4063rem, 1.2228rem + 0.8152vw, 1.875rem);
@@ -351,7 +352,7 @@ section {
   padding-inline-start: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
-  gap: var(--space-m);
+  gap: var(--space-s);
 }
 
 .people-grid img {
@@ -359,7 +360,7 @@ section {
 }
 
 .people-grid h2 {
-  font-size: var(--step-0);
+  font-size: var(--step--0);
 }
 
 .people-grid p {
@@ -567,8 +568,6 @@ section {
   .site-nav__links .is-active {
     text-decoration-color: var(--color-primary-fallback);
     text-decoration-color: currentColor;
-    /* color: var(--color-primary-fallback);
-    color: var(--color-primary); */
   }
 
   .has-submenu {
@@ -652,7 +651,8 @@ section {
   padding: 0 var(--space-s);
   white-space: nowrap;
   text-decoration: underline;
-  text-decoration-style:dotted;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
   color: currentColor;
 }
 
@@ -1008,10 +1008,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 }
 
 /* Team member content type styles */
-.team-wrapper {
-  --max-content-width: 1440px;
-}
-
 .team-wrapper h1 {
   padding-block-start: var(--space-l);
   padding-block-end: var(--space-m);
@@ -1021,26 +1017,12 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   color: currentColor;
   position: relative;
   display: block;
+  transition: color 200ms ease-out;
 }
 
-.member-link::before {
-  content: "";
-  display: block;
-  width: 100%;
-  aspect-ratio: 1/1;
-  position: absolute;
-  top: 0;
-  opacity: 0;
-  transition: opacity 300ms ease-in-out;
-  background-image: linear-gradient(90deg, #B592FF 0%, #E6DAFF 100%);
-}
-
-.member-link:hover::before {
-  opacity: 1;
-}
-
-.member-link:hover img {
-  mix-blend-mode: multiply;
+.team-wrapper a:hover {
+  color: var(--color-primary-fallback);
+  color: var(--color-primary);
 }
 
 .team-wrapper .member__socials {
@@ -1050,12 +1032,18 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .team-wrapper .member__socials svg {
   height: 1em;
   width: 1.1em;
+  transition: transform 200ms ease-in-out;
+}
+
+.team-wrapper .member__socials a:hover svg {
+  transform: scale(1.15);
 }
 
 .member {
   padding: var(--space-s);
   display: flex;
   gap: var(--space-s);
+  align-items: start;
 }
 
 @media screen and (max-width: 859px) {
@@ -1063,6 +1051,10 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
     align-items: center;
     flex-direction: column;
   }
+}
+
+.member img {
+  flex: none;
 }
 
 .member__text {
