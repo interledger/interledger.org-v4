@@ -596,7 +596,7 @@ section {
     width: max-content;
     min-width: 100%;
     left: 0;
-    top: calc(1.3em + var(--space-s) * 1.98);
+    top: calc(1.3em + var(--space-s) * 1.95);
     box-shadow: 2px 3px 6px -3px var(--color-gray),
     -2px 3px 6px -3px var(--color-gray);
   }
