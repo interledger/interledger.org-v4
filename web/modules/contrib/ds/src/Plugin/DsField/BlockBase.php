@@ -3,6 +3,8 @@
 namespace Drupal\ds\Plugin\DsField;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\Context;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\Context\ContextRepositoryInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
@@ -79,15 +81,27 @@ abstract class BlockBase extends DsFieldBase implements ContainerFactoryPluginIn
     $block_config = $this->blockConfig();
     $block->setConfiguration($block_config);
 
-    $add_wrappers = isset($this->getFieldConfiguration()['properties']['add_block_wrappers']) ? $this->getFieldConfiguration()['properties']['add_block_wrappers'] : FALSE;
+    $add_wrappers = isset($this->getFieldConfiguration()['properties']['add_block_wrappers']) && $this->getFieldConfiguration()['properties']['add_block_wrappers'];
+
+    // Inject context values.
+    if ($block instanceof ContextAwarePluginInterface) {
+      $contexts = $this->contextRepository->getRuntimeContexts(array_values($block->getContextMapping()));
+      // Set the configured entity now.
+      $entity_type_id = $this->configuration['entity']->getEntityTypeId();
+      if (isset($contexts["@ds.ds_block_field_entity_context:{$entity_type_id}"])) {
+        $contexts["@ds.ds_block_field_entity_context:{$entity_type_id}"]->getContextData()
+          ->setValue($this->configuration['entity']);
+        $contexts['view_mode'] = new Context(new ContextDefinition('string'), $this->configuration['view_mode']);
+      }
+      $this->contextHandler->applyContextMapping($block, $contexts);
+    }
 
     if ($block->access(\Drupal::currentUser())) {
-      // Inject context values.
-      if ($block instanceof ContextAwarePluginInterface) {
-        $contexts = $this->contextRepository->getRuntimeContexts(array_values($block->getContextMapping()));
-        $this->contextHandler->applyContextMapping($block, $contexts);
-      }
       $block_build = $block->build();
+
+      if (Element::isEmpty($block_build)) {
+        return [];
+      }
 
       // If the user has chosen to add the block wrappers, theme as a block.
       if ($add_wrappers) {
@@ -107,7 +121,6 @@ abstract class BlockBase extends DsFieldBase implements ContainerFactoryPluginIn
         // Otherwise just use the block build.
         $render_element = $block_build;
       }
-
 
       // Merge cache contexts, tags and max-age.
       if ($contexts = $block->getCacheContexts()) {

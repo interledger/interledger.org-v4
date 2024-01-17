@@ -63,9 +63,6 @@
         "patches": {
             "drupal/core": {
                 "[PP-1] Use hook_theme_suggestions in views": "https://www.drupal.org/files/issues/2023-06-12/2923634-92.patch"
-            },
-            "drupal/ds": {
-                "Notice: Undefined index: #type in _ds_field_ui_table_layouts": "https://www.drupal.org/files/issues/2023-01-23/3091319-34.patch"
             }
         },
         "drupal-scaffold": {

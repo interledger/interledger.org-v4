@@ -280,7 +280,6 @@ select {
 .region-admin {
   background-color: var(--color-admin-bg);
   color: var(--color-admin-txt);
-  box-shadow: -1px 0 3px 1px rgba(0, 0, 0, 0.3);
   z-index: 1;
   padding: var(--space-xs);
 }
@@ -383,7 +382,7 @@ section {
   top: 0;
   z-index: 1;
   border-block-start: 2px solid var(--color-gray);
-  box-shadow: 0px 0px 12px -4px var(--color-gray);
+  box-shadow: var(--box-shadow);
 }
 
 .site-nav {
@@ -604,9 +603,9 @@ section {
     width: max-content;
     min-width: 100%;
     left: 0;
-    top: calc(1.3em + var(--space-s) * 1.95);
-    box-shadow: 2px 3px 6px -3px var(--color-gray),
-    -2px 3px 6px -3px var(--color-gray);
+    top: calc(1.3em + var(--space-s) * 2);
+    box-shadow: 2px 3px 6px -3px hsla(0, 0%, 0%, 0.06),
+    -2px 3px 6px -3px hsla(0, 0%, 0%, 0.06);
   }
 
   .site-nav__toggle {
