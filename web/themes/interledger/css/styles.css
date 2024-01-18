@@ -65,10 +65,6 @@
   --color-gray: #444;
   --color-frost: rgba(255, 255, 255, 0.5);
 
-  --color-primary-fallback: #6500d8;
-  --color-primary: oklch(46.08% 0.258 291.47);
-  --filter-primary: invert(18%) sepia(100%) saturate(6622%) hue-rotate(271deg) brightness(78%) contrast(123%);
-
   --color-nav-hover: #eee;
   --color-btn-txt: var(--color-white);
   --color-admin-bg: var(--color-white);
@@ -82,24 +78,32 @@
   --color-tech-secondary: oklch(55.46% 0.206 32.58);
   --color-tech-gradient: linear-gradient(to right, oklch(76.55% 0.102 184.83), oklch(91.46% 0.049 186.79));
   --color-tech-gradient-dark: linear-gradient(to right, var(--color-tech-main), oklch(74.53% 0.082 202.65));
+  --filter-tech: invert(18%) sepia(85%) saturate(4735%) hue-rotate(172deg) brightness(93%) contrast(101%);
 
   --color-mission-main-fallback: #cf2801;
   --color-mission-main: oklch(55.27% 0.205 32.62);
   --color-mission-secondary: oklch(62.58% 0.151 148.73);
   --color-mission-gradient: linear-gradient(to right, oklch(79.3% 0.147 60.58), oklch(91.1% 0.061 64.53));
   --color-mission-gradient-dark: linear-gradient(to right, var(--color-mission-main), oklch(76.1% 0.164 65));
+  --filter-mission: invert(22%) sepia(92%) saturate(1896%) hue-rotate(3deg) brightness(101%) contrast(123%);
 
-  --color-vision-main-fallback: var(--color-primary-fallback);
-  --color-vision-main: var(--color-primary);
+  --color-vision-main-fallback: #6500d8;
+  --color-vision-main: oklch(46.08% 0.258 291.47);
   --color-vision-secondary: oklch(57.02% 0.229 3.9);
   --color-vision-gradient: linear-gradient(to right, oklch(73.61% 0.156 297.21), oklch(90.94% 0.051 300.18));
-  --color-vision-gradient-dark: linear-gradient(to right, var(--color-primary), oklch(68.24% 0.206 303.127));
+  --color-vision-gradient-dark: linear-gradient(to right, var(--color-vision-main), oklch(68.24% 0.206 303.127));
+  --filter-vision: invert(18%) sepia(100%) saturate(6622%) hue-rotate(271deg) brightness(78%) contrast(123%);
 
   --color-values-main-fallback: #d80068;
   --color-values-main: oklch(56.84% 0.229 3.717);
-  --color-values-secondary: var(--color-primary);
+  --color-values-secondary: var(--color-vision-main);
   --color-values-gradient: linear-gradient(to right, oklch(76.01% 0.163 355.138), oklch(91.64% 0.052 347.23));
   --color-values-gradient-dark: linear-gradient(to right, var(--color-values-main), oklch(73% 0.158 351.42));
+  --filter-values: invert(20%) sepia(62%) saturate(4370%) hue-rotate(316deg) brightness(81%) contrast(118%);
+
+  --color-primary-fallback: var(--color-vision-main-fallback);
+  --color-primary: var(--color-vision-main);
+  --filter-primary: var(--filter-vision);
 }
 
 [class*="page-node-type-summit"],
@@ -107,6 +111,7 @@
   --color-primary-fallback: #08ffff;
   --color-primary: oklch(90.54% 0.154 194.77);
   --filter-primary: filter: invert(87%) sepia(60%) saturate(2857%) hue-rotate(111deg) brightness(101%) contrast(108%);
+  --color-gray: #eee;
 
   --color-nav-hover: #444;
   --color-btn-txt: var(--color-black);
@@ -115,7 +120,6 @@
   --color-header-bg: var(--color-black);
   --color-card-bg: var(--color-black);
   --color-frost: rgba(255, 255, 255, 0.5);
-  --color-hero-txt: var(--color-black);
 }
 
 /* CSS reset */
@@ -187,10 +191,6 @@ main::before {
   content: "";
 }
 
-[data-mode="dark"] main::before {
-  filter: blur(150px) opacity(0.4);
-}
-
 a {
   text-decoration: none;
   color: var(--color-primary-fallback);
@@ -212,8 +212,6 @@ figcaption {
 
 /* Page theme styles */
 .page-node-type-page [data-pillar="vision"] {
-  --color-primary-fallback: var(--color-vision-main-fallback);
-  --color-primary: var(--color-vision-main);
   --color-btn-outline: rgba(101, 1, 216, 0.45);
   --color-btn-outline-pressed:  rgb(85, 17, 181);
 }
@@ -223,6 +221,7 @@ figcaption {
   --color-primary: var(--color-mission-main);
   --color-btn-outline: rgba(207, 40, 2, 0.45);
   --color-btn-outline-pressed:  rgb(152, 26, 0);
+  --filter-primary: var(--filter-mission);
 }
 
 .page-node-type-page [data-pillar="tech"] {
@@ -230,6 +229,7 @@ figcaption {
   --color-primary: var(--color-tech-main);
   --color-btn-outline: rgba(0, 119, 119, 0.45);
   --color-btn-outline-pressed:  rgb(0, 96, 96);
+  --filter-primary: var(--filter-tech);
 }
 
 .page-node-type-page [data-pillar="values"] {
@@ -237,6 +237,7 @@ figcaption {
   --color-primary: var(--color-values-main);
   --color-btn-outline: rgba(216, 0, 104, 0.45);
   --color-btn-outline-pressed:  rgb(158, 0, 74);
+  --filter-primary: var(--filter-values);
 }
 
 /* Shared input element styles */
@@ -508,6 +509,7 @@ section {
     border: 0;
     background: initial;
     padding: var(--space-xs) 0;
+    color: currentColor;
   }
 
   .menu-icon {
@@ -742,10 +744,10 @@ section {
 }
 
 .hero h2 {
-  color: var(--color-hero-txt);
   font-size: var(--step-5);
   max-width: 10em;
   line-height: 1.2;
+  color: var(--color-hero-txt);
 }
 
 .hero--photography {
@@ -1496,6 +1498,10 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .path-summit {
   background-color: var(--color-black);
   color: var(--color-white);
+}
+
+[class*="page-node-type-summit"] main::before {
+  filter: blur(150px) opacity(0.4);
 }
 
 [class*="page-node-type-summit"] .site-footer svg path,
