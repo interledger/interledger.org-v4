@@ -191,6 +191,12 @@ main::before {
   content: "";
 }
 
+@media screen and (max-width: 430px) {
+  main::before {
+    content: initial;
+  }
+}
+
 a {
   text-decoration: none;
   color: var(--color-primary-fallback);
@@ -862,6 +868,7 @@ section {
   transition: opacity 450ms ease-in, transform 450ms ease-out;
   line-height: 1.1;
   margin-block-end: var(--space-2xs);
+  hyphens: auto;
 }
 
 .highlight p.invisible {
