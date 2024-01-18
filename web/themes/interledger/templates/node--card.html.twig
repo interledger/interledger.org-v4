@@ -1,14 +1,5 @@
-{% set svgUrl = file_url(content.field_card_image[0]['#media'].field_media_svg.entity.uri.value) %}
-{% set svgAlt = content.field_card_image[0]['#media'].field_media_svg.alt %}
-{% set imageUrl = file_url(content.field_card_image[0]['#media'].field_media_image.entity.uri.value) %}
-{% set imageAlt = content.field_card_image[0]['#media'].field_media_image.alt %}
-
-<div class="card node--{{ node.id }}">
-  {% if svgUrl|default(null) %}
-  <img class="card__img" src="{{ svgUrl }}" alt="{{ svgAlt }}">
-  {% elseif imageUrl|default(null) %}
-  <img class="card__img" src="{{ imageUrl }}" alt="{{ imageAlt }}">
-  {% endif %}
+<div class="card node--{{ node.id }}">  
+  {{ content.field_card_image }}
   <div class="card-content-wrapper">
     {% if node.field_card_title is not empty %}
     <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>

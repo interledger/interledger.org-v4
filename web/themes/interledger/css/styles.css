@@ -942,7 +942,7 @@ section {
   margin-inline: auto;
 }
 
-.card__img {
+.card img {
   border-start-start-radius: var(--border-radius);
   border-start-end-radius: var(--border-radius);
 }
