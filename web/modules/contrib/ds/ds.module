@@ -653,7 +653,7 @@ function ds_preprocess_ds_layout(&$variables) {
  * Implements hook_theme_suggestions_alter().
  */
 function ds_theme_suggestions_alter(&$suggestions, $variables, $base_theme_hook) {
-  if (isset($variables['content']['#ds_configuration']) && !empty($variables['content']['#ds_configuration']['layout']['id']) && $base_theme_hook != 'ds_entity_view') {
+  if (isset($variables['content']) && is_array($variables['content']) && !empty($variables['content']['#ds_configuration']['layout']['id']) && $base_theme_hook != 'ds_entity_view') {
     $entity_id = $variables['content']['#' . $variables['content']['#entity_type']]->id();
     $layout_hook = $variables['content']['#ds_configuration']['layout']['id'];
     if (!\Drupal::config('ds.settings')->get('layout_suggestion_bc')) {
@@ -876,7 +876,7 @@ function ds_theme_suggestions_field_alter(&$suggestions, $variables) {
       // Or the template file(s).
       $suggestion = 'field__' . $config['id'];
     }
-    elseif (!empty($field_theme_function) && $field_theme_function != 'default') {
+    elseif (!empty($field_theme_function)) {
       // Either it uses the function.
       if ($undo_default_field_template_fix) {
         $suggestions[] = 'field__theme_ds_field_' . $field_theme_function;
@@ -886,7 +886,14 @@ function ds_theme_suggestions_field_alter(&$suggestions, $variables) {
       }
 
       // Or the template file(s).
-      $suggestion = 'field__' . $field_theme_function;
+      $set_suggestion = TRUE;
+      if ($field_theme_function == 'default' && !$undo_default_field_template_fix) {
+        $set_suggestion = FALSE;
+      }
+
+      if ($set_suggestion) {
+        $suggestion = 'field__' . $field_theme_function;
+      }
     }
 
     if (!empty($suggestion)) {

@@ -236,10 +236,10 @@ class EntityRow extends ViewsEntityRow {
     if (!isset($this->entityLanguageRenderer)) {
       $view = $this->getView();
       $rendering_language = $view->display_handler->getOption('rendering_language');
-      $langcode = NULL;
       $dynamic_renderers = [
         '***LANGUAGE_entity_translation***' => 'TranslationLanguageRenderer',
         '***LANGUAGE_entity_default***' => 'DefaultLanguageRenderer',
+        '***LANGUAGE_language_interface***' => 'CurrentLanguageRenderer',
       ];
       if (isset($dynamic_renderers[$rendering_language])) {
         // Dynamic language set based on result rows or instance defaults.
@@ -249,6 +249,15 @@ class EntityRow extends ViewsEntityRow {
         $this->entityLanguageRenderer = new $class($view, $this->getLanguageManager(), $entity_type);
       }
       else {
+
+        if (str_contains($rendering_language, '***LANGUAGE_')) {
+          $langcode = PluginBase::queryLanguageSubstitutions()[$rendering_language];
+        }
+        else {
+          // Specific langcode set.
+          $langcode = $rendering_language;
+        }
+
         $renderer = 'ConfigurableLanguageRenderer';
         $class = '\Drupal\ds\Plugin\views\Entity\Render\\' . $renderer;
         $entity_type = \Drupal::service('entity_type.manager')->getDefinition($this->getEntityTypeId());
