@@ -31,6 +31,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Titillium Web";
+  src: url("../fonts/titilliumweb-extralight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Shared custom property values */
 :root {
   --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
@@ -652,6 +660,25 @@ section {
   border-block-start: 1px solid ;
 }
 
+.site-footer ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 0;
+}
+
+
+
+@media screen and (min-width: 780px) {
+  .connect-wrapper {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    gap: var(--space-xl);
+    text-align: left;
+  }
+}
+
 .site-footer form {
   display: flex;
   justify-content: center;
@@ -672,14 +699,11 @@ section {
   border: 1px solid var(--color-primary);
 }
 
-.site-footer ul {
-  display: flex;
-  list-style: none;
-  justify-content: center;
-  padding: 0;
+.social-links h3 {
+  margin-block-end: var(--space-2xs);
 }
 
-.social-links {
+.social-links ul {
   gap: var(--space-s);
   margin-block-end: var(--space-s);
   flex-wrap: wrap;
@@ -700,7 +724,7 @@ section {
 }
 
 .site-footer p {
-  margin-block-end: var(--space-s);
+  margin-block-end: var(--space-3xs);
 }
 
 .footer-links a {
@@ -750,10 +774,11 @@ section {
 }
 
 .hero h2 {
-  font-size: var(--step-5);
+  font-size: var(--step-6);
   max-width: 10em;
   line-height: 1.2;
   color: var(--color-hero-txt);
+  font-weight: 200;
 }
 
 .hero--photography {
@@ -765,7 +790,6 @@ section {
 
 .hero--photography h2 {
   padding: var(--space-m);
-  background: rgba(0, 0, 0, 0.5);
   border-radius: var(--border-radius);
 }
 
@@ -796,14 +820,6 @@ section {
   z-index: -1;
   object-fit: cover;
   filter: brightness(50%);
-}
-
-@media screen and (max-width: 1600px) {
-  .hero--photography .content-wrapper {
-    width: var(--max-content-width);
-    position: relative;
-    left: calc(-1 * var(--space-m));
-  }
 }
 
 @media screen and (max-width: 799px) {
@@ -847,6 +863,14 @@ section {
     flex: 0 1 auto;
     max-width: 30rem;
     width: 50%;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .hero--photography .content-wrapper {
+    width: var(--max-content-width);
+    position: relative;
+    left: calc(-1 * var(--space-m));
   }
 }
 
