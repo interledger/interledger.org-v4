@@ -759,6 +759,8 @@ section {
 .hero--photography {
   background-position: center;
   justify-content: start;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .hero--photography h2 {
