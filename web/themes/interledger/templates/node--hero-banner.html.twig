@@ -1,5 +1,5 @@
 {% set svgBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_svg.entity.uri.value) %}
-{% set imageBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value) %}
+{% set imageBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
 {% set videoBgUrl = file_url(content.field_hero_background_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 
 {% set svgUrl = file_url(content.field_hero_image[0]['#media'].field_media_svg.entity.uri.value) %}

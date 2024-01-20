@@ -33,6 +33,7 @@
         "drupal/pathauto": "^1.12",
         "drupal/svg_image_field": "^2.3",
         "drupal/token": "^1.13",
+        "drupal/twig_tweak": "^3.2",
         "drupal/webform": "^6.2",
         "drupal/weight": "^3.4",
         "drush/drush": "^12.4"

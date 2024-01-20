@@ -667,8 +667,6 @@ section {
   padding: 0;
 }
 
-
-
 @media screen and (min-width: 780px) {
   .connect-wrapper {
     display: flex;
