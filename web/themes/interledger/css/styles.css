@@ -780,15 +780,27 @@ section {
 }
 
 .hero--photography {
-  background-position: center;
   justify-content: start;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
+  background-position: center;
 }
 
 .hero--photography h2 {
   padding: var(--space-m);
   border-radius: var(--border-radius);
+}
+
+.hero__caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-size: var(--step--2);
+  font-weight: semibold;
+  padding: var(--space-3xs) var(--space-2xs);
 }
 
 .hero--illustration {
@@ -843,7 +855,7 @@ section {
   }
 
   .hero--photography {
-    background-position: center right;
+    background-position: var(--bg-pos, center) right;
   }
 
   .hero--illustration .content-wrapper {

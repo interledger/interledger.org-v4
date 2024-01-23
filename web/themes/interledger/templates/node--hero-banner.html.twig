@@ -1,12 +1,15 @@
 {% set svgBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_svg.entity.uri.value) %}
 {% set imageBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
-{% set videoBgUrl = file_url(content.field_hero_background_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 
 {% set svgUrl = file_url(content.field_hero_image[0]['#media'].field_media_svg.entity.uri.value) %}
 {% set imageUrl = file_url(content.field_hero_image[0]['#media'].field_media_image.entity.uri.value) %}
 {% set gradientStart = content.field_hero_gradient[0]['#paragraph'].field_gradient_start.value %}
 {% set gradientEnd = content.field_hero_gradient[0]['#paragraph'].field_gradient_end.value %}
 {% set heroTxtColour = node.field_hero_text_colour.0.value|raw %}
+{% set heroBgPos = node.field_hero_background_position.0.value|raw %}
+{% set heroCaption = node.field_hero_caption.0.value|raw %}
+
+{% set videoBgUrl = file_url(content.field_hero_background_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 
 {% if node.field_hero_type.0.value|raw == "Illustration" %}
 <section class="hero node--{{ node.id }} hero--illustration" style="--gradient-start: {{ gradientStart }};--gradient-end: {{ gradientEnd }}">
@@ -21,16 +24,22 @@
 </section>
 {% elseif node.field_hero_type.0.value|raw == "Photography" %}
   {% if svgBgUrl|default(null) %}
-  <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ svgBgUrl }}')">
+  <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ svgBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
     </div>
+    {% if heroCaption|default(null) %}
+      <p class="hero__caption">{{ heroCaption }}</p>
+    {% endif %}
   </section>
   {% elseif imageBgUrl|default(null) %}
-  <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ imageBgUrl }}')">
+  <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ imageBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
     </div>
+    {% if heroCaption|default(null) %}
+      <p class="hero__caption">{{ heroCaption }}</p>
+    {% endif %}
   </section>
   {% endif %}
 {% elseif node.field_hero_type.0.value|raw == "Video" %}
