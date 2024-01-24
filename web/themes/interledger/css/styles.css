@@ -478,6 +478,10 @@ section {
 }
 
 @media screen and (max-width: 1059px) {
+  [data-drupal-ajax-container] {
+    display: none;
+  }
+
   .site-nav {
     height: var(--site-header-height);
   }
@@ -586,7 +590,7 @@ section {
     display: grid;
     grid-template-columns: auto 1fr 1fr;
     grid-template-areas: "logo links links";
-    gap: var(--space-s);
+    column-gap: var(--space-s);
   }
 
   .site-logo {
@@ -622,6 +626,7 @@ section {
     position: absolute;
     border-inline-start: 2px solid var(--color-nav-hover);
     transition: opacity 150ms ease-in;
+    visibility: hidden;
   }
 
   .site-nav .menu--level-2 a {
