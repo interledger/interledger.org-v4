@@ -2,46 +2,26 @@
 {% set svgAlt = content.field_text_block_media[0]['#media'].field_media_svg.alt %}
 {% set imageUrl = file_url(content.field_text_block_media[0]['#media'].field_media_image.entity.uri.value) %}
 {% set imageAlt = content.field_text_block_media[0]['#media'].field_media_image.alt %}
+{% set textPos = content.field_text_block_position.0|render == "Left" %}
 
 <section class="text node--{{ node.id }}">
-  <div class="content-wrapper text-wrapper">
+  <div class="content-wrapper text-wrapper {{ (textPos) ? 'text--body-left' : 'text--body-right' }}">
     {% if node.field_text_block_header.0.value %}
     <h2>{{ node.field_text_block_header.0.value|raw }}</h2>
     {% endif %}
-    {% if content.field_text_block_position.0|render == "Left" %}
-      <div class="text__body">{{ content.field_text_block_body }}</div>
-      {% if content.field_text_block_media[0]['#media'] is defined %}
-        {% if svgUrl|default(null) %}
-        <div class="text__img">
-          <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
-        </div>
-        {% elseif imageUrl|default(null) %}
-        <div class="text__img">
-          <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
-        </div>
-        {% else %}
-        {{ content.field_text_block_media }}
-        {% endif %}
-      {% endif %}
-    {% elseif content.field_text_block_position.0|render == "Right" %}
-      {% if content.field_text_block_media[0]['#media'] is defined %}
-        {% if svgUrl|default(null) %}
-        <div class="text__img">
-          <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
-        </div>
-        {% elseif imageUrl|default(null) %}
-        <div class="text__img">
-          <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
-        </div>
-        {% else %}
-        {{ content.field_text_block_media }}
-        {% endif %}
-      {% endif %}
-      <div class="text__body">{{ content.field_text_block_body }}</div>
-    {% else %}
-      <div class="text__body">
-      {{ content.field_text_block_body }}
+    {% if content.field_text_block_media[0]['#media'] is defined %}
+      {% if svgUrl|default(null) %}
+      <div class="text__img">
+        <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
       </div>
+      {% elseif imageUrl|default(null) %}
+      <div class="text__img">
+        <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+      </div>
+      {% else %}
+      {{ content.field_text_block_media }}
+      {% endif %}
     {% endif %}
+    <div class="text__body">{{ content.field_text_block_body }}</div>
   </div>
 </section>

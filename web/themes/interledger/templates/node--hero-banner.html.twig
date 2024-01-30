@@ -1,8 +1,14 @@
 {% set svgBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_svg.entity.uri.value) %}
-{% set imageBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% if content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value %}
+  {% set imageBgUrl = file_url(content.field_hero_background_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% endif %}
 
 {% set svgUrl = file_url(content.field_hero_image[0]['#media'].field_media_svg.entity.uri.value) %}
-{% set imageUrl = file_url(content.field_hero_image[0]['#media'].field_media_image.entity.uri.value) %}
+{% set svgAlt = content.field_hero_image[0]['#media'].field_media_svg.alt %}
+{% if content.field_hero_image[0]['#media'].field_media_image.entity.uri.value %}
+  {% set imageUrl = file_url(content.field_hero_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% endif %}
+{% set imageAlt = content.field_hero_image[0]['#media'].field_media_image.alt %}
 {% set gradientStart = content.field_hero_gradient[0]['#paragraph'].field_gradient_start.value %}
 {% set gradientEnd = content.field_hero_gradient[0]['#paragraph'].field_gradient_end.value %}
 {% set heroTxtColour = node.field_hero_text_colour.0.value|raw %}

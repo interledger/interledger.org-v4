@@ -1,6 +1,6 @@
-{% set renderCaption = (node.field_card_title is not empty) or (node.field_card_blurb is not empty) or (node.field_card_link is not empty) %}
+{% set renderCaption = node.field_card_caption.0.value|raw %}
 
-<div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : '' }}">
+<div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
   <div class="card__media">  
     {{ content.field_card_image }}
   </div>
