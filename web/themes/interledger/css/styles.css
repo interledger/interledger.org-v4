@@ -1072,6 +1072,7 @@ section {
 
 .card--no-txt img {
   border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .card-content-wrapper {
@@ -1428,13 +1429,14 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .text-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-m);
+  column-gap: var(--space-m);
 }
 
 .text-wrapper h2 {
   width: 100%;
   font-size: var(--step-2);
   font-weight: 600;
+  margin-block-end: var(--space-xs);
 }
 
 .text-wrapper li {
@@ -1491,6 +1493,18 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
   gap: var(--space-s);
+}
+
+/* Podcast block styling */
+.podcast-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+  gap: var(--space-s);
+}
+
+.podcast__heading {
+  margin-block-end: var(--space-s);
+  font-weight: 600;
 }
 
 /* Contact page styles */
