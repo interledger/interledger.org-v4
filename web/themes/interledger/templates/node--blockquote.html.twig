@@ -1,5 +1,8 @@
 <section class="blockquote node--{{ node.id }}">
   <div class="content-wrapper">
-    <blockquote>{{ node.field_blockquote.0.value|raw }}</blockquote>
+    <blockquote>
+      <p>{{ node.field_blockquote.0.value|raw }}</p>
+      <small>–{{ node.field_source.0.value|raw }}</small>
+    </blockquote>
   </div>
 </section>
