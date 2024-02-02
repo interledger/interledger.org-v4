@@ -6,10 +6,17 @@
 {% set duration = (difference / 60) %}
 {% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
 {% set talkDescription = content.field_talk_description.0 |render|striptags %}
-    
+
+{% if content.field_talk_video[0]['#media'] is defined %}
+  {% set videoIndicator = '<span class="talk__recording">(recording available)</span>' %}
+{% endif %}
+  
 <img src="{{ imageUrl }}" alt="{{ imageAlt }}" height="200" width="200">
 <div class="talk__teaser">
   <h2><a href="{{ nodeLink }}">{{ node.title.0.value|raw }}</a></h2>
-  <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span></p>
-  <p>{{ talkDescription|length > 600 ? talkDescription|slice(0, 600)|raw ~ '…' : talkDescription|raw }}</p>
+  <p>
+    <time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span>
+    {{ videoIndicator|raw }}
+  </p>
+  <p>{{ talkDescription|length > 400 ? talkDescription|slice(0, 400)|raw ~ '…' : talkDescription|raw }}</p>
 </div>
