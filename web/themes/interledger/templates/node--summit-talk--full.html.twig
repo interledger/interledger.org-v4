@@ -4,6 +4,26 @@
 {% set duration = (difference / 60) %}
 
 <div class="talk node--{{ node.id }} content-wrapper">
+
+  {% if node.field_summit_year.0.value %}
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="talk__breadcrumbs">
+    <li itemprop="itemListElement" itemscope
+        itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="/summit/{{ node.field_summit_year.0.value|raw }}">
+        <span itemprop="name">2023 Summit</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope
+        itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="/summit/{{ node.field_summit_year.0.value|raw }}/talks">
+        <span itemprop="name">Talks</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+  </ol>
+  {% endif %}
+
   <header class="talk__header">
     <h1>{{ node.field_talk_title.0.value|raw }}</h1>
     <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span></p>

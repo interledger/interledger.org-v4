@@ -1669,8 +1669,29 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   padding-inline: 5%;
 }
 
+.talk__breadcrumbs {
+  list-style: none;
+  display: flex;
+  padding-inline-start: 0;
+  font-size: var(--step--1);
+  font-weight: 700;
+  padding-block-start: var(--space-l);
+}
+
+.talk__breadcrumbs li:not(:first-child)::before {
+  content: '>';
+  display: inline-flex;
+  margin-inline-start: var(--space-3xs);
+}
+
 .talk__header {
-  padding-block: var(--space-l);
+  padding-block-start: var(--space-s);
+  padding-block-end: var(--space-l);
+}
+
+.talk__header h1 {
+  line-height: 1.19;
+  margin-block-end: var(--space-2xs);
 }
 
 .talk__header p {
