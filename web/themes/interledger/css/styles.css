@@ -950,7 +950,7 @@ section {
 }
 
 .news-article header {
-  margin-bottom: var(--space-m);
+  margin-block-end: var(--space-m);
 }
 
 .news-article h1 {
@@ -1032,7 +1032,7 @@ section {
 
 /* Blockquote content type styles */
 .blockquote blockquote {
-  padding-left: var(--space-s);
+  padding-inline-start: var(--space-s);
   border-inline-start: 4px solid var(--color-primary-fallback);
   border-inline-start: 4px solid var(--color-primary);
   font-size: var(--step-1);
@@ -1426,7 +1426,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   font-size: var(--step-1);
   font-style: italic;
   position: relative;
-  margin-bottom: var(--space-xs);
+  margin-block-end: var(--space-xs);
 }
 
 /* Text block content type styles */
@@ -1466,7 +1466,13 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .text__body h2,
 .text__body h3,
 .text__body p:not(:last-of-type) {
-  margin-bottom: var(--space-xs);
+  margin-block-end: var(--space-xs);
+}
+
+@media screen and (max-width: 799px) {
+  .text__img {
+    margin-block-end: var(--space-xs);
+  }
 }
 
 @media screen and (min-width: 800px) {
