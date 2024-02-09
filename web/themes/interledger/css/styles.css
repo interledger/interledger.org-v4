@@ -1529,6 +1529,10 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   font-weight: 600;
 }
 
+.podcast__footer {
+  margin-block-start: var(--space-xs);
+}
+
 /* Contact page styles */
 .contact-wrapper {
   --max-content-width: 1440px;
