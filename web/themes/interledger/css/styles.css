@@ -1533,6 +1533,11 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   margin-block-start: var(--space-xs);
 }
 
+/* Specific overrides/customisations (relatively fragile) */
+.node--537 .hero__img { /* WM hero image */
+  max-width: 26em;
+}
+
 /* Contact page styles */
 .contact-wrapper {
   --max-content-width: 1440px;
