@@ -1536,7 +1536,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 /* Specific overrides/customisations (relatively fragile) */
 @media screen and (min-width: 800px) {
   .node--537 .content-wrapper .hero__img { /* WM hero image */
-    max-width: 26em;
+    max-width: 26rem;
   }
 }
 
