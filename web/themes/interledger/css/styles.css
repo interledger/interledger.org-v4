@@ -1215,6 +1215,12 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   font-weight: 200;
 }
 
+.hero h2 small {
+  font-size: var(--step-2);
+  display: block;
+  margin-block-start: var(--space-3xs);
+}
+
 .hero--photography {
   justify-content: start;
   background-repeat: no-repeat;
