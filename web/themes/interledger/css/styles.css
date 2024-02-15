@@ -773,12 +773,13 @@ section {
 }
 
 /* Ambassador content type styles */
-@media screen and (min-width:840px) {
-  .ambassador {
-    display: flex;
-    align-items: center;
-    gap: var(--space-s);
-  }
+.ambassadors__heading {
+  margin-block-end: var(--space-s);
+}
+
+.ambassador h3 {
+  font-weight: 600;
+  font-size: var(--step-0);
 }
 
 .ambassador:not(:last-of-type) {
@@ -789,17 +790,23 @@ section {
   .ambassador__img {
     display: block;
     margin-inline: auto;
+    margin-block-end: var(--space-xs);
   }
 }
 
-.ambassador h2 {
-  font-weight: 600;
-  font-size: var(--step-2);
+@media screen and (min-width:600px) {
+  .ambassador {
+    display: flex;
+    align-items: start;
+    gap: var(--space-s);
+  }
 }
 
-@media screen and (max-width:839px) {
-  .ambassador__img {
-    margin-block-end: var(--space-s);
+@media screen and (min-width:1140px) {
+  .ambassadors-wrapper {
+    display: flex;
+    align-items: start;
+    gap: var(--space-s);
   }
 }
 
@@ -1540,6 +1547,14 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 }
 
 /* Specific overrides/customisations (relatively fragile) */
+.node--537 { /* WM hero image */
+  background-color: white;
+  background-image: url(../img/lines.svg), url(../img/wm-bg-tile.svg);
+  background-repeat: repeat-x, repeat;
+  background-size: 20em, 40%;
+  background-position: bottom, center;
+}
+
 @media screen and (min-width: 800px) {
   .node--537 .content-wrapper .hero__img { /* WM hero image */
     max-width: 26rem;

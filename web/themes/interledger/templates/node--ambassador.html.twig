@@ -1,12 +1,12 @@
 {% if content.field_ambassador_photo[0]['#media'].field_media_image.entity.uri.value %}
-  {% set imageUrl = file_url(content.field_ambassador_photo[0]['#media'].field_media_image.entity.uri.value | image_style('profile_thumbnail')) %}
+  {% set imageUrl = file_url(content.field_ambassador_photo[0]['#media'].field_media_image.entity.uri.value | image_style('thumbnail')) %}
 {% endif %}
 {% set imageAlt = content.field_ambassador_photo[0]['#media'].field_media_image.alt %}
 
 <div class="ambassador node--{{ node.id }} content-wrapper">
   <img class="ambassador__img" src="{{ imageUrl }}" alt="{{ imageAlt }}">
   <div class="ambassador__txt">
-    <h2>{{ node.field_ambassador_name.0.value|raw }}</h2>
+    <h3>{{ node.field_ambassador_name.0.value|raw }}</h3>
     {{ node.field_ambassador_description.0.value|raw }}
   </div>
 </div>
