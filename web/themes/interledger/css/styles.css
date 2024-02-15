@@ -782,10 +782,6 @@ section {
   font-size: var(--step-0);
 }
 
-.ambassador:not(:last-of-type) {
-  margin-block-end: var(--space-m);
-}
-
 @media screen and (max-width:599px) {
   .ambassador__img {
     display: block;
@@ -802,9 +798,16 @@ section {
   }
 }
 
+@media screen and (max-width:1139px) {
+  .ambassador:not(:last-of-type) {
+    margin-block-end: var(--space-s);
+  }
+}
+
 @media screen and (min-width:1140px) {
   .ambassadors-wrapper {
-    display: flex;
+    display: grid;
+    grid-template-columns: calc(50% - (var(--space-s) / 2)) calc(50% - (var(--space-s) / 2));
     align-items: start;
     gap: var(--space-s);
   }
