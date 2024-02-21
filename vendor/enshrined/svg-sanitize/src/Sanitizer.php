@@ -7,8 +7,6 @@ use enshrined\svgSanitize\data\AttributeInterface;
 use enshrined\svgSanitize\data\TagInterface;
 use enshrined\svgSanitize\data\XPath;
 use enshrined\svgSanitize\ElementReference\Resolver;
-use HTMLPurifier;
-use HTMLPurifier_Config;
 
 /**
  * Class Sanitizer
@@ -37,6 +35,11 @@ class Sanitizer
      * @var
      */
     protected $xmlLoaderValue;
+
+    /**
+     * @var bool
+     */
+    protected $xmlErrorHandlerPreviousValue;
 
     /**
      * @var bool
@@ -247,8 +250,9 @@ class Sanitizer
             $this->xmlLoaderValue = libxml_disable_entity_loader(true);
         }
 
-        // Suppress the errors because we don't really have to worry about formation before cleansing
-        libxml_use_internal_errors(true);
+        // Suppress the errors because we don't really have to worry about formation before cleansing.
+        // See reset in resetAfter().
+        $this->xmlErrorHandlerPreviousValue = libxml_use_internal_errors(true);
 
         // Reset array of altered XML
         $this->xmlIssues = array();
@@ -265,6 +269,9 @@ class Sanitizer
             // Reset the entity loader
             libxml_disable_entity_loader($this->xmlLoaderValue);
         }
+
+        libxml_clear_errors();
+        libxml_use_internal_errors($this->xmlErrorHandlerPreviousValue);
     }
 
     /**
@@ -648,9 +655,7 @@ class Sanitizer
     protected function cleanUnsafeNodes(\DOMNode $currentElement) {
         // Replace CDATA node with encoded text node
         if ($currentElement instanceof \DOMCdataSection) {
-            $purifier = new HTMLPurifier(HTMLPurifier_Config::createDefault());
-            $clean_html = $purifier->purify($currentElement->nodeValue);
-            $textNode = $currentElement->ownerDocument->createTextNode($clean_html);
+            $textNode = $currentElement->ownerDocument->createTextNode($currentElement->nodeValue);
             $currentElement->parentNode->replaceChild($textNode, $currentElement);
         // If the element doesn't have a tagname, remove it and continue with next iteration
         } elseif (!$currentElement instanceof \DOMElement && !$currentElement instanceof \DOMText) {
