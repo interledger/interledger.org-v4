@@ -1713,7 +1713,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   margin-block-start: var(--space-m);
 }
 
-.speaker__talk h3 {
+.speaker__talk h2 {
   margin-block-end: var(--space-2xs);
 }
 
