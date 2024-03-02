@@ -1352,7 +1352,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   transform: translateX(0);
   transition: opacity 450ms ease-in, transform 450ms ease-out;
   line-height: 1.1;
-  margin-block-end: var(--space-2xs);
+  margin-block-end: var(--space-xs);
   hyphens: auto;
 }
 
