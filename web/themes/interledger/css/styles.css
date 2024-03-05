@@ -171,6 +171,7 @@ select {
 /* Base element styles */
 html {
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -1224,6 +1225,12 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   line-height: 1.2;
   color: var(--color-hero-txt);
   font-weight: 200;
+}
+
+@media screen and (max-width: 529px) {
+  .hero h2 {
+    hyphens: auto;
+  }
 }
 
 .hero h2 small {
