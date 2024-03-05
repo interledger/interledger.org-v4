@@ -4,11 +4,11 @@
       {{ content.field_feature_image }}
       <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
       <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
+      {% if node.field_byline.0.value %}
+      <address>Written by  {{ node.field_byline.0.value|raw }}</address>
+      {% endif %}
     </header>
   
-    {% if node.field_byline.0.value %}
-    <address>Written by  {{ node.field_byline.0.value|raw }}</address>
-    {% endif %}
     {{ content.body }}
     {{ content.field_article_profile }}
     <footer>

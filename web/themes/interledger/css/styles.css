@@ -975,12 +975,27 @@ section {
 
 .news-article time {
   font-size: var(--step--1);
+  display: block;
+  margin-block-end: var(--space-3xs);
 }
 
 .news-article address {
-  font-style: normal;
-  font-weight: bold;
   margin-block-end: var(--space-xs);
+}
+
+.news-article blockquote {
+  padding-inline-start: var(--space-s);
+  padding-block: var(--space-2xs);
+  border-inline-start: 4px solid var(--color-primary-fallback);
+  border-inline-start: 4px solid var(--color-primary);
+  font-size: var(--step-2);
+  position: relative;
+  font-weight: 200;
+  margin-block-end: var(--space-s);
+}
+
+.news-article blockquote p {
+  margin: 0;
 }
 
 .news-article p,
