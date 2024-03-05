@@ -988,7 +988,7 @@ section {
   padding-block: var(--space-2xs);
   border-inline-start: 4px solid var(--color-primary-fallback);
   border-inline-start: 4px solid var(--color-primary);
-  font-size: var(--step-2);
+  font-size: var(--step-1);
   position: relative;
   font-weight: 200;
   margin-block-end: var(--space-s);
