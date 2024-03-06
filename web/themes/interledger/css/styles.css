@@ -171,13 +171,13 @@ select {
 /* Base element styles */
 html {
   min-height: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   font-family: "Titillium Web", var(--system-ui);
   min-width: 360px;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 main {
