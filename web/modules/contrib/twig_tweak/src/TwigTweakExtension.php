@@ -4,6 +4,7 @@ namespace Drupal\twig_tweak;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Uuid\Uuid;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
@@ -109,6 +110,7 @@ class TwigTweakExtension extends AbstractExtension {
       new TwigFilter('truncate', [Unicode::class, 'truncate']),
       new TwigFilter('view', [self::class, 'viewFilter']),
       new TwigFilter('with', [self::class, 'withFilter']),
+      new TwigFilter('data_uri', [self::class, 'dataUriFilter']),
       new TwigFilter('children', [self::class, 'childrenFilter']),
       new TwigFilter('file_uri', [self::class, 'fileUriFilter']),
       new TwigFilter('file_url', [self::class, 'fileUrlFilter']),
@@ -332,7 +334,7 @@ class TwigTweakExtension extends AbstractExtension {
   }
 
   /**
-   * Generates a URL from an internal path.
+   * Generates a URL from an internal or external path.
    *
    * @param string $user_input
    *   User input for a link or path.
@@ -352,6 +354,9 @@ class TwigTweakExtension extends AbstractExtension {
       if ($language = $language_manager->getLanguage($options['langcode'])) {
         $options['language'] = $language;
       }
+    }
+    if (UrlHelper::isExternal($user_input)) {
+      return Url::fromUri($user_input, $options);
     }
     if (!in_array($user_input[0], ['/', '#', '?'])) {
       $user_input = '/' . $user_input;
@@ -564,6 +569,19 @@ class TwigTweakExtension extends AbstractExtension {
       $build = \Drupal::service('twig_tweak.entity_view_builder')->build($object, $view_mode, $langcode, $check_access);
     }
     return $build;
+  }
+
+  /**
+   * Creates a data URI (RFC 2397).
+   */
+  public static function dataUriFilter(string $data, string $mime, array $parameters = []): string {
+    $uri = 'data:' . $mime;
+    foreach ($parameters as $key => $value) {
+      $uri .= ';' . $key . '=' . rawurlencode($value);
+    }
+    $uri .= \str_starts_with($data, 'text/') ?
+       ',' . rawurlencode($data) : ';base64,' . base64_encode($data);
+    return $uri;
   }
 
   /**

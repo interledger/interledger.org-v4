@@ -13,7 +13,7 @@
         "php": ">=7.3",
         "ext-json": "*",
         "drupal/core": "^9.3 || ^10.0",
-        "twig/twig": "^2.12 || ^3.3.8",
+        "twig/twig": "^2.15.3 || ^3.4.3",
         "symfony/polyfill-php80": "^1.17"
     },
     "suggest": {

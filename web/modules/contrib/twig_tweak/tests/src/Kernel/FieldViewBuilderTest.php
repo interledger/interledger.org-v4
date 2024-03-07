@@ -3,9 +3,9 @@
 namespace Drupal\Tests\twig_tweak\Kernel;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * A test for FieldViewBuilder.
