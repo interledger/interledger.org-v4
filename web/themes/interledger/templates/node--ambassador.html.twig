@@ -4,7 +4,21 @@
 {% set imageAlt = content.field_ambassador_photo[0]['#media'].field_media_image.alt %}
 
 <div class="ambassador node--{{ node.id }} content-wrapper">
-  <img class="ambassador__img" src="{{ imageUrl }}" alt="{{ imageAlt }}">
+  <div class="ambassador__info">
+    <img class="ambassador__img" src="{{ imageUrl }}" alt="{{ imageAlt }}">
+    {% if (node.field_ambassador_grant_report.0.value) or (node.field_ambassador_linkedin.0.value) %}
+    <div class="ambassador__links">
+      {% if node.field_ambassador_grant_report.0.value %}
+      <a href="{{ node.field_ambassador_grant_report.0.value|raw }}">
+        <svg role="img" viewBox="0 0 80 100"><title>ILF Final Grant Report</title><path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10v80c0 5.523 4.477 10 10 10h60c5.523 0 10-4.477 10-10V25H60a5 5 0 0 1-5-5V0H10Zm6 49a3 3 0 0 1 3-3h41a3 3 0 1 1 0 6H19a3 3 0 0 1-3-3Zm3 25a3 3 0 1 0 0 6h41a3 3 0 1 0 0-6H19Zm-3-11a3 3 0 0 1 3-3h41a3 3 0 1 1 0 6H19a3 3 0 0 1-3-3Zm64-42L59 0v21h21Z" clip-rule="evenodd"/></svg>
+      </a>
+      {% endif %}
+      <a href="{{ node.field_ambassador_linkedin.0.value|raw }}">
+        <svg role="img" viewBox="0 0 35.378 35.377"><title>Linkedin</title><path d="M7.919 35.377H.584v-23.62h7.335ZM4.248 8.535A4.268 4.268 0 1 1 8.5 4.247a4.284 4.284 0 0 1-4.252 4.288ZM35.37 35.377h-7.319V23.879c0-2.74-.055-6.254-3.813-6.254-3.813 0-4.4 2.977-4.4 6.057v11.7h-7.325V11.757h7.034v3.222h.1a7.707 7.707 0 0 1 6.94-3.814c7.423 0 8.788 4.888 8.788 11.237v12.975Z"></path></svg>
+      </a>
+    </div>
+    {% endif %}
+  </div>
   <div class="ambassador__txt">
     {{ node.field_ambassador_description.0.value|raw }}
   </div>
