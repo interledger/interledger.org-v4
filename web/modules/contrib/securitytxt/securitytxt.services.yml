@@ -1,0 +1,4 @@
+services:
+  securitytxt.serializer:
+    class: Drupal\securitytxt\SecuritytxtSerializer
+    arguments: ['@date.formatter']

@@ -33,6 +33,7 @@
         "drupal/paragraphs": "^1.16",
         "drupal/pathauto": "^1.12",
         "drupal/redirect": "^1.9",
+        "drupal/securitytxt": "^1.4",
         "drupal/svg_image_field": "^2.3",
         "drupal/tamper": "^1.0@alpha",
         "drupal/token": "^1.13",
