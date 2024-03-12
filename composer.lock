@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "469fc4892c43e0a8977d5af83c7fc109",
+    "content-hash": "941b1d85444ba42e4fbf11d88ddab6c5",
     "packages": [
         {
             "name": "arthurkushman/query-path",
@@ -2675,6 +2675,63 @@
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
                 "source": "https://git.drupalcode.org/project/redirect"
+            }
+        },
+        {
+            "name": "drupal/securitytxt",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/securitytxt.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/securitytxt-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "766209a8c517d63a1e65ba28efa235b41904a3d9"
+            },
+            "require": {
+                "drupal/core": "^9.4 || ^10.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1691591014",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "danieljrmay",
+                    "homepage": "https://www.drupal.org/user/83076"
+                },
+                {
+                    "name": "Kristen Pol",
+                    "homepage": "https://www.drupal.org/user/8389"
+                },
+                {
+                    "name": "leymannx",
+                    "homepage": "https://www.drupal.org/user/2482808"
+                },
+                {
+                    "name": "VladimirAus",
+                    "homepage": "https://www.drupal.org/user/673120"
+                }
+            ],
+            "description": "Provides a security.txt file for your site.",
+            "homepage": "https://www.drupal.org/project/securitytxt",
+            "support": {
+                "source": "http://cgit.drupalcode.org/securitytxt",
+                "issues": "https://www.drupal.org/project/issues/securitytxt?categories=All"
             }
         },
         {
