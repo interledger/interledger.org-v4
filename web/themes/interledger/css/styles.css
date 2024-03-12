@@ -784,12 +784,20 @@ section {
   font-size: var(--step-0);
 }
 
-@media screen and (max-width:599px) {
-  .ambassador__img {
-    display: block;
-    margin-inline: auto;
-    margin-block-end: var(--space-xs);
-  }
+.ambassador__links {
+  display: flex;
+  gap: var(--space-s);
+}
+
+.ambassador__links a:hover svg {
+  fill: var(--color-primary);
+  transform: scale(1.15);
+}
+
+.ambassador__links svg {
+  transition: fill 200ms ease-in-out, transform 200ms ease-in-out;
+  height: 3rem;
+  padding: var(--space-2xs);
 }
 
 @media screen and (min-width:600px) {
@@ -797,6 +805,14 @@ section {
     display: flex;
     align-items: start;
     gap: var(--space-s);
+  }
+
+  .ambassador__info {
+    flex: none;
+  }
+
+  .ambassador__links {
+    justify-content: center;
   }
 }
 
