@@ -1,0 +1,4 @@
+administer path admin:
+  description: 'Rename admin paths module allows users to rename admin paths (/admin/..) to /something/... and (/user/..) to /something_else/...'
+  title: 'Administer admin paths'
+  restrict access: TRUE

@@ -1,0 +1,7 @@
+rename_admin_paths.admin:
+  path: '/admin/config/system/rename-admin-paths'
+  defaults:
+    _form: '\Drupal\rename_admin_paths\Form\RenameAdminPathsSettingsForm'
+    _title: 'Rename Admin Paths'
+  requirements:
+    _permission: 'administer path admin'

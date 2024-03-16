@@ -1,0 +1,12 @@
+{
+  "name": "drupal/rename_admin_paths",
+  "type": "drupal-module",
+  "description": "The purpose of this module is to secure drupal backend by renaming the admin paths.",
+  "keywords": ["protect", "security", "admin", "guess", "override"],
+  "license": "GPL-2.0",
+  "homepage": "https://www.drupal.org/project/rename_admin_paths",
+  "require": {
+    "php": ">=7.1",
+    "drupal/core": ">=8.9"
+  }
+}
