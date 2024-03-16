@@ -2780,6 +2780,69 @@
             "install-path": "../../web/modules/contrib/redirect"
         },
         {
+            "name": "drupal/rename_admin_paths",
+            "version": "2.2.0-beta1",
+            "version_normalized": "2.2.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/rename_admin_paths.git",
+                "reference": "8.x-2.2-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rename_admin_paths-8.x-2.2-beta1.zip",
+                "reference": "8.x-2.2-beta1",
+                "shasum": "6539896f3699d1a1ea05e181c657fefbd379ebe8"
+            },
+            "require": {
+                "drupal/core": ">=8.9",
+                "php": ">=7.1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.2-beta1",
+                    "datestamp": "1686662937",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Raphael Apard",
+                    "homepage": "https://www.drupal.org/user/410831"
+                },
+                {
+                    "name": "rjjakes",
+                    "homepage": "https://www.drupal.org/user/3457245"
+                },
+                {
+                    "name": "slootjes",
+                    "homepage": "https://www.drupal.org/user/3516667"
+                }
+            ],
+            "description": "The purpose of this module is to secure drupal backend by renaming the admin paths.",
+            "homepage": "https://www.drupal.org/project/rename_admin_paths",
+            "keywords": [
+                "admin",
+                "guess",
+                "override",
+                "protect",
+                "security"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/rename_admin_paths"
+            },
+            "install-path": "../../web/modules/contrib/rename_admin_paths"
+        },
+        {
             "name": "drupal/securitytxt",
             "version": "1.4.0",
             "version_normalized": "1.4.0.0",

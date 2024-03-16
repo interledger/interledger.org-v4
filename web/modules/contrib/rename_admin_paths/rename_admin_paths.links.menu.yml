@@ -1,0 +1,5 @@
+raname_admin_paths.admin:
+  title: 'Rename Admin Paths'
+  description: 'Configure Rename Admin Paths module'
+  parent: system.admin_config_system
+  route_name: rename_admin_paths.admin

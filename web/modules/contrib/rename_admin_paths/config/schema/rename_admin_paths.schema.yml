@@ -1,0 +1,16 @@
+rename_admin_paths.settings:
+  type: config_object
+  label: 'Module Settings'
+  mapping:
+    admin_path:
+      type: integer
+      label: 'Admin Path Enabled'
+    admin_path_value:
+      type: string
+      label: 'Admin Path Value'
+    user_path:
+      type: integer
+      label: 'User Path Enabled'
+    user_path_value:
+      type: string
+      label: 'User Path Value'

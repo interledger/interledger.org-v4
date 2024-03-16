@@ -1,0 +1,10 @@
+services:
+  Drupal\rename_admin_paths\Config:
+    public: true
+    arguments:
+      - '@config.factory'
+
+  Drupal\rename_admin_paths\EventSubscriber\RenameAdminPathsEventSubscriber:
+    autowire: true
+    tags:
+      - { name: event_subscriber }
