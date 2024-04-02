@@ -1019,13 +1019,15 @@ section {
 .news-article ul,
 .news-article h2,
 .news-article h3,
-.news-article figure {
+.news-article figure,
+.news-article img {
   margin-block-end: var(--space-s);
 }
 
 .news-article li {
   margin-block-end: var(--space-xs);
 }
+
 .news-article a {
   color: var(--accent-color);
 }
