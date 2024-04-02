@@ -1070,7 +1070,7 @@ function ds_field_formatter_third_party_settings_form(FormatterInterface $plugin
   }
 
   $field_info = $field_definition->getFieldStorageDefinition();
-  if ($field_info->getCardinality() != FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) {
+  if ($field_info->getCardinality() != 1) {
     $name = $field_info->getName();
     $settings = $form_state->get('plugin_settings');
 
@@ -1199,7 +1199,7 @@ function template_preprocess_field__ds_field_expert(&$variables) {
       $attributes = explode(' ', $variables['settings'][$key . '-at']);
       foreach ($attributes as $key => $attribute) {
         if (strpos($attribute, '=') !== FALSE) {
-          $attribute_parts = explode('=', $attribute);
+          $attribute_parts = explode('=', $attribute, 2);
           $var_attributes[$attribute_parts[0]] = trim($attribute_parts[1], '\"');
         }
       }
