@@ -1704,6 +1704,19 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   fill: var(--color-white);
 }
 
+/* Summit hero styling */
+.node--589 h2 span:nth-of-type(2) {
+  font-weight: 600;
+  font-size: var(--step-3);
+  display: block;
+  margin-block-end: var(--space-xs);
+}
+
+.node--589 h2 span:nth-of-type(3) {
+  font-size: var(--step-3);
+  display: block;
+}
+
 /* Summit speaker styling */
 .speakers-wrapper h1 {
   padding-block-start: var(--space-l);
