@@ -1269,7 +1269,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .hero h2 small {
   font-size: var(--step-2);
   display: block;
-  margin-block-start: var(--space-3xs);
+  margin-block-start: var(--space-2xs);
 }
 
 .hero--photography {
@@ -1702,19 +1702,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 [class*="page-node-type-summit"] .site-footer svg path,
 .path-summit .site-footer svg path {
   fill: var(--color-white);
-}
-
-/* Summit hero styling */
-.node--589 h2 span:nth-of-type(2) {
-  font-weight: 600;
-  font-size: var(--step-3);
-  display: block;
-  margin-block-end: var(--space-xs);
-}
-
-.node--589 h2 span:nth-of-type(3) {
-  font-size: var(--step-3);
-  display: block;
 }
 
 /* Summit speaker styling */
