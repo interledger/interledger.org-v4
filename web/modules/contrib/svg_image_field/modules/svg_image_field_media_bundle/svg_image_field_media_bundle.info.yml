@@ -1,13 +1,13 @@
 name: 'SVG Image Field - Media Bundle'
 type: module
 description: 'Creates a media bundle to use SVG Image Field with the Media capabilities in core. NOTE: if you are planning to use this with the Media Library in core, it is recommended to install that module before this one. Will also install Acquia Site Studio Components if that is installed.'
-core_version_requirement: ^9.3 || ^10
+core_version_requirement: ^9.3 || ^10 || ^11
 package: 'Field types'
 dependencies:
   - drupal:media
   - svg_image_field:svg_image_field
 
-# Information added by Drupal.org packaging script on 2023-10-13
-version: '2.3.1'
+# Information added by Drupal.org packaging script on 2024-04-14
+version: '2.3.2'
 project: 'svg_image_field'
-datestamp: 1697168282
+datestamp: 1713092892
