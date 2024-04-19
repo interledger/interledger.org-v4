@@ -1706,7 +1706,8 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 /* Summit hero banner styling */
 .node--578 .highlight {
-  font-size: var(--step-4);
+  font-size: var(--step-3);
+  font-weight: 400;
 }
 
 /* Summit speaker styling */
