@@ -1380,8 +1380,8 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 /* Highlight text content type styles */
 .highlight {
-  font-size: var(--step-6);
-  font-weight: 600;
+  font-size: var(--step-3);
+  font-weight: 400;
   color: var(--color-primary-fallback);
   color: var(--color-primary);
   line-height: 1.15;
@@ -1702,12 +1702,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 [class*="page-node-type-summit"] .site-footer svg path,
 .path-summit .site-footer svg path {
   fill: var(--color-white);
-}
-
-/* Summit hero banner styling */
-.node--578 .highlight {
-  font-size: var(--step-3);
-  font-weight: 400;
 }
 
 /* Summit speaker styling */
