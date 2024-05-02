@@ -1,4 +1,11 @@
-<div class="content-wrapper">
+{%
+  set classes = [
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+    'content-wrapper',
+  ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
   <h2 class="podcasts__heading">{{ view.getTitle() }}</h2>
   {{ rows }}
   {{ pager }}

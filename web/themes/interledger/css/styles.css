@@ -1417,6 +1417,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .podcasts__heading {
   margin-block-end: var(--space-xs);
   font-weight: 600;
+  font-size: var(--step-2);
 }
 
 .podcast {
