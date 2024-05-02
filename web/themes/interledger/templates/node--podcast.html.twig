@@ -1,0 +1,6 @@
+<div class="podcast node--{{ node.id }} content-wrapper">
+  <p>{{ node.field_podcast_description.0.value|raw }}</p>
+  <div class="podcast-iframe">
+    {{ node.field_podcast_embed.0.value|raw }}
+  </div>
+</div>

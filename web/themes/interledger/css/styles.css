@@ -387,6 +387,18 @@ section {
   align-items: center;
 }
 
+.js-pager__items {
+  display: flex;
+  list-style: none;
+  gap: var(--space-xs);
+  justify-content: center;
+  align-items: center;
+}
+
+.pager-stepper {
+  font-size: var(--step--1);
+}
+
 .people-grid {
   list-style: none;
   padding-inline-start: 0;
@@ -1399,6 +1411,32 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .highlight p.invisible {
   opacity: 0;
   transform: translateX(150px);
+}
+
+/* Podcast content type styles */
+.podcasts__heading {
+  margin-block-end: var(--space-xs);
+  font-weight: 600;
+}
+
+.podcast {
+  margin-block-end: var(--space-s);
+}
+
+.podcast:not(:last-of-type) {
+  padding-block-end: var(--space-3xs);
+  border-block-end: 2px solid var(--color-gray);
+}
+
+.podcast p {
+  margin-block-end: var(--space-s);
+}
+
+.podcast-iframe {
+  background-image: url(../img/loader.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100px;
 }
 
 /* Team member content type styles */
