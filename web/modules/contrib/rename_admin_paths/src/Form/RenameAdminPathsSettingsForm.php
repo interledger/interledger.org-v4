@@ -11,22 +11,29 @@ use Drupal\rename_admin_paths\Config;
 use Drupal\rename_admin_paths\EventSubscriber\RenameAdminPathsEventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Settings form for the Rename Admin Paths module.
+ */
 class RenameAdminPathsSettingsForm extends ConfigFormBase {
 
   use StringTranslationTrait;
 
   /**
-   * @var Config
+   * The config service.
+   *
+   * @var \Drupal\rename_admin_paths\Config
    */
   private $config;
 
   /**
-   * @var RouteBuilderInterface
+   * The route builder service.
+   *
+   * @var \Drupal\Core\Routing\RouteBuilderInterface
    */
   private $routeBuilder;
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function getFormId(): string {
     return 'rename_admin_paths_settings_form';
@@ -42,14 +49,19 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
   }
 
   /**
-   * @param Config $config
-   * @param RouteBuilderInterface $routeBuilder
-   * @param TranslationInterface $stringTranslation
+   * Constructs the settings form for Rename Admin Paths.
+   *
+   * @param \Drupal\rename_admin_paths\Config $config
+   *   The config service.
+   * @param \Drupal\Core\Routing\RouteBuilderInterface $routeBuilder
+   *   The route builder service.
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
+   *   The string translation service.
    */
   public function __construct(
     Config $config,
     RouteBuilderInterface $routeBuilder,
-    TranslationInterface $stringTranslation
+    TranslationInterface $stringTranslation,
   ) {
     $this->config = $config;
     $this->routeBuilder = $routeBuilder;
@@ -57,9 +69,7 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
   }
 
   /**
-   * @param ContainerInterface $container
-   *
-   * @return static
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): self {
     return new static(
@@ -70,7 +80,7 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['admin_path'] = [
@@ -125,10 +135,12 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
   }
 
   /**
-   * Form element validation handler.
+   * Validates a form element.
    *
    * @param array $element
-   * @param FormStateInterface $formState
+   *   The form element to validate.
+   * @param \Drupal\Core\Form\FormStateInterface $formState
+   *   The form state.
    */
   public function validate(&$element, FormStateInterface $formState) {
     if (empty($element['#value'])) {
@@ -162,18 +174,21 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $formState) {
     $this->saveConfiguration($formState);
 
-    // at this stage we rebuild all routes to use the new renamed paths
+    // At this stage we rebuild all routes to use the new renamed paths.
     $this->routeBuilder->rebuild();
 
-    // add confirmation message
+    // Add confirmation message.
     parent::submitForm($form, $formState);
 
-    // make sure we end up at the same form again using the new path
+    // Make sure we end up at the same form again using the new path.
     $formState->setRedirect('rename_admin_paths.admin');
   }
 
   /**
-   * @param FormStateInterface $formState
+   * Saves the module configuration.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $formState
+   *   The form state interface.
    */
   private function saveConfiguration(FormStateInterface $formState) {
     $this->config->setPathEnabled('admin', $formState->getValue('admin_path'));
@@ -188,4 +203,5 @@ class RenameAdminPathsSettingsForm extends ConfigFormBase {
     );
     $this->config->save();
   }
+
 }

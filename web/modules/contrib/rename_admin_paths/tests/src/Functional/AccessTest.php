@@ -5,6 +5,8 @@ namespace Drupal\Tests\rename_admin_paths\Functional;
 use Drupal\Tests\BrowserTestBase;
 
 /**
+ * Test to confirm access permissions.
+ *
  * @group tests
  */
 class AccessTest extends BrowserTestBase {
@@ -14,10 +16,13 @@ class AccessTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = ['rename_admin_paths'];
 
   /**
-   * Test that the admin is still protected after renaming it
+   * Test that the admin is still protected after renaming it.
    */
   public function testAdminNotAccessibleAfterRenaming() {
     $output = $this->drupalGet('admin');

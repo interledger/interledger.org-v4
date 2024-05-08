@@ -10,10 +10,15 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
+ * Tests to confirm the event subscriber renames paths properly.
+ *
  * @group tests
  */
 class RenameAdminPathEventSubscriberTest extends UnitTestCase {
 
+  /**
+   * Test that the event subscriber gets the correct events.
+   */
   public function testGetSubscribedEvents() {
     $events = RenameAdminPathsEventSubscriber::getSubscribedEvents();
 
@@ -21,6 +26,9 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
     $this->assertCount(1, $events);
   }
 
+  /**
+   * Test that paths are not renamed just by enabling the module.
+   */
   public function testDoNotRenamePaths() {
     $this->assertRoutePaths(
       [],
@@ -42,11 +50,14 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
         'user_admin' => '/user/user',
         'user_sub_admin' => '/user/sub/user',
         'users' => '/users',
-        'users_sub' => '/users/sub'
+        'users_sub' => '/users/sub',
       ]
     );
   }
 
+  /**
+   * Test that admin paths can be renamed.
+   */
   public function testRenameAdminPath() {
     $this->assertRoutePaths(
       [
@@ -71,11 +82,14 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
         'user_admin' => '/user/user',
         'user_sub_admin' => '/user/sub/user',
         'users' => '/users',
-        'users_sub' => '/users/sub'
+        'users_sub' => '/users/sub',
       ]
     );
   }
 
+  /**
+   * Test that user paths can be renamed.
+   */
   public function testRenameUserPath() {
     $this->assertRoutePaths(
       [
@@ -99,11 +113,14 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
         'user_sub_sub' => '/member/sub/sub',
         'user_admin' => '/member/user',
         'user_sub_admin' => '/member/sub/user',
-        'users' => '/users'
+        'users' => '/users',
       ]
     );
   }
 
+  /**
+   * Test that admin and user paths can be renamed.
+   */
   public function testRenameAdminPaths() {
     $this->assertRoutePaths(
       [
@@ -130,14 +147,18 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
         'user_admin' => '/member/user',
         'user_sub_admin' => '/member/sub/user',
         'users' => '/users',
-        'users_sub' => '/users/sub'
+        'users_sub' => '/users/sub',
       ]
     );
   }
 
   /**
+   * Asserts routes according to the module config.
+   *
    * @param array $config
+   *   The Rename Admin Paths module config.
    * @param array $routes
+   *   The routes to assert.
    */
   private function assertRoutePaths(array $config, array $routes) {
     $routeCollection = $this->getRouteCollection();
@@ -157,33 +178,37 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
   }
 
   /**
+   * Returns a route collection.
+   *
    * @return \Symfony\Component\Routing\RouteCollection
+   *   The route collection.
    */
   private function getRouteCollection() {
     $routeCollection = new RouteCollection();
     foreach ([
-               'home' => '/',
-               'about' => '/about',
-               'admin' => '/admin',
-               'admin_slashed' => '/admin/',
-               'admin_sub' => '/admin/sub',
-               'admin_sub_sub' => '/admin/sub/sub',
-               'admin_admin' => '/admin/admin',
-               'admin_sub_admin' => '/admin/sub/admin',
-               'admins' => '/admins',
-               'admins_sub' => '/admins/sub',
-               'user' => '/user',
-               'user_slashed' => '/user/',
-               'user_sub' => '/user/sub',
-               'user_sub_sub' => '/user/sub/sub',
-               'user_admin' => '/user/user',
-               'user_sub_admin' => '/user/sub/user',
-               'users' => '/users',
-               'users_sub' => '/users/sub',
-             ] as $name => $path) {
+      'home' => '/',
+      'about' => '/about',
+      'admin' => '/admin',
+      'admin_slashed' => '/admin/',
+      'admin_sub' => '/admin/sub',
+      'admin_sub_sub' => '/admin/sub/sub',
+      'admin_admin' => '/admin/admin',
+      'admin_sub_admin' => '/admin/sub/admin',
+      'admins' => '/admins',
+      'admins_sub' => '/admins/sub',
+      'user' => '/user',
+      'user_slashed' => '/user/',
+      'user_sub' => '/user/sub',
+      'user_sub_sub' => '/user/sub/sub',
+      'user_admin' => '/user/user',
+      'user_sub_admin' => '/user/sub/user',
+      'users' => '/users',
+      'users_sub' => '/users/sub',
+    ] as $name => $path) {
       $routeCollection->add($name, new Route($path));
     }
 
     return $routeCollection;
   }
+
 }

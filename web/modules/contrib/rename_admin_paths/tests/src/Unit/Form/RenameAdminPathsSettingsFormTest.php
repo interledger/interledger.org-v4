@@ -12,21 +12,29 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
+ * Tests the behavior of the module settings form.
+ *
  * @group tests
  */
 class RenameAdminPathsSettingsFormTest extends UnitTestCase {
 
   use ProphecyTrait;
 
+  /**
+   * Test when an invalid value is provided.
+   */
   public function testValidatePathWithoutValue() {
     $element = [];
     $this->getForm()->validate($element, $this->getInvalidFormState());
   }
 
   /**
-   * @dataProvider validValues
+   * Checks if validation succeeds with a valid value.
    *
    * @param string $value
+   *   The form value.
+   *
+   * @dataProvider validValues
    */
   public function testWithValidValue(string $value) {
     $element = ['#value' => $value];
@@ -34,9 +42,12 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
-   * @dataProvider invalidValues
+   * Checks if validation succeeds with an invalid value.
    *
    * @param string $value
+   *   The form value.
+   *
+   * @dataProvider invalidValues
    */
   public function testWithInvalidValue(string $value) {
     $element = ['#value' => $value];
@@ -44,7 +55,10 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
+   * Returns a set of valid values.
+   *
    * @return \Generator
+   *   The set of valid values.
    */
   public function validValues() {
     yield ['backend'];
@@ -58,7 +72,10 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
+   * Returns a set of invalid values.
+   *
    * @return \Generator
+   *   The set of invalid values.
    */
   public function invalidValues() {
     yield ['backend!'];
@@ -73,7 +90,10 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
-   * @return RenameAdminPathsSettingsForm
+   * Returns the Rename Admin Paths admin settings form.
+   *
+   * @return \Drupal\rename_admin_paths\Form\RenameAdminPathsSettingsForm
+   *   The admin settings form.
    */
   private function getForm() {
     $config = $this->createMock(Config::class);
@@ -89,7 +109,10 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
-   * @return FormStateInterface
+   * Returns a valid form state.
+   *
+   * @return \Drupal\Core\Form\FormStateInterface
+   *   A valid form state.
    */
   private function getValidFormState() {
     $formState = $this->getProphet()->prophesize(FormStateInterface::class);
@@ -99,7 +122,10 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   }
 
   /**
-   * @return FormStateInterface
+   * Returns an invalid form state.
+   *
+   * @return \Drupal\Core\Form\FormStateInterface
+   *   An invalid form state.
    */
   private function getInvalidFormState() {
     $formState = $this->getProphet()->prophesize(FormStateInterface::class);
@@ -107,4 +133,5 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
 
     return $formState->reveal();
   }
+
 }

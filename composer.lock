@@ -2683,17 +2683,17 @@
         },
         {
             "name": "drupal/rename_admin_paths",
-            "version": "2.2.0-beta1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rename_admin_paths.git",
-                "reference": "8.x-2.2-beta1"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rename_admin_paths-8.x-2.2-beta1.zip",
-                "reference": "8.x-2.2-beta1",
-                "shasum": "6539896f3699d1a1ea05e181c657fefbd379ebe8"
+                "url": "https://ftp.drupal.org/files/projects/rename_admin_paths-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "5a3a5cc7ca8dc0293c357d03f53d0a0000fb022b"
             },
             "require": {
                 "drupal/core": ">=8.9",
@@ -2702,11 +2702,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.2-beta1",
-                    "datestamp": "1686662937",
+                    "version": "8.x-2.2",
+                    "datestamp": "1714654887",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -2715,6 +2715,10 @@
                 "GPL-2.0"
             ],
             "authors": [
+                {
+                    "name": "ptmkenny",
+                    "homepage": "https://www.drupal.org/user/97885"
+                },
                 {
                     "name": "Raphael Apard",
                     "homepage": "https://www.drupal.org/user/410831"

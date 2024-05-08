@@ -5,6 +5,8 @@ namespace Drupal\Tests\rename_admin_paths\Functional;
 use Drupal\Tests\BrowserTestBase;
 
 /**
+ * Tests to ensure that the admin form works correctly.
+ *
  * @group tests
  */
 class AdminFormTest extends BrowserTestBase {
@@ -14,6 +16,9 @@ class AdminFormTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = ['rename_admin_paths'];
 
   /**
@@ -39,7 +44,7 @@ class AdminFormTest extends BrowserTestBase {
   }
 
   /**
-   * Test /admin and /user paths no longer exist when they are changed to /backend and /member
+   * Test /admin + /user paths removed when changed to /backend + /member.
    */
   public function testEnablePathReplacements() {
     $output = $this->drupalGet('user/1');
@@ -66,6 +71,9 @@ class AdminFormTest extends BrowserTestBase {
     $this->assertStringContainsString('Member for', $output);
   }
 
+  /**
+   * Test to confirm that the module settings form appears properly.
+   */
   private function assertRenameAdminPathFormIsVisible() {
     $output = $this->getSession()->getPage()->getContent();
     $this->assertStringContainsString('Rename admin path', $output);

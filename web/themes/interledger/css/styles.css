@@ -1048,6 +1048,15 @@ section {
   box-shadow: var(--box-shadow);
 }
 
+.news-article iframe {
+  aspect-ratio: 16 / 9;
+  width: 600px;
+  height: auto;
+  margin-inline: auto;
+  display: block;
+  margin-block-end: var(--space-s);
+}
+
 @media screen and (min-width: 800px) {
   .news-article figure {
     max-width: 75%;
