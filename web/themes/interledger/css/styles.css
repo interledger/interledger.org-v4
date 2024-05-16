@@ -1040,10 +1040,6 @@ section {
   margin-block-end: var(--space-xs);
 }
 
-.news-article p + ul {
-  margin-block-start: var(--space-xs);
-}
-
 .news-article a {
   color: var(--accent-color);
 }
@@ -1581,6 +1577,10 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .text__body h3,
 .text__body p:not(:last-of-type) {
   margin-block-end: var(--space-xs);
+}
+
+.text__body p + ul {
+  margin-block-start: var(--space-xs);
 }
 
 .text__body label[for="mce-EMAIL"] {
