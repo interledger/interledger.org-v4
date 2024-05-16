@@ -1040,6 +1040,10 @@ section {
   margin-block-end: var(--space-xs);
 }
 
+.news-article p + ul {
+  margin-block-start: var(--space-xs);
+}
+
 .news-article a {
   color: var(--accent-color);
 }
