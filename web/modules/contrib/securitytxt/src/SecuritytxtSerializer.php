@@ -4,8 +4,6 @@ namespace Drupal\securitytxt;
 
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Url;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -53,8 +51,10 @@ class SecuritytxtSerializer {
     $encryption_key_url = $settings->get('encryption_key_url');
     $expiry_date = $settings->get('expiry_date');
     $policy_url = $settings->get('policy_url');
-    $acknowledgement_url = $settings->get('acknowledgement_url');
-    $signature_url = Url::fromRoute('securitytxt.securitytxt_signature')->setAbsolute()->toString();
+    $acknowledgments_url = $settings->get('acknowledgments_url');
+    $hiring_url = $settings->get('hiring_url');
+    $preferred_languages = $settings->get('preferred_languages');
+    $canonical_urls = $settings->get('canonical_urls');
 
     if ($enabled) {
       $content = '';
@@ -83,12 +83,26 @@ class SecuritytxtSerializer {
         $content .= 'Policy: ' . $policy_url . "\n";
       }
 
-      if ($acknowledgement_url != '') {
-        $content .= 'Acknowledgement: ' . $acknowledgement_url . "\n";
+      if ($acknowledgments_url != '') {
+        $content .= 'Acknowledgments: ' . $acknowledgments_url . "\n";
+      }
+
+      if ($hiring_url != '') {
+        $content .= 'Hiring: ' . $hiring_url . "\n";
       }
 
       if ($enabled_signature) {
-        $content .= 'Signature: ' . $signature_url . "\n";
+        $signature_text = $settings->get('signature_text');
+        $content = "-----BEGIN PGP SIGNED MESSAGE-----\n\n" . $content;
+        $content .= "\n-----BEGIN PGP SIGNATURE-----\n" . $signature_text . "\n-----END PGP SIGNATURE-----\n";
+      }
+
+      if ($preferred_languages != '') {
+        $content .= 'Preferred-Languages: ' . $preferred_languages . "\n";
+      }
+
+      if ($canonical_urls != '') {
+        $content .= $this->formatCanonical($canonical_urls);
       }
 
       return $content;
@@ -120,6 +134,36 @@ class SecuritytxtSerializer {
     else {
       throw new NotFoundHttpException();
     }
+  }
+
+  /**
+   * Formats the canonical urls for the security.txt.
+   *
+   * @param string $canonical
+   *   The canonical urls that need to be formatted.
+   *
+   * @return string
+   *   The canonical urls for the security.txt
+   */
+  protected function formatCanonical(string $canonical = ''): string {
+    if ($canonical === '') {
+      return '';
+    }
+
+    $formatted_canonical = '';
+    $canonical_urls = preg_split('/\r\n|\r|\n/', $canonical);
+
+    foreach ($canonical_urls as $canonical_url) {
+
+      // URL must start with https:// as per Section 2.7.2 of [RFC7230].
+      if (!str_starts_with($canonical_url, 'https://')) {
+        continue;
+      }
+
+      $formatted_canonical .= 'Canonical: ' . $canonical_url . "\n";
+    }
+
+    return $formatted_canonical;
   }
 
 }

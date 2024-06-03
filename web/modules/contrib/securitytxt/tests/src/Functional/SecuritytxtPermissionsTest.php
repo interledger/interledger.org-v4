@@ -10,7 +10,7 @@ namespace Drupal\Tests\securitytxt\Functional;
  *
  * @group securitytxt
  */
-class SecuritytxtPermissionsTest extends SecuritytxtBaseTest {
+class SecuritytxtPermissionsTest extends SecuritytxtTestBase {
 
   /**
    * Tests must specify which theme they are using.

@@ -2,7 +2,8 @@
   "name": "drupal/securitytxt",
   "description": "Provides a security.txt file for your site.",
   "type": "drupal-module",
-  "license": "GPL-2.0+",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "homepage": "https://www.drupal.org/project/securitytxt",
   "support": {

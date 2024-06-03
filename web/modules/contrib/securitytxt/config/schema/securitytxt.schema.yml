@@ -26,9 +26,15 @@ securitytxt.settings:
     policy_url:
       type: string
       label: 'Security policy URL'
-    acknowledgement_url:
+    acknowledgments_url:
       type: string
-      label: 'Acknowledgment page URL'
+      label: 'Acknowledgments page URL'
     signature_text:
       type: string
       label: 'Plain text PGP signature of security.txt'
+    preferred_languages:
+      type: string
+      label: 'Preferred languages'
+    canonical_urls:
+      type: string
+      label: 'Canonical URLs'

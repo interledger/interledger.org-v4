@@ -16,7 +16,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *   id = "svg_image_field",
  *   label = @Translation("Svg Image"),
  *   description = @Translation("This field stores the ID of an image file as an integer value."),
- *   category = @Translation("Reference"),
+ *   category = "file_upload",
  *   default_widget = "svg_image_field_widget",
  *   default_formatter = "svg_image_field_formatter",
  *   column_groups = {
