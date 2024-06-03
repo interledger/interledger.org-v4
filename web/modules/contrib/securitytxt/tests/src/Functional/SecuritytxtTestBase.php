@@ -9,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group securitytxt
  */
-abstract class SecuritytxtBaseTest extends BrowserTestBase {
+abstract class SecuritytxtTestBase extends BrowserTestBase {
 
   /**
    * Modules to enable.
@@ -76,8 +76,11 @@ abstract class SecuritytxtBaseTest extends BrowserTestBase {
     $valid_configuration['contact_page_url'] = 'https://example.com/contact/' . $this->randomMachineName(16);
     $valid_configuration['encryption_key_url'] = 'https://example.com/key/' . $this->randomMachineName(16);
     $valid_configuration['policy_url'] = 'https://example.com/policy/' . $this->randomMachineName(16);
-    $valid_configuration['acknowledgement_url'] = 'https://example.com/acknowledgement/' . $this->randomMachineName(16);
+    $valid_configuration['acknowledgments_url'] = 'https://example.com/acknowledgments/' . $this->randomMachineName(16);
+    $valid_configuration['hiring_url'] = 'https://example.com/hiring/' . $this->randomMachineName(16);
     $valid_configuration['signature_text'] = $this->randomMachineName(512);
+    $valid_configuration['preferred_languages'] = $this->randomMachineName(2) . ', ' . $this->randomMachineName(2);
+    $valid_configuration['canonical_urls'] = 'https://' . $this->randomMachineName(16) . '.example.com/.well-known/security.txt\r\nhttps://' . $this->randomMachineName(16) . '.example.com/.well-known/security.txt';
 
     return $valid_configuration;
   }
@@ -88,7 +91,7 @@ abstract class SecuritytxtBaseTest extends BrowserTestBase {
    * @param array $edit
    *   An associated array suitable for the drupalPostForm() method. It should
    *   have the following keys defined: enabled, contact_email, contact_phone,
-   *   contact_page_url, encryption_key_url, policy_url, acknowledgement_url.
+   *   contact_page_url, encryption_key_url, policy_url, acknowledgments_url.
    */
   protected function submitConfigureForm(array $edit) {
     $path = 'admin/config/system/securitytxt';

@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall hooks for the dvg_config_basic module.
+ */
+
+/**
+ * Migrate acknowledgement_url to acknowledgments_url.
+ */
+function securitytxt_update_8001() {
+  $config = \Drupal::configFactory()->getEditable('securitytxt.settings');
+  $current_acknowledgments_url = $config->get('acknowledgement_url');
+  $config->set('acknowledgments_url', $current_acknowledgments_url);
+  $config->clear('acknowledgement_url');
+  $config->save();
+}

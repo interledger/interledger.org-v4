@@ -10,7 +10,7 @@ namespace Drupal\Tests\securitytxt\Functional;
  *
  * @group securitytxt
  */
-class SecuritytxtFormTest extends SecuritytxtBaseTest {
+class SecuritytxtFormTest extends SecuritytxtTestBase {
 
   /**
    * Tests must specify which theme they are using.
@@ -39,7 +39,10 @@ class SecuritytxtFormTest extends SecuritytxtBaseTest {
     $this->assertSession()->fieldValueEquals('contact_page_url', $valid_configuration['contact_page_url']);
     $this->assertSession()->fieldValueEquals('encryption_key_url', $valid_configuration['encryption_key_url']);
     $this->assertSession()->fieldValueEquals('policy_url', $valid_configuration['policy_url']);
-    $this->assertSession()->fieldValueEquals('acknowledgement_url', $valid_configuration['acknowledgement_url']);
+    $this->assertSession()->fieldValueEquals('acknowledgments_url', $valid_configuration['acknowledgments_url']);
+    $this->assertSession()->fieldValueEquals('hiring_url', $valid_configuration['hiring_url']);
+    $this->assertSession()->fieldValueEquals('preferred_languages', $valid_configuration['preferred_languages']);
+    $this->assertSession()->fieldValueEquals('canonical_urls', $valid_configuration['canonical_urls']);
     $this->drupalGet('admin/config/system/securitytxt/sign');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->fieldValueEquals('signature_text', $valid_configuration['signature_text']);
@@ -50,12 +53,18 @@ class SecuritytxtFormTest extends SecuritytxtBaseTest {
     $this->drupalLogin($this->viewPermissionUser);
     $this->drupalGet('.well-known/security.txt');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('Contact: ' . $valid_configuration['contact_email']);
-    $this->assertSession()->responseContains('Contact: ' . $valid_configuration['contact_phone']);
+    $this->assertSession()->responseContains('Contact: mailto:' . $valid_configuration['contact_email']);
+    $this->assertSession()->responseContains('Contact: tel:' . $valid_configuration['contact_phone']);
     $this->assertSession()->responseContains('Contact: ' . $valid_configuration['contact_page_url']);
     $this->assertSession()->responseContains('Encryption: ' . $valid_configuration['encryption_key_url']);
     $this->assertSession()->responseContains('Policy: ' . $valid_configuration['policy_url']);
-    $this->assertSession()->responseContains('Acknowledgement: ' . $valid_configuration['acknowledgement_url']);
+    $this->assertSession()->responseContains('Acknowledgments: ' . $valid_configuration['acknowledgments_url']);
+    $this->assertSession()->responseContains('Hiring: ' . $valid_configuration['hiring_url']);
+    $this->assertSession()->responseContains('Preferred-Languages: ' . $valid_configuration['preferred_languages']);
+    $canonical_urls = preg_split('/\r\n|\r|\n/', $valid_configuration['canonical_urls']);
+    foreach ($canonical_urls as $canonical_url) {
+      $this->assertSession()->responseContains('Canonical: ' . $canonical_url);
+    }
     $this->drupalGet('.well-known/security.txt.sig');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->responseContains($valid_configuration['signature_text']);
