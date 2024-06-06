@@ -1623,6 +1623,39 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   }
 }
 
+/* Tile content type styling */
+.tile {
+  padding: var(--space-s);
+}
+
+.tile--number {
+  text-align: center;
+}
+
+.tile__number {
+  font-size: var(--step-4);
+}
+
+.tile__icon {
+  height: 2em;
+  width: 2em;
+  filter: var(--filter-primary);
+  margin-inline-start: var(--space-2xs);
+  margin-block-end: var(--space-2xs);
+}
+
+.tile__feature {
+  padding-inline-start: var(--space-2xs);
+  border-inline-start: 2px solid var(--color-primary-fallback);
+  border-inline-start: 2px solid var(--color-primary);
+  margin-block-end: var(--space-2xs);
+  font-weight: bold;
+}
+
+.tile--feature .tile__description {
+  padding-inline-start: var(--space-2xs);
+}
+
 /* Art block styling */
 .art-wrapper {
   display: grid;
@@ -1661,6 +1694,9 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   }
 }
 
+.node--725 .layout--twocol-section--50-50 { /* Technology page 2-col */
+  align-items: start;
+}
 /* Contact page styles */
 .contact-wrapper {
   --max-content-width: 1440px;

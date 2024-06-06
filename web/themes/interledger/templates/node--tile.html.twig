@@ -1,0 +1,17 @@
+{% set svgUrl = file_url(content.field_tile_icon[0]['#media'].field_media_svg.entity.uri.value) %}
+{% set svgAlt = content.field_tile_icon[0]['#media'].field_media_svg.alt %}
+
+{% if node.field_tile_type.0.value|raw == "feature" %}
+<div class="tile tile--feature node--{{ node.id }}">
+  {% if svgUrl|default(null) %}
+    <img class="tile__icon" src="{{ svgUrl }}" alt="{{ svgAlt }}">
+  {% endif %}
+  <p class="tile__feature">{{ node.field_key_feature.0.value|raw }}</p>
+  <p class="tile__description">{{ node.field_tile_description.0.value|raw }}</p>
+</div>
+{% elseif node.field_tile_type.0.value|raw == "number" %}
+<div class="tile tile--number node--{{ node.id }}">
+  <p class="tile__number">{{ node.field_key_number.0.value|raw }}</p>
+  <p class="tile__description">{{ node.field_tile_description.0.value|raw }}</p>
+</div>
+{% endif %}
