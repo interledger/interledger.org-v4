@@ -207,13 +207,14 @@ main::before {
 }
 
 a {
-  text-decoration: none;
+  text-decoration-color: transparent;
   color: var(--color-primary-fallback);
   color: var(--color-primary);
+  transition: text-decoration-color ease-in-out 200ms;
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 p {
@@ -630,7 +631,6 @@ section {
   }
 
   .site-nav__links .is-active {
-    text-decoration-color: var(--color-primary-fallback);
     text-decoration-color: currentColor;
   }
 
@@ -760,7 +760,7 @@ section {
 }
 
 .footer-links a:hover {
-  text-decoration-style:solid;
+  text-decoration-style: solid;
 }
 
 @media screen and (max-width: 479px) {
@@ -1295,6 +1295,29 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   font-size: var(--step-2);
   display: block;
   margin-block-start: var(--space-2xs);
+}
+
+.hero__desc {
+  color: var(--color-hero-txt);
+  margin-block-start: var(--space-xs);
+  margin-block-end: var(--space-s);
+}
+
+.hero__cta {
+  border-radius: 10em;
+  background-color: var(--color-hero-txt);
+  padding: var(--space-xs) var(--space-s);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-underline-offset: 4px;
+}
+
+.hero__cta::after {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M11.92 5.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.004 1.004 0 0 0-1.42 1.42L8.59 5H1a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>');
+  flex: none;
+  width: .6em;
+  filter: var(--filter-primary);
 }
 
 .hero--photography {

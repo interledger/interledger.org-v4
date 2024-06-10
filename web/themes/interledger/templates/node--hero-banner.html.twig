@@ -16,11 +16,30 @@
 {% set heroCaption = node.field_hero_caption.0.value|raw %}
 
 {% set videoBgUrl = file_url(content.field_hero_background_video[0]['#media'].field_media_video_file.entity.uri.value) %}
+{% if content.field_hero_video_poster[0]['#media'].field_media_image.entity.uri.value %}
+  {% set posterUrl = file_url(content.field_hero_video_poster[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% endif %}
 
 {% if node.field_hero_type.0.value|raw == "Illustration" %}
 <section class="hero node--{{ node.id }} hero--illustration" style="--gradient-start: {{ gradientStart }};--gradient-end: {{ gradientEnd }}">
   <div class="content-wrapper">
-    <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
+    <div>
+      <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
+      {% if node.field_hero_blurb is not empty %}
+      <p class="hero__desc" style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_hero_cta is not empty %}
+        {% if node.field_hero_cta.0.url.external %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% else %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% endif %}
+      {% endif %}
+    </div>
     {% if svgUrl|default(null) %}
     <img class="hero__img" src="{{ svgUrl }}" alt="{{ svgAlt }}">
     {% elseif imageUrl|default(null) %}
@@ -33,6 +52,20 @@
   <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ svgBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
+      {% if node.field_hero_blurb is not empty %}
+      <p class="hero__desc" style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_hero_cta is not empty %}
+        {% if node.field_hero_cta.0.url.external %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% else %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% endif %}
+      {% endif %}
     </div>
     {% if heroCaption|default(null) %}
       <p class="hero__caption">{{ heroCaption }}</p>
@@ -42,6 +75,20 @@
   <section class="hero node--{{ node.id }} hero--photography" style="--bg-image: url('{{ imageBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
+      {% if node.field_hero_blurb is not empty %}
+      <p class="hero__desc" style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_hero_cta is not empty %}
+        {% if node.field_hero_cta.0.url.external %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% else %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% endif %}
+      {% endif %}
     </div>
     {% if heroCaption|default(null) %}
       <p class="hero__caption">{{ heroCaption }}</p>
@@ -52,7 +99,7 @@
   <section class="hero node--{{ node.id }} hero--video">
     <div class="background-wrapper">
       <video autoplay muted playsinline loop>
-        <source src="{{ videoBgUrl }}" type="video/mp4">
+        <source src="{{ videoBgUrl }}" type="video/mp4" poster="{{ posterUrl }}">
       </video>
       <div class="controls">
         <button aria-label="play pause toggle"></button>
@@ -60,6 +107,20 @@
     </div>
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
+      {% if node.field_hero_blurb is not empty %}
+      <p class="hero__desc" style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_hero_cta is not empty %}
+        {% if node.field_hero_cta.0.url.external %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% else %}
+        <a class="hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+          {{ node.field_hero_cta.title }}
+        </a>
+        {% endif %}
+      {% endif %}
     </div>
   </section>
 {% endif %}
