@@ -131,6 +131,23 @@ if (document.contains(highlightTxt)) {
   }
 }
 
+// Hero video controls
+const videoToggle = document.getElementById("hero__video-toggle");
+
+if (document.contains(videoToggle)) {
+  const heroVideo = document.querySelector(".hero video");
+  videoToggle.addEventListener("click", function () {
+    console.log(this.className);
+    if (videoToggle.className === "is-playing") {
+      heroVideo.pause();
+      this.classList.toggle("is-playing");
+    } else {
+      heroVideo.play();
+      this.classList.toggle("is-playing");
+    }
+  });
+}
+
 // FAQ accordion effect
 const faq = document.querySelector(".faq");
 

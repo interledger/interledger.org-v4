@@ -101,9 +101,7 @@
       <video autoplay muted playsinline loop>
         <source src="{{ videoBgUrl }}" type="video/mp4" poster="{{ posterUrl }}">
       </video>
-      <div class="controls">
-        <button aria-label="play pause toggle"></button>
-      </div>
+      <button aria-label="play pause toggle" id="hero__video-toggle" class="is-playing"></button>
     </div>
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
