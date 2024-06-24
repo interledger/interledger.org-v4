@@ -2,8 +2,8 @@
 
 {{ content.field_article_thumbnail }}
 <div class="article-teaser-text">
-  <h2><a href="{{ nodeLink }}">{{ node.title.0.value|raw }}</a></h2>
+  <h2><a href="{{ nodeLink }}" data-umami-event="Blog listing - {{ node.title.0.value|raw }} (title)">{{ node.title.0.value|raw }}</a></h2>
   <time datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|date("d M Y") }}</time>
   <p>{{ node.body.0.summary|raw }}</p>
-  <a href="{{ nodeLink}}">Read more</a>
+  <a href="{{ nodeLink}}" data-umami-event="Blog listing - {{ node.title.0.value|raw }} (read more)">Read more</a>
 </div>
