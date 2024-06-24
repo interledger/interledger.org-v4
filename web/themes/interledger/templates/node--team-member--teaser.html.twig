@@ -1,6 +1,6 @@
 {% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
 
-<a href="{{ nodeLink }}" class="member-link">
+<a href="{{ nodeLink }}" class="member-link" data-umami-event="Team page link - {{ node.field_name.0.value|raw }}">
   {{ content.field_photo }}
   <h2>{{ node.field_name.0.value|raw }}</h2>
   <p>{{ node.field_position.0.value|raw }}</p>
