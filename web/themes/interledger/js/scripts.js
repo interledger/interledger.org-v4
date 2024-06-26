@@ -49,6 +49,7 @@ if (document.contains(siteNav)) {
     subLink.setAttribute("aria-expanded", false);
     subLink.addEventListener("click", function (event) {
       const clickedSubLink = event.target;
+      umami.track(clickedSubLink.dataset.linkLabel);
       const allSubLinks = Array.from(subLinks);
       const notClickedLinks = allSubLinks.filter(function (otherLink) {
         return otherLink !== clickedSubLink;
@@ -64,12 +65,6 @@ if (document.contains(siteNav)) {
       event.preventDefault();
       return false;
     });
-
-    // subLink.addEventListener("mouseover", function (event) {
-    //   event.target.setAttribute("aria-expanded", "true");
-    //   event.preventDefault();
-    //   return false;
-    // });
   });
 
   siteNav.addEventListener("keydown", function (event) {
