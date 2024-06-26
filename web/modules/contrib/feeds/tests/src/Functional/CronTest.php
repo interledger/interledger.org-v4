@@ -92,7 +92,7 @@ class CronTest extends FeedsBrowserTestBase {
     \Drupal::cache('feeds_download')->deleteAll();
     sleep(1);
     $this->drupalGet('feed/' . $feed->id() . '/import');
-    $this->submitForm([], t('Import'));
+    $this->submitForm([], 'Import');
     $feed = $this->reloadEntity($feed);
 
     $manual_imported_time = $feed->getImportedTime();
@@ -116,6 +116,29 @@ class CronTest extends FeedsBrowserTestBase {
     $this->assertEquals(12, $feed->getItemCount());
     $this->assertEquals($manual_imported_time, $feed->getImportedTime());
     $this->assertEquals(0, $feed->getNextImportTime());
+  }
+
+  /**
+   * Tests the behavior of the "in progress" directory when the URL returns 404.
+   */
+  public function testFeedWith404Url() {
+    $feed_type = $this->createFeedType();
+    $feed_type->setImportPeriod(60);
+    $mappings = $feed_type->getMappings();
+    unset($mappings[0]['unique']);
+    $feed_type->setMappings($mappings);
+    $feed_type->save();
+
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesUrl() . '/rss/nonexistent.rss2',
+    ]);
+    \Drupal::cache('feeds_download')->deleteAll();
+    sleep(1);
+    $this->cronRun();
+    $files = $this->container->get('file_system')->scanDirectory('private://feeds/in_progress/' . $feed->id(), '/.*/');
+    // In this case, we do not keep any copies, otherwise files would pile up
+    // after a while.
+    $this->assertCount(0, $files, 'The feeds "in progress" dir contains no files.');
   }
 
   /**
@@ -151,7 +174,7 @@ class CronTest extends FeedsBrowserTestBase {
 
     // Select a file that contains 9 items.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/nodes.csv',
     ]);
 
     // Schedule import.
@@ -393,7 +416,7 @@ class CronTest extends FeedsBrowserTestBase {
 
     // Create a feed that contains 9 items.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/nodes.csv',
     ]);
 
     // Schedule import.

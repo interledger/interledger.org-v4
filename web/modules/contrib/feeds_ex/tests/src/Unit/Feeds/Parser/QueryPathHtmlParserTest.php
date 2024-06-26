@@ -21,7 +21,6 @@ class QueryPathHtmlParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new XmlUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new QueryPathHtmlParser($configuration, 'querypathhtml', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds_ex\Unit\Utility;
 
-use Drupal\Tests\feeds_ex\Unit\UnitTestBase;
 use Drupal\feeds_ex\Utility\XmlUtility;
+use Drupal\Tests\feeds_ex\Unit\UnitTestBase;
 
 /**
  * @coversDefaultClass \Drupal\feeds_ex\Utility\XmlUtility

@@ -314,7 +314,7 @@ class FieldTest extends FeedsKernelTestBase {
       'title'  => $this->randomMachineName(8),
       'type'  => 'article',
       'uid'  => 0,
-      $field => isset($expected_values[$field]) ? $expected_values[$field] : NULL,
+      $field => $expected_values[$field] ?? NULL,
     ];
     $node = Node::create($values);
     $node->save();

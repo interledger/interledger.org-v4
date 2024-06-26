@@ -2,10 +2,10 @@
 
 namespace Drupal\feeds\Plugin\Type;
 
+use Drupal\Core\Entity\DependencyTrait;
 use Drupal\Core\Plugin\PluginBase as DrupalPluginBase;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedTypeInterface;
-use Drupal\Core\Entity\DependencyTrait;
 
 /**
  * The base class for the fetcher, parser, and processor plugins.

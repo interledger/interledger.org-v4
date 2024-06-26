@@ -28,7 +28,6 @@ class JsonPathLinesParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new JsonUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new JsonPathLinesParser($configuration, 'jsonpathlines', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());

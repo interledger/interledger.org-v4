@@ -57,7 +57,7 @@ https://github.com/jmespath/jmespath.php
 To use the QueryPath parsers, you will need the QueryPath library. To require it
 with Composer:
 
-$ composer require arthurkushman/query-path:^3.0
+$ composer require gravitypdf/querypath:^3.0
 
 The source code for this library can be found at:
 https://github.com/technosophos/querypath
@@ -66,17 +66,10 @@ https://github.com/technosophos/querypath
 Manual install, using the Ludwig module
 ---------------------------------------
 Composer is the recommended way to install and maintain a site. Site
-administrators using Ludwig need to be careful when combining modules that
-depend on external libraries, since there are no safeguards against incompatible
-library versions or overlapping requirements.
+administrators using [Ludwig](https://www.drupal.org/project/ludwig) need to be
+careful when combining modules that depend on external libraries, since there
+are no safeguards against incompatible library versions or overlapping
+requirements.
 
-Steps:
-
-1. Download and install the Ludwig module.
-   https://www.drupal.org/project/ludwig
-
-2. Download and install Feeds and Feeds extensible parsers.
-
-3. Ludwig generates a listing of libraries required by those modules. The
-   Packages page at admin/reports/packages provides a download link for each
-   missing library along with the paths where they should be placed.
+Read more at Ludwig Installation and Usage guide:
+https://www.drupal.org/docs/contributed-modules/ludwig/installation-and-usage

@@ -2,6 +2,8 @@
 
 namespace Drupal\feeds\Annotation;
 
+// phpcs:disable Drupal.NamingConventions.ValidVariableName.LowerCamelName
+
 /**
  * Defines a Plugin annotation object for Feeds target plugins.
  *

@@ -7,8 +7,8 @@
 
 use Drupal\Core\Config\Entity\ConfigEntityUpdater;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Parser\CsvParser;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\field\FieldStorageConfigInterface;
 
 /**
@@ -84,26 +84,30 @@ function feeds_post_update_ensure_feeds_item_storage_config_cardinality_is_unlim
  * Adds action plugin 'feeds_feed_clear_action'.
  */
 function feeds_post_update_add_feeds_feed_clear_action() {
-  \Drupal::entityTypeManager()->getStorage('action')
-    ->create([
-      'id' => 'feeds_feed_clear_action',
-      'label' => 'Delete imported items of selected feeds',
-      'type' => 'feeds_feed',
-      'plugin' => 'feeds_feed_clear_action',
-    ])
-    ->save();
+  if (!\Drupal::entityTypeManager()->getStorage('action')->load('feeds_feed_clear_action')) {
+    \Drupal::entityTypeManager()->getStorage('action')
+      ->create([
+        'id' => 'feeds_feed_clear_action',
+        'label' => 'Delete imported items of selected feeds',
+        'type' => 'feeds_feed',
+        'plugin' => 'feeds_feed_clear_action',
+      ])
+      ->save();
+  }
 }
 
 /**
  * Adds action plugin 'feeds_feed_import_action'.
  */
 function feeds_post_update_add_feeds_feed_import_action() {
-  \Drupal::entityTypeManager()->getStorage('action')
-    ->create([
-      'id' => 'feeds_feed_import_action',
-      'label' => 'Import selected feeds',
-      'type' => 'feeds_feed',
-      'plugin' => 'feeds_feed_import_action',
-    ])
-    ->save();
+  if (!\Drupal::entityTypeManager()->getStorage('action')->load('feeds_feed_import_action')) {
+    \Drupal::entityTypeManager()->getStorage('action')
+      ->create([
+        'id' => 'feeds_feed_import_action',
+        'label' => 'Import selected feeds',
+        'type' => 'feeds_feed',
+        'plugin' => 'feeds_feed_import_action',
+      ])
+      ->save();
+  }
 }

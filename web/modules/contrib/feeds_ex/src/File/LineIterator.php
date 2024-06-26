@@ -2,12 +2,10 @@
 
 namespace Drupal\feeds_ex\File;
 
-use SplFileObject;
-
 /**
  * Text lines from file iterator.
  */
-class LineIterator extends SplFileObject {
+class LineIterator extends \SplFileObject {
 
   /**
    * The position to start in the file.
@@ -19,21 +17,21 @@ class LineIterator extends SplFileObject {
   /**
    * The number of lines to read.
    *
-   * @var init
+   * @var int
    */
   protected $lineLimit;
 
   /**
    * The number of lines that have been read.
    *
-   * @var init
+   * @var int
    */
   protected $linesRead = 0;
 
   /**
    * Implements Iterator::rewind().
    */
-  public function rewind() {
+  public function rewind(): void {
     parent::rewind();
     if ($this->startPosition) {
       $this->fseek($this->startPosition);
@@ -44,7 +42,7 @@ class LineIterator extends SplFileObject {
   /**
    * Implements Iterator::next().
    */
-  public function next() {
+  public function next(): void {
     $this->linesRead++;
     parent::next();
   }
@@ -52,7 +50,7 @@ class LineIterator extends SplFileObject {
   /**
    * Implements Iterator::valid().
    */
-  public function valid() {
+  public function valid(): bool {
     return (!$this->lineLimit || $this->linesRead < $this->lineLimit) && parent::valid() && parent::current();
   }
 

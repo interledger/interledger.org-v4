@@ -18,16 +18,16 @@ table.feeds-admin-feed-type tr.disabled.odd {
 
 /* Feeds edit form layout. */
 div.left-bar {
-  float: left;
   position: relative;
+  float: left;
   width: 240px;
-  border-right: 1px solid #ddd;
   padding: 10px 10px 0 0;
+  border-right: 1px solid #ddd;
 }
 
 div.configuration {
-  padding: 10px 0 0 250px;
   margin-left: -240px;
+  padding: 10px 0 0 250px;
 }
 
 div.configuration-squeeze {
@@ -41,22 +41,22 @@ div.feeds-container h4 {
 }
 
 div.feeds-container.plain {
-  background-color: #eee;
-  border-bottom: 1px solid #ddd;
-  border-top: 2px solid #ddd;
-  padding: 5px;
   margin: 10px 0;
+  padding: 5px;
+  border-top: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background-color: #eee;
 }
 
 div.feeds-container.plain h4 {
-  font-size: 1.0em;
   margin: 0;
   padding: 0;
+  font-size: 1.0em;
 }
 
 div.feeds-container-body p {
-  padding: 5px 0;
   margin: 0;
+  padding: 5px 0;
 }
 
 div.feeds-container-body div.item-list ul {
@@ -64,30 +64,30 @@ div.feeds-container-body div.item-list ul {
 }
 
 div.feeds-container-body div.item-list ul li {
-  list-style-type: none;
   margin: 0;
   padding: 0;
+  list-style-type: none;
   background-image: none;
 }
 
 ul.container-actions {
-  font-family: Arial, Helvetica;
   float: right;
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 ul.container-actions li {
+  position: relative; /* Fix for IE 7 compatibility mode. */
+  margin: 0;
+  padding: 0;
   list-style-type: none;
   text-align: right;
   background-image: none;
-  margin: 0;
-  padding: 0;
-  position: relative; /* Fix for IE 7 compatibility mode. */
 }
 
 ul.container-actions .form-item,
 ul.container-actions li form,
 ul.container-actions li form input {
-  padding: 0;
   display: inline;
+  padding: 0;
 }

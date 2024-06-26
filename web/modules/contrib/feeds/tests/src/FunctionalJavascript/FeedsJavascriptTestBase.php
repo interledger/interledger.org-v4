@@ -3,9 +3,9 @@
 namespace Drupal\Tests\feeds\FunctionalJavascript;
 
 use Drupal\Component\Utility\Html;
+use Drupal\feeds\Entity\FeedType;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedTypeInterface;
-use Drupal\feeds\Entity\FeedType;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\feeds\Traits\FeedCreationTrait;
 use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
@@ -34,6 +34,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
     'feeds',
     'node',
     'user',
+    'file',
   ];
 
   /**
@@ -52,9 +53,10 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
     // Create a content type.
     $this->setUpNodeType();
 
-    // Create an user with Feeds admin privileges.
+    // Create a user with Feeds admin privileges.
     $this->adminUser = $this->drupalCreateUser([
       'administer feeds',
+      'administer users',
     ]);
     $this->drupalLogin($this->adminUser);
   }

@@ -7,7 +7,7 @@ use Drupal\Core\Plugin\Factory\ContainerFactory;
 /**
  * Plugin factory which uses the plugin definition to find arguments.
  *
- * @deprecated in feeds:8.x-3.0-alpha6, and is removed from feeds:8.x-3.0. Implement \Drupal\Core\Plugin\ContainerFactoryPluginInterface instead.
+ * @deprecated in feeds:8.x-3.0-alpha6 and is removed from feeds:8.x-3.0. Implement \Drupal\Core\Plugin\ContainerFactoryPluginInterface instead.
  * @see https://www.drupal.org/project/feeds/issues/3136615
  */
 class FeedsAnnotationFactory extends ContainerFactory {

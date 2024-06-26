@@ -38,7 +38,7 @@ class SiteSource extends SourceBase {
    * {@inheritdoc}
    */
   public function getSourceElement(FeedInterface $feed, ItemInterface $item) {
-    list(, $field_name) = explode(':', $this->configuration['source']);
+    [, $field_name] = explode(':', $this->configuration['source']);
 
     return \Drupal::config('system.site')->get($field_name);
   }

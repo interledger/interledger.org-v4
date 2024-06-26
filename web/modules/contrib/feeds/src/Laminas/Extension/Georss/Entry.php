@@ -20,7 +20,7 @@ class Entry extends AbstractEntry {
    */
   public function getGeoPoint($index = 0) {
     $points = $this->getGeoPoints();
-    return isset($points[$index]) ? $points[$index] : NULL;
+    return $points[$index] ?? NULL;
   }
 
   /**
@@ -58,7 +58,7 @@ class Entry extends AbstractEntry {
   /**
    * Registers GeoRSS namespaces.
    */
-  protected function registerNamespaces() {
+  protected function registerNamespaces(): void {
     $this->getXpath()->registerNamespace('georss', 'http://www.georss.org/georss');
   }
 

@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds_ex\Unit\File;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Tests\feeds_ex\Unit\UnitTestBase;
+use Drupal\Component\Serialization\Json;
 use Drupal\feeds_ex\File\LineIterator;
+use Drupal\Tests\feeds_ex\Unit\UnitTestBase;
 
 /**
  * @coversDefaultClass \Drupal\feeds_ex\File\LineIterator

@@ -7,7 +7,6 @@ use Drupal\feeds_ex\Feeds\Parser\JmesPathParser;
 use Drupal\feeds_ex\Messenger\TestMessenger;
 use Drupal\feeds_ex\Utility\JsonUtility;
 use JmesPath\AstRuntime;
-use RuntimeException;
 
 /**
  * @coversDefaultClass \Drupal\feeds_ex\Feeds\Parser\JmesPathParser
@@ -23,12 +22,8 @@ class JmesPathParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new JsonUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
-    $this->parser = new JmesPathParser($configuration, 'jmespath', [], $utility);
-    $this->parser->setStringTranslation($this->getStringTranslationStub());
-    $this->parser->setFeedsExMessenger(new TestMessenger());
 
-    // Set JMESPath runtime factory.
+    // Create a mocked JMESPath runtime factory.
     $factoryMock = $this->createMock('Drupal\feeds_ex\JmesRuntimeFactoryInterface');
     $factoryMock->expects($this->any())
       ->method('createRuntime')
@@ -37,7 +32,10 @@ class JmesPathParserTest extends ParserTestBase {
           return new AstRuntime();
         }
       ));
-    $this->parser->setRuntimeFactory($factoryMock);
+
+    $this->parser = new JmesPathParser($configuration, 'jmespath', [], $utility, $factoryMock);
+    $this->parser->setStringTranslation($this->getStringTranslationStub());
+    $this->parser->setFeedsExMessenger(new TestMessenger());
   }
 
   /**
@@ -191,7 +189,7 @@ class JmesPathParserTest extends ParserTestBase {
 
     // Empty string.
     $empty = '';
-    $this->assertSame(NULL, $this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
+    $this->assertNull($this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
   }
 
   /**
@@ -209,7 +207,7 @@ class JmesPathParserTest extends ParserTestBase {
       ->method('getCustomSources')
       ->will($this->returnValue([]));
 
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage('The context expression must return an object or array.');
     $this->parser->parse($this->feed, new RawFetcherResult('{"items": "not an array"}', $this->fileSystem), $this->state);
   }
@@ -218,6 +216,8 @@ class JmesPathParserTest extends ParserTestBase {
    * Tests parsing invalid JSON.
    */
   public function testInvalidJson() {
+    $invalid_json = '{ "invalid_json": "has_ending_comma", }';
+
     $config = [
       'context' => [
         'value' => 'items',
@@ -229,9 +229,9 @@ class JmesPathParserTest extends ParserTestBase {
       ->method('getCustomSources')
       ->will($this->returnValue([]));
 
-    $this->expectException(RuntimeException::class);
-    $this->expectExceptionMessage('The JSON is invalid.');
-    $this->parser->parse($this->feed, new RawFetcherResult('invalid json', $this->fileSystem), $this->state);
+    $this->expectException(\RuntimeException::class);
+    $this->expectExceptionMessage("Invalid JSON: $invalid_json");
+    $this->parser->parse($this->feed, new RawFetcherResult($invalid_json, $this->fileSystem), $this->state);
   }
 
   /**

@@ -2,8 +2,6 @@
 
 namespace Drupal\feeds_ex\Feeds\Parser;
 
-use DOMNode;
-use DOMNodeList;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\RfcLogLevel;
@@ -15,7 +13,6 @@ use Drupal\feeds\Result\ParserResultInterface;
 use Drupal\feeds\StateInterface;
 use Drupal\feeds_ex\Utility\XmlUtility;
 use Drupal\feeds_ex\XpathDomXpath;
-use SimpleXMLElement;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -136,7 +133,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
   protected function executeSourceExpression($machine_name, $expression, $row) {
     $result = $this->xpath->evaluate($expression, $row);
 
-    if (!$result instanceof DOMNodeList) {
+    if (!$result instanceof \DOMNodeList) {
       return $result;
     }
     if ($result->length == 0) {
@@ -216,7 +213,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
     }
 
     $this->startErrorHandling();
-    $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<items></items>");
+    $xml = new \SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<items></items>");
     $xml->xpath($expression);
 
     if ($error = libxml_get_last_error()) {
@@ -270,7 +267,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
    * @return string
    *   The raw XML.
    */
-  protected function getRaw(DOMNode $node) {
+  protected function getRaw(\DOMNode $node) {
     return $node->ownerDocument->saveXML($node);
   }
 
@@ -283,7 +280,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
    * @return string
    *   The inner XML.
    */
-  protected function getInnerXml(DOMNode $node) {
+  protected function getInnerXml(\DOMNode $node) {
     $buffer = '';
     foreach ($node->childNodes as $child) {
       $buffer .= $this->getRaw($child);
@@ -307,6 +304,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
     // details.
     // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
     if (function_exists('libxml_disable_entity_loader') && \PHP_VERSION_ID < 80000) {
+      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
       $this->entityLoader = libxml_disable_entity_loader(TRUE);
     }
   }
@@ -321,6 +319,7 @@ class XmlParser extends ParserBase implements ContainerFactoryPluginInterface {
     libxml_use_internal_errors($this->handleXmlErrors);
     // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
     if (function_exists('libxml_disable_entity_loader') && \PHP_VERSION_ID < 80000) {
+      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
       libxml_disable_entity_loader($this->entityLoader);
     }
   }

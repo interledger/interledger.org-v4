@@ -11,8 +11,8 @@ use Drupal\feeds\Exception\TargetValidationException;
 use Drupal\feeds\Feeds\Target\UserRole;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
-use Drupal\user\RoleStorageInterface;
 use Drupal\user\RoleInterface;
+use Drupal\user\RoleStorageInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\UserRole

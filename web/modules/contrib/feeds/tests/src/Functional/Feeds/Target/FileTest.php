@@ -67,7 +67,7 @@ class FileTest extends FeedsBrowserTestBase {
 
     // Create a feed and import.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/files.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/files.csv',
     ]);
     $feed->import();
 

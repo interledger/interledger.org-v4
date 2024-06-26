@@ -6,9 +6,9 @@ use Drupal\Component\Render\HtmlEscapedText;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\StateInterface;
-use QueryPath\QueryPath;
-use QueryPath\DOMQuery;
 use QueryPath\CSS\ParseException;
+use QueryPath\DOMQuery;
+use QueryPath\QueryPath;
 
 /**
  * Defines a XML parser using QueryPath.
@@ -144,7 +144,7 @@ class QueryPathXmlParser extends XmlParser {
    */
   protected function loadLibrary() {
     if (!class_exists(QueryPath::class)) {
-      throw new \RuntimeException($this->t('The QueryPath library is not installed.'));
+      throw new \RuntimeException('The QueryPath library is not installed.');
     }
   }
 

@@ -84,7 +84,7 @@ class CronTest extends FeedsLogBrowserTestBase {
 
     // Select a file that contains 9 items.
     $feed = $this->createFeed($feed_type->id(), [
-      'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
+      'source' => $this->getBaseUrl() . '/testing/feeds/nodes.csv',
       'feeds_log' => TRUE,
     ]);
 

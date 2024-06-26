@@ -72,7 +72,7 @@ class GenericContentEntityProcessorTest extends FeedsKernelTestBase {
       $mappings[] = [
         'target' => $target,
         'map' => ['value' => $source],
-        'settings' => isset($settings[$source]) ? $settings[$source] : [],
+        'settings' => $settings[$source] ?? [],
       ];
     }
 

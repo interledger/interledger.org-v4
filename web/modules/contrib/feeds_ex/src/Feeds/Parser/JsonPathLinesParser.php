@@ -65,7 +65,7 @@ class JsonPathLinesParser extends JsonPathParser {
       try {
         $row = $this->utility->decodeJsonArray($row);
       }
-      catch (RuntimeException $e) {
+      catch (\RuntimeException $e) {
         // An array wasn't returned. Skip this item.
         continue;
       }

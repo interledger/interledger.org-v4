@@ -4,14 +4,41 @@ namespace Drupal\feeds_ex;
 
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\State\StateInterface;
 use JmesPath\AstRuntime;
 use JmesPath\CompilerRuntime;
-use RuntimeException;
 
 /**
  * Defines a factory for generating JMESPath runtime objects.
  */
 class JmesRuntimeFactory implements JmesRuntimeFactoryInterface {
+
+  /**
+   * The file system.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected FileSystemInterface $fileSystem;
+
+  /**
+   * The state key value store.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected StateInterface $state;
+
+  /**
+   * Constructs a new JmesRuntimeFactory object.
+   *
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
+   *   The file system.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The state key value store.
+   */
+  public function __construct(FileSystemInterface $file_system, StateInterface $state) {
+    $this->fileSystem = $file_system;
+    $this->state = $state;
+  }
 
   /**
    * {@inheritdoc}
@@ -24,9 +51,9 @@ class JmesRuntimeFactory implements JmesRuntimeFactoryInterface {
       case static::COMPILER:
       default:
         try {
-          return $this->createCompilerRuntime(\Drupal::service('file_system')->realpath($this->getCompileDirectory()));
+          return $this->createCompilerRuntime($this->fileSystem->realpath($this->getCompileDirectory()));
         }
-        catch (RuntimeException $e) {
+        catch (\RuntimeException $e) {
           // Fallback to AstRuntime if creating a CompilerRuntime failed.
           return $this->createRuntime(static::AST);
         }
@@ -58,12 +85,12 @@ class JmesRuntimeFactory implements JmesRuntimeFactoryInterface {
    */
   protected function getCompileDirectory() {
     // Look for a previous directory.
-    $directory = \Drupal::state()->get('feeds_ex_jmespath_compile_dir');
+    $directory = $this->state->get('feeds_ex_jmespath_compile_dir');
 
     // The temp directory doesn't exist, or has moved.
     if (!$this->validateCompileDirectory($directory)) {
       $directory = $this->generateCompileDirectory();
-      \Drupal::state()->set('feeds_ex_jmespath_compile_dir', $directory);
+      $this->state->set('feeds_ex_jmespath_compile_dir', $directory);
 
       // Creates the directory with the correct perms. We don't check the
       // return value since if it didn't work, there's nothing we can do. We
@@ -99,7 +126,7 @@ class JmesRuntimeFactory implements JmesRuntimeFactoryInterface {
       return FALSE;
     }
 
-    return \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+    return $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
   }
 
 }

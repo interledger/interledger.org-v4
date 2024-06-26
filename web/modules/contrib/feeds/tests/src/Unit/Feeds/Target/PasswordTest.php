@@ -7,8 +7,8 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Password\PasswordInterface;
 use Drupal\Core\Password\PhpassHashedPassword;
 use Drupal\feeds\Exception\TargetValidationException;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Target\Password;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**

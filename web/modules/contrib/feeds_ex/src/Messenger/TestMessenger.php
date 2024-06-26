@@ -30,6 +30,8 @@ class TestMessenger extends Messenger {
       'type' => $type,
       'repeat' => $repeat,
     ];
+
+    return $this;
   }
 
   /**

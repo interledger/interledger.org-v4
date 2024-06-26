@@ -5,15 +5,16 @@ namespace Drupal\Tests\feeds\Unit\Plugin\QueueWorker;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
-use Drupal\feeds\FeedsExecutableInterface;
-use Drupal\feeds\FeedsQueueExecutable;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Exception\LockException;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\State\CleanState;
+use Drupal\feeds\FeedsExecutableInterface;
+use Drupal\feeds\FeedsQueueExecutable;
 use Drupal\feeds\Plugin\QueueWorker\FeedRefresh;
 use Drupal\feeds\Result\FetcherResult;
 use Drupal\feeds\Result\ParserResult;
@@ -63,8 +64,9 @@ class FeedRefreshTest extends FeedsUnitTestCase {
 
     $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
     $messenger = $this->createMock(MessengerInterface::class);
+    $logger = $this->createMock(LoggerChannelInterface::class);
 
-    $executable = new FeedsQueueExecutable($entity_type_manager, $this->dispatcher, $this->getMockedAccountSwitcher(), $messenger, $queue_factory);
+    $executable = new FeedsQueueExecutable($entity_type_manager, $this->dispatcher, $this->getMockedAccountSwitcher(), $messenger, $queue_factory, $logger);
     $executable->setStringTranslation($this->getStringTranslationStub());
 
     $this->plugin = $this->getMockBuilder(FeedRefresh::class)
@@ -206,10 +208,10 @@ class FeedRefreshTest extends FeedsUnitTestCase {
   public function testExceptionOnFetchEvent() {
     $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::FETCH, function ($parse_event) {
-      throw new \RuntimeException();
+      throw new \LogicException();
     });
 
-    $this->expectException(\RuntimeException::class);
+    $this->expectException(\LogicException::class);
     $this->plugin->processItem([
       $this->feed->id(),
       FeedsExecutableInterface::FETCH,
@@ -247,10 +249,10 @@ class FeedRefreshTest extends FeedsUnitTestCase {
   public function testExceptionOnParseEvent() {
     $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::PARSE, function ($parse_event) {
-      throw new \RuntimeException();
+      throw new \LogicException();
     });
 
-    $this->expectException(\RuntimeException::class);
+    $this->expectException(\LogicException::class);
     $this->plugin->processItem([
       $this->feed->id(),
       FeedsExecutableInterface::PARSE, [
@@ -281,10 +283,10 @@ class FeedRefreshTest extends FeedsUnitTestCase {
   public function testExceptionOnProcessEvent() {
     $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::PROCESS, function ($parse_event) {
-      throw new \RuntimeException();
+      throw new \LogicException();
     });
 
-    $this->expectException(\RuntimeException::class);
+    $this->expectException(\LogicException::class);
     $this->plugin->processItem([
       $this->feed->id(),
       FeedsExecutableInterface::PROCESS, [

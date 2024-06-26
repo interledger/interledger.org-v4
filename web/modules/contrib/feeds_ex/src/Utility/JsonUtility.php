@@ -3,14 +3,11 @@
 namespace Drupal\feeds_ex\Utility;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Various helpers for handling JSON.
  */
 class JsonUtility {
-
-  use StringTranslationTrait;
 
   /**
    * Translates an error message.
@@ -71,7 +68,7 @@ class JsonUtility {
     $parsed = Json::decode($json);
 
     if (!is_array($parsed)) {
-      throw new \RuntimeException($this->t('The JSON is invalid.'));
+      throw new \RuntimeException('Invalid JSON: ' . $json);
     }
 
     return $parsed;
@@ -93,7 +90,7 @@ class JsonUtility {
     $parsed = json_decode($json, FALSE);
 
     if (!is_array($parsed) && !is_object($parsed)) {
-      throw new \RuntimeException($this->t('The JSON is invalid.'));
+      throw new \RuntimeException('Invalid JSON: ' . $json);
     }
 
     return $parsed;

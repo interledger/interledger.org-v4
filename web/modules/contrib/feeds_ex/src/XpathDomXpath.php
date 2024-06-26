@@ -2,10 +2,6 @@
 
 namespace Drupal\feeds_ex;
 
-use DOMDocument;
-use DOMNode;
-use DOMXPath;
-
 /**
  * Wraps DOMXPath simplifying usage.
  */
@@ -26,8 +22,8 @@ class XpathDomXpath {
    *
    * @todo Add an option to force a deep scan of namespaces.
    */
-  public function __construct(DOMDocument $document) {
-    $this->xpath = new DOMXPath($document);
+  public function __construct(\DOMDocument $document) {
+    $this->xpath = new \DOMXPath($document);
 
     // Find all namespaces.
     // Calling simplexml_import_dom() and SimpleXML::getNamespaces() is several
@@ -54,7 +50,7 @@ class XpathDomXpath {
    *
    * @see DOMXPath::evaluate()
    */
-  public function evaluate($expression, DOMNode $context_node = NULL) {
+  public function evaluate($expression, \DOMNode $context_node = NULL) {
     if ($context_node === NULL) {
       $context_node = $this->xpath->document;
     }
@@ -72,7 +68,7 @@ class XpathDomXpath {
    *
    * @see DOMXPath::query()
    */
-  public function query($expression, DOMNode $context_node = NULL) {
+  public function query($expression, \DOMNode $context_node = NULL) {
     if ($context_node === NULL) {
       $context_node = $this->xpath->document;
     }

@@ -7,10 +7,10 @@ use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResultInterface;
 use Drupal\feeds\StateInterface;
-use Drupal\feeds_ex\JmesRuntimeFactory;
 use Drupal\feeds_ex\JmesRuntimeFactoryInterface;
 use Drupal\feeds_ex\Utility\JsonUtility;
 use JmesPath\SyntaxErrorException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a JSON parser using JMESPath.
@@ -43,19 +43,39 @@ class JmesPathParser extends JsonParserBase {
   protected $runtimeFactory;
 
   /**
+   * Constructs a JmesPathParser object.
+   *
+   * @param array $configuration
+   *   The plugin configuration.
+   * @param string $plugin_id
+   *   The plugin id.
+   * @param array $plugin_definition
+   *   The plugin definition.
+   * @param \Drupal\feeds_ex\Utility\JsonUtility $utility
+   *   The JSON helper class.
+   * @param \Drupal\feeds_ex\JmesRuntimeFactoryInterface $factory
+   *   A factory to generate JMESPath runtime objects.
+   */
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JsonUtility $utility, JmesRuntimeFactoryInterface $factory) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $utility);
+    $this->setRuntimeFactory($factory);
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JsonUtility $utility) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $utility);
-
-    // Set default factory.
-    $this->runtimeFactory = new JmesRuntimeFactory();
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('feeds_ex.json_utility'),
+      $container->get('feeds_ex.jmes_runtime_factory')
+    );
   }
 
   /**
    * Sets the factory to use for creating JMESPath Runtime objects.
-   *
-   * This is useful in unit tests.
    *
    * @param \Drupal\feeds_ex\JmesRuntimeFactoryInterface $factory
    *   The factory to use.
@@ -94,7 +114,7 @@ class JmesPathParser extends JsonParserBase {
     $parsed = $this->search($this->configuration['context']['value'], $parsed);
 
     if (!is_array($parsed) && !is_object($parsed)) {
-      throw new \RuntimeException($this->t('The context expression must return an object or array.'));
+      throw new \RuntimeException('The context expression must return an object or array.');
     }
 
     // If an object is returned, consider it one item.
@@ -234,7 +254,7 @@ class JmesPathParser extends JsonParserBase {
    */
   protected function loadLibrary() {
     if (!class_exists('JmesPath\AstRuntime')) {
-      throw new \RuntimeException($this->t('The JMESPath library is not installed.'));
+      throw new \RuntimeException('The JMESPath library is not installed.');
     }
   }
 

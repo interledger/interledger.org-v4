@@ -3,9 +3,9 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser\Form;
 
 use Drupal\Core\Form\FormState;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Feeds\Parser\Form\CsvParserForm;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Parser\Form\CsvParserForm

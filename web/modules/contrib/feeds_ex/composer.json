@@ -10,9 +10,11 @@
       "source": "http://cgit.drupalcode.org/feeds_ex"
     },
     "require": {
+      "ext-libxml": "*",
+      "ext-simplexml": "*",
       "mtdowling/jmespath.php": "^2.0",
-      "softcreatr/jsonpath": "^0.5 || ^0.7 || ^0.8",
-      "arthurkushman/query-path": "^3.0"
+      "softcreatr/jsonpath": "^0.5 || ^0.7 || ^0.8 || ^0.9",
+      "gravitypdf/querypath": "^3.0"
     },
     "require-dev": {
       "drupal/feeds": "3.x-dev"

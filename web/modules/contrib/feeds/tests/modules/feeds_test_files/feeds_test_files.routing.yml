@@ -11,3 +11,10 @@ feeds_test_files.nodes_csv:
     _controller: 'Drupal\feeds_test_files\Controller\CsvController::nodes'
   requirements:
     _permission: 'access content'
+
+feeds_test_files.http304:
+  path: '/testing/feeds/304.csv'
+  defaults:
+    _controller: 'Drupal\feeds_test_files\Controller\CsvController::return304'
+  requirements:
+    _permission: 'access content'

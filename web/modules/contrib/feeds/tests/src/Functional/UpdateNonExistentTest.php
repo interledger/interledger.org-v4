@@ -310,7 +310,11 @@ class UpdateNonExistentTest extends FeedsBrowserTestBase {
 
     // Listen to process event.
     $this->container->get('event_dispatcher')
-      ->addListener(FeedsEvents::PROCESS, [$this, 'onProcess'], FeedsEvents::AFTER);
+      ->addListener(FeedsEvents::PROCESS, [
+        $this,
+        'onProcess',
+      ], FeedsEvents::AFTER
+    );
 
     // Process another item.
     $item = $queue->claimItem();

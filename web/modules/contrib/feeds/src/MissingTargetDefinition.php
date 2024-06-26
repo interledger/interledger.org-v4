@@ -2,10 +2,14 @@
 
 namespace Drupal\feeds;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+
 /**
  * Definition for a missing target.
  */
 class MissingTargetDefinition implements TargetDefinitionInterface {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -25,7 +29,7 @@ class MissingTargetDefinition implements TargetDefinitionInterface {
    * {@inheritdoc}
    */
   public function getLabel() {
-    return t('Error: target is missing');
+    return $this->t('Error: target is missing');
   }
 
   /**

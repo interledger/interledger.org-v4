@@ -6,8 +6,8 @@ use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Tests\feeds\Traits\FeedsMockingTrait;
 use Drupal\Tests\feeds\Traits\FeedsReflectionTrait;
 use Drupal\Tests\UnitTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use org\bovigo\vfs\vfsStream;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Base class for Feeds unit tests.

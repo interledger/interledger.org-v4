@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\feeds_ex\Unit;
 
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\feeds_ex\JmesRuntimeFactory;
 use org\bovigo\vfs\vfsStream;
 
@@ -22,7 +24,10 @@ class JmesRuntimeFactoryTest extends UnitTestBase {
    * {@inheritdoc}
    */
   public function setUp(): void {
-    $this->factory = new JmesRuntimeFactory();
+    parent::setUp();
+    $file_system = $this->createMock(FileSystemInterface::class);
+    $state = $this->createMock(StateInterface::class);
+    $this->factory = new JmesRuntimeFactory($file_system, $state);
   }
 
   /**

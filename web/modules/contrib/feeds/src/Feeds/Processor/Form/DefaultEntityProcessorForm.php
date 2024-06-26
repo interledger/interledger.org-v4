@@ -9,6 +9,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Validation\ConstraintManager;
 use Drupal\feeds\Plugin\Type\ExternalPluginFormBase;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\user\EntityOwnerInterface;
@@ -56,6 +57,13 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
   protected $userSettings;
 
   /**
+   * The validation constraint manager.
+   *
+   * @var \Drupal\Core\Validation\ConstraintManager
+   */
+  protected $constraintManager;
+
+  /**
    * Constructs a DefaultEntityProcessorForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -68,13 +76,16 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
    *   The user storage.
    * @param \Drupal\Core\Config\Config $user_settings
    *   The user settings.
+   * @param \Drupal\Core\Validation\ConstraintManager $constraint_manager
+   *   The validation constraint manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, PluginManagerInterface $action_manager, DateFormatterInterface $date_formatter, UserStorageInterface $user_storage, Config $user_settings) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, PluginManagerInterface $action_manager, DateFormatterInterface $date_formatter, UserStorageInterface $user_storage, Config $user_settings, ConstraintManager $constraint_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->actionManager = $action_manager;
     $this->dateFormatter = $date_formatter;
     $this->userStorage = $user_storage;
     $this->userSettings = $user_settings;
+    $this->constraintManager = $constraint_manager;
   }
 
   /**
@@ -87,6 +98,7 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
       $container->get('date.formatter'),
       $container->get('entity_type.manager')->getStorage('user'),
       $container->get('config.factory')->get('user.settings'),
+      $container->get('validation.constraint')
     );
   }
 
@@ -212,6 +224,40 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
       '#weight' => 10,
     ];
 
+    $options = [];
+    foreach ($this->constraintManager->getDefinitions() as $id => $constraint) {
+      $label = (string) $constraint['label'];
+      $options[$id] = $this->t("@label (@id)", [
+        '@label' => $label,
+        '@id' => $id,
+      ]);
+    }
+
+    asort($options);
+
+    $form['advanced']['skip_validation'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Skip validation'),
+      '#description' => $this->t('<strong>Warning: skipping validation can potentially cause PHP and SQL errors.</strong><br />Will skip the entity validation during import. Useful if there is a need to create entities with empty required fields.<br /><strong>If no type is selected all validation types are skipped.</strong>'),
+      '#default_value' => $this->plugin->getConfiguration('skip_validation'),
+      '#parents' => ['processor_configuration', 'skip_validation'],
+    ];
+
+    $form['advanced']['skip_validation_types'] = [
+      '#type' => 'checkboxes',
+      '#multiple' => TRUE,
+      '#title' => $this->t('Skip validation types'),
+      '#description' => $this->t("Will skip the specified types of entity validation during import. For example, select 'NotNull' to create entities with empty required fields."),
+      '#options' => $options,
+      '#default_value' => $this->plugin->getConfiguration('skip_validation_types'),
+      '#parents' => ['processor_configuration', 'skip_validation_types'],
+      '#states' => [
+        'visible' => [
+          ':input[name="processor_configuration[skip_validation]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     if ($entity_type->entityClassImplements(EntityOwnerInterface::class)) {
       $form['advanced']['authorize'] = [
         '#type' => 'checkbox',
@@ -268,6 +314,36 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::submitConfigurationForm($form, $form_state);
+
+    // Get the current processor configuration.
+    $processor_configuration = $this->plugin->getConfiguration();
+
+    // Check if the option "skip_validation" is enabled.
+    if ($form_state->getValue(['skip_validation'])) {
+      $processor_configuration['skip_validation'] = TRUE;
+
+      // If specific validation types are selected, only save those that are
+      // enabled.
+      $skip_validation_types = $form_state->getValue(['skip_validation_types'], []);
+      $skip_validation_types = array_filter($skip_validation_types);
+      $processor_configuration['skip_validation_types'] = array_values($skip_validation_types);
+    }
+    else {
+      // No validations should be skipped. Do not save any configured skippable
+      // validation types.
+      $processor_configuration['skip_validation'] = FALSE;
+      $processor_configuration['skip_validation_types'] = [];
+    }
+
+    // Finally, set the updated processor configuration.
+    $this->plugin->setConfiguration($processor_configuration);
+  }
+
+  /**
    * Formats UNIX timestamps to readable strings.
    *
    * @param int $timestamp
@@ -317,7 +393,7 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
         }
       }
 
-      $options[$id] = $definition['label'];
+      $options[$id] = $definition['label'] ?? '';
     }
 
     return [

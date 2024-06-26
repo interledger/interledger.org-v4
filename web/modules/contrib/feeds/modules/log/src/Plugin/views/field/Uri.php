@@ -4,8 +4,8 @@ namespace Drupal\feeds_log\Plugin\views\field;
 
 use Drupal\Core\Link;
 use Drupal\Core\Url as CoreUrl;
-use Drupal\views\ResultRow;
 use Drupal\views\Plugin\views\field\Url;
+use Drupal\views\ResultRow;
 
 /**
  * Handler that turns a file uri into a clickable link.

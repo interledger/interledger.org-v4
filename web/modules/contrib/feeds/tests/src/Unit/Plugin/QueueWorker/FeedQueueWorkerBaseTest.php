@@ -6,7 +6,6 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -31,8 +30,8 @@ class FeedQueueWorkerBaseTest extends FeedsUnitTestCase {
     $method = $this->getProtectedClosure($plugin, 'handleException');
     $method($this->getMockFeed(), new EmptyFeedException());
 
-    $this->expectException(RuntimeException::class);
-    $method($this->getMockFeed(), new RuntimeException());
+    $this->expectException(\RuntimeException::class);
+    $method($this->getMockFeed(), new \RuntimeException());
   }
 
 }

@@ -101,10 +101,10 @@ class LogViewsData extends EntityViewsData {
         'id' => 'standard',
       ],
       'filter' => [
-        'id' => 'numeric',
+        'id' => 'string',
       ],
       'argument' => [
-        'id' => 'numeric',
+        'id' => 'string',
       ],
       'sort' => [
         'id' => 'standard',

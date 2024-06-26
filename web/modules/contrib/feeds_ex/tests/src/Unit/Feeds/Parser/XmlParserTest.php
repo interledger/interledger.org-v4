@@ -21,7 +21,6 @@ class XmlParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new XmlUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new XmlParser($configuration, 'xml', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());
@@ -257,7 +256,8 @@ class XmlParserTest extends ParserTestBase {
    *
    * @todo replace setProperty().
    */
-  public function _testLinkIsSet() {
+  public function testLinkIsSet() {
+    $this->markTestIncomplete();
     $this->setProperty($this->feed, 'config', [
       'FeedsFileFetcher' => [
         'source' => 'file fetcher source path',
@@ -284,11 +284,11 @@ class XmlParserTest extends ParserTestBase {
 
     // Unknown namespace.
     $unknown = 'thing:asdf';
-    $this->assertSame(NULL, $this->invokeMethod($this->parser, 'validateExpression', [&$unknown]));
+    $this->assertNull($this->invokeMethod($this->parser, 'validateExpression', [&$unknown]));
 
     // Empty.
     $empty = '';
-    $this->assertSame(NULL, $this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
+    $this->assertNull($this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
   }
 
   /**

@@ -58,8 +58,8 @@ abstract class FeedsFileSystemBase implements FeedsFileSystemInterface {
     $directory = $this->fileSystem->dirname($destination);
     $this->prepareDirectory($directory);
 
-    $this->fileSystem->saveData($data, $destination);
-    return $destination;
+    $path = $this->fileSystem->saveData($data, $destination);
+    return $path ?: $destination;
   }
 
   /**

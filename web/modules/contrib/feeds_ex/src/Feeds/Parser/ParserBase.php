@@ -2,10 +2,9 @@
 
 namespace Drupal\feeds_ex\Feeds\Parser;
 
-use Exception;
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -59,7 +58,22 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
    *
    * @see \Drupal\Component\Utility\Xss::filter()
    */
-  protected static $htmlTags = ['a', 'em', 'strong', 'cite', 'blockquote', 'br', 'pre', 'code', 'ul', 'ol', 'li', 'dl', 'dt', 'dd'];
+  protected static $htmlTags = [
+    'a',
+    'em',
+    'strong',
+    'cite',
+    'blockquote',
+    'br',
+    'pre',
+    'code',
+    'ul',
+    'ol',
+    'li',
+    'dl',
+    'dt',
+    'dd',
+  ];
 
   /**
    * A list of sources to parse.
@@ -226,10 +240,15 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
     $this->loadLibrary();
     $this->startErrorHandling();
     $result = new ParserResult();
-    // @todo Set link?
+    // @todo Find out what setting link in the D7 version of Feeds Extensible
+    // Parsers meant and then determine whether or not this code is still needed
+    // in some way.
+    // @see Drupal\Tests\feeds_ex\Unit\Feeds\Parser\HtmlParserTest::testLinkIsSet()
+    // @code
     // $fetcher_config = $feed->getConfigurationFor($feed->importer->fetcher);
+    // phpcs:ignore Drupal.Files.LineLength.TooLong
     // $result->link = is_string($fetcher_config['source']) ? $fetcher_config['source'] : '';
-
+    // @endcode
     try {
       $this->setUp($feed, $fetcher_result, $state);
       $this->parseItems($feed, $fetcher_result, $result, $state);
@@ -239,7 +258,7 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
       // The feed is empty.
       $this->getMessenger()->addMessage($this->t('The feed is empty.'), 'warning', FALSE);
     }
-    catch (Exception $exception) {
+    catch (\Exception $exception) {
       // Do nothing. Store for later.
     }
 
@@ -338,10 +357,6 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
 
       $result = $this->executeSourceExpression($machine_name, $expression, $row);
 
-      if (!empty($this->sources[$machine_name]['debug'])) {
-        $this->debug($result, $machine_name);
-      }
-
       if ($result === NULL) {
         $variables[$variable_map[$machine_name]] = '';
         continue;
@@ -370,6 +385,7 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
       if ($error['severity'] > $severity) {
         continue;
       }
+      // phpcs:ignore Drupal.Semantics.FunctionT.NotLiteralString
       $this->getMessenger()->addMessage($this->t($error['message'], $error['variables']), $error['severity'] <= RfcLogLevel::ERROR ? 'error' : 'warning', FALSE);
     }
   }
@@ -398,29 +414,6 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
   }
 
   /**
-   * Renders our debug messages into a list.
-   *
-   * @param mixed $data
-   *   The result of an expression. Either a scalar or a list of scalars.
-   * @param string $machine_name
-   *   The source key that produced this query.
-   */
-  protected function debug($data, $machine_name) {
-    $name = $machine_name;
-    if ($this->sources[$machine_name]['name']) {
-      $name = $this->sources[$machine_name]['name'];
-    }
-
-    $output = '<strong>' . $name . ':</strong>';
-    $data = is_array($data) ? $data : [$data];
-    foreach ($data as $key => $value) {
-      $data[$key] = Html::escape($value);
-    }
-    $output .= _theme('item_list', ['items' => $data]);
-    $this->getMessenger()->addMessage($output);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getMappingSources() {
@@ -445,14 +438,18 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    return [];
+    $encoding_form_state = $this->createSubFormState('encoding', $form_state);
+    $form['encoding'] = $this->getEncoder()->buildConfigurationForm([], $encoding_form_state);
+    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    // Validation is optional.
+    $encoding_form_state = $this->createSubFormState('encoding', $form_state);
+    $this->getEncoder()->validateConfigurationForm($form['encoding'], $encoding_form_state);
+    $form_state->setValue('encoding', $encoding_form_state->getValues());
   }
 
   /**
@@ -464,7 +461,29 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
       'context' => $this->getConfiguration('context'),
     ], $form_state->getValues());
 
+    $config += $config['encoding'];
+    unset($config['encoding']);
+
     $this->setConfiguration($config);
+  }
+
+  /**
+   * Creates a FormState object for subforms.
+   *
+   * @param string|array $key
+   *   The form state key.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to copy values from.
+   *
+   * @return \Drupal\Core\Form\FormStateInterface
+   *   A new form state object.
+   *
+   * @see \Drupal\Core\Form\FormStateInterface::getValue()
+   */
+  protected function createSubFormState($key, FormStateInterface $form_state): FormStateInterface {
+    // There might turn out to be other things that need to be copied and
+    // passed. This works for now.
+    return (new FormState())->setValues($form_state->getValue($key, []));
   }
 
   /**
@@ -533,7 +552,7 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
         }
       }
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       // Exceptions due to missing libraries could occur, so catch these.
       $form_state->setError($form, $e->getMessage());
     }

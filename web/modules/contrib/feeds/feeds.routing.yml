@@ -84,6 +84,7 @@ entity.feeds_feed.receive:
   defaults:
     _controller: 'Drupal\feeds\Controller\SubscriptionController::receive'
   requirements:
+    # External resources should be able to push data to this path.
     _access: 'TRUE'
     feeds_subscription: \d+
   methods: [POST]
@@ -93,6 +94,7 @@ entity.feeds_feed.subscribe:
   defaults:
     _controller: 'Drupal\feeds\Controller\SubscriptionController::subscribe'
   requirements:
+    # External resources should be able to push data to this path.
     _access: 'TRUE'
     feeds_subscription_id: \d+
   methods: [GET]

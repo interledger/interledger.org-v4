@@ -2,15 +2,13 @@
 
 namespace Drupal\feeds\Feeds\State;
 
-use Countable;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\feeds\StateInterface;
-use IteratorAggregate;
 
 /**
  * Status of the clean phase of an import.
  */
-interface CleanStateInterface extends StateInterface, IteratorAggregate, Countable {
+interface CleanStateInterface extends StateInterface, \IteratorAggregate, \Countable {
 
   /**
    * Returns if the list is initiated.

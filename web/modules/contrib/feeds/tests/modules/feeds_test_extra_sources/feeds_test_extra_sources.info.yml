@@ -3,9 +3,9 @@ type: module
 description: 'Provides various dummy Feeds source plugins.'
 package: Testing
 dependencies:
-  - feeds
+  - feeds:feeds
 
-# Information added by Drupal.org packaging script on 2023-05-31
-version: '8.x-3.0-beta4'
+# Information added by Drupal.org packaging script on 2024-06-13
+version: '8.x-3.0-beta5'
 project: 'feeds'
-datestamp: 1685558331
+datestamp: 1718270217

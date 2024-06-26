@@ -199,6 +199,12 @@ feeds.processor.entity:
       type: string
     skip_hash_check:
       type: boolean
+    skip_validation:
+      type: boolean
+    skip_validation_types:
+      type: sequence
+      sequence:
+        type: string
     authorize:
       type: boolean
     revision:

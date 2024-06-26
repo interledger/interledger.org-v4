@@ -2,7 +2,6 @@
 
 namespace Drupal\feeds_ex\Feeds\Parser;
 
-use DOMNode;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
 
@@ -43,7 +42,7 @@ class HtmlParser extends XmlParser {
   /**
    * {@inheritdoc}
    */
-  protected function getRaw(DOMNode $node) {
+  protected function getRaw(\DOMNode $node) {
     return $node->ownerDocument->saveHTML($node);
   }
 

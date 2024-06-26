@@ -47,8 +47,8 @@ function feeds_log_schema() {
       ],
       'entity_id' => [
         'description' => 'The ID of the entity that was involved. Can be empty if the entity failed to import.',
-        'type' => 'int',
-        'unsigned' => TRUE,
+        'type' => 'varchar_ascii',
+        'length' => 255,
         'not null' => FALSE,
       ],
       'entity_type_id' => [
@@ -124,5 +124,21 @@ function feeds_log_update_8001() {
       'length' => 255,
       'default' => '',
     ]);
+  }
+}
+
+/**
+ * Ensure entity_id in feeds_import_log_entry is a string.
+ */
+function feeds_log_update_8002() {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('feeds_import_log_entry')) {
+    $new = [
+      'description' => 'The ID of the entity that was involved. Can be empty if the entity failed to import.',
+      'type' => 'varchar_ascii',
+      'length' => 255,
+      'not null' => FALSE,
+    ];
+    $schema->changeField('feeds_import_log_entry', 'entity_id', 'entity_id', $new);
   }
 }

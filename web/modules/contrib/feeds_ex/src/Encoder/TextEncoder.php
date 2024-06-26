@@ -4,11 +4,13 @@ namespace Drupal\feeds_ex\Encoder;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Generic text encoder.
  */
 class TextEncoder implements EncoderInterface {
+  use StringTranslationTrait;
 
   /**
    * Whether the current system handles mb_* functions.
@@ -60,10 +62,10 @@ class TextEncoder implements EncoderInterface {
     $args = ['%encodings' => implode(', ', mb_detect_order())];
     $form['source_encoding'] = [
       '#type' => 'textfield',
-      '#title' => t('Source encoding'),
-      '#description' => t('The possible encodings of the source files. auto: %encodings', $args),
+      '#title' => $this->t('Source encoding'),
+      '#description' => $this->t('The possible encodings of the source files. auto: %encodings', $args),
       '#default_value' => implode(', ', $this->encodingList),
-      '#autocomplete_path' => '_feeds_ex/encoding_autocomplete',
+      '#autocomplete_route_name' => 'feeds_ex.encoding_autocomplete',
       '#maxlength' => 1024,
     ];
     return $form;
@@ -72,23 +74,31 @@ class TextEncoder implements EncoderInterface {
   /**
    * {@inheritdoc}
    */
-  public function configFormValidate(array &$values) {
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     if (!$this->isMultibyte) {
       return;
     }
+
+    $values =& $form_state->getValues();
+
     // Normalize encodings. Make them exactly as they are defined in
     // mb_list_encodings(), but maintain user-defined order.
-    $encodings = array_map('strtolower', array_map('trim', explode(',', $values['source_encoding'])));
+    $encodings = array_map('mb_strtolower', array_map('trim', explode(',', $values['source_encoding'])));
 
     $values['source_encoding'] = [];
     foreach (mb_list_encodings() as $encoding) {
       // Maintain order.
-      $pos = array_search(strtolower($encoding), $encodings);
+      $pos = array_search(mb_strtolower($encoding), $encodings);
       if ($pos !== FALSE) {
         $values['source_encoding'][$pos] = $encoding;
       }
     }
     ksort($values['source_encoding']);
+
+    // Re-index array to avoid config getting saved with numerical keys in the
+    // yml file.
+    $values['source_encoding'] = array_values($values['source_encoding']);
+
     // Make sure there's some value set.
     if (!$values['source_encoding']) {
       $values['source_encoding'][] = 'auto';

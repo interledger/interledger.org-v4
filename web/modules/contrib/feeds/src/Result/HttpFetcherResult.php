@@ -10,7 +10,9 @@ use Drupal\Core\File\FileSystemInterface;
  */
 class HttpFetcherResult extends FetcherResult implements HttpFetcherResultInterface {
 
-  use DependencySerializationTrait;
+  use DependencySerializationTrait {
+    __wakeup as traitWakeUp;
+  }
 
   /**
    * The HTTP headers.
@@ -43,6 +45,23 @@ class HttpFetcherResult extends FetcherResult implements HttpFetcherResultInterf
       $file_system = \Drupal::service('file_system');
     }
     $this->fileSystem = $file_system;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\ReturnTypeWillChange]
+  public function __wakeup() {
+    $this->traitWakeUp();
+
+    // In Feeds 8.x-3.0-beta3 and earlier, the $fileSystem property did not
+    // exist in this class yet, but when updating to Feeds 8.x-3.0-beta4 or
+    // later, it is possible that serialized objects from an older version of
+    // this class still exist. Therefore, we need to ensure that the $fileSystem
+    // property gets set.
+    if (!isset($this->fileSystem)) {
+      $this->fileSystem = \Drupal::service('file_system');
+    }
   }
 
   /**

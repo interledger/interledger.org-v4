@@ -75,6 +75,7 @@ class Feed {
     // details.
     // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
     if (\PHP_VERSION_ID < 80000) {
+      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
       $entity_loader = libxml_disable_entity_loader(TRUE);
     }
 
@@ -83,6 +84,7 @@ class Feed {
 
     // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
     if (\PHP_VERSION_ID < 80000) {
+      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
       libxml_disable_entity_loader($entity_loader);
     }
 

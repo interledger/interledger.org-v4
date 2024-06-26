@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
-use Drupal\feeds\FieldTargetDefinition;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
+use Drupal\feeds\FieldTargetDefinition;
 
 /**
  * @coversDefaultClass \Drupal\feeds\FieldTargetDefinition

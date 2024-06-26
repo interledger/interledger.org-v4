@@ -64,7 +64,7 @@ class CsvParser extends ParserBase {
       $item = new DynamicItem();
 
       foreach ($row as $delta => $cell) {
-        $key = isset($header[$delta]) ? $header[$delta] : $delta;
+        $key = $header[$delta] ?? $delta;
         if (isset($skip_sources[$key])) {
           // Skip custom sources that are not of type "csv".
           continue;

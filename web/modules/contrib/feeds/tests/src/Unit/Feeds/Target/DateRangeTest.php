@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\feeds\Feeds\Target\DateRange;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
-use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\DateRange

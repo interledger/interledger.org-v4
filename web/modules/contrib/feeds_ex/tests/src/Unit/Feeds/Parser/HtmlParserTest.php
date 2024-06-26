@@ -21,7 +21,6 @@ class HtmlParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new XmlUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new HtmlParser($configuration, 'html', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());
@@ -219,7 +218,8 @@ class HtmlParserTest extends ParserTestBase {
    *
    * @todo turned off, because unsure if this is still needed.
    */
-  public function _testLinkIsSet() {
+  public function testLinkIsSet() {
+    $this->markTestIncomplete();
     $this->setProperty($this->feed, 'config', [
       'FeedsFileFetcher' => [
         'source' => 'file fetcher source path',

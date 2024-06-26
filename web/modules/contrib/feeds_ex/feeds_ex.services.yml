@@ -1,4 +1,7 @@
 services:
+  feeds_ex.jmes_runtime_factory:
+    class: Drupal\feeds_ex\JmesRuntimeFactory
+    arguments: [ '@file_system', '@state' ]
   feeds_ex.json_utility:
     class: Drupal\feeds_ex\Utility\JsonUtility
   feeds_ex.xml_utility:

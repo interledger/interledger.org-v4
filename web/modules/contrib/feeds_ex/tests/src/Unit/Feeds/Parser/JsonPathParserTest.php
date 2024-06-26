@@ -6,8 +6,6 @@ use Drupal\feeds\Result\RawFetcherResult;
 use Drupal\feeds_ex\Feeds\Parser\JsonPathParser;
 use Drupal\feeds_ex\Messenger\TestMessenger;
 use Drupal\feeds_ex\Utility\JsonUtility;
-use Exception;
-use RuntimeException;
 
 /**
  * @coversDefaultClass \Drupal\feeds_ex\Feeds\Parser\JsonPathParser
@@ -23,7 +21,6 @@ class JsonPathParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new JsonUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new JsonPathParser($configuration, 'jsonpath', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());
@@ -157,6 +154,8 @@ class JsonPathParserTest extends ParserTestBase {
    * Tests parsing invalid JSON.
    */
   public function testInvalidJson() {
+    $invalid_json = '{ "invalid_json": "has_ending_comma", }';
+
     $config = [
       'context' => [
         'value' => '$.items[asdfasdf]',
@@ -168,9 +167,9 @@ class JsonPathParserTest extends ParserTestBase {
       ->method('getCustomSources')
       ->will($this->returnValue([]));
 
-    $this->expectException(RuntimeException::class);
-    $this->expectExceptionMessage('The JSON is invalid.');
-    $this->parser->parse($this->feed, new RawFetcherResult('invalid json', $this->fileSystem), $this->state);
+    $this->expectException(\RuntimeException::class);
+    $this->expectExceptionMessage("Invalid JSON: $invalid_json");
+    $this->parser->parse($this->feed, new RawFetcherResult($invalid_json, $this->fileSystem), $this->state);
   }
 
   /**
@@ -178,7 +177,7 @@ class JsonPathParserTest extends ParserTestBase {
    *
    * @todo Feeds log is gone.
    */
-  public function _testInvalidJsonLogMessages() {
+  public function testInvalidJsonLogMessages() {
     $config = [
       'context' => [
         'value' => '$.items[asdfasdf]',
@@ -193,10 +192,11 @@ class JsonPathParserTest extends ParserTestBase {
     try {
       $this->parser->parse($this->feed, new RawFetcherResult('invalid json', $this->fileSystem), $this->state);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       // Ignore any exceptions.
     }
 
+    $this->markTestIncomplete();
     $log_messages = $this->feed->getLogMessages();
     $this->assertCount(1, $log_messages);
     $this->assertSame($log_messages[0]['message'], 'Syntax error');

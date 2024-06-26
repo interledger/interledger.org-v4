@@ -21,7 +21,6 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new XmlUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
     $this->parser = new QueryPathXmlParser($configuration, 'querypathxml', [], $utility);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());
@@ -340,7 +339,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     // Empty.
     $empty = '';
-    $this->assertSame(NULL, $this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
+    $this->assertNull($this->invokeMethod($this->parser, 'validateExpression', [&$empty]));
   }
 
   /**

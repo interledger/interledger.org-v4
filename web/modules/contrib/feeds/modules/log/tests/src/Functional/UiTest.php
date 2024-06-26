@@ -39,6 +39,36 @@ class UiTest extends FeedsLogBrowserTestBase {
   }
 
   /**
+   * Tests log page with non-existing source.
+   */
+  public function testViewNonExistingSource() {
+    // Create a feed type.
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+
+    // Import.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+      'feeds_log' => TRUE,
+    ]);
+
+    // Create a log entry with a non-existing source.
+    $import_log = $this->container->get('entity_type.manager')
+      ->getStorage('feeds_import_log')
+      ->generate($feed);
+    $import_log->sources[] = 'foo://example';
+    $import_log->save();
+
+    // Go to the logs page.
+    $this->drupalGet('/feed/1/log');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextNotContains('The website encountered an unexpected error.');
+    $this->assertSession()->pageTextContains('foo://example');
+  }
+
+  /**
    * Tests viewing an item.
    */
   public function testViewItem() {

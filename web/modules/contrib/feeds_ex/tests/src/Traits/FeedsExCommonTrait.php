@@ -30,13 +30,23 @@ trait FeedsExCommonTrait {
   }
 
   /**
+   * Returns the base url of the Drupal installation.
+   *
+   * @return string
+   *   The Drupal base url.
+   */
+  protected function getBaseUrl(): string {
+    return \Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBaseUrl();
+  }
+
+  /**
    * Returns the url to the Feeds Extensible parsers resources directory.
    *
    * @return string
    *   The url to the Feeds resources directory.
    */
-  protected function resourcesUrl() {
-    return \Drupal::request()->getSchemeAndHttpHost() . '/' . \Drupal::service('extension.list.module')->getPath('feeds_ex') . '/tests/resources';
+  protected function resourcesUrl(): string {
+    return $this->getBaseUrl() . '/' . \Drupal::service('extension.list.module')->getPath('feeds_ex') . '/tests/resources';
   }
 
   /**

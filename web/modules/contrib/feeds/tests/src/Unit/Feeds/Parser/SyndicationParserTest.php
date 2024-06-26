@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser;
 
-use Drupal\feeds\Component\ZfExtensionManagerSfContainer;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\feeds\Component\ZfExtensionManagerSfContainer;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Parser\SyndicationParser;
 use Drupal\feeds\Result\RawFetcherResult;

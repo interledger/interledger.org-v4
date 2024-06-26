@@ -54,6 +54,12 @@ class SyndicationParser extends ParserBase implements ParserInterface, Container
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    if (!interface_exists('\Laminas\Feed\Reader\ExtensionManagerInterface', TRUE)) {
+      throw new \RuntimeException(t('The library "@library" is not installed. You can install it with Composer or by using the Ludwig module.', [
+        '@library' => 'laminas/laminas-feed',
+      ]));
+    }
+
     return new static(
       $configuration,
       $plugin_id,
@@ -66,12 +72,6 @@ class SyndicationParser extends ParserBase implements ParserInterface, Container
    * {@inheritdoc}
    */
   public function parse(FeedInterface $feed, FetcherResultInterface $fetcher_result, StateInterface $state) {
-    if (!class_exists('Laminas\Feed\Reader\Reader')) {
-      throw new \RuntimeException($this->t('The library "@library" is not installed. You can install it with Composer or by using the Ludwig module.', [
-        '@library' => 'laminas/laminas-feed',
-      ]));
-    }
-
     $result = new ParserResult();
     Reader::setExtensionManager($this->feedBridgeReader);
     Reader::registerExtension('GeoRSS');
@@ -86,7 +86,10 @@ class SyndicationParser extends ParserBase implements ParserInterface, Container
       $channel = Reader::importString($raw);
     }
     catch (ExceptionInterface $e) {
-      $args = ['%site' => $feed->label(), '%error' => trim($e->getMessage())];
+      $args = [
+        '%site' => $feed->label() ?? '',
+        '%error' => trim($e->getMessage()),
+      ];
       throw new \RuntimeException($this->t('The feed from %site seems to be broken because of error "%error".', $args));
     }
 

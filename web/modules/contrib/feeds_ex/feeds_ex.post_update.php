@@ -7,9 +7,9 @@
 
 use Drupal\Core\Config\Entity\ConfigEntityUpdater;
 use Drupal\feeds\FeedTypeInterface;
-use Drupal\feeds_ex\Feeds\Parser\XmlParser;
-use Drupal\feeds_ex\Feeds\Parser\QueryPathXmlParser;
 use Drupal\feeds_ex\Feeds\Parser\JsonParserBase;
+use Drupal\feeds_ex\Feeds\Parser\QueryPathXmlParser;
+use Drupal\feeds_ex\Feeds\Parser\XmlParser;
 
 /**
  * Add types to existing custom sources on feeds_ex parsers.

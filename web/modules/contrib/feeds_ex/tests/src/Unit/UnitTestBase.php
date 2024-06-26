@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\feeds_ex\Unit;
 
-use ReflectionMethod;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
@@ -50,7 +49,7 @@ abstract class UnitTestBase extends FeedsUnitTestCase {
    *   Whatever the method returns.
    */
   protected function invokeMethod($object, $method, array $arguments = []) {
-    $reflector = new ReflectionMethod($object, $method);
+    $reflector = new \ReflectionMethod($object, $method);
     $reflector->setAccessible(TRUE);
     return $reflector->invokeArgs($object, $arguments);
   }

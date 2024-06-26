@@ -2,8 +2,6 @@
 
 namespace Drupal\feeds_ex\Utility;
 
-use DOMDocument;
-use RuntimeException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
@@ -39,7 +37,7 @@ class XmlUtility {
     $success = $document->loadHTML($source, $options);
 
     if (!$success) {
-      throw new RuntimeException($this->t('There was an error parsing the HTML document.'));
+      throw new \RuntimeException('There was an error parsing the HTML document.');
     }
     return $document;
   }
@@ -54,7 +52,7 @@ class XmlUtility {
    *   The converted string.
    */
   public function decodeNamedHtmlEntities($markup) {
-    $map = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES|ENT_HTML5, 'UTF-8'));
+    $map = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES | ENT_HTML5, 'UTF-8'));
     unset($map['&amp;'], $map['&lt;'], $map['&gt;']);
 
     return strtr($markup, $map);
@@ -67,7 +65,7 @@ class XmlUtility {
    *   A new DOMDocument.
    */
   protected function buildDomDocument() {
-    $document = new DOMDocument();
+    $document = new \DOMDocument();
     $document->strictErrorChecking = FALSE;
     $document->resolveExternals = FALSE;
     // Libxml specific.

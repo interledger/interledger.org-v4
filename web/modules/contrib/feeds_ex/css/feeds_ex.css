@@ -4,8 +4,8 @@
  */
 
 .feeds-ex-source-table .form-type-machine-name .description {
-  margin-bottom: 0;
   max-width: 250px;
+  margin-bottom: 0;
   white-space: normal;
 }
 

@@ -6,18 +6,18 @@
 (function ($, Drupal) {
   Drupal.behaviors.feedsLogSetSummary = {
     attach(context) {
-      let $context = $(context);
+      const $context = $(context);
 
       $context.find('#edit-log-configuration').drupalSetSummary((context) => {
-        let enabled = $(context).find('input[name="log_configuration[status]"]:checked').val();
-        if (enabled == 1) {
+        const enabled = $(context).find(
+          'input[name="log_configuration[status]"]',
+        )[0].checked;
+        if (enabled) {
           return Drupal.t('Logging enabled');
         }
-        else {
-          return Drupal.t('Logging disabled');
-        }
-      });
-    }
-  };
 
+        return Drupal.t('Logging disabled');
+      });
+    },
+  };
 })(jQuery, Drupal);

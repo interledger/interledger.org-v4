@@ -2,7 +2,6 @@
 
 namespace Drupal\feeds_ex\Feeds\Parser;
 
-use RuntimeException;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
@@ -122,7 +121,7 @@ class JsonPathParser extends JsonParserBase {
    */
   protected function loadLibrary() {
     if (!class_exists('Flow\JSONPath\JSONPath')) {
-      throw new RuntimeException($this->t('The JSONPath library is not installed.'));
+      throw new \RuntimeException('The JSONPath library is not installed.');
     }
   }
 

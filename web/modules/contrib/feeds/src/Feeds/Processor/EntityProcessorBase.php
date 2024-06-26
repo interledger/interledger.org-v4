@@ -7,9 +7,10 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -18,6 +19,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Validation\ConstraintManager;
 use Drupal\feeds\Entity\FeedType;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Exception\EmptyFeedException;
@@ -46,6 +48,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Creates entities from feed items.
  */
 abstract class EntityProcessorBase extends ProcessorBase implements EntityProcessorInterface, ContainerFactoryPluginInterface, MappingPluginFormInterface {
+
+  /**
+   * The maximum length of a hash saved on the feed item.
+   *
+   * @var int
+   */
+  const FEED_ITEM_HASH_MAX_LENGTH = 32;
 
   /**
    * The entity type manager.
@@ -125,6 +134,13 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   protected $database;
 
   /**
+   * The validation constraint manager.
+   *
+   * @var \Drupal\Core\Validation\ConstraintManager
+   */
+  protected $constraintManager;
+
+  /**
    * Constructs an EntityProcessorBase object.
    *
    * @param array $configuration
@@ -149,8 +165,10 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    *   The logger for the feeds channel.
    * @param \Drupal\Core\Database\Connection $database
    *   The database service.
+   * @param \Drupal\Core\Validation\ConstraintManager $constraint_manager
+   *   The validation constraint manager.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager, TimeInterface $date_time, PluginManagerInterface $action_manager, RendererInterface $renderer, LoggerInterface $logger, Connection $database) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager, TimeInterface $date_time, PluginManagerInterface $action_manager, RendererInterface $renderer, LoggerInterface $logger, Connection $database, ConstraintManager $constraint_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityType = $entity_type_manager->getDefinition($plugin_definition['entity_type']);
     $this->storageController = $entity_type_manager->getStorage($plugin_definition['entity_type']);
@@ -161,6 +179,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $this->renderer = $renderer;
     $this->logger = $logger;
     $this->database = $database;
+    $this->constraintManager = $constraint_manager;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -181,6 +200,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $container->get('renderer'),
       $container->get('logger.factory')->get('feeds'),
       $container->get('database'),
+      $container->get('validation.constraint')
     );
   }
 
@@ -204,12 +224,23 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $clean_state->removeItem($existing_entity_id);
     }
 
-    // Bulk load existing entities to save on db queries.
-    if (($skip_existing && $existing_entity_id) || (!$existing_entity_id && $skip_new)) {
+    // Skip the item if the entity already existing and when we are not updating
+    // existing entities.
+    if ($skip_existing && $existing_entity_id) {
       $state->report(StateType::SKIP, 'Skipped because the entity already exists.', [
         'feed' => $feed,
         'item' => $item,
         'entity_label' => [$existing_entity_id, 'id'],
+      ]);
+      return;
+    }
+
+    // Skip the item if the entity does not exist and when we are not creating
+    // new entities.
+    if (!$existing_entity_id && $skip_new) {
+      $state->report(StateType::SKIP, 'Skipped because new entities should not be created.', [
+        'feed' => $feed,
+        'item' => $item,
       ]);
       return;
     }
@@ -255,7 +286,12 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
 
       // Validate the entity.
       $feed->dispatchEntityEvent(FeedsEvents::PROCESS_ENTITY_PREVALIDATE, $entity, $item);
-      $this->entityValidate($entity, $feed);
+      // Skip validation entirely if the "skip_validation" setting is enabled
+      // and there are no types specified.
+      $skip_validation = !empty($this->configuration['skip_validation']) && empty($this->configuration['skip_validation_types']);
+      if (!$skip_validation) {
+        $this->entityValidate($entity, $feed);
+      }
 
       // Dispatch presave event.
       $feed->dispatchEntityEvent(FeedsEvents::PROCESS_ENTITY_PRESAVE, $entity, $item);
@@ -335,7 +371,10 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id())
-      ->condition('feeds_item.hash', $this->getConfiguration('update_non_existent'), '<>')
+      // Filter out items on which the current clean action has already applied.
+      // The plugin name is truncated to 32 characters, because that is the
+      // maximum length of the hash.
+      ->condition('feeds_item.hash', substr($this->getConfiguration('update_non_existent'), 0, static::FEED_ITEM_HASH_MAX_LENGTH), '<>')
       ->execute();
     $state->setList($ids);
 
@@ -391,7 +430,9 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
 
     // If the entity was not deleted, update hash.
     if (isset($entity_reloaded->feeds_item)) {
-      $entity_reloaded->get('feeds_item')->getItemByFeed($feed)->hash = $update_non_existent;
+      // The name of the plugin is saved as the hash. However, because the hash
+      // length has a limit of 32 characters, the plugin name gets truncated.
+      $entity_reloaded->get('feeds_item')->getItemByFeed($feed)->hash = substr($update_non_existent, 0, static::FEED_ITEM_HASH_MAX_LENGTH);
       $this->storageController->save($entity_reloaded);
     }
 
@@ -648,36 +689,31 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       ]));
     }
 
+    /** @var \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations */
     $violations = $entity->validate();
     if (!count($violations)) {
       return;
     }
 
-    $errors = [];
-
-    foreach ($violations as $violation) {
-      $error = $violation->getMessage();
-
-      // Try to add more context to the message.
-      // @todo if an exception occurred because of a different bundle, add more
-      // context to the message.
-      $invalid_value = $violation->getInvalidValue();
-      if ($invalid_value instanceof FieldItemListInterface) {
-        // The invalid value is a field. Get more information about this field.
-        $error = new FormattableMarkup('@name (@property_name): @error', [
-          '@name' => $invalid_value->getFieldDefinition()->getLabel(),
-          '@property_name' => $violation->getPropertyPath(),
-          '@error' => $error,
-        ]);
+    // We need to get the class of the specified types as we can't access the ID
+    // later.
+    $skip_validation_types = $this->configuration['skip_validation_types'] ?? [];
+    if (!empty($skip_validation_types)) {
+      $constraint_defns = $this->constraintManager->getDefinitions();
+      foreach ($skip_validation_types as $constraint_type_id) {
+        if (isset($constraint_defns[$constraint_type_id])) {
+          $class = $constraint_defns[$constraint_type_id]['class'];
+          $skip_validation_types[$constraint_type_id] = $class;
+        }
       }
-      else {
-        $error = new FormattableMarkup('@property_name: @error', [
-          '@property_name' => $violation->getPropertyPath(),
-          '@error' => $error,
-        ]);
-      }
+    }
+    // Filter out violations to skip.
+    $this->filterViolations($violations, $skip_validation_types);
 
-      $errors[] = $error;
+    // Create error messages for the remaining violations.
+    $errors = $this->generateViolationErrors($violations);
+    if (!count($errors)) {
+      return;
     }
 
     $element = [
@@ -732,6 +768,89 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $message = $this->renderer->renderRoot($message_element);
 
     throw new ValidationException($message);
+  }
+
+  /**
+   * Filters out violations that should be skipped.
+   *
+   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   *   A list of constraint violations.
+   * @param array $skip_validation_types
+   *   The validation types to skip.
+   */
+  protected function filterViolations(EntityConstraintViolationListInterface $violations, array $skip_validation_types) {
+    if (empty($skip_validation_types)) {
+      // No validations to skip.
+      return;
+    }
+
+    $to_skip = [];
+
+    /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
+    foreach ($violations as $index => $violation) {
+      $constraint_type = $violation->getConstraint();
+
+      // If some validation errors are specified to be skipped, then check the
+      // type and skip if applicable.
+      $class = get_class($constraint_type);
+      if (in_array($class, $skip_validation_types)) {
+        // Skip this violation.
+        $to_skip[] = $index;
+        continue;
+      }
+    }
+
+    if (!empty($to_skip)) {
+      // Remove specific violations from the list, do so from last to first.
+      // This is because when removing a violation, the violations may get
+      // reindexed and by starting at the last violation to remove, we make sure
+      // the index numbers of the violations to remove stay intact.
+      $to_skip = array_reverse($to_skip);
+      foreach ($to_skip as $key) {
+        $violations->remove($index);
+      }
+    }
+  }
+
+  /**
+   * Goes through the violation list and creates an error message for each.
+   *
+   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   *   A list of constraint violations.
+   *
+   * @return array
+   *   Renderable violation errors.
+   */
+  protected function generateViolationErrors(EntityConstraintViolationListInterface $violations): array {
+    $errors = [];
+
+    /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
+    foreach ($violations as $violation) {
+      $error = $violation->getMessage();
+
+      // Try to add more context to the message.
+      // @todo if an exception occurred because of a different bundle, add more
+      // context to the message.
+      $invalid_value = $violation->getInvalidValue();
+      if ($invalid_value instanceof FieldItemListInterface) {
+        // The invalid value is a field. Get more information about this field.
+        $error = new FormattableMarkup('@name (@property_name): @error', [
+          '@name' => $invalid_value->getFieldDefinition()->getLabel(),
+          '@property_name' => $violation->getPropertyPath(),
+          '@error' => $error,
+        ]);
+      }
+      else {
+        $error = new FormattableMarkup('@property_name: @error', [
+          '@property_name' => $violation->getPropertyPath(),
+          '@error' => $error,
+        ]);
+      }
+
+      $errors[] = $error;
+    }
+
+    return $errors;
   }
 
   /**
@@ -865,6 +984,8 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       'insert_new' => static::INSERT_NEW,
       'update_existing' => static::SKIP_EXISTING,
       'update_non_existent' => static::KEEP_NON_EXISTENT,
+      'skip_validation' => FALSE,
+      'skip_validation_types' => [],
       'skip_hash_check' => FALSE,
       'values' => [],
       'authorize' => $this->entityType->entityClassImplements('Drupal\user\EntityOwnerInterface'),

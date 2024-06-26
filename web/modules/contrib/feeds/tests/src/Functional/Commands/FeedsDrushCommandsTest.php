@@ -87,7 +87,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     $this->assertFalse((bool) $feed->status->value);
 
     // Enable the feed using drush.
-    $this->drush('feeds:enable', [$feed->id()]);
+    $this->drush('feeds:enable', [(string) $feed->id()]);
 
     // Assert that the feed is now enabled.
     $feed = $this->reloadEntity($feed);
@@ -95,7 +95,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     $this->assertStringContainsString('The feed "Foo" has been enabled.', $this->getErrorOutput());
 
     // Try to enable it again.
-    $this->drush('feeds:enable', [$feed->id()]);
+    $this->drush('feeds:enable', [(string) $feed->id()]);
     $this->assertStringContainsString('This feed is already enabled.', $this->getErrorOutput());
   }
 
@@ -109,7 +109,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     ]);
 
     // Disable the feed using drush.
-    $this->drush('feeds:disable', [$feed->id()]);
+    $this->drush('feeds:disable', [(string) $feed->id()]);
 
     // Assert that the feed is now disabled.
     $feed = $this->reloadEntity($feed);
@@ -117,7 +117,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     $this->assertStringContainsString('The feed "Foo" has been disabled.', $this->getErrorOutput());
 
     // Try to disable it again.
-    $this->drush('feeds:disable', [$feed->id()]);
+    $this->drush('feeds:disable', [(string) $feed->id()]);
     $this->assertStringContainsString('This feed is already disabled.', $this->getErrorOutput());
   }
 
@@ -132,7 +132,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     ]);
 
     // Import feed using drush.
-    $this->drush('feeds:import', [$feed->id()]);
+    $this->drush('feeds:import', [(string) $feed->id()]);
     $this->assertStringContainsString('Created 25 Article items.', $this->getErrorOutput());
 
     $this->assertNodeCount(25);
@@ -154,7 +154,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     $feed->lock();
 
     // Try importing a feed using drush.
-    $this->drush('feeds:import', [$feed->id()]);
+    $this->drush('feeds:import', [(string) $feed->id()]);
 
     // Assert that no nodes got imported.
     $this->assertNodeCount(0);
@@ -177,7 +177,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     ]);
 
     // Try importing feed using drush.
-    $this->drush('feeds:import', [$feed->id()], [], NULL, NULL, 1);
+    $this->drush('feeds:import', [(string) $feed->id()], [], NULL, NULL, 1);
 
     // Assert that no nodes got imported.
     $this->assertNodeCount(0);
@@ -186,7 +186,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     $this->assertStringContainsString('The specified feed is disabled. If you want to force importing, specify --import-disabled.', $this->getSimplifiedErrorOutput());
 
     // Now try to import the feed with the --import-disabled option.
-    $this->drush('feeds:import', [$feed->id()], ['import-disabled' => NULL]);
+    $this->drush('feeds:import', [(string) $feed->id()], ['import-disabled' => NULL]);
 
     // Assert that nodes got imported now.
     $this->assertNodeCount(25);
@@ -377,12 +377,12 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
     ]);
     $this->assertFalse($feed->isLocked());
 
-    $this->drush('feeds:lock', [$feed->id()]);
+    $this->drush('feeds:lock', [(string) $feed->id()]);
     $this->assertTrue($feed->isLocked());
     $this->assertStringContainsString('The feed "Foo" has been locked.', $this->getErrorOutput());
 
     // Try to lock it again.
-    $this->drush('feeds:lock', [$feed->id()]);
+    $this->drush('feeds:lock', [(string) $feed->id()]);
     $this->assertStringContainsString('This feed is already locked.', $this->getErrorOutput());
   }
 
@@ -398,12 +398,12 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
 
     $this->assertTrue($feed->isLocked());
 
-    $this->drush('feeds:unlock', [$feed->id()]);
+    $this->drush('feeds:unlock', [(string) $feed->id()]);
     $this->assertFalse($feed->isLocked());
     $this->assertStringContainsString('The feed "Foo" has been unlocked.', $this->getErrorOutput());
 
     // Try to unlock it again.
-    $this->drush('feeds:unlock', [$feed->id()]);
+    $this->drush('feeds:unlock', [(string) $feed->id()]);
     $this->assertStringContainsString('This feed is already unlocked.', $this->getErrorOutput());
   }
 
@@ -457,7 +457,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
       $return[$command . ':non-existing-feed'] = [
         'expected_output' => 'There is no feed with id 25',
         'command' => $command,
-        'args' => [25],
+        'args' => ['25'],
       ];
     }
 

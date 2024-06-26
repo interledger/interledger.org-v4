@@ -119,9 +119,6 @@ abstract class AssetControllerBase extends FileDownloadController {
     if (file_exists($uri)) {
       return new BinaryFileResponse($uri, 200, [
         'Cache-control' => static::CACHE_CONTROL,
-        // @todo: remove the explicit setting of Content-Type once this is
-        // fixed in https://www.drupal.org/project/drupal/issues/3172550.
-        'Content-Type' => $this->contentType,
       ]);
     }
 
@@ -162,10 +159,11 @@ abstract class AssetControllerBase extends FileDownloadController {
     $attached_assets = new AttachedAssets();
     $include_libraries = explode(',', UrlHelper::uncompressQueryParameter($request->query->get('include')));
 
+    // Check that library names are in the correct format.
     $validate = function ($libraries_to_check) {
       foreach ($libraries_to_check as $library) {
-        if (substr_count($library, '/') !== 1) {
-          throw new BadRequestHttpException('The libraries to include are encoded incorrectly.');
+        if (substr_count($library, '/') === 0) {
+          throw new BadRequestHttpException(sprintf('The "%s" library name must include at least one slash.', $library));
         }
       }
     };

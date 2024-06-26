@@ -4,9 +4,9 @@ namespace Drupal\feeds\Feeds\Target;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -74,6 +74,7 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityFinder = $entity_finder;
+
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -87,7 +88,7 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
-      $container->get('feeds.entity_finder')
+      $container->get('feeds.entity_finder'),
     );
   }
 
@@ -193,6 +194,7 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
       case 'path':
       case 'uuid':
       case 'feeds_item':
+      case 'email':
         return TRUE;
 
       default:

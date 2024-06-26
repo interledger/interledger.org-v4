@@ -298,7 +298,7 @@ class FeedTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    if ($form_state->getErrors()) {
+    if ($form_state->getErrors() || !$form_state->isSubmitted()) {
       return;
     }
     $values =& $form_state->getValues();

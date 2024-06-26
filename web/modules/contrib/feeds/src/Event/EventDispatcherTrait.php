@@ -2,8 +2,11 @@
 
 namespace Drupal\feeds\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
+// phpcs:disable Drupal.Classes.PropertyDeclaration
+// phpcs:disable Drupal.NamingConventions.ValidVariableName.LowerCamelName
+
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Wrapper methods for the event dispatcher interface.

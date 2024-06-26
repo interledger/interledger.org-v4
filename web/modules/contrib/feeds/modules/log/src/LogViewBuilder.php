@@ -2,13 +2,14 @@
 
 namespace Drupal\feeds_log;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Url;
 use Drupal\feeds_log\Form\FilterForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -173,7 +174,7 @@ class LogViewBuilder extends EntityViewBuilder {
       $row['operation'] = $log->operation;
       $row['message'] = [
         'data' => [
-          '#markup' => $this->t($log->message, $log->variables),
+          '#markup' => new FormattableMarkup($log->message, $log->variables),
         ],
       ];
 

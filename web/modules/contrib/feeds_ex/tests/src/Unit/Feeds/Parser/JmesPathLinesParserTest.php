@@ -25,8 +25,18 @@ class JmesPathLinesParserTest extends JsonPathLinesParserTest {
 
     $configuration = ['feed_type' => $this->feedType];
     $utility = new JsonUtility();
-    $utility->setStringTranslation($this->getStringTranslationStub());
-    $this->parser = new JmesPathLinesParser($configuration, 'jmespathlines', [], $utility);
+
+    // Create a mocked JMESPath runtime factory.
+    $factoryMock = $this->createMock('Drupal\feeds_ex\JmesRuntimeFactoryInterface');
+    $factoryMock->expects($this->any())
+      ->method('createRuntime')
+      ->will($this->returnCallback(
+        function () {
+          return new AstRuntime();
+        }
+      ));
+
+    $this->parser = new JmesPathLinesParser($configuration, 'jmespathlines', [], $utility, $factoryMock);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
     $this->parser->setFeedsExMessenger(new TestMessenger());
 
@@ -38,17 +48,6 @@ class JmesPathLinesParserTest extends JsonPathLinesParserTest {
           'value' => 'name',
         ],
       ]));
-
-    // Set JMESPath runtime factory.
-    $factoryMock = $this->createMock('Drupal\feeds_ex\JmesRuntimeFactoryInterface');
-    $factoryMock->expects($this->any())
-      ->method('createRuntime')
-      ->will($this->returnCallback(
-        function () {
-          return new AstRuntime();
-        }
-      ));
-    $this->parser->setRuntimeFactory($factoryMock);
 
     $this->fetcherResult = new FetcherResult($this->moduleDir . '/tests/resources/test.jsonl');
   }

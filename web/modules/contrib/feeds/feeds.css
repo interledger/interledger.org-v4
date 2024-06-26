@@ -8,9 +8,9 @@
 }
 
 .feeds-mapping-form .item-list ul li {
+  margin: 0;
   list-style: none;
   list-style-type: none;
-  margin: 0;
 }
 
 .feeds-mapping-form .feeds-mapping-settings-editing {
@@ -40,9 +40,9 @@
 }
 
 .missing-target .target::before {
-  content: url("images/error.svg");
+  float: left;
   width: 16px;
   height: 16px;
-  float: left;
   margin-right: .5em;
+  content: url("images/error.svg");
 }

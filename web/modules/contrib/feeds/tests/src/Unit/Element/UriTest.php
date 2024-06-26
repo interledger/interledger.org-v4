@@ -19,7 +19,7 @@ namespace Drupal\Tests\feeds\Unit\Element {
      */
     public function setUp(): void {
       parent::setUp();
-
+      
       // Set a stub for the string translation service.
       $container = new ContainerBuilder();
       $container->set('string_translation', $this->getStringTranslationStub());
@@ -32,8 +32,8 @@ namespace Drupal\Tests\feeds\Unit\Element {
     public function testValidation() {
       $complete_form = [];
       $form_state = new FormState();
-      $stream_wrapper_manager = new StreamWrapperManager();
-
+      /** @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $stream_wrapper_manager */
+      $stream_wrapper_manager = new StreamWrapperManager($this->createMock('\Psr\Container\ContainerInterface'));
       $element_object = new Uri([], '', []);
 
       $element = ['#value' => ' public://test', '#parents' => ['element']];

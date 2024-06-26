@@ -3,6 +3,9 @@
 namespace Drupal\feeds\Result;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\feeds\Exception\FileNotFoundException;
+use Drupal\feeds\Exception\FileNotReadableException;
+use Drupal\feeds\Exception\FileNotWritableException;
 
 /**
  * The default fetcher result object.
@@ -45,16 +48,18 @@ class FetcherResult implements FetcherResultInterface {
   /**
    * Checks that a file exists and is readable.
    *
-   * @throws \RuntimeException
-   *   Thrown if the file isn't readable or writable.
+   * @throws \Drupal\feeds\Exception\FileNotFoundException
+   *   Thrown if the file cannot be found.
+   * @throws \Drupal\feeds\Exception\FileNotReadableException
+   *   Thrown if the file is not readable.
    */
   protected function checkFile() {
     if (!file_exists($this->filePath)) {
-      throw new \RuntimeException(new FormattableMarkup('File %filepath does not exist.', ['%filepath' => $this->filePath]));
+      throw new FileNotFoundException(new FormattableMarkup('File %filepath does not exist.', ['%filepath' => $this->filePath]));
     }
 
     if (!is_readable($this->filePath)) {
-      throw new \RuntimeException(new FormattableMarkup('File %filepath is not readable.', ['%filepath' => $this->filePath]));
+      throw new FileNotReadableException(new FormattableMarkup('File %filepath is not readable.', ['%filepath' => $this->filePath]));
     }
   }
 
@@ -87,7 +92,7 @@ class FetcherResult implements FetcherResultInterface {
    * @return string
    *   The file path of the sanitized file.
    *
-   * @throws \RuntimeException
+   * @throws \Drupal\feeds\Exception\FileNotWritableException
    *   Thrown if the file is not writable.
    */
   protected function sanitizeFile() {
@@ -102,7 +107,7 @@ class FetcherResult implements FetcherResultInterface {
     }
 
     if (!is_writable($this->filePath)) {
-      throw new \RuntimeException(new FormattableMarkup('File %filepath is not writable.', ['%filepath' => $this->filePath]));
+      throw new FileNotWritableException(new FormattableMarkup('File %filepath is not writable.', ['%filepath' => $this->filePath]));
     }
 
     $contents = file_get_contents($this->filePath);

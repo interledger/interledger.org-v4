@@ -13,4 +13,12 @@ use Drupal\feeds\Feeds\CustomSource\BlankSource;
  * )
  */
 class JsonSource extends BlankSource {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function configSourceDescription() {
+    return NULL;
+  }
+
 }

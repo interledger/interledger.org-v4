@@ -37,7 +37,9 @@ class HttpFetcherFeedForm extends ExternalPluginFormBase implements ContainerInj
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('http_client'));
+    return new static(
+      $container->get('http_client'),
+    );
   }
 
   /**

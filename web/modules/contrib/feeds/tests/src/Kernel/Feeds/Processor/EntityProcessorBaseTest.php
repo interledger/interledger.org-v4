@@ -5,12 +5,12 @@ namespace Drupal\Tests\feeds\Kernel\Feeds\Processor;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
+use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
 use Drupal\feeds\Feeds\State\CleanState;
 use Drupal\feeds\Feeds\Target\StringTarget;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\State;
 use Drupal\feeds\StateInterface;
@@ -96,6 +96,7 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
       \Drupal::service('renderer'),
       \Drupal::service('logger.factory')->get('feeds'),
       \Drupal::service('database'),
+      \Drupal::service('validation.constraint'),
     ]);
 
     $this->feed = $this->createMock(FeedInterface::class);

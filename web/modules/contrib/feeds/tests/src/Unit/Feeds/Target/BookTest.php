@@ -9,8 +9,8 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
   use Drupal\Core\Field\FieldStorageDefinitionInterface;
   use Drupal\feeds\EntityFinderInterface;
   use Drupal\feeds\Exception\ReferenceNotFoundException;
-  use Drupal\feeds\FeedTypeInterface;
   use Drupal\feeds\Feeds\Target\Book;
+  use Drupal\feeds\FeedTypeInterface;
   use Drupal\feeds\TargetDefinition;
   use Drupal\node\NodeInterface;
   use Drupal\node\NodeStorageInterface;

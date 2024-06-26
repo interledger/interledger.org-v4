@@ -4,8 +4,8 @@ namespace Drupal\Tests\feeds\Unit;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedImportHandler;
+use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedsExecutableInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

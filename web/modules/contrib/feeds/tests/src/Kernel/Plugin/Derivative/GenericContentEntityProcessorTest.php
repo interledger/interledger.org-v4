@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Plugin\Derivative;
 
-use Drupal\feeds\Plugin\Derivative\GenericContentEntityProcessor as GenericContentEntityProcessorDerivative;
 use Drupal\feeds\Feeds\Processor\GenericContentEntityProcessor;
+use Drupal\feeds\Plugin\Derivative\GenericContentEntityProcessor as GenericContentEntityProcessorDerivative;
 use Drupal\feeds_test_plugin\Feeds\Processor\EntityTestProcessor;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 

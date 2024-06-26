@@ -83,7 +83,10 @@ class FeedsItemImportedFormatterTest extends FeedsItemFormatterTestBase {
         '1543374515',
         '<div>Wed, 11/28/2018 - 14:08</div>',
       ],
-      'timestamp custom date format' => ['1543370515', '<div>11-28-2018</div>'],
+      'timestamp custom date format' => [
+        '1543370515',
+        '<div>11-28-2018</div>',
+      ],
     ];
   }
 

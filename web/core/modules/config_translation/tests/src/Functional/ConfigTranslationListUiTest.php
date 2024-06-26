@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\config_translation\Functional;
 
 use Drupal\block_content\Entity\BlockContentType;
@@ -493,7 +495,7 @@ class ConfigTranslationListUiTest extends BrowserTestBase {
   /**
    * Tests if translate link is added to operations in all configuration lists.
    */
-  public function testTranslateOperationInListUi() {
+  public function testTranslateOperationInListUi(): void {
     // All lists based on paths provided by the module.
     $this->doBlockListTest();
     $this->doMenuListTest();

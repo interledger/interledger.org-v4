@@ -8,9 +8,9 @@
             "version": "0.7.5",
             "url": "https://github.com/SoftCreatR/JSONPath/archive/0.7.5.zip"
         },
-        "arthurkushman/query-path": {
-            "version": "3.1.4",
-            "url": "https://github.com/arthurkushman/querypath/archive/3.1.4.zip"
+        "gravitypdf/querypath": {
+            "version": "3.2.3",
+            "url": "https://github.com/GravityPDF/querypath/archive/3.2.3.zip"
         }
     }
 }

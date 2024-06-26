@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\feeds\Unit\EventSubscriber;
 
-use Drupal\feeds\EventSubscriber\LazySubscriber;
 use Drupal\feeds\Event\ClearEvent;
 use Drupal\feeds\Event\ExpireEvent;
 use Drupal\feeds\Event\FeedsEvents;
@@ -10,6 +9,7 @@ use Drupal\feeds\Event\FetchEvent;
 use Drupal\feeds\Event\InitEvent;
 use Drupal\feeds\Event\ParseEvent;
 use Drupal\feeds\Event\ProcessEvent;
+use Drupal\feeds\EventSubscriber\LazySubscriber;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;

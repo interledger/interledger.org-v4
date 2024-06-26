@@ -2,7 +2,6 @@
 
 namespace Drupal\feeds_ex\Feeds\Parser;
 
-use RuntimeException;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
@@ -67,7 +66,7 @@ class JmesPathLinesParser extends JmesPathParser {
       try {
         $row = $this->utility->decodeJsonArray($row);
       }
-      catch (RuntimeException $e) {
+      catch (\RuntimeException $e) {
         // An array wasn't returned. Skip this item.
         continue;
       }
