@@ -42,8 +42,8 @@
 /* Shared custom property values */
 /* @link https://utopia.fyi/type/calculator?c=360,18,1.25,1280,24,1.25,6,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root {
-  --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
   --step--2: clamp(0.72rem, 0.6261rem + 0.4174vi, 0.96rem);
   --step--1: clamp(0.9rem, 0.7826rem + 0.5217vi, 1.2rem);
   --step-0: clamp(1.125rem, 0.9783rem + 0.6522vi, 1.5rem);
@@ -67,8 +67,7 @@
   --site-header-height: 4.375rem;
   --admin-nav-height: 39px;
 
-  --box-shadow: 0px 1px 1px hsla(0, 0%, 0%, 0.06),
-    0px 2px 2px hsla(0, 0%, 0%, 0.06);
+  --box-shadow: 0px 1px 1px hsla(0, 0%, 0%, 0.06), 0px 2px 2px hsla(0, 0%, 0%, 0.06);
   --color-white: #fff;
   --color-black: #000;
   --color-gray: #444;
@@ -85,66 +84,30 @@
   --color-tech-main-fallback: #007777;
   --color-tech-main: oklch(51.54% 0.088 194.77);
   --color-tech-secondary: oklch(55.46% 0.206 32.58);
-  --color-tech-gradient: linear-gradient(
-    to right,
-    oklch(76.55% 0.102 184.83),
-    oklch(91.46% 0.049 186.79)
-  );
-  --color-tech-gradient-dark: linear-gradient(
-    to right,
-    var(--color-tech-main),
-    oklch(74.53% 0.082 202.65)
-  );
-  --filter-tech: invert(18%) sepia(85%) saturate(4735%) hue-rotate(172deg)
-    brightness(93%) contrast(101%);
+  --color-tech-gradient: linear-gradient(to right, oklch(76.55% 0.102 184.83), oklch(91.46% 0.049 186.79));
+  --color-tech-gradient-dark: linear-gradient(to right, var(--color-tech-main), oklch(74.53% 0.082 202.65));
+  --filter-tech: invert(18%) sepia(85%) saturate(4735%) hue-rotate(172deg) brightness(93%) contrast(101%);
 
   --color-mission-main-fallback: #cf2801;
   --color-mission-main: oklch(55.27% 0.205 32.62);
   --color-mission-secondary: oklch(62.58% 0.151 148.73);
-  --color-mission-gradient: linear-gradient(
-    to right,
-    oklch(79.3% 0.147 60.58),
-    oklch(91.1% 0.061 64.53)
-  );
-  --color-mission-gradient-dark: linear-gradient(
-    to right,
-    var(--color-mission-main),
-    oklch(76.1% 0.164 65)
-  );
-  --filter-mission: invert(22%) sepia(92%) saturate(1896%) hue-rotate(3deg)
-    brightness(101%) contrast(123%);
+  --color-mission-gradient: linear-gradient(to right, oklch(79.3% 0.147 60.58), oklch(91.1% 0.061 64.53));
+  --color-mission-gradient-dark: linear-gradient(to right, var(--color-mission-main), oklch(76.1% 0.164 65));
+  --filter-mission: invert(22%) sepia(92%) saturate(1896%) hue-rotate(3deg) brightness(101%) contrast(123%);
 
   --color-vision-main-fallback: #6500d8;
   --color-vision-main: oklch(46.08% 0.258 291.47);
   --color-vision-secondary: oklch(57.02% 0.229 3.9);
-  --color-vision-gradient: linear-gradient(
-    to right,
-    oklch(73.61% 0.156 297.21),
-    oklch(90.94% 0.051 300.18)
-  );
-  --color-vision-gradient-dark: linear-gradient(
-    to right,
-    var(--color-vision-main),
-    oklch(68.24% 0.206 303.127)
-  );
-  --filter-vision: invert(18%) sepia(100%) saturate(6622%) hue-rotate(271deg)
-    brightness(78%) contrast(123%);
+  --color-vision-gradient: linear-gradient(to right, oklch(73.61% 0.156 297.21), oklch(90.94% 0.051 300.18));
+  --color-vision-gradient-dark: linear-gradient(to right, var(--color-vision-main), oklch(68.24% 0.206 303.127));
+  --filter-vision: invert(18%) sepia(100%) saturate(6622%) hue-rotate(271deg) brightness(78%) contrast(123%);
 
   --color-values-main-fallback: #d80068;
   --color-values-main: oklch(56.84% 0.229 3.717);
   --color-values-secondary: var(--color-vision-main);
-  --color-values-gradient: linear-gradient(
-    to right,
-    oklch(76.01% 0.163 355.138),
-    oklch(91.64% 0.052 347.23)
-  );
-  --color-values-gradient-dark: linear-gradient(
-    to right,
-    var(--color-values-main),
-    oklch(73% 0.158 351.42)
-  );
-  --filter-values: invert(20%) sepia(62%) saturate(4370%) hue-rotate(316deg)
-    brightness(81%) contrast(118%);
+  --color-values-gradient: linear-gradient(to right, oklch(76.01% 0.163 355.138), oklch(91.64% 0.052 347.23));
+  --color-values-gradient-dark: linear-gradient(to right, var(--color-values-main), oklch(73% 0.158 351.42));
+  --filter-values: invert(20%) sepia(62%) saturate(4370%) hue-rotate(316deg) brightness(81%) contrast(118%);
 
   --color-primary-fallback: var(--color-vision-main-fallback);
   --color-primary: var(--color-vision-main);
@@ -155,8 +118,7 @@
 .path-summit {
   --color-primary-fallback: #08ffff;
   --color-primary: oklch(90.54% 0.154 194.77);
-  --filter-primary: invert(87%) sepia(60%) saturate(2857%) hue-rotate(111deg)
-    brightness(101%) contrast(108%);
+  --filter-primary: invert(87%) sepia(60%) saturate(2857%) hue-rotate(111deg) brightness(101%) contrast(108%);
   --color-gray: #eee;
 
   --color-nav-hover: #444;
@@ -303,8 +265,7 @@ figcaption {
   padding-inline: var(--space-xs);
   padding-block: var(--space-3xs);
   cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.16), 0px 4px 4px rgba(0, 0, 0, 0.4),
-    0px 0px 0px 2px var(--color-btn-outline);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.16), 0px 4px 4px rgba(0, 0, 0, 0.4), 0px 0px 0px 2px var(--color-btn-outline);
   font-size: var(--step--1);
 }
 
@@ -321,10 +282,8 @@ figcaption {
 }
 
 .button:active {
-  box-shadow: -9px 5px 4px -16px rgba(232, 232, 232, 0.5),
-    0px 5px 12px -16px #c6c6c6, 0px 4px 5px rgba(0, 0, 0, 0.02),
-    0px 8px 5px rgba(0, 0, 0, 0.11),
-    0px 0px 0px 2px var(--color-btn-outline-pressed),
+  box-shadow: -9px 5px 4px -16px rgba(232, 232, 232, 0.5), 0px 5px 12px -16px #c6c6c6, 0px 4px 5px rgba(0, 0, 0, 0.02),
+    0px 8px 5px rgba(0, 0, 0, 0.11), 0px 0px 0px 2px var(--color-btn-outline-pressed),
     inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
 }
 
@@ -406,10 +365,8 @@ section {
 }
 
 @media screen and (min-width: 40em) {
-  .layout--twocol-section.layout--twocol-section--50-50
-    > .layout__region--first,
-  .layout--twocol-section.layout--twocol-section--50-50
-    > .layout__region--second {
+  .layout--twocol-section.layout--twocol-section--50-50 > .layout__region--first,
+  .layout--twocol-section.layout--twocol-section--50-50 > .layout__region--second {
     flex: 1 1 50%;
   }
 }
@@ -701,8 +658,7 @@ section {
     min-width: 100%;
     left: 0;
     top: calc(1.4em + var(--space-s) * 2);
-    box-shadow: 2px 3px 6px -3px hsla(0, 0%, 0%, 0.06),
-      -2px 3px 6px -3px hsla(0, 0%, 0%, 0.06);
+    box-shadow: 2px 3px 6px -3px hsla(0, 0%, 0%, 0.06), -2px 3px 6px -3px hsla(0, 0%, 0%, 0.06);
   }
 
   .site-nav__toggle {
@@ -875,9 +831,7 @@ section {
 @media screen and (min-width: 1140px) {
   .ambassadors-wrapper {
     display: grid;
-    grid-template-columns: calc(50% - (var(--space-s) / 2)) calc(
-        50% - (var(--space-s) / 2)
-      );
+    grid-template-columns: calc(50% - (var(--space-s) / 2)) calc(50% - (var(--space-s) / 2));
     align-items: start;
     gap: var(--space-s);
   }
@@ -1374,6 +1328,19 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   filter: initial;
 }
 
+@media screen and (max-width: 799px) {
+  .hero__desc {
+    text-align: center;
+  }
+
+  .hero__cta {
+    display: flex;
+    width: max-content;
+    margin-inline: auto;
+    margin-block-end: var(--space-m);
+  }
+}
+
 .hero--photography {
   justify-content: start;
   background-repeat: no-repeat;
@@ -1399,11 +1366,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 }
 
 .hero--illustration {
-  --bg-image: linear-gradient(
-    to right,
-    var(--gradient-start) 0%,
-    var(--gradient-end) 100%
-  );
+  --bg-image: linear-gradient(to right, var(--gradient-start) 0%, var(--gradient-end) 100%);
 }
 
 .hero--illustration h2 {
