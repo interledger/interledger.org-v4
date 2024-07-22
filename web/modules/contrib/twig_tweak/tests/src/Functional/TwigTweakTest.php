@@ -351,6 +351,7 @@ final class TwigTweakTest extends BrowserTestBase {
     $this->assertXpath($xpath);
 
     // -- 'children'.
+    // cspell:disable-next-line
     $xpath = '//div[@class = "tt-children" and text() = "doremi"]';
     $this->assertXpath($xpath);
 

@@ -79,7 +79,7 @@ class BlockViewBuilder {
     AccountInterface $account,
     RequestStack $request_stack,
     RouteMatchInterface $route_match,
-    TitleResolverInterface $title_resolver
+    TitleResolverInterface $title_resolver,
   ) {
     $this->pluginManagerBlock = $plugin_manager_block;
     $this->contextRepository = $context_repository;

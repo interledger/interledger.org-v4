@@ -2,8 +2,10 @@
 
 namespace Drupal\Tests\twig_tweak\Kernel;
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
@@ -101,7 +103,7 @@ final class ImageViewBuilderTest extends AbstractTestCase {
 
     // Create a copy of a test image file in root. Original sizes: 40x20px.
     $this->publicImageUri = 'public://image-test-do.jpg';
-    $file_system->copy('core/tests/fixtures/files/image-test.jpg', $this->publicImageUri, FileSystemInterface::EXISTS_REPLACE);
+    $file_system->copy('core/tests/fixtures/files/image-test.jpg', $this->publicImageUri, FileExists::Replace);
     $this->assertFileExists($this->publicImageUri);
     $this->publicImage = File::create([
       'uri' => $this->publicImageUri,
@@ -111,7 +113,7 @@ final class ImageViewBuilderTest extends AbstractTestCase {
 
     // Create a copy of a test image file in root. Original sizes: 40x20px.
     $this->privateImageUri = 'private://image-test-do.png';
-    $file_system->copy('core/tests/fixtures/files/image-test.png', $this->privateImageUri, FileSystemInterface::EXISTS_REPLACE);
+    $file_system->copy('core/tests/fixtures/files/image-test.png', $this->privateImageUri, FileExists::Replace);
     $this->assertFileExists($this->privateImageUri);
     $this->privateImage = File::create([
       'uri' => $this->privateImageUri,
@@ -133,6 +135,11 @@ final class ImageViewBuilderTest extends AbstractTestCase {
    * Test callback.
    */
   public function testImageViewBuilder(): void {
+    // @todo Remove this once we drop support for Drupal 10.
+    if (version_compare(\Drupal::VERSION, '11.0.dev', '<')) {
+      self::markTestSkipped();
+    }
+
     $view_builder = $this->container->get('twig_tweak.image_view_builder');
 
     $uri = $this->publicImage->getFileUri();
@@ -210,7 +217,7 @@ final class ImageViewBuilderTest extends AbstractTestCase {
       ],
     ];
     self::assertRenderArray($expected_build, $build);
-    self::assertSame('<picture><img src="/files/styles/small/public/image-test-do.jpg?itok=abc" width="10" height="10" alt="Image Test Do" loading="lazy" /></picture>', $this->renderPlain($build));
+    self::assertSame('<picture><img width="10" height="10" src="/files/styles/small/public/image-test-do.jpg?itok=abc" alt="Image Test Do" loading="lazy" /></picture>', $this->renderPlain($build));
 
     // -- Private image with access check.
     $build = $view_builder->build($this->privateImage);
@@ -247,7 +254,13 @@ final class ImageViewBuilderTest extends AbstractTestCase {
    * Renders a render array.
    */
   private function renderPlain(array $build): string {
-    $html = $this->container->get('renderer')->renderPlain($build);
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
+    $html = DeprecationHelper::backwardsCompatibleCall(
+      \Drupal::VERSION, '10.3.0',
+      fn () => $renderer->renderInIsolation($build),
+      fn () => $renderer->renderPlain($build),
+    );
     $html = preg_replace('#src=".+/files/#s', 'src="/files/', $html);
     $html = preg_replace('#\?itok=.+?"#', '?itok=abc"', $html);
     $html = preg_replace(['#\s{2,}#', '#\n#'], '', $html);

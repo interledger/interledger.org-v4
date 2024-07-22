@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\twig_tweak\Kernel;
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Cache\Cache;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -187,7 +188,13 @@ final class EntityViewBuilderTest extends AbstractTestCase {
    * Renders a render array.
    */
   private function renderPlain(array $build): string {
-    $actual_html = $this->container->get('renderer')->renderPlain($build);
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
+    $actual_html = DeprecationHelper::backwardsCompatibleCall(
+      \Drupal::VERSION, '10.3.0',
+      fn () => $renderer->renderInIsolation($build),
+      fn () => $renderer->renderPlain($build),
+    );
     $actual_html = preg_replace('#<footer>.+</footer>#s', '', $actual_html);
     return $actual_html;
   }
