@@ -1177,6 +1177,39 @@ section {
   transform: translateX(0.5em);
 }
 
+/* CTA button content type styles */
+.cta--btn__link {
+  border-radius: 10em;
+  background-color: var(--color-hero-txt);
+  padding: var(--space-xs) var(--space-s);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-underline-offset: 4px;
+}
+
+.cta--btn__link::after {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M11.92 5.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.004 1.004 0 0 0-1.42 1.42L8.59 5H1a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>');
+  flex: none;
+  width: 0.6em;
+  filter: var(--filter-primary);
+  transition: transform 150ms ease-in-out;
+}
+
+.cta--btn__link:hover::after {
+  transform: translateX(0.25rem);
+}
+
+[class*="page-node-type-summit"] .cta--btn__link {
+  background-color: var(--color-primary-fallback);
+  background-color: var(--color-primary);
+  color: var(--color-btn-txt);
+}
+
+[class*="page-node-type-summit"] .cta--btn__link::after {
+  filter: initial;
+}
+
 /* CTA stripe content type styles */
 .cta--mailing-list {
   border-radius: var(--border-radius);
@@ -1299,33 +1332,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   color: var(--color-hero-txt);
   margin-block-start: var(--space-xs);
   margin-block-end: var(--space-s);
-}
-
-.hero__cta {
-  border-radius: 10em;
-  background-color: var(--color-hero-txt);
-  padding: var(--space-xs) var(--space-s);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  text-underline-offset: 4px;
-}
-
-.hero__cta::after {
-  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M11.92 5.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.004 1.004 0 0 0-1.42 1.42L8.59 5H1a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>');
-  flex: none;
-  width: 0.6em;
-  filter: var(--filter-primary);
-}
-
-[class*="page-node-type-summit"] .hero__cta {
-  background-color: var(--color-primary-fallback);
-  background-color: var(--color-primary);
-  color: var(--color-btn-txt);
-}
-
-[class*="page-node-type-summit"] .hero__cta::after {
-  filter: initial;
 }
 
 @media screen and (max-width: 799px) {
