@@ -1,11 +1,11 @@
 <section class="cta--btn node--{{ node.id }}">
   <div class="content-wrapper">
     {% if node.field_cta_link.0.url.external %}
-    <a class="cta--btn__link" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_cta_link.uri }}">
+    <a class="cta--btn__link" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_cta_link.uri }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
       {{ node.field_cta_link.title }}
     </a>
     {% else %}
-    <a class="cta--btn__link" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_cta_link.0.url.routeName, node.field_cta_link.0.url.routeParameters) }}">
+    <a class="cta--btn__link" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_cta_link.0.url.routeName, node.field_cta_link.0.url.routeParameters) }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
       {{ node.field_cta_link.title }}
     </a>
     {% endif %}

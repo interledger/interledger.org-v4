@@ -30,11 +30,11 @@
       {% endif %}
       {% if node.field_hero_cta is not empty %}
         {% if node.field_hero_cta.0.url.external %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% else %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% endif %}
@@ -57,11 +57,11 @@
       {% endif %}
       {% if node.field_hero_cta is not empty %}
         {% if node.field_hero_cta.0.url.external %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% else %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% endif %}
@@ -80,11 +80,11 @@
       {% endif %}
       {% if node.field_hero_cta is not empty %}
         {% if node.field_hero_cta.0.url.external %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% else %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% endif %}
@@ -110,11 +110,11 @@
       {% endif %}
       {% if node.field_hero_cta is not empty %}
         {% if node.field_hero_cta.0.url.external %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ node.field_hero_cta.uri }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% else %}
-        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}">
+        <a class="cta--btn__link hero__cta" style="--color-hero-txt: {{ heroTxtColour }}" href="{{ path(node.field_hero_cta.0.url.routeName, node.field_hero_cta.0.url.routeParameters) }}" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
           {{ node.field_hero_cta.title }}
         </a>
         {% endif %}
