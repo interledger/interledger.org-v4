@@ -4,4 +4,4 @@ This is a Drupal powered CMS that manages all the content for the Interledger Fo
 
 ## Local development
 
-Please refer to the instructions here: https://github.com/interledger/interledger.org-v4/wiki/Local-setup#setting-up-interledgerorg-locally
+Please refer to the instructions here: https://github.com/interledger/interledger.org-v4/wiki/Setting-up-on-your-local-machine
