@@ -5,12 +5,12 @@ namespace Drupal\Tests\honeypot\Functional\Update;
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
 
 /**
- * Tests that honeypot settings are properly updated during database updates.
+ * Tests adding a 'hostname' column to the {honeypot_user} table.
  *
  * @group honeypot
  * @group legacy
  */
-class HoneypotUpdateTest extends UpdatePathTestBase {
+class HostnameColumnUpdateTest extends UpdatePathTestBase {
 
   /**
    * {@inheritdoc}
@@ -45,7 +45,7 @@ class HoneypotUpdateTest extends UpdatePathTestBase {
    * @see honeypot_update_8100()
    * @see honeypot_update_8101()
    */
-  public function testUpdateHooks8100And8101(): void {
+  public function testUpdate(): void {
     // Fixture is built for schema 8000.
     $this->assertSame(8000, \Drupal::keyValue('system.schema')->get('honeypot'));
 
@@ -80,42 +80,6 @@ class HoneypotUpdateTest extends UpdatePathTestBase {
     $this->assertEquals('128', $column_schema['length']);
     $this->assertTrue($column_schema['not null']);
     $this->assertEquals('Hostname of user that that triggered honeypot.', $column_schema['description']);
-  }
-
-  /**
-   * Tests update hook honeypot_update_8102().
-   *
-   * @see honeypot_update_8102()
-   */
-  public function testUpdateHooks8102(): void {
-    // Fixture is built for schema 8000, so this test will be running all
-    // updates up to and including 8102.
-    $this->assertSame(8000, \Drupal::keyValue('system.schema')->get('honeypot'));
-
-    $schema = \Drupal::database()->schema();
-
-    // Check that there is no primary key before the update.
-    $this->assertFalse($schema->dropPrimaryKey('honeypot_user'));
-    $this->assertFalse($schema->fieldExists('honeypot_user', 'id'));
-
-    // Run updates.
-    $this->runUpdates();
-
-    // Check that the {honeypot_user} table now contains the 'id' column
-    // with the expected schema definition after the update.
-    $this->assertTrue($schema->fieldExists('honeypot_user', 'id'));
-
-    $install_schema = honeypot_schema();
-    $column_schema = $install_schema['honeypot_user']['fields']['id'];
-    $primary_key = $install_schema['honeypot_user']['primary key'];
-
-    // See if the 'id' column has the expected schema definition.
-    $this->assertEquals('serial', $column_schema['type']);
-    $this->assertTrue($column_schema['not null']);
-    $this->assertEquals('Unique record ID.', $column_schema['description']);
-
-    // Verify the primary key now exists.
-    $this->assertEquals(['id'], $primary_key);
   }
 
 }
