@@ -84,6 +84,7 @@
   --color-tech-main-fallback: #007777;
   --color-tech-main: oklch(51.54% 0.088 194.77);
   --color-tech-secondary: oklch(55.46% 0.206 32.58);
+  --color-tech-light-bg: oklch(98.21% 0.021 193.19);
   --color-tech-gradient: linear-gradient(to right, oklch(76.55% 0.102 184.83), oklch(91.46% 0.049 186.79));
   --color-tech-gradient-dark: linear-gradient(to right, var(--color-tech-main), oklch(74.53% 0.082 202.65));
   --filter-tech: invert(18%) sepia(85%) saturate(4735%) hue-rotate(172deg) brightness(93%) contrast(101%);
@@ -1773,6 +1774,49 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   /* Technology page 2-col */
   align-items: start;
 }
+
+/* The engineering blog CTA is hard-coded in the views-view--news-listing-page.html.twig template */
+.blog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+@media screen and (max-width: 460px) {
+  .blog__header {
+    flex-direction: column;
+    padding-block-end: var(--space-m);
+  }
+
+  .blog__header h1 {
+    padding-block-end: var(--space-xs);
+  }
+}
+
+.cta__eng-blog {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  padding: var(--space-3xs) var(--space-2xs);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  font-size: var(--step--1);
+  background-image: radial-gradient(var(--color-white), var(--color-tech-light-bg));
+}
+
+.cta__eng-blog a {
+  text-decoration: underline;
+}
+
+.cta__eng-blog p {
+  flex: none;
+}
+
+.cta__eng-blog svg {
+  width: 4em;
+}
+
 /* Contact page styles */
 .contact-wrapper {
   --max-content-width: 1440px;
