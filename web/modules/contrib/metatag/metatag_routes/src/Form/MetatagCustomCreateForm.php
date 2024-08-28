@@ -2,13 +2,13 @@
 
 namespace Drupal\metatag_routes\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\Path\PathValidator;
 use Drupal\Core\Routing\AdminContext;
+use Drupal\Core\Routing\RouteProvider;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form for creating custom definitions.
@@ -52,7 +52,7 @@ class MetatagCustomCreateForm extends FormBase {
     EntityTypeManagerInterface $entity_type_manager,
     RouteProvider $route_provider,
     PathValidator $path_validator,
-    AdminContext $admin_context
+    AdminContext $admin_context,
   ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->routeProvider = $route_provider;

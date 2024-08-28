@@ -374,7 +374,6 @@ class MetatagEntities extends ProcessPluginBase {
       // @todo 'product:shipping_weight:units' => '',
       // @todo 'product:expiration_time' => '',
       // @todo 'product:condition' => '',
-
       // Pinterest.
       // @todo '' => 'pinterest_id',
       // @todo '' => 'pinterest_description',
@@ -383,7 +382,6 @@ class MetatagEntities extends ProcessPluginBase {
       // @todo '' => 'pinterest_media',
       // @todo '' => 'pinterest_nopin',
       // @todo '' => 'pinterest_nosearch',
-
       // From metatag_twitter_cards.metatag.inc:
       'twitter:app:country' => 'twitter_cards_app_store_country',
       'twitter:app:id:googleplay' => 'twitter_cards_app_id_googleplay',
@@ -453,7 +451,7 @@ class MetatagEntities extends ProcessPluginBase {
    *   A Metatag values array.
    */
   private function decodeValue($string): array {
-    $data = array();
+    $data = [];
 
     // Serialized arrays from Metatag v1.
     if (substr($string, 0, 2) === 'a:') {

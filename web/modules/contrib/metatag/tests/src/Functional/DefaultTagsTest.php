@@ -9,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group metatag
  */
-class DefaultTags extends BrowserTestBase {
+class DefaultTagsTest extends BrowserTestBase {
 
   // Contains helper methods.
   use MetatagHelperTrait;

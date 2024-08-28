@@ -347,7 +347,6 @@ class NodewordsEntities extends ProcessPluginBase {
       // @todo 'video:series' => '',
       // @todo 'video:tag' => '',
       // @todo 'video:writer' => '',
-
       // From metatag_opengraph_products.metatag.inc:
       // https://www.drupal.org/project/metatag/issues/2835925
       'product:price:amount' => 'product_price_amount',
@@ -376,7 +375,6 @@ class NodewordsEntities extends ProcessPluginBase {
       // @todo 'product:shipping_weight:units' => '',
       // @todo 'product:expiration_time' => '',
       // @todo 'product:condition' => '',
-
       // Pinterest.
       // @todo '' => 'pinterest_id',
       // @todo '' => 'pinterest_description',
@@ -385,7 +383,6 @@ class NodewordsEntities extends ProcessPluginBase {
       // @todo '' => 'pinterest_media',
       // @todo '' => 'pinterest_nopin',
       // @todo '' => 'pinterest_nosearch',
-
       // From metatag_twitter_cards.metatag.inc:
       'twitter:app:country' => 'twitter_cards_app_store_country',
       'twitter:app:id:googleplay' => 'twitter_cards_app_id_googleplay',
