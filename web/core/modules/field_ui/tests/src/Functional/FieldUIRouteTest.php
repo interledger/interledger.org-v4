@@ -24,14 +24,6 @@ class FieldUIRouteTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
-
-  /**
-   * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
 
@@ -41,7 +33,6 @@ class FieldUIRouteTest extends BrowserTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->drupalLogin($this->rootUser);
     $this->drupalPlaceBlock('local_tasks_block');
   }
 
@@ -49,6 +40,18 @@ class FieldUIRouteTest extends BrowserTestBase {
    * Ensures that entity types with bundles do not break following entity types.
    */
   public function testFieldUIRoutes(): void {
+    $route = \Drupal::service('router.route_provider')->getRouteByName('entity.entity_test.field_ui_fields');
+    $is_admin = \Drupal::service('router.admin_context')->isAdminRoute($route);
+    // Asserts that admin routes are correctly marked as such.
+    $this->assertTrue($is_admin, 'Admin route correctly marked for "Manage fields" page.');
+
+    $this->drupalLogin($this->drupalCreateUser([
+      'administer account settings',
+      'administer entity_test_no_id fields',
+      'administer user fields',
+      'administer user form display',
+      'administer user display',
+    ]));
     $this->drupalGet('entity_test_no_id/structure/entity_test/fields');
     $this->assertSession()->pageTextContains('No fields are present yet.');
 
@@ -126,15 +129,6 @@ class FieldUIRouteTest extends BrowserTestBase {
     $this->assertSession()->linkExists('Manage fields');
     $this->assertSession()->linkExists('Manage display');
     $this->assertSession()->linkExists('Manage form display');
-  }
-
-  /**
-   * Asserts that admin routes are correctly marked as such.
-   */
-  public function testAdminRoute(): void {
-    $route = \Drupal::service('router.route_provider')->getRouteByName('entity.entity_test.field_ui_fields');
-    $is_admin = \Drupal::service('router.admin_context')->isAdminRoute($route);
-    $this->assertTrue($is_admin, 'Admin route correctly marked for "Manage fields" page.');
   }
 
 }
