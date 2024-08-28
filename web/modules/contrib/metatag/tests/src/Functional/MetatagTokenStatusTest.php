@@ -10,7 +10,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group metatag
  */
-class MetatagTokenStatus extends BrowserTestBase {
+class MetatagTokenStatusTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}

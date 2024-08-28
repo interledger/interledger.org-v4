@@ -10,7 +10,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group metatag
  */
-class MaintenanceMode extends BrowserTestBase {
+class MaintenanceModeTest extends BrowserTestBase {
 
   // Contains helper methods.
   use MetatagHelperTrait;

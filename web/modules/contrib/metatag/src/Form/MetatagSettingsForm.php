@@ -43,6 +43,13 @@ class MetatagSettingsForm extends ConfigFormBase {
   protected $tagPluginManager;
 
   /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -54,6 +61,7 @@ class MetatagSettingsForm extends ConfigFormBase {
     $instance->metatagManager = $container->get('metatag.manager');
     $instance->state = $container->get('state');
     $instance->tagPluginManager = $container->get('plugin.manager.metatag.tag');
+    $instance->moduleHandler = $container->get('module_handler');
 
     return $instance;
   }
@@ -140,13 +148,13 @@ class MetatagSettingsForm extends ConfigFormBase {
     ];
 
     // Optional support for the Maxlenth module.
-    $form['tag_trim']['use_maxlength'] = array(
+    $form['tag_trim']['use_maxlength'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use Maxlength module to force these limits?'),
       '#default_value' => $this->config('metatag.settings')->get('use_maxlength') ?? TRUE,
-      '#description' => $this->t('Because of how tokens are processed in meta tags, use of the Maxlength module may not provide an accurate representation of the actual current length of each meta tag, so it may cause more problem than it is worth. '),
-    );
-    if (!\Drupal::moduleHandler()->moduleExists('maxlength')) {
+      '#description' => $this->t('Because of how tokens are processed in meta tags, use of the Maxlength module may not provide an accurate representation of the actual current length of each meta tag, so it may cause more problem than it is worth.'),
+    ];
+    if (!$this->moduleHandler->moduleExists('maxlength')) {
       $form['tag_trim']['use_maxlength']['#disabled'] = TRUE;
       $form['tag_trim']['use_maxlength']['#description'] = $this->t('Install the Maxlength module to enable this option.');
     }

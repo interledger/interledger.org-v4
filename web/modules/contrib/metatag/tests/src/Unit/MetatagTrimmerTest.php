@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\metatag\Unit;
+namespace Drupal\Tests\metatag\Unit;
 
 use Drupal\metatag\MetatagTrimmer;
 use Drupal\Tests\UnitTestCase;
@@ -45,7 +45,7 @@ class MetatagTrimmerTest extends UnitTestCase {
   }
 
   /**
-   * Tests the trimAferValue method.
+   * Tests the trimAfterValue method.
    */
   public function testTrimAfterValue() {
     $trimResult1 = $this->metatagTrimmer->trimAfterValue('Test 123', 7);

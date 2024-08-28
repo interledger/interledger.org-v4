@@ -34,7 +34,7 @@ use Drupal\FunctionalTests\Update\UpdatePathTestBase;
  *
  * @group metatag
  */
-class TestV2Updates extends UpdatePathTestBase {
+class V2UpdatesTest extends UpdatePathTestBase {
 
   /**
    * {@inheritdoc}

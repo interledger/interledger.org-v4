@@ -25,6 +25,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class MetatagDefaultsForm extends EntityForm {
 
   /**
+   * The Metatag defaults object being reverted.
+   *
+   * @var \Drupal\metatag\Entity\MetatagDefaults
+   */
+  protected $entity;
+
+  /**
    * The entity type bundle info service.
    *
    * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
@@ -353,8 +360,29 @@ class MetatagDefaultsForm extends EntityForm {
       'contact_message',
       // Menu items.
       'menu_link_content',
+      // Path aliases.
+      'path_alias',
       // Shortcut items.
       'shortcut',
+      // From contributed modules:
+      // Various Commerce entities.
+      'commerce_order',
+      'commerce_payment',
+      'commerce_payment_method',
+      'commerce_promotion',
+      'commerce_promotion_coupon',
+      'commerce_shipment',
+      'commerce_shipping_method',
+      'commerce_stock_location',
+      'commerce_store',
+      // LinkChecker.
+      'linkcheckerlink',
+      // Redirect.
+      'redirect',
+      // Salesforce.
+      'salesforce_mapped_object',
+      // Webform.
+      'webform_submission',
     ];
 
     // Make a list of supported content types.

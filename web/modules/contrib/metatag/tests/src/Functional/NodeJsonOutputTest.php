@@ -11,7 +11,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group metatag
  */
-class NodeJsonOutput extends BrowserTestBase {
+class NodeJsonOutputTest extends BrowserTestBase {
 
   // Contains helper methods.
   use MetatagHelperTrait;

@@ -30,7 +30,7 @@ trait MetatagSeparator {
     $config = $this->configFactory->get('metatag.settings');
 
     // @todo This extra check shouldn't be needed.
-    if (!empty($config)) {
+    if ($config) {
       $separator = $config->get('separator');
     }
 

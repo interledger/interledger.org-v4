@@ -3,16 +3,16 @@
 namespace Drupal\Tests\metatag\Functional;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Tests\field_ui\Traits\FieldUiTestTrait;
 
 /**
- * Verify that different meta tag API options are supported.
+ * Verify that different API options are supported.
  *
  * @group metatag
  */
 class MetatagApiTest extends BrowserTestBase {
 
-  use StringTranslationTrait;
+  use FieldUiTestTrait;
 
   /**
    * Profile to use.
@@ -40,9 +40,6 @@ class MetatagApiTest extends BrowserTestBase {
     // Needed for the field UI testing.
     'field_ui',
 
-    // Needed for the basic entity testing.
-    'entity_test',
-
     // Needed to verify that nothing is broken for unsupported entities.
     'contact',
 
@@ -68,10 +65,10 @@ class MetatagApiTest extends BrowserTestBase {
    */
   protected $permissions = [
     'access administration pages',
-    'view test entity',
-    'administer entity_test fields',
-    'administer entity_test content',
     'administer meta tags',
+    // 'view test entity',
+    // 'administer entity_test fields',
+    // 'administer entity_test content',
   ];
 
   /**
@@ -83,17 +80,14 @@ class MetatagApiTest extends BrowserTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Add a metatag field to the entity type test_entity.
-    $this->drupalGet('entity_test/structure/entity_test/fields/add-field');
-    $this->assertSession()->statusCodeEquals(200);
-    $edit = [
-      'label' => 'Metatag',
-      'field_name' => 'metatag',
-      'new_storage_type' => 'metatag',
-    ];
-    $this->submitForm($edit, $this->t('Save and continue'));
-    $this->submitForm([], $this->t('Save field settings'));
-    $this->container->get('entity_field.manager')
-      ->clearCachedFieldDefinitions();
+    // @todo Work out a better solution for this, as the entity type is not
+    // actually used.
+    // @code
+    // phpcs:ignore
+    // $this->fieldUIAddNewField('admin/structure/types/manage/entity_test', 'metatag', 'Metatag', 'metatag');
+    // $this->container->get('entity_field.manager')
+    // ->clearCachedFieldDefinitions();
+    // @endcode
   }
 
   /**
@@ -175,26 +169,32 @@ class MetatagApiTest extends BrowserTestBase {
    */
   public function todoTestUrl() {
     // @code
-    // $save_label = (floatval(\Drupal::VERSION) <= 8.3) ? $this->t('Save and publish') : $this->t('Save');
+    // $save_label = (floatval(\Drupal::VERSION) <= 8.3) ?
+    // 'Save and publish' : 'Save';
     // // Tests meta tags with URLs work.
     // $this->drupalGet($this->entity_add_path);
     // $this->assertSession()->statusCodeEquals(200);
+    // $url_test = 'https://example.com/foo.html';
     // $edit = [
-    //   'name[0][value]' => 'UrlTags',
-    //   'user_id[0][target_id]' => 'foo (' . $this->adminUser->id() . ')',
-    //   'field_metatag[0][advanced][original_source]' => 'https://example.com/foo.html',
+    // 'name[0][value]' => 'UrlTags',
+    // 'user_id[0][target_id]' => 'foo (' . $this->adminUser->id() . ')',
+    // 'field_metatag[0][advanced][original_source]' => $url_test,
     // ];
     // $this->submitForm($edit, $save_label);
     // $entities = entity_load_multiple_by_properties('entity_test', [
-    //   'name' => 'UrlTags',
+    // 'name' => 'UrlTags',
     // ]);
     // $this->assertEquals(count($entities), 1, 'Entity was saved');
     // $entity = reset($entities);
     // $this->drupalGet($this->entity_base_path . '/' . $entity->id());
     // $this->assertSession()->statusCodeEquals(200);
     // $elements = $this->cssSelect("meta[name='original-source']");
-    // $this->assertTrue(count($elements) === 1, 'Found original source metatag from defaults');
-    // $this->assertEquals($edit['field_metatag[0][advanced][original_source]'], (string) $elements[0]['content']);
+    // $message_assert = 'Found original source metatag from defaults';
+    // $this->assertTrue(count($elements) === 1, $message_assert);
+    // $this->assertEquals(
+    //   $edit['field_metatag[0][advanced][original_source]'],
+    //   (string) $elements[0]['content']
+    // );
     // @endcode
   }
 

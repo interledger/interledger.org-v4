@@ -5,13 +5,13 @@ namespace Drupal\metatag_views\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\metatag\MetatagManagerInterface;
 use Drupal\metatag\MetatagTagPluginManager;
 use Drupal\metatag\MetatagToken;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\metatag_views\MetatagViewsValuesCleanerTrait;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a form for translating meta tags for views.

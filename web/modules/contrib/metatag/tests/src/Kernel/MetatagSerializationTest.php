@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\metatag\Kernel;
 
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\entity_test\Entity\EntityTest;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\jsonapi\JsonApiResource\ResourceObject;
 use Drupal\jsonapi\Normalizer\Value\CacheableNormalization;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -24,6 +24,7 @@ class MetatagSerializationTest extends EntityKernelTestBase {
   protected static $modules = [
     // Core modules.
     'serialization',
+    'file',
 
     // Contrib modules.
     'token',
