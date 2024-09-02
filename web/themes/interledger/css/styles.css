@@ -1366,6 +1366,10 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   border-radius: var(--border-radius);
 }
 
+.hero--photography .hero__cta {
+  margin-inline-start: var(--space-m);
+}
+
 .hero__caption {
   position: absolute;
   right: 0;
