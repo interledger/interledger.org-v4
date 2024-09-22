@@ -1,0 +1,65 @@
+{% set svgUrl = content.field_cta_image[0]['#media'].field_media_svg.entity.uri.value|file_url %}
+{% set svgAlt = content.field_cta_image[0]['#media'].field_media_svg.alt %}
+
+{% set imageUrl = null %}
+{% if content.field_cta_image[0]['#media'].field_media_image.entity.uri.value is not empty %}
+  {% set imageUrl = file_url(content.field_cta_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% endif %}
+{% set imageAlt = content.field_cta_image[0]['#media'].field_media_image.alt|default('') %}
+
+
+<section>
+  <div class="form form__header content-wrapper">
+    <div class="text-wrapper text--body-right">
+      <h2>Subscribe to the Interledger Newsletter</h2>
+    </div>
+
+    {% if svgUrl|default(null) %}
+      <img src="{{ svgUrl }}" alt="{{ svgAlt }}" class="form__image">
+    {% elseif imageUrl|default(null) %}
+      <img src="{{ imageUrl }}" alt="{{ imageAlt }}" class="form__image">
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="form form__body content-wrapper">
+    <div class="text-wrapper text--body-right">
+      <div class="text__body">{{ content.field_form_text.0|raw }}</div>
+    </div>
+
+    <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }}">
+      <form action="{{ node.field_cta_link.0.uri }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
+
+        {% for form_field in content.field_input_field %}
+          {% set fieldNode = form_field['#node'] %}
+          
+          {% if fieldNode is not empty %}
+            {% if fieldNode.field_honeypot.value %}
+              <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                <input type="{{ fieldNode.field_input_type.value }}" name="{{ fieldNode.field_input_name.value }}" tabindex="{{ fieldNode.field_tab_index.value }}" value="">
+              </div>
+            {% else %}
+              <div class="form__input">
+                {% set input_type = fieldNode.field_input_type.value %}
+                {% set input_required = fieldNode.field_input_required.value ? 'required' : '' %}
+                
+                <label for="{{ fieldNode.field_input_id.value }}" class="visually-hidden">{{ fieldNode.field_input_placeholder.value }}</label>
+                <input
+                  type="{{ input_type }}" 
+                  class="{{ fieldNode.field_input_class.value }}" 
+                  id="{{ fieldNode.field_input_id.value }}" 
+                  name="{{ fieldNode.field_input_name.value }}" 
+                  placeholder="{{ fieldNode.field_input_placeholder.value }}" 
+                  {{ input_required }}
+                  tabindex="{{ fieldNode.field_tab_index.value }}"
+                  value="{{ fieldNode.field_input_value.value }}">
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+      </form>
+    </div>
+  </div>
+</section>
