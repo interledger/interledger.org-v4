@@ -24,9 +24,11 @@
 
 <section>
   <div class="form form__body content-wrapper">
-    <div class="text-wrapper text--body-right">
-      <div class="text__body">{{ content.field_form_text.0|raw }}</div>
-    </div>
+    {% if content.field_form_text.0 is not empty %}
+      <div class="text-wrapper text--body-right">
+        <div class="text__body">{{ content.field_form_text.0|raw }}</div>
+      </div>
+    {% endif %}
 
     <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }}">
       <form action="{{ node.field_cta_link.0.uri }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
