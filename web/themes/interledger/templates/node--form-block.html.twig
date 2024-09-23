@@ -1,0 +1,44 @@
+{% set svgUrl = content.field_form_heading_image[0]['#media'].field_media_svg.entity.uri.value|file_url %}
+{% set svgAlt = content.field_form_heading_image[0]['#media'].field_media_svg.alt %}
+
+{% set imageUrl = null %}
+{% if content.field_form_heading_image[0]['#media'].field_media_image.entity.uri.value is not empty %}
+  {% set imageUrl = file_url(content.field_form_heading_image[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
+{% endif %}
+{% set imageAlt = content.field_form_heading_image[0]['#media'].field_media_image.alt|default('') %}
+
+<section>
+  <div class="form form__header content-wrapper">
+    <div class="text-wrapper text--body-right">
+      <h2>{{ content.field_form_heading.0|raw }}</h2>
+    </div>
+
+    {% if svgUrl|default(null) %}
+      <img src="{{ svgUrl }}" alt="{{ svgAlt }}" class="form__image">
+    {% elseif imageUrl|default(null) %}
+      <img src="{{ imageUrl }}" alt="{{ imageAlt }}" class="form__image">
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="form form__body content-wrapper">
+    {% if content.field_form_text.0 is not empty %}
+      <div class="text-wrapper text--body-right">
+        <div class="text__body">{{ content.field_form_text.0|raw }}</div>
+      </div>
+    {% endif %}
+
+    <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }}">
+      <form action="{{ node.field_form_link.0.uri }}" method="post" id="{{ content.field_form_id.0|raw }}" name="{{ content.field_form_name.0|raw }}" class="validate" target="_self" novalidate="" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
+
+        {% for form_field in content.field_input_field %}
+          {% if form_field['#node'] is not empty %}
+            {{ form_field }}
+          {% endif %}
+        {% endfor %}
+
+      </form>
+    </div>
+  </div>
+</section>

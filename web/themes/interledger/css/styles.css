@@ -288,6 +288,13 @@ figcaption {
     inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
 }
 
+.subscribe-btn, .subscribe-btn::before {
+  box-shadow: none;
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+  text-decoration: none;
+}
+
 input:not([type="submit"]):not([type="file"]),
 textarea,
 select {
@@ -700,25 +707,20 @@ section {
   }
 }
 
-.site-footer form {
+.site-footer .subscribe-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-block-end: var(--space-s);
-}
-
-.site-footer form input[type="email"] {
-  border-start-end-radius: 0px;
-  border-end-end-radius: 0px;
-  border-inline-end-color: transparent;
-}
-
-.site-footer form input[type="submit"] {
-  border-start-start-radius: 0px;
-  border-end-start-radius: 0px;
   box-shadow: none;
   border: 1px solid var(--color-primary-fallback);
   border: 1px solid var(--color-primary);
+  max-width: 10em;
+  margin-inline: auto;
+}
+
+.mailing-list h3 {
+  margin-block-end: var(--space-2xs);
 }
 
 .social-links h3 {
@@ -1216,25 +1218,54 @@ section {
   filter: initial;
 }
 
-/* CTA stripe content type styles */
-.cta--mailing-list {
-  border-radius: var(--border-radius);
-  text-align: center;
+/* The form block */
+.form {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form.form__header {
+  gap: var(--space-s);
+}
+
+.form.form__body {
+  gap: var(--space-l);
+}
+
+.form ul {
+  list-style-position: inside;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.form__image {
+  max-width: 4em;
+  margin-bottom: var(--space-3xs);
+}
+
+.form__body form {
+  display: flex;
   flex-direction: column;
-  gap: var(--space-3xs);
-  padding: var(--space-s);
-}
-
-.cta--mailing-list img {
-  max-width: 5em;
-}
-
-.cta--mailing-list form {
-  display: flex;
   align-items: center;
-  gap: var(--space-2xs);
+  gap: var(--space-xs);
+  border-radius: var(--border-radius);
+}
+
+.form .form__input input {
+  padding: var(--space-xs) var(--space-s);
+  font-size: var(--step-0);
+}
+
+@media (max-width: 768px) {
+  .form {
+    margin: 0 var(--step-1);
+  }
+
+  .form__body {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* FAQ content type styles */
@@ -1660,16 +1691,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 .text__body p + ul {
   margin-block-start: var(--space-xs);
-}
-
-.text__body label[for="mce-EMAIL"] {
-  color: var(--color-primary-fallback);
-  color: var(--color-primary);
-  cursor: pointer;
-}
-
-.text__body label[for="mce-EMAIL"]:hover {
-  text-decoration: underline;
 }
 
 @media screen and (max-width: 799px) {
