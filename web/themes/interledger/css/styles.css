@@ -270,12 +270,6 @@ figcaption {
   font-size: var(--step--1);
 }
 
-.subscribe-btn.button {
-  box-shadow: none;
-  border: 1px solid var(--color-primary-fallback);
-  border: 1px solid var(--color-primary);
-}
-
 .button::before {
   content: "";
   display: block;
@@ -292,6 +286,13 @@ figcaption {
   box-shadow: -9px 5px 4px -16px rgba(232, 232, 232, 0.5), 0px 5px 12px -16px #c6c6c6, 0px 4px 5px rgba(0, 0, 0, 0.02),
     0px 8px 5px rgba(0, 0, 0, 0.11), 0px 0px 0px 2px var(--color-btn-outline-pressed),
     inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
+}
+
+.subscribe-btn, .subscribe-btn::before {
+  box-shadow: none;
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+  text-decoration: none;
 }
 
 input:not([type="submit"]):not([type="file"]),
@@ -706,7 +707,7 @@ section {
   }
 }
 
-.site-footer.button {
+.site-footer .subscribe-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -714,6 +715,8 @@ section {
   box-shadow: none;
   border: 1px solid var(--color-primary-fallback);
   border: 1px solid var(--color-primary);
+  max-width: 10em;
+  margin-inline: auto;
 }
 
 .mailing-list h3 {
@@ -1220,7 +1223,15 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--space-m);
+}
+
+.form.form__header {
+  gap: var(--space-s);
+}
+
+.form.form__body {
+  gap: var(--space-l);
+  text-align: justify;
 }
 
 .form__image {
@@ -1671,16 +1682,6 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 .text__body p + ul {
   margin-block-start: var(--space-xs);
-}
-
-.text__body label[for="mce-EMAIL"] {
-  color: var(--color-primary-fallback);
-  color: var(--color-primary);
-  cursor: pointer;
-}
-
-.text__body label[for="mce-EMAIL"]:hover {
-  text-decoration: underline;
 }
 
 @media screen and (max-width: 799px) {
