@@ -1,6 +1,6 @@
 {% if node.field_honeypot[0].value %}
     <div aria-hidden="true" style="position: absolute; left: -5000px;">
-    <input type="{{ node.field_input_type[0].value }}" name="{{ node.field_input_name[0].value }}" tabindex="{{ node.field_tab_index[0].value }}" value="">
+    <input type="{{ node.field_input_type[0].value }}" name="{{ node.field_input_name[0].value }}" tabindex="{{ node.field_input_tabindex[0].value }}" value="">
     </div>
 {% else %}
     <div class="form__input">
@@ -15,7 +15,7 @@
         name="{{ node.field_input_name[0].value }}" 
         placeholder="{{ node.field_input_placeholder[0].value }}" 
         {{ input_required }}
-        tabindex="{{ node.field_tab_index[0].value }}"
+        tabindex="{{ node.field_input_tabindex[0].value }}"
         value="{{ node.field_input_value[0].value }}">
     </div>
 {% endif %}
