@@ -1,5 +1,5 @@
 {% set svgUrl = content.field_form_heading_image[0]['#media'].field_media_svg.entity.uri.value|file_url %}
-{% set svgAlt = content.field_form_heading_image[0]['#media'].field_media_svg.alt %}
+{% set svgAlt = content.field_form_heading_image[0]['#media'].field_media_svg.alt|default('') %}
 
 {% set imageUrl = null %}
 {% if content.field_form_heading_image[0]['#media'].field_media_image.entity.uri.value is not empty %}
@@ -7,19 +7,25 @@
 {% endif %}
 {% set imageAlt = content.field_form_heading_image[0]['#media'].field_media_image.alt|default('') %}
 
+{% set formHeading = content.field_form_heading.0|default('') %}
+
+{% if svgUrl or imageUrl or formHeading %}
 <section>
   <div class="form form__header content-wrapper">
-    <div class="text-wrapper text--body-right">
-      <h2>{{ content.field_form_heading.0|raw }}</h2>
-    </div>
+    {% if formHeading %}
+      <div class="text-wrapper text--body-right">
+        <h2>{{ formHeading|raw }}</h2>
+      </div>
+    {% endif %}
 
     {% if svgUrl|default(null) %}
-      <img src="{{ svgUrl }}" alt="{{ svgAlt }}" class="form__image">
+      <img src="{{ svgUrl }}" alt="{{ svgAlt|e('html_attr') }}" class="form__image">
     {% elseif imageUrl|default(null) %}
-      <img src="{{ imageUrl }}" alt="{{ imageAlt }}" class="form__image">
+      <img src="{{ imageUrl }}" alt="{{ imageAlt|e('html_attr') }}" class="form__image">
     {% endif %}
   </div>
 </section>
+{% endif %}
 
 <section>
   <div class="form form__body content-wrapper">
@@ -29,16 +35,20 @@
       </div>
     {% endif %}
 
-    <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }}">
-      <form action="{{ node.field_form_link.0.uri }}" method="post" id="{{ content.field_form_id.0|raw }}" name="{{ content.field_form_name.0|raw }}" class="validate" target="_self" novalidate="" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
+    {% set novalidate = (node.field_form_novalidate is defined and node.field_form_novalidate[0].value) ? 'novalidate' : '' %}
+    <form action="{{ node.field_form_link.0.uri|e('html_attr') }}" method="post" 
+          id="{{ content.field_form_id.0|e('html_attr') }}" 
+          name="{{ content.field_form_name.0|e('html_attr') }}" 
+          class="{{ content.field_form_class.0|e('html_attr') }}" 
+          target="{{ content.field_form_target.0|e('html_attr') }}" 
+          {{ novalidate }}>
 
-        {% for form_field in content.field_input_field %}
-          {% if form_field['#node'] is not empty %}
-            {{ form_field }}
-          {% endif %}
-        {% endfor %}
+      {% for form_field in content.field_input_field %}
+        {% if form_field['#node'] is not empty %}
+          {{ form_field }}
+        {% endif %}
+      {% endfor %}
 
-      </form>
-    </div>
+    </form>
   </div>
 </section>

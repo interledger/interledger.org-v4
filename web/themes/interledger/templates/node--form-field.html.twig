@@ -1,21 +1,28 @@
-{% if node.field_honeypot[0].value %}
+{% if node.field_honeypot is defined and node.field_honeypot[0].value %}
     <div aria-hidden="true" style="position: absolute; left: -5000px;">
-    <input type="{{ node.field_input_type[0].value }}" name="{{ node.field_input_name[0].value }}" tabindex="{{ node.field_input_tabindex[0].value }}" value="">
+        <input 
+            type="{{ node.field_input_type[0].value|e('html_attr') }}" 
+            name="{{ node.field_input_name[0].value|e('html_attr') }}" 
+            tabindex="{{ node.field_input_tabindex[0].value|e('html_attr') }}" 
+            value="">
     </div>
 {% else %}
     <div class="form__input">
-    {% set input_type = node.field_input_type[0].value %}
-    {% set input_required = node.field_input_required[0].value ? 'required' : '' %}
-    
-    <label for="{{ node.field_input_id[0].value }}" class="visually-hidden">{{ node.field_input_placeholder[0].value }}</label>
-    <input
-        type="{{ input_type }}" 
-        class="{{ node.field_input_class[0].value }}" 
-        id="{{ node.field_input_id[0].value }}" 
-        name="{{ node.field_input_name[0].value }}" 
-        placeholder="{{ node.field_input_placeholder[0].value }}" 
-        {{ input_required }}
-        tabindex="{{ node.field_input_tabindex[0].value }}"
-        value="{{ node.field_input_value[0].value }}">
+        {% set input_type = node.field_input_type[0].value|default('text') %}
+        {% set input_required = node.field_input_required is defined and node.field_input_required[0].value ? 'required' : '' %}
+
+        <label for="{{ node.field_input_id[0].value|e('html_attr') }}" class="visually-hidden">
+            {{ node.field_input_placeholder[0].value|e }}
+        </label>
+        <input
+            type="{{ input_type|e('html_attr') }}" 
+            class="{{ node.field_input_class[0].value|e('html_attr') }}" 
+            id="{{ node.field_input_id[0].value|e('html_attr') }}" 
+            name="{{ node.field_input_name[0].value|e('html_attr') }}" 
+            placeholder="{{ node.field_input_placeholder[0].value|e('html_attr') }}" 
+            {{ input_required }}
+            tabindex="{{ node.field_input_tabindex[0].value|e('html_attr') }}"
+            value="{{ node.field_input_value[0].value|default('')|e('html_attr') }}"
+            data-umami-event="{{ node.field_umami_event.0.value|raw }}">
     </div>
 {% endif %}
