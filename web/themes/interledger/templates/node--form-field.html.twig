@@ -16,6 +16,7 @@
         placeholder="{{ node.field_input_placeholder[0].value }}" 
         {{ input_required }}
         tabindex="{{ node.field_input_tabindex[0].value }}"
-        value="{{ node.field_input_value[0].value }}">
+        value="{{ node.field_input_value[0].value }}"
+        data-umami-event="{{ node.field_umami_event.0.value|raw }}">
     </div>
 {% endif %}

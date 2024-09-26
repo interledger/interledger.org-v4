@@ -30,7 +30,7 @@
     {% endif %}
 
     <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }}">
-      <form action="{{ node.field_form_link.0.uri }}" method="post" id="{{ content.field_form_id.0|raw }}" name="{{ content.field_form_name.0|raw }}" class="validate" target="_self" novalidate="" data-umami-event="{{ node.field_umami_event.0.value|raw }}">
+      <form action="{{ node.field_form_link.0.uri }}" method="post" id="{{ content.field_form_id.0|raw }}" name="{{ content.field_form_name.0|raw }}" class="validate" target="_self" novalidate="">
 
         {% for form_field in content.field_input_field %}
           {% if form_field['#node'] is not empty %}
