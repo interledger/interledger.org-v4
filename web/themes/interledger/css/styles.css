@@ -78,6 +78,7 @@
   --color-admin-bg: var(--color-white);
   --color-header-bg: var(--color-white);
   --color-card-bg: var(--color-white);
+  --color-card-outline: rgba(25, 25, 25, 0.3);
   --color-btn-outline: rgba(25, 25, 25, 0.45);
   --color-btn-outline-pressed: rgba(25, 25, 25, 0.85);
 
@@ -128,6 +129,7 @@
   --color-admin-bg: var(--color-black);
   --color-header-bg: var(--color-black);
   --color-card-bg: var(--color-black);
+  --color-card-outline: rgba(255, 255, 255, 0.3);
   --color-frost: rgba(255, 255, 255, 0.5);
 }
 
@@ -1185,6 +1187,39 @@ section {
   transform: translateX(0.5em);
 }
 
+.clickable-card {
+  background-color: var(--color-card-bg);
+  transition: box-shadow 0.3s ease;
+}
+
+.clickable-card:hover {
+  box-shadow: inset 0 0 10px var(--color-card-outline);
+}
+
+.clickable-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.clickable-card:hover a {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.clickable-card a h3 {
+  color: var(--color-primary-fallback);
+  color: var(--color-primary);
+}
+
+.clickable-card:hover a h3 {
+  text-decoration: underline;
+}
+
+.clickable-card .card-content-wrapper {
+  background-color:  transparent;
+}
+
 /* CTA button content type styles */
 .cta--btn__link {
   border-radius: 10em;
@@ -1768,6 +1803,13 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 /* Art block styling */
 .art-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
+  gap: var(--space-s);
+}
+
+/* Hackathon block styling */
+.hackathon-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
   gap: var(--space-s);

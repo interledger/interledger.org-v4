@@ -1,31 +1,61 @@
 {% set renderCaption = node.field_card_caption.0.value|raw %}
-
-<div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
-  <div class="card__media">  
-    {{ content.field_card_image }}
-  </div>
-  {% if renderCaption %}
-  <div class="card-content-wrapper">
-    {% if node.field_card_title is not empty %}
-    <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
-    {% endif %}
-    {% if node.field_card_blurb is not empty %}
-    <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
-    {% endif %}
-    {% if node.field_card_link is not empty %}
-      {% if node.field_card_link.0.url.external %}
-      <a class="card__link" href="{{ node.field_card_link.uri }}">
-        {{ node.field_card_link.title }}
-      </a>
-      {% else %}
-      <a class="card__link" href="{{ path(node.field_card_link.0.url.routeName, node.field_card_link.0.url.routeParameters) }}">
-        {{ node.field_card_link.title }}
-      </a>
-      {% endif %}
-    {% endif %}
-  </div>
+{% set isClickableCard = node.field_card_link is not empty and node.field_card_link.title is empty %}
+{% set href = '' %}
+{% if node.field_card_link is not empty %}
+  {% if node.field_card_link.0.url.external %}
+    {% set href = node.field_card_link.uri %}
+  {% else %}
+    {% set href = path(node.field_card_link.0.url.routeName, node.field_card_link.0.url.routeParameters) %}
   {% endif %}
-</div>
+{% endif %}
 
-
-
+{% if isClickableCard %}
+  <div class="clickable-card card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
+    <a href="{{ node.field_card_link.uri }}">
+      {% if content.field_card_image[0]['#media'] is defined %}
+        <div class="card__media">  
+          {{ content.field_card_image }}
+        </div>
+      {% endif %}
+      {% if renderCaption %}
+      <div class="card-content-wrapper">
+        {% if node.field_card_title is not empty %}
+        <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
+        {% endif %}
+        {% if node.field_card_blurb is not empty %}
+        <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </a>
+  </div>
+{% else %}
+  <div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
+    {% if content.field_card_image[0]['#media'] is defined %}
+      <div class="card__media">  
+        {{ content.field_card_image }}
+      </div>
+    {% endif %}
+    {% if renderCaption %}
+    <div class="card-content-wrapper">
+      {% if node.field_card_title is not empty %}
+      <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
+      {% endif %}
+      {% if node.field_card_blurb is not empty %}
+      <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_card_link is not empty %}
+        {% if node.field_card_link.0.url.external %}
+        <a class="card__link" href="{{ node.field_card_link.uri }}">
+          {{ node.field_card_link.title }}
+        </a>
+        {% else %}
+        <a class="card__link" href="{{ path(node.field_card_link.0.url.routeName, node.field_card_link.0.url.routeParameters) }}">
+          {{ node.field_card_link.title }}
+        </a>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+{% endif %}
