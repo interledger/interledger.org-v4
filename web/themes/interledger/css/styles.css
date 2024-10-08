@@ -1815,6 +1815,27 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   gap: var(--space-s);
 }
 
+/* Ideation block styling */
+.ideation-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  justify-content: space-between;
+}
+
+.ideation-wrapper > * {
+  flex: 1 1 12em;
+  max-width: 100%;
+}
+
+.ideation-wrapper .card {
+  background-color: var(--color-card-bg);
+}
+
+.ideation-wrapper .card h3 {
+  text-decoration: underline;
+}
+
 /* Podcast block styling */
 .podcast-wrapper {
   display: grid;
