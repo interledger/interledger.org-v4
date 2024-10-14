@@ -20,7 +20,7 @@ class FindReplaceRegexTest extends TamperPluginTestBase {
   /**
    * {@inheritdoc}
    */
-  public function formDataProvider(): array {
+  public static function formDataProvider(): array {
     return [
       'invalid values' => [
         'expected' => [],

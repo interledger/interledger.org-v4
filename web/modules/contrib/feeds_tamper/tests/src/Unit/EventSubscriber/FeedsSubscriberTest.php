@@ -60,7 +60,7 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper_manager = $this->createMock(FeedTypeTamperManagerInterface::class);
     $tamper_manager->expects($this->any())
       ->method('getTamperMeta')
-      ->will($this->returnValue($this->tamperMeta));
+      ->willReturn($this->tamperMeta);
 
     // And finally, create the subscriber to test.
     $this->subscriber = new FeedsSubscriber($tamper_manager);
@@ -80,7 +80,7 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper = $this->createMock(TamperInterface::class);
     $tamper->expects($this->any())
       ->method('tamper')
-      ->will($this->returnValue($return_value));
+      ->willReturn($return_value);
 
     return $tamper;
   }
@@ -93,15 +93,15 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper = $this->createMock(TamperInterface::class);
     $tamper->expects($this->any())
       ->method('tamper')
-      ->will($this->returnValue('Foo'));
+      ->willReturn('Foo');
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [
           $this->createTamperMock('Foo'),
         ],
-      ]));
+      ]);
 
     // Add an item to the parser result.
     $item = new DynamicItem();
@@ -118,11 +118,11 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
   public function testAfterParseWithNoItems() {
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [
           $this->createTamperMock('Foo'),
         ],
-      ]));
+      ]);
 
     $this->subscriber->afterParse($this->event);
   }
@@ -134,15 +134,15 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper = $this->createMock(TamperInterface::class);
     $tamper->expects($this->any())
       ->method('tamper')
-      ->will($this->returnValue('Foo'));
+      ->willReturn('Foo');
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [
           $this->createTamperMock('Foo'),
         ],
-      ]));
+      ]);
 
     // Add an item to the parser result.
     $item = new DynamicItem();
@@ -160,7 +160,7 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
   public function testAfterParseWithNoTampers() {
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     // Add an item to the parser result.
     $item = new DynamicItem();
@@ -209,9 +209,9 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [$tamper1, $tamper2, $tamper3],
-      ]));
+      ]);
 
     // Add an item to the parser result.
     $item = new DynamicItem();
@@ -232,13 +232,13 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper = $this->createMock(TamperInterface::class);
     $tamper->expects($this->once())
       ->method('tamper')
-      ->will($this->returnCallback([$this, 'callbackWithTamperItem']));
+      ->willReturnCallback([$this, 'callbackWithTamperItem']);
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [$tamper],
-      ]));
+      ]);
 
     // Add an item to the parser result.
     $item = new DynamicItem();
@@ -277,13 +277,13 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper = $this->createMock(TamperInterface::class);
     $tamper->expects($this->exactly(2))
       ->method('tamper')
-      ->will($this->returnCallback([$this, 'callbackSkipItem']));
+      ->willReturnCallback([$this, 'callbackSkipItem']);
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [$tamper],
-      ]));
+      ]);
 
     // Create three items. The first item should get removed.
     $item1 = new DynamicItem();
@@ -319,27 +319,27 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     $tamper1 = $this->createMock(TamperInterface::class);
     $tamper1->expects($this->exactly(2))
       ->method('tamper')
-      ->will($this->returnCallback([$this, 'callbackSkipData']));
+      ->willReturnCallback([$this, 'callbackSkipData']);
 
     // Create a second tamper plugin that will just set the value to 'Qux'.
     $tamper2 = $this->createMock(TamperInterface::class);
     $tamper2->expects($this->once())
       ->method('tamper')
-      ->will($this->returnValue('Qux'));
+      ->willReturn('Qux');
 
     // Create a third tamper plugin that operates on the 'beta' field, to ensure
     // skipping on the 'alpha' field does not skip the 'beta' field.
     $tamper3 = $this->createMock(TamperInterface::class);
     $tamper3->expects($this->exactly(2))
       ->method('tamper')
-      ->will($this->returnValue('Baz'));
+      ->willReturn('Baz');
 
     $this->tamperMeta->expects($this->once())
       ->method('getTampersGroupedBySource')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [$tamper1, $tamper2],
         'beta' => [$tamper3],
-      ]));
+      ]);
 
     // Create two items. The first item should get the value unset.
     $item1 = new DynamicItem();

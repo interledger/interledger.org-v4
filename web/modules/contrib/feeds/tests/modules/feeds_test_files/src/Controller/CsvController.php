@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Generates CSV source files.
  */
-class CsvController extends ControllerBase {
+final class CsvController extends ControllerBase {
 
   /**
    * Date format not defined in PHP 5.

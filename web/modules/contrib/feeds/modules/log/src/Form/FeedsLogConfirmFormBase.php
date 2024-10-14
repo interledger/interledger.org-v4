@@ -21,7 +21,7 @@ abstract class FeedsLogConfirmFormBase extends EntityConfirmFormBase {
   protected $returnRoute;
 
   /**
-   * Constructs a new MappingForm object.
+   * Constructs a FeedsLogConfirmFormBase object.
    *
    * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
    *   The route provider service.

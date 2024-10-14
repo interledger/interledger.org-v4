@@ -14,7 +14,7 @@ abstract class FeedsTamperJavascriptTestBase extends FeedsJavascriptTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'feeds_tamper',
     'node',

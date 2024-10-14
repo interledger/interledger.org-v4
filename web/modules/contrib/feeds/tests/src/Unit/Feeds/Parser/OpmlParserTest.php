@@ -55,7 +55,7 @@ class OpmlParserTest extends FeedsUnitTestCase {
     $this->feed = $this->createMock('Drupal\feeds\FeedInterface');
     $this->feed->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue($this->feedType));
+      ->willReturn($this->feedType);
 
     $this->state = $this->createMock('Drupal\feeds\StateInterface');
   }

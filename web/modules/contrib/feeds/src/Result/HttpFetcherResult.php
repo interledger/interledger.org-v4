@@ -50,8 +50,7 @@ class HttpFetcherResult extends FetcherResult implements HttpFetcherResultInterf
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function __wakeup() {
+  public function __wakeup(): void {
     $this->traitWakeUp();
 
     // In Feeds 8.x-3.0-beta3 and earlier, the $fileSystem property did not

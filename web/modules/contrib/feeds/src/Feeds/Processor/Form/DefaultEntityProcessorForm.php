@@ -376,10 +376,6 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
       if (isset($interfaces[ConfigurableInterface::class])) {
         continue;
       }
-      // @todo remove when Drupal 8 support has ended.
-      if (isset($interfaces['Drupal\Component\Plugin\ConfigurablePluginInterface'])) {
-        continue;
-      }
 
       // Filter out actions that need confirmation.
       if (!empty($definition['confirm_form_route_name'])) {
@@ -409,15 +405,8 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
    *   An array of class names.
    */
   protected function getDeprecatedActionClasses() {
-    // @todo remove when Drupal 8 support has ended.
-    return [
-      'Drupal\comment\Plugin\Action\PublishComment',
-      'Drupal\comment\Plugin\Action\UnpublishComment',
-      'Drupal\comment\Plugin\Action\SaveComment',
-      'Drupal\node\Plugin\Action\PublishNode',
-      'Drupal\node\Plugin\Action\UnpublishNode',
-      'Drupal\node\Plugin\Action\SaveNode',
-    ];
+    // There are no known deprecation action plugins right now.
+    return [];
   }
 
 }

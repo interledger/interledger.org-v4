@@ -54,7 +54,8 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
 
     $this->url = $this->feedType->toUrl('tamper');
 
-    $this->feedTypeTamperManager = \Drupal::service('feeds_tamper.feed_type_tamper_manager');
+    // Get the manager for FeedTypeTamperMeta instances.
+    $this->feedTypeTamperManager = $this->container->get('feeds_tamper.feed_type_tamper_manager');
   }
 
   /**

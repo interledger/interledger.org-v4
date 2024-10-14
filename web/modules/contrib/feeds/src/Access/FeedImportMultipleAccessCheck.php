@@ -11,15 +11,17 @@ use Drupal\feeds\FeedInterface;
 class FeedImportMultipleAccessCheck extends FeedActionMultipleAccessCheck {
 
   /**
-   * The action to check access for.
-   */
-  const ACTION = 'feeds_feed_multiple_import_confirm';
-
-  /**
    * {@inheritdoc}
    */
   protected function checkFeedAccess(AccountInterface $account, FeedInterface $feed) {
     return $feed->access('import', $account);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getActionId(): string {
+    return 'feeds_feed_import_action';
   }
 
 }

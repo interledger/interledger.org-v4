@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\feeds\Event\FeedsEvents;
+use Drupal\feeds\Event\ParseEvent;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
@@ -339,7 +342,7 @@ class FieldTest extends FeedsKernelTestBase {
    * Check if text fields, integer fields and decimal fields can be used as
    * unique target.
    */
-  public function dataProviderTargetUnique() {
+  public static function dataProviderTargetUnique() {
     return [
       ['field_alpha', 'value', 2],
       ['field_beta', 'value', 3],
@@ -383,6 +386,188 @@ class FieldTest extends FeedsKernelTestBase {
   }
 
   /**
+   * Tests handling of array values for a unique target.
+   */
+  public function testUniqueWithArrayValue() {
+    // Respond to after parse event.
+    $this->container->get('event_dispatcher')
+      ->addListener(FeedsEvents::PARSE, [$this, 'afterParseUniqueWithArrayValue'], FeedsEvents::AFTER);
+
+    $this->testTargetUnique('field_alpha', 'value', 2);
+  }
+
+  /**
+   * After parse callback for ::testUniqueWithArrayValue().
+   *
+   * @param \Drupal\feeds\Event\ParseEvent $event
+   *   The parse event.
+   */
+  public function afterParseUniqueWithArrayValue(ParseEvent $event) {
+    /** @var \Drupal\feeds\Feeds\Item\ItemInterface $item */
+    foreach ($event->getParserResult() as $item) {
+      // Make value for field_alpha multivalued (as if Tamper 'Explode' plugin
+      // was applied to it).
+      $alpha = $item->get('alpha');
+      $alpha = [$alpha];
+      $item->set('alpha', $alpha);
+    }
+  }
+
+  /**
+   * Tests handling of array values for a unique target.
+   */
+  public function testUniqueWithObjectValue() {
+    // Respond to after parse event.
+    $this->container->get('event_dispatcher')
+      ->addListener(FeedsEvents::PARSE, [$this, 'afterParseUniqueWithObjectValue'], FeedsEvents::AFTER);
+
+    $this->testTargetUnique('field_alpha', 'value', 2);
+  }
+
+  /**
+   * After parse callback for ::testUniqueWithObjectValue().
+   *
+   * @param \Drupal\feeds\Event\ParseEvent $event
+   *   The parse event.
+   */
+  public function afterParseUniqueWithObjectValue(ParseEvent $event) {
+    /** @var \Drupal\feeds\Feeds\Item\ItemInterface $item */
+    foreach ($event->getParserResult() as $item) {
+      // Make value for field_alpha an object.
+      $alpha = $item->get('alpha');
+      $alpha = new TestObject($alpha);
+      $item->set('alpha', $alpha);
+    }
+  }
+
+  /**
+   * Tests importing data where a multivalue field is marked as unique.
+   */
+  public function testUniqueMultivalueField() {
+    // Respond to after parse event.
+    $this->container->get('event_dispatcher')
+      ->addListener(FeedsEvents::PARSE, [$this, 'afterParseUniqueMultivalueField'], FeedsEvents::AFTER);
+
+    // Set cardinality of field_alpha to unlimited.
+    $this->container->get('entity_type.manager')
+      ->getStorage('field_storage_config')
+      ->load('node.field_alpha')
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->save();
+
+    // Set mapper 'field_alpha' as unique.
+    $mappings = $this->feedType->getMappings();
+    $mappings[2]['unique'] = ['value' => TRUE];
+    $this->feedType->setMappings($mappings);
+
+    // Configure feed type to update existing values.
+    $this->feedType->getProcessor()->setConfiguration([
+      'update_existing' => ProcessorInterface::UPDATE_EXISTING,
+    ] + $this->feedType->getProcessor()->getConfiguration());
+    $this->feedType->save();
+
+    // The data that we are going to import for field_alpha looks like this:
+    // @code
+    // 1: 'Lorem'
+    // 2: ['Ut wisi', 'Enim ad minim']
+    // @endcode
+    // Since Feeds only picks the first value for the lookup, we expect that
+    // node 1 and node 3 will get updated.
+    // Create a few nodes that can be updated.
+    $node1 = Node::create([
+      'title'  => 'Article1',
+      'type'  => 'article',
+      'uid'  => 0,
+      'field_alpha' => ['Lorem', 'Ipsum'],
+    ]);
+    $node1->save();
+
+    $node2 = Node::create([
+      'title'  => 'Article2',
+      'type'  => 'article',
+      'uid'  => 0,
+      'field_alpha' => 'Enim ad minim',
+    ]);
+    $node2->save();
+
+    $node3 = Node::create([
+      'title'  => 'Article3',
+      'type'  => 'article',
+      'uid'  => 0,
+      'field_alpha' => ['Dolor Sit', 'Ut Wisi'],
+    ]);
+    $node3->save();
+
+    // Run import.
+    $feed = $this->createFeed($this->feedType->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(3);
+
+    // Node 1 should be updated.
+    $node1 = $this->reloadEntity($node1);
+    $expected_alpha = [
+      0 => [
+        'value' => 'Lorem',
+        'format' => 'plain_text',
+      ],
+    ];
+    $this->assertEquals('Lorem ipsum', $node1->title->value);
+    $this->assertEquals($expected_alpha, $node1->toArray()['field_alpha']);
+
+    // Node 2 should stay the same.
+    $node2 = $this->reloadEntity($node2);
+    $expected_alpha = [
+      0 => [
+        'value' => 'Enim ad minim',
+        'format' => NULL,
+      ],
+    ];
+    $this->assertEquals('Article2', $node2->title->value);
+    $this->assertEquals($expected_alpha, $node2->toArray()['field_alpha']);
+
+    // Node 3 should be updated.
+    $node3 = $this->reloadEntity($node3);
+    $expected_alpha = [
+      0 => [
+        'value' => 'Ut wisi',
+        'format' => 'plain_text',
+      ],
+      1 => [
+        'value' => 'Enim ad minim',
+        'format' => 'plain_text',
+      ],
+    ];
+    $this->assertEquals('Ut wisi enim ad minim veniam', $node3->title->value);
+    $this->assertEquals($expected_alpha, $node3->toArray()['field_alpha']);
+  }
+
+  /**
+   * After parse callback for ::testUniqueMultivalueField().
+   *
+   * @param \Drupal\feeds\Event\ParseEvent $event
+   *   The parse event.
+   */
+  public function afterParseUniqueMultivalueField(ParseEvent $event) {
+    /** @var \Drupal\feeds\Feeds\Item\ItemInterface $item */
+    foreach ($event->getParserResult() as $item) {
+      // Set values for field_alpha.
+      $alpha = $item->get('alpha');
+      switch ($alpha) {
+        case 'Lorem':
+          $alpha = ['Lorem'];
+          break;
+
+        case 'Ut wisi':
+          $alpha = ['Ut wisi', 'Enim ad minim'];
+          break;
+      }
+      $item->set('alpha', $alpha);
+    }
+  }
+
+  /**
    * Checks the field values.
    *
    * @param array $expected_values_per_node
@@ -410,6 +595,34 @@ class FieldTest extends FeedsKernelTestBase {
     $display = \Drupal::service('entity_display.repository')->getViewDisplay($node->getEntityTypeId(), $node->bundle(), 'default');
     $content = $display->build($node);
     return (string) $this->container->get('renderer')->renderRoot($content);
+  }
+
+}
+
+/**
+ * Class for testing with using objects as values to import.
+ */
+class TestObject {
+
+  /**
+   * The object's value.
+   *
+   * @var string
+   */
+  private $value;
+
+  /**
+   * Constructs a new TestObject.
+   */
+  public function __construct(string $value) {
+    $this->value = $value;
+  }
+
+  /**
+   * Casts object to string.
+   */
+  public function __toString() {
+    return $this->value;
   }
 
 }

@@ -80,9 +80,9 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
     // title.
     $this->subscriber->expects($this->exactly(2))
       ->method('alterItem')
-      ->will($this->returnCallback(function (ItemInterface $item, ParseEvent $event) {
+      ->willReturnCallback(function (ItemInterface $item, ParseEvent $event) {
         $item->set('title', $item->get('title') . '1');
-      }));
+      });
 
     // Run subscriber.
     $this->subscriber->afterParse($this->event);
@@ -108,13 +108,13 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
     // and 5.
     $this->subscriber->expects($this->exactly(5))
       ->method('alterItem')
-      ->will($this->returnCallback(function (ItemInterface $item, ParseEvent $event) {
+      ->willReturnCallback(function (ItemInterface $item, ParseEvent $event) {
         switch ($item->get('id')) {
           case 3:
           case 5:
             throw new SkipItemException();
         }
-      }));
+      });
 
     // Run subscriber.
     $this->subscriber->afterParse($this->event);

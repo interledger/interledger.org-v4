@@ -55,7 +55,7 @@ abstract class TamperBase extends PluginBase implements TamperInterface {
    * {@inheritdoc}
    */
   public function getSetting($key) {
-    return isset($this->configuration[$key]) ? $this->configuration[$key] : NULL;
+    return $this->configuration[$key] ?? NULL;
   }
 
   /**

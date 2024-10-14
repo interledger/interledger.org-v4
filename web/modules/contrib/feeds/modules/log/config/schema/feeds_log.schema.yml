@@ -16,7 +16,7 @@ feeds_log.settings:
       mapping:
         max_amount:
           type: integer
-          label: 'The maximum number of allowed logs for a single feed within a certain timeframe'
+          label: 'The maximum number of allowed logs for a single feed within a certain time frame'
         age:
           type: integer
           label: 'How long should be looked back for detecting an import log overload'

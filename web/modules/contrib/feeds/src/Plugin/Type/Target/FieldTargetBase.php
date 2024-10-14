@@ -211,6 +211,9 @@ abstract class FieldTargetBase extends TargetBase implements ConfigurableTargetI
    *   An entity ID, if found. Null otherwise.
    */
   public function getUniqueValue(FeedInterface $feed, $target, $key, $value) {
+    // Make sure the passed value is a string.
+    $value = $this->convertValueToString($value);
+
     $base_fields = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($this->feedType->getProcessor()->entityType());
 
     if (isset($base_fields[$target])) {
@@ -238,28 +241,36 @@ abstract class FieldTargetBase extends TargetBase implements ConfigurableTargetI
   }
 
   /**
-   * Returns the messenger to use.
+   * Converts a value to a string, if possible.
    *
-   * @return \Drupal\Core\Messenger\MessengerInterface
-   *   The messenger service.
-   */
-  protected function getMessenger() {
-    return \Drupal::messenger();
-  }
-
-  /**
-   * Adds a message.
+   * @param mixed $value
+   *   The value to convert.
    *
-   * @param string|\Drupal\Component\Render\MarkupInterface $message
-   *   The translated message to be displayed to the user.
-   * @param string $type
-   *   (optional) The message's type.
-   * @param bool $repeat
-   *   (optional) If this is FALSE and the message is already set, then the
-   *   message won't be repeated. Defaults to FALSE.
+   * @return string
+   *   The converted value.
+   *
+   * @throws \Drupal\feeds\Exception\TargetValidationException
+   *   In case the passed value could not be converted.
    */
-  protected function addMessage($message, $type = 'status', $repeat = FALSE) {
-    $this->getMessenger()->addMessage($message, $type, $repeat);
+  protected function convertValueToString($value): string {
+    if (is_string($value)) {
+      // The value is already a string.
+      return $value;
+    }
+    if (is_scalar($value)) {
+      // Cast to a string.
+      return (string) $value;
+    }
+    if (is_null($value)) {
+      return '';
+    }
+    if (is_array($value)) {
+      return $this->convertValueToString(reset($value));
+    }
+    if (is_object($value) && method_exists($value, '__toString')) {
+      return (string) $value;
+    }
+    throw new TargetValidationException('The source value for the unique target could not be converted to a string.');
   }
 
   /**

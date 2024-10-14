@@ -51,11 +51,18 @@ abstract class FileTestBase extends FeedsKernelTestBase {
   protected $token;
 
   /**
-   * The file and stream wrapper helper.
+   * The entity field manager.
    *
-   * @var \Drupal\Core\File\FileSystemInterface
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Entity\EntityFieldManagerInterface
    */
-  protected $fileSystem;
+  protected $entityFieldManager;
+
+  /**
+   * The Feeds entity finder service.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\feeds\EntityFinderInterface
+   */
+  protected $entityFinder;
 
   /**
    * The FeedsTarget plugin being tested.
@@ -78,7 +85,6 @@ abstract class FileTestBase extends FeedsKernelTestBase {
     $this->entityFieldManager->getFieldStorageDefinitions('file')->willReturn([]);
     $this->entityFinder = $this->prophesize(EntityFinderInterface::class);
     $this->entityFinder->findEntities(Argument::cetera())->willReturn([]);
-    $this->fileSystem = $this->prophesize(FileSystemInterface::class);
 
     // Made-up entity type that we are referencing to.
     $referenceable_entity_type = $this->prophesize(EntityTypeInterface::class);
@@ -91,7 +97,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
     ];
 
     $this->targetPlugin = $this->getMockBuilder($this->getTargetPluginClass())
-      ->setMethods(['getDestinationDirectory'])
+      ->onlyMethods(['getDestinationDirectory'])
       ->setConstructorArgs([
         $configuration,
         'file',
@@ -101,7 +107,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
         $this->token->reveal(),
         $this->entityFieldManager->reveal(),
         $this->entityFinder->reveal(),
-        $this->fileSystem->reveal(),
+        $this->container->get('file_system'),
         $this->container->get('file.repository'),
         $this->container->get('config.factory')->get('system.file'),
       ])
@@ -109,7 +115,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
 
     $this->targetPlugin->expects($this->any())
       ->method('getDestinationDirectory')
-      ->will($this->returnValue('public:/'));
+      ->willReturn('public:/');
 
     // Role::load fails without installing the user config.
     $this->installConfig(['user']);
@@ -138,8 +144,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
   abstract protected function getTargetDefinition();
 
   /**
-   * @covers ::prepareValue
-   * @dataProvider dataProviderPrepareValue
+   * Tests prepareValue() for file target plugins.
    *
    * @param array $expected
    *   The expected values.
@@ -149,6 +154,8 @@ abstract class FileTestBase extends FeedsKernelTestBase {
    *   (optional) The name of the expected exception class.
    * @param string $expected_exception_message
    *   (optional) The expected exception message.
+   *
+   * @dataProvider dataProviderPrepareValue
    */
   public function testPrepareValue(array $expected, array $values, $expected_exception = NULL, $expected_exception_message = NULL) {
     $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
@@ -198,7 +205,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
   /**
    * Data provider for testPrepareValue().
    */
-  public function dataProviderPrepareValue() {
+  public static function dataProviderPrepareValue() {
     $return = [
       // Empty file target value.
       'empty-file' => [

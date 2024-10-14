@@ -116,13 +116,17 @@ class UserRole extends ConfigEntityReference {
       return $entity_id;
     }
 
-    // Automatically create a new role.
+    // Automatically create a new role if the 'autocreate' option was enabled,
+    // but only if roles are referenced by ID or label.
     if ($this->configuration['autocreate'] && in_array($this->configuration['reference_by'], [
       'id',
       'label',
     ])) {
       return $this->createRole($search);
     }
+
+    // In all other cases, return false.
+    return FALSE;
   }
 
   /**

@@ -74,7 +74,7 @@ class ChainedTamperTest extends KernelTestBase {
   /**
    * Data provider for testChainedTampers().
    */
-  public function chainedTampersDataProvider() {
+  public static function chainedTampersDataProvider() {
     return [
       [
         'expected' => 'a|b|c',

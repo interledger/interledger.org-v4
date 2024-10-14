@@ -6,6 +6,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -141,6 +142,13 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   protected $constraintManager;
 
   /**
+   * The config installer, used to check if config is syncing.
+   *
+   * @var \Drupal\Core\Config\ConfigInstallerInterface
+   */
+  protected $configInstaller;
+
+  /**
    * Constructs an EntityProcessorBase object.
    *
    * @param array $configuration
@@ -167,8 +175,10 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    *   The database service.
    * @param \Drupal\Core\Validation\ConstraintManager $constraint_manager
    *   The validation constraint manager.
+   * @param \Drupal\Core\Config\ConfigInstallerInterface $config_installer
+   *   The config installer, used to check if config is syncing.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager, TimeInterface $date_time, PluginManagerInterface $action_manager, RendererInterface $renderer, LoggerInterface $logger, Connection $database, ConstraintManager $constraint_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager, TimeInterface $date_time, PluginManagerInterface $action_manager, RendererInterface $renderer, LoggerInterface $logger, Connection $database, ConstraintManager $constraint_manager, ConfigInstallerInterface $config_installer) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityType = $entity_type_manager->getDefinition($plugin_definition['entity_type']);
     $this->storageController = $entity_type_manager->getStorage($plugin_definition['entity_type']);
@@ -180,6 +190,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $this->logger = $logger;
     $this->database = $database;
     $this->constraintManager = $constraint_manager;
+    $this->configInstaller = $config_installer;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -200,7 +211,8 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $container->get('renderer'),
       $container->get('logger.factory')->get('feeds'),
       $container->get('database'),
-      $container->get('validation.constraint')
+      $container->get('validation.constraint'),
+      $container->get('config.installer'),
     );
   }
 
@@ -245,7 +257,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       return;
     }
 
-    // Delay building a new entity until necessary.
+    // Look for an existing entity, if one should exist.
     if ($existing_entity_id) {
       $entity = $this->storageController->load($existing_entity_id);
     }
@@ -271,6 +283,11 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     }
 
     try {
+      if (!isset($entity)) {
+        // No entity exist. Abort to avoid PHP errors.
+        return;
+      }
+
       // Set feeds_item values.
       $feeds_item = $entity->get('feeds_item')->getItemByFeed($feed, TRUE);
       $feeds_item->hash = $hash;
@@ -549,6 +566,8 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    *   For example: 'en' => 'English').
    */
   public function languageOptions() {
+    $langcodes = [];
+
     foreach ($this->languageManager->getLanguages(LanguageInterface::STATE_ALL) as $language) {
       $langcodes[$language->getId()] = $language->getName();
     }
@@ -699,10 +718,10 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     // later.
     $skip_validation_types = $this->configuration['skip_validation_types'] ?? [];
     if (!empty($skip_validation_types)) {
-      $constraint_defns = $this->constraintManager->getDefinitions();
+      $constraint_definitions = $this->constraintManager->getDefinitions();
       foreach ($skip_validation_types as $constraint_type_id) {
-        if (isset($constraint_defns[$constraint_type_id])) {
-          $class = $constraint_defns[$constraint_type_id]['class'];
+        if (isset($constraint_definitions[$constraint_type_id])) {
+          $class = $constraint_definitions[$constraint_type_id]['class'];
           $skip_validation_types[$constraint_type_id] = $class;
         }
       }
@@ -807,7 +826,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       // the index numbers of the violations to remove stay intact.
       $to_skip = array_reverse($to_skip);
       foreach ($to_skip as $key) {
-        $violations->remove($index);
+        $violations->remove($key);
       }
     }
   }
@@ -1029,7 +1048,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    */
   protected function prepareFeedsItemField() {
     // Do not create field when syncing configuration.
-    if (\Drupal::isConfigSyncing()) {
+    if ($this->configInstaller->isSyncing()) {
       return FALSE;
     }
     // Create field if it doesn't exist.

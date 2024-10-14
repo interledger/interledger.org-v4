@@ -9,7 +9,6 @@ use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Fetcher\HttpFetcher;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\File\FeedsFileSystemInterface;
-use Drupal\feeds\State;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -84,7 +83,7 @@ class HttpFetcherTest extends FeedsUnitTestCase {
   public function testFetch() {
     $this->mockHandler->append(new Response(200, [], 'test data'));
 
-    $result = $this->fetcher->fetch($this->feed->reveal(), new State());
+    $result = $this->fetcher->fetch($this->feed->reveal(), $this->createFeedsState());
     $this->assertSame('test data', $result->getRaw());
   }
 
@@ -97,7 +96,7 @@ class HttpFetcherTest extends FeedsUnitTestCase {
     $this->mockHandler->append(new Response(304));
 
     $this->expectException(EmptyFeedException::class);
-    $this->fetcher->fetch($this->feed->reveal(), new State());
+    $this->fetcher->fetch($this->feed->reveal(), $this->createFeedsState());
   }
 
   /**
@@ -109,7 +108,7 @@ class HttpFetcherTest extends FeedsUnitTestCase {
     $this->mockHandler->append(new Response(404));
 
     $this->expectException(\RuntimeException::class);
-    $this->fetcher->fetch($this->feed->reveal(), new State());
+    $this->fetcher->fetch($this->feed->reveal(), $this->createFeedsState());
   }
 
   /**
@@ -121,7 +120,7 @@ class HttpFetcherTest extends FeedsUnitTestCase {
     $this->mockHandler->append(new RequestException('', new Request('GET', 'http://google.com')));
 
     $this->expectException(\RuntimeException::class);
-    $this->fetcher->fetch($this->feed->reveal(), new State());
+    $this->fetcher->fetch($this->feed->reveal(), $this->createFeedsState());
   }
 
   /**
@@ -131,10 +130,10 @@ class HttpFetcherTest extends FeedsUnitTestCase {
     $feed = $this->createMock(FeedInterface::class);
     $feed->expects($this->exactly(3))
       ->method('getSource')
-      ->will($this->returnValue('http://example.com'));
+      ->willReturn('http://example.com');
     $feeds = [$feed, $feed, $feed];
 
-    $this->fetcher->onFeedDeleteMultiple($feeds, new State());
+    $this->fetcher->onFeedDeleteMultiple($feeds, $this->createFeedsState());
   }
 
 }

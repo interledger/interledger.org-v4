@@ -2,8 +2,11 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\feeds\FeedImportHandler;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedsExecutableInterface;
@@ -47,8 +50,11 @@ class FeedImportHandlerTest extends FeedsUnitTestCase {
       ->setConstructorArgs([
         $this->dispatcher,
         $this->createMock(Connection::class),
+        $this->createMock(ClassResolverInterface::class),
+        $this->createMock(KeyValueFactoryInterface::class),
+        $this->createMock(TimeInterface::class),
       ])
-      ->setMethods(['getRequestTime', 'getExecutable'])
+      ->onlyMethods(['getRequestTime', 'getExecutable'])
       ->getMock();
     $this->handler->setStringTranslation($this->getStringTranslationStub());
     $this->handler->expects($this->any())
@@ -58,10 +64,10 @@ class FeedImportHandlerTest extends FeedsUnitTestCase {
     $this->feed = $this->createMock(FeedInterface::class);
     $this->feed->expects($this->any())
       ->method('id')
-      ->will($this->returnValue(10));
+      ->willReturn(10);
     $this->feed->expects($this->any())
       ->method('bundle')
-      ->will($this->returnValue('test_feed'));
+      ->willReturn('test_feed');
   }
 
   /**
@@ -92,7 +98,7 @@ class FeedImportHandlerTest extends FeedsUnitTestCase {
   public function testStartCronImport() {
     $this->feed->expects($this->once())
       ->method('isLocked')
-      ->will($this->returnValue(FALSE));
+      ->willReturn(FALSE);
 
     $this->handler->expects($this->once())
       ->method('getExecutable')
@@ -110,7 +116,7 @@ class FeedImportHandlerTest extends FeedsUnitTestCase {
       ->willReturn($this->createMock(FeedsExecutableInterface::class));
     $this->feed->expects($this->once())
       ->method('lock')
-      ->will($this->returnValue($this->feed));
+      ->willReturn($this->feed);
 
     $file = $this->resourcesPath() . '/csv/example.csv';
     $this->handler->pushImport($this->feed, file_get_contents($file), $this->createMock(FileSystemInterface::class));

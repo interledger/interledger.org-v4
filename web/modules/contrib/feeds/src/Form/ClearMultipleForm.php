@@ -9,8 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ClearMultipleForm extends ActionMultipleForm {
 
-  const ACTION = 'feeds_feed_multiple_clear_confirm';
-
   /**
    * {@inheritdoc}
    */
@@ -23,6 +21,13 @@ class ClearMultipleForm extends ActionMultipleForm {
    */
   public function getConfirmText() {
     return $this->t('Delete items');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getActionId(): string {
+    return 'feeds_feed_clear_action';
   }
 
   /**
@@ -42,13 +47,13 @@ class ClearMultipleForm extends ActionMultipleForm {
         }
       }
 
-      $this->tempStoreFactory->get(static::ACTION)->delete($this->currentUser->id() . ':feeds_feed');
+      $this->tempStoreFactory->get($this->getActionId())->delete($this->currentUser->id() . ':feeds_feed');
       $this->logger('feeds')->notice('Deleted imported items of @count feeds.', ['@count' => $count]);
       $this->messenger()->addMessage($this->formatPlural($count, 'Deleted items of 1 feed.', 'Deleted items of @count feeds.'));
-    }
 
-    if ($inaccessible_feeds) {
-      $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      if (count($inaccessible_feeds) > 0) {
+        $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      }
     }
 
     $form_state->setRedirectUrl($this->getCancelUrl());
@@ -58,7 +63,7 @@ class ClearMultipleForm extends ActionMultipleForm {
    * Returns the message to show the user when a feed has not been cleared.
    *
    * @param int $count
-   *   Number of feeds that were not cleared.
+   *   Number of feeds that weren't cleared.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The item inaccessible message.

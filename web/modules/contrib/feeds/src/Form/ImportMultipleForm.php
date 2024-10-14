@@ -9,8 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ImportMultipleForm extends ActionMultipleForm {
 
-  const ACTION = 'feeds_feed_multiple_import_confirm';
-
   /**
    * {@inheritdoc}
    */
@@ -23,6 +21,13 @@ class ImportMultipleForm extends ActionMultipleForm {
    */
   public function getConfirmText() {
     return $this->t('Import');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getActionId(): string {
+    return 'feeds_feed_import_action';
   }
 
   /**
@@ -42,13 +47,13 @@ class ImportMultipleForm extends ActionMultipleForm {
         }
       }
 
-      $this->tempStoreFactory->get(static::ACTION)->delete($this->currentUser->id() . ':feeds_feed');
+      $this->tempStoreFactory->get($this->getActionId())->delete($this->currentUser->id() . ':feeds_feed');
       $this->logger('feeds')->notice('Imported @count feeds.', ['@count' => $count]);
       $this->messenger()->addMessage($this->formatPlural($count, 'Imported 1 feed.', 'Imported @count feeds.'));
-    }
 
-    if ($inaccessible_feeds) {
-      $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      if (count($inaccessible_feeds) > 0) {
+        $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      }
     }
 
     $form_state->setRedirectUrl($this->getCancelUrl());

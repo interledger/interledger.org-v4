@@ -17,7 +17,7 @@ if (!trait_exists(EntityReferenceFieldCreationTrait::class)) {
 }
 
 /**
- * Tests for the entityreference target.
+ * Tests for the entity reference target.
  *
  * @group feeds
  */
@@ -53,7 +53,7 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       'name' => 'Page',
     ]);
     $type->save();
-    // Add an entityreference field to this content type.
+    // Add an entity reference field to this content type.
     $this->createEntityReferenceField('node', 'page', 'field_article', 'Article', 'node', 'default', [
       'target_bundles' => ['article'],
     ]);
@@ -89,7 +89,7 @@ class EntityReferenceTest extends FeedsKernelTestBase {
     ]);
 
     // Create feed type for the 'page' content type, with a mapping to the
-    // entityreference field 'field_article'.
+    // entity reference field 'field_article'.
     $this->createFeedType([
       'id' => 'page_feed_type',
       'label' => 'Page importer',
@@ -487,7 +487,7 @@ class EntityReferenceTest extends FeedsKernelTestBase {
     ], FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
 
     // Create a feed type for importing articles, with a mapper to the
-    // entityreference field 'field_event'.
+    // entity reference field 'field_event'.
     $feed_type = $this->createFeedTypeForCsv([
       'title' => 'title',
       'guid' => 'guid',
@@ -537,13 +537,13 @@ class EntityReferenceTest extends FeedsKernelTestBase {
     // Install the taxonomy module with a vocabulary.
     $this->installTaxonomyModuleWithVocabulary();
 
-    // Create an entityreference field to this taxonomy.
+    // Create an entity reference field to this taxonomy.
     $this->createEntityReferenceField('node', 'article', 'field_tags', 'Tags', 'taxonomy_term', 'default', [
       'target_bundles' => ['tags'],
     ]);
 
     // Create a feed type for importing articles, with a mapper to the
-    // entityreference field 'field_tags'.
+    // entity reference field 'field_tags'.
     $feed_type = $this->createFeedTypeForCsv([
       'title' => 'title',
       'guid' => 'guid',
@@ -595,13 +595,13 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       'name' => 'Foo',
     ])->save();
 
-    // Create an entityreference field.
+    // Create an entity reference field.
     $this->createEntityReferenceField('node', 'article', 'field_term', 'Term', 'taxonomy_term', 'default', [
       'target_bundles' => ['tags', 'foo'],
     ]);
 
     // Create a feed type for importing articles, with a mapper to the
-    // entityreference field 'field_term'.
+    // entity reference field 'field_term'.
     $feed_type = $this->createFeedTypeForCsv([
       'title' => 'title',
       'guid' => 'guid',

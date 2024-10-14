@@ -253,9 +253,9 @@ class FeedTypeForm extends EntityForm {
         ];
         $form[$type . '_configuration'] += $plugin_form;
       }
-    }
 
-    $form_state->setValue($type . '_configuration', $plugin_state->getValues());
+      $form_state->setValue($type . '_configuration', $plugin_state->getValues());
+    }
 
     return parent::form($form, $form_state);
   }
@@ -350,9 +350,10 @@ class FeedTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $this->entity->save();
+    $result = $this->entity->save();
     $form_state->setRedirect('entity.feeds_feed_type.edit_form', ['feeds_feed_type' => $this->entity->id()]);
     $this->messenger()->addStatus($this->t('Your changes have been saved.'));
+    return $result;
   }
 
   /**
@@ -389,7 +390,7 @@ class FeedTypeForm extends EntityForm {
     // Display status messages.
     $status_messages = ['#type' => 'status_messages'];
     $output = $this->renderer->renderRoot($status_messages);
-    if (!empty($output)) {
+    if (strlen((string) $output) > 0) {
       $response->addCommand(new HtmlCommand('.region-messages', $output));
     }
 

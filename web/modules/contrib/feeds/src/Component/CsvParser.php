@@ -187,25 +187,15 @@ class CsvParser implements \Iterator {
 
   /**
    * Implements \Iterator::current().
-   *
-   * @todo return type should be "mixed", but that keyword is only available
-   * since PHP 8.0. Add that as soon as Drupal 9 is no longer supported. And
-   * then remove the "#[\ReturnTypeWillChange]" line.
    */
-  #[\ReturnTypeWillChange]
-  public function current() {
+  public function current(): mixed {
     return $this->currentLine;
   }
 
   /**
    * Implements \Iterator::key().
-   *
-   * @todo return type should be "mixed", but that keyword is only available
-   * since PHP 8.0. Add that as soon as Drupal 9 is no longer supported. And
-   * then remove the "#[\ReturnTypeWillChange]" line.
    */
-  #[\ReturnTypeWillChange]
-  public function key() {
+  public function key(): mixed {
     return $this->linesRead - 1;
   }
 

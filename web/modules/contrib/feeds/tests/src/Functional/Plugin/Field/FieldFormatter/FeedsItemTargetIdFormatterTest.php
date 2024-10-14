@@ -59,7 +59,7 @@ class FeedsItemTargetIdFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * Data provider for ::testFeedsItemTargetIdFormatter().
    */
-  public function providerTargetIds() {
+  public static function providerTargetIds() {
     return [
       'empty target id' => ['', NULL],
       'existing target id' => ['1', '<div>1</div>'],

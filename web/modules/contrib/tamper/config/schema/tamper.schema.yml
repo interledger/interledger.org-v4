@@ -2,6 +2,15 @@ tamper.*:
   type: mapping
   label: 'Tamper plugin'
 
+tamper.aggregate:
+  mapping:
+    function:
+      type: string
+      label: 'Method of how to process multiple values into a single value'
+    count:
+      type: string
+      label: 'Count mode'
+
 tamper.convert_case:
   mapping:
     operation:
@@ -255,3 +264,10 @@ tamper.url_encode:
     method:
       type: string
       label: 'Encode method'
+
+tamper.word_count:
+  mapping:
+    limit:
+      type: integer
+      label: 'Limit'
+      nullable: true

@@ -205,7 +205,7 @@ class File extends EntityReference {
       throw new EmptyFeedException('The given file url is empty.');
     }
 
-    // Perform a lookup agains the value using the configured reference method.
+    // Perform a lookup against the value using the configured reference method.
     if (FALSE !== ($fid = $this->findEntity($this->configuration['reference_by'], $value))) {
       return $fid;
     }
@@ -262,7 +262,7 @@ class File extends EntityReference {
    *   In case the file extension is not valid.
    */
   protected function getFileName($url) {
-    $filename = trim(\Drupal::service('file_system')->basename($url), " \t\n\r\0\x0B.");
+    $filename = trim($this->fileSystem->basename($url), " \t\n\r\0\x0B.");
     // Remove query string from file name, if it has one.
     [$filename] = explode('?', $filename);
     $extension = substr($filename, strrpos($filename, '.') + 1);
@@ -312,8 +312,6 @@ class File extends EntityReference {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo Inject $user.
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
@@ -351,6 +349,9 @@ class File extends EntityReference {
       case FileSystemInterface::EXISTS_ERROR:
         $message = 'Ignore';
         break;
+
+      default:
+        $message = 'Unknown';
     }
 
     $summary[] = $this->t('Existing files: %existing', ['%existing' => $message]);

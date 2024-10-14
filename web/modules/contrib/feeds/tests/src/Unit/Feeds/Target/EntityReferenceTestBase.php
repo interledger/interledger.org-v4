@@ -41,17 +41,17 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
   public function setUp(): void {
     parent::setUp();
 
-    $referencable_entity_type_id = $this->getReferencableEntityTypeId();
+    $referenceable_entity_type_id = $this->getReferenceableEntityTypeId();
 
     // Entity type manager.
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
 
     // Entity storage (needed for entity queries).
     $this->entityStorage = $this->prophesize($this->getEntityStorageClass());
-    $this->entityTypeManager->getStorage($referencable_entity_type_id)->willReturn($this->entityStorage);
+    $this->entityTypeManager->getStorage($referenceable_entity_type_id)->willReturn($this->entityStorage);
 
     // Made-up entity type that we are referencing to.
-    $this->entityTypeManager->getDefinition($referencable_entity_type_id)->willReturn($this->createReferencableEntityType())->shouldBeCalled();
+    $this->entityTypeManager->getDefinition($referenceable_entity_type_id)->willReturn($this->createReferenceableEntityType())->shouldBeCalled();
 
     // Entity finder.
     $this->entityFinder = $this->prophesize(EntityFinderInterface::class);
@@ -73,7 +73,7 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
    * @return string
    *   The entity type ID.
    */
-  protected function getReferencableEntityTypeId() {
+  protected function getReferenceableEntityTypeId() {
     return 'referenceable_entity_type';
   }
 
@@ -97,34 +97,34 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
    *   A mocked target definition.
    */
   protected function createTargetDefinitionMock() {
-    $referencable_entity_type_id = $this->getReferencableEntityTypeId();
+    $referenceable_entity_type_id = $this->getReferenceableEntityTypeId();
 
     $method = $this->getMethod($this->getTargetClass(), 'prepareTarget')->getClosure();
     $field_definition_mock = $this->getMockFieldDefinition([
-      'target_type' => $referencable_entity_type_id,
+      'target_type' => $referenceable_entity_type_id,
       'handler_settings' => ['target_bundles' => []],
     ]);
-    $field_definition_mock->expects($this->once())->method('getSetting')->willReturn($referencable_entity_type_id);
+    $field_definition_mock->expects($this->once())->method('getSetting')->willReturn($referenceable_entity_type_id);
 
     return $method($field_definition_mock);
   }
 
   /**
-   * Creates a referencable entity type instance.
+   * Creates a referenceable entity type instance.
    *
    * @return \Drupal\Core\Entity\EntityTypeInterface
    *   The entity type to use in tests.
    */
-  abstract protected function createReferencableEntityType();
+  abstract protected function createReferenceableEntityType();
 
   /**
-   * @covers ::prepareTarget
+   * Tests the prepareTarget() method.
    */
   public function testPrepareTarget() {
     $field_definition_mock = $this->getMockFieldDefinition();
     $field_definition_mock->expects($this->once())
       ->method('getSetting')
-      ->will($this->returnValue($this->getReferencableEntityTypeId()));
+      ->willReturn($this->getReferenceableEntityTypeId());
 
     $method = $this->getMethod($this->getTargetClass(), 'prepareTarget')->getClosure();
     $this->assertInstanceof(FieldTargetDefinition::class, $method($field_definition_mock));
@@ -137,7 +137,7 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
     $field_definition_mock = $this->getMockFieldDefinition();
     $field_definition_mock->expects($this->once())
       ->method('getSetting')
-      ->will($this->returnValue($this->getReferencableEntityTypeId()));
+      ->willReturn($this->getReferenceableEntityTypeId());
 
     $method = $this->getMethod($this->getTargetClass(), 'prepareTarget')->getClosure();
     return $method($field_definition_mock)
@@ -146,8 +146,6 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
 
   /**
    * Tests prepareValue() without passing values.
-   *
-   * @covers ::prepareValue
    */
   public function testPrepareValueEmptyFeed() {
     $method = $this->getProtectedClosure($this->instantiatePlugin(), 'prepareValue');

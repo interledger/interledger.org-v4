@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Unit\Component;
 
+use Drupal\feeds\Component\XmlParserTrait;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
@@ -14,7 +15,7 @@ class XmlParserTraitTest extends FeedsUnitTestCase {
    * Basic XML parsing test.
    */
   public function test() {
-    $trait = $this->getMockForTrait('Drupal\feeds\Component\XmlParserTrait');
+    $trait = $this->createMock(XmlParserTraitMock::class);
 
     $doc = $this->callProtectedMethod($trait, 'getDomDocument', [' <thing></thing> ']);
     $this->assertSame('DOMDocument', get_class($doc));
@@ -27,7 +28,7 @@ class XmlParserTraitTest extends FeedsUnitTestCase {
    * Tests parsing a document with invalid XML.
    */
   public function testErrors() {
-    $trait = $this->getMockForTrait('Drupal\feeds\Component\XmlParserTrait');
+    $trait = $this->createMock(XmlParserTraitMock::class);
 
     $doc = $this->callProtectedMethod($trait, 'getDomDocument', ['asdfasdf']);
     $this->assertSame('DOMDocument', get_class($doc));
@@ -42,7 +43,7 @@ class XmlParserTraitTest extends FeedsUnitTestCase {
    * @dataProvider namespaceProvider
    */
   public function testRemoveDefaultNamespaces($in, $out) {
-    $trait = $this->getMockForTrait('Drupal\feeds\Component\XmlParserTrait');
+    $trait = $this->createMock(XmlParserTraitMock::class);
 
     $result = $this->callProtectedMethod($trait, 'removeDefaultNamespaces', [$in]);
     $this->assertSame($out, $result);
@@ -53,7 +54,7 @@ class XmlParserTraitTest extends FeedsUnitTestCase {
    *
    * Checks that the input and output are equal.
    */
-  public function namespaceProvider() {
+  public static function namespaceProvider() {
     return [
       [
         '<feed xmlns="http://www.w3.org/2005/Atom">bleep blorp</feed>',
@@ -123,5 +124,14 @@ class XmlParserTraitTest extends FeedsUnitTestCase {
       ],
     ];
   }
+
+}
+
+/**
+ * Mock for XmlParserTrait, so trait methods can be tested.
+ */
+class XmlParserTraitMock {
+
+  use XmlParserTrait;
 
 }

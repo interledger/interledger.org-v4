@@ -68,6 +68,7 @@ class Math extends TamperBase {
       '#required' => TRUE,
       '#description' => $this->t('A numerical value.'),
       '#default_value' => $this->getSetting(self::SETTING_VALUE),
+      '#step' => 'any',
     ];
 
     return $form;

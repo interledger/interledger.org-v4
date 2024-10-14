@@ -103,4 +103,29 @@ abstract class TargetBase extends PluginBase implements TargetInterface, PluginF
     return FALSE;
   }
 
+  /**
+   * Returns the messenger to use.
+   *
+   * @return \Drupal\Core\Messenger\MessengerInterface
+   *   The messenger service.
+   */
+  protected function getMessenger() {
+    return $this->messenger();
+  }
+
+  /**
+   * Adds a message.
+   *
+   * @param string|\Drupal\Component\Render\MarkupInterface $message
+   *   The translated message to be displayed to the user.
+   * @param string $type
+   *   (optional) The message's type.
+   * @param bool $repeat
+   *   (optional) If this is FALSE and the message is already set, then the
+   *   message won't be repeated. Defaults to FALSE.
+   */
+  protected function addMessage($message, $type = 'status', $repeat = FALSE) {
+    $this->getMessenger()->addMessage($message, $type, $repeat);
+  }
+
 }

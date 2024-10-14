@@ -16,8 +16,6 @@ use Drupal\Core\Session\AccountInterface;
  */
 class DeleteFeedAction extends FeedActionBase {
 
-  const ACTION = 'feeds_feed_multiple_delete_confirm';
-
   /**
    * {@inheritdoc}
    */

@@ -46,6 +46,8 @@ class FeedsQueueBatch extends FeedsBatchBase {
           $operation['params'],
         ]);
     }
+
+    return $this;
   }
 
 }

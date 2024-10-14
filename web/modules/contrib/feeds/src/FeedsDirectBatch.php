@@ -14,6 +14,8 @@ class FeedsDirectBatch extends FeedsBatchBase {
     foreach ($this->operations as $operation) {
       $this->executable->processItem($this->feed, $operation['stage'], $operation['params']);
     }
+
+    return $this;
   }
 
 }

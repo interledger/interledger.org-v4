@@ -32,7 +32,7 @@ class FeedTypeTamperMetaTest extends FeedsTamperKernelTestBase {
     $uuid_generator = $this->createMock(UuidInterface::class);
     $uuid_generator->expects($this->any())
       ->method('generate')
-      ->will($this->returnValue('uuid3'));
+      ->willReturn('uuid3');
 
     // Get the tamper manager.
     $tamper_manager = $container->get('plugin.manager.tamper');
@@ -42,7 +42,7 @@ class FeedTypeTamperMetaTest extends FeedsTamperKernelTestBase {
     $feed_type->expects($this->any())
       ->method('getThirdPartySetting')
       ->with('feeds_tamper', 'tampers')
-      ->will($this->returnValue([
+      ->willReturn([
         'uuid1' => [
           'uuid' => 'uuid1',
           'plugin' => 'explode',
@@ -57,18 +57,18 @@ class FeedTypeTamperMetaTest extends FeedsTamperKernelTestBase {
           'source' => 'beta',
           'description' => 'Convert all characters to uppercase',
         ],
-      ]));
+      ]);
 
     $feed_type->expects($this->any())
       ->method('getMappingSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'alpha' => [
           'label' => 'Alpha',
         ],
         'beta' => [
           'label' => 'Beta',
         ],
-      ]));
+      ]);
 
     // Instantiate a feeds type tamper meta object.
     $this->feedTypeTamperMeta = new FeedTypeTamperMeta($uuid_generator, $tamper_manager, $feed_type);

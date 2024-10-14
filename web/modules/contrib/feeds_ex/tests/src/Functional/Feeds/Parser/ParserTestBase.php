@@ -21,14 +21,14 @@ abstract class ParserTestBase extends FeedsExBrowserTestBase {
    *
    * @var string
    */
-  protected $parserId = '';
+  protected static $parserId = '';
 
   /**
    * The custom source type to use.
    *
    * @var string
    */
-  protected $customSourceType = 'blank';
+  protected static $customSourceType = 'blank';
 
   /**
    * {@inheritdoc}
@@ -38,7 +38,7 @@ abstract class ParserTestBase extends FeedsExBrowserTestBase {
 
     // Create a feed type.
     $this->feedType = $this->createFeedType([
-      'parser' => $this->parserId,
+      'parser' => static::$parserId,
     ]);
   }
 
@@ -55,10 +55,10 @@ abstract class ParserTestBase extends FeedsExBrowserTestBase {
 
     // Set source for title target.
     $edit = [
-      'mappings[1][map][value][select]' => 'custom__' . $this->customSourceType,
+      'mappings[1][map][value][select]' => 'custom__' . static::$customSourceType,
     ];
     foreach ($custom_source as $key => $value) {
-      $edit['mappings[1][map][value][custom__' . $this->customSourceType . '][' . $key . ']'] = $value;
+      $edit['mappings[1][map][value][custom__' . static::$customSourceType . '][' . $key . ']'] = $value;
     }
     $this->submitForm($edit, 'Save');
 

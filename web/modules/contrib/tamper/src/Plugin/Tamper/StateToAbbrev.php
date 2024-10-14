@@ -104,7 +104,7 @@ class StateToAbbrev extends TamperBase {
     // Trim whitespace, set to lowercase.
     $state = mb_strtolower(trim($data));
 
-    return isset($states[$state]) ? $states[$state] : '';
+    return $states[$state] ?? '';
   }
 
 }

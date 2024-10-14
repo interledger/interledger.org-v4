@@ -7,10 +7,15 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
   use Drupal\Core\DependencyInjection\ContainerBuilder;
   use Drupal\Core\Entity\EntityFieldManagerInterface;
   use Drupal\Core\Field\FieldStorageDefinitionInterface;
+  use Drupal\Core\Messenger\MessengerInterface;
   use Drupal\feeds\EntityFinderInterface;
+  use Drupal\feeds\Exception\EmptyFeedException;
   use Drupal\feeds\Exception\ReferenceNotFoundException;
+  use Drupal\feeds\Exception\TargetValidationException;
+  use Drupal\feeds\FeedInterface;
   use Drupal\feeds\Feeds\Target\Book;
   use Drupal\feeds\FeedTypeInterface;
+  use Drupal\feeds\StateInterface;
   use Drupal\feeds\TargetDefinition;
   use Drupal\node\NodeInterface;
   use Drupal\node\NodeStorageInterface;
@@ -71,9 +76,10 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
     public function setUp(): void {
       parent::setUp();
 
-      // Some methods in Book are using string translation.
+      // Some methods in Book use global services.
       $container = new ContainerBuilder();
       $container->set('string_translation', $this->getStringTranslationStub());
+      $container->set('messenger', $this->createMock(MessengerInterface::class));
       \Drupal::setContainer($container);
 
       // Create a few field definitions.
@@ -118,11 +124,17 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
      *
      * @param array $configuration
      *   (optional) Configuration for the target plugin.
+     * @param array $callbacks
+     *   (optional) A list callbacks for methods, keyed by method name.
      *
      * @return \Drupal\feeds\Feeds\Target\Book
      *   A FeedsTarget plugin of type 'book'.
      */
-    protected function getTargetPlugin(array $configuration = []) {
+    protected function getTargetPlugin(array $configuration = [], array $callbacks = []) {
+      $callbacks += [
+        'findFirstNidInBook' => [__CLASS__, 'findFirstNidInBook'],
+      ];
+
       $method = $this->getMethod(Book::class, 'prepareTarget')->getClosure();
       $configuration += [
         'feed_type' => $this->createMock(FeedTypeInterface::class),
@@ -139,12 +151,14 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
           $this->bookManager->reveal(),
           $this->entityFinder->reveal(),
         ])
-        ->onlyMethods(['findFirstNidInBook'])
+        ->onlyMethods(array_keys($callbacks))
         ->getMock();
 
-      $book_target->expects($this->any())
-        ->method('findFirstNidInBook')
-        ->will($this->returnCallback([__CLASS__, 'findFirstNidInBook']));
+      foreach ($callbacks as $method_name => $callback) {
+        $book_target->expects($this->any())
+          ->method($method_name)
+          ->willReturnCallback($callback);
+      }
 
       return $book_target;
     }
@@ -178,6 +192,123 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
       $this->entityFinder->findEntities('node', $reference_by, Argument::type('scalar'), [], Argument::type('bool'))
         ->will($callback)
         ->shouldBeCalled();
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTarget() {
+      $this->setFindEntitiesCallback(function (array $args) {
+        return [$args[2]];
+      });
+
+      $feed = $this->prophesize(FeedInterface::class);
+      $entity = $this->prophesize(NodeInterface::class);
+      $field_name = 'book';
+      $raw_values = [
+        [
+          'bid' => 1,
+          'pid' => 9,
+        ],
+      ];
+
+      $target = $this->getTargetPlugin();
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertEquals(['bid' => 1, 'pid' => 9], $entity->book);
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTargetOnNewEntityWithEmptyValues() {
+      $feed = $this->prophesize(FeedInterface::class);
+      $entity = $this->prophesize(NodeInterface::class);
+      $entity->isNew()->willReturn(TRUE);
+      $field_name = 'book';
+      $raw_values = [];
+
+      $target = $this->getTargetPlugin();
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertFalse(isset($entity->book));
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTargetOnExistingEntityWithEmptyValues() {
+      $feed = $this->prophesize(FeedInterface::class);
+      $entity = $this->prophesize(NodeInterface::class);
+      $entity->isNew()->willReturn(FALSE);
+      $entity->id()->willReturn(3);
+      $field_name = 'book';
+      $raw_values = [];
+
+      $this->nodeStorage->loadUnchanged(3)->willReturn($entity);
+
+      $target = $this->getTargetPlugin();
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertFalse(isset($entity->book));
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTargetWithReferenceNotFoundException() {
+      $feeds_item = new \stdClass();
+      $feed = $this->prophesize(FeedInterface::class);
+      $feed->getState(StateInterface::PROCESS)->willReturn($this->createMock(StateInterface::class));
+      $entity = $this->prophesize(NodeInterface::class);
+      $entity->get('feeds_item')->willReturn($feeds_item);
+      $entity->isNew()->willReturn(TRUE);
+      $field_name = 'book';
+      $raw_values = [];
+
+      $target = $this->getTargetPlugin([], [
+        'prepareValues' => function () {
+          throw new ReferenceNotFoundException();
+        },
+      ]);
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertNull($feeds_item->hash);
+      $this->assertFalse(isset($entity->book));
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTargetWithEmptyFeedException() {
+      $feed = $this->prophesize(FeedInterface::class);
+      $entity = $this->prophesize(NodeInterface::class);
+      $entity->isNew()->willReturn(TRUE);
+      $field_name = 'book';
+      $raw_values = [];
+
+      $target = $this->getTargetPlugin([], [
+        'prepareValues' => function () {
+          throw new EmptyFeedException();
+        },
+      ]);
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertFalse(isset($entity->book));
+    }
+
+    /**
+     * @covers ::setTarget
+     */
+    public function testSetTargetWithTargetValidationException() {
+      $feed = $this->prophesize(FeedInterface::class);
+      $entity = $this->prophesize(NodeInterface::class);
+      $entity->isNew()->willReturn(TRUE);
+      $field_name = 'book';
+      $raw_values = [];
+
+      $target = $this->getTargetPlugin([], [
+        'prepareValues' => function () {
+          throw new TargetValidationException();
+        },
+      ]);
+      $target->setTarget($feed->reveal(), $entity->reveal(), $field_name, $raw_values);
+      $this->assertFalse(isset($entity->book));
     }
 
     /**
@@ -248,8 +379,6 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target {
     /**
      * @covers ::prepareValues
      * @covers ::findEntity
-     *
-     * @todo update
      */
     public function testPrepareValuesWithReferencingByGuid() {
       $this->setFindEntitiesCallback(function (array $args) {

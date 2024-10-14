@@ -16,6 +16,27 @@ use Drupal\feeds\FeedTypeInterface;
 class FeedTypeAccessControlHandlerTest extends FeedsUnitTestCase {
 
   /**
+   * The entity to use with the access controller.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\feeds\FeedTypeInterface
+   */
+  protected $entity;
+
+  /**
+   * The account to use with the access controller.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Session\AccountInterface
+   */
+  protected $account;
+
+  /**
+   * The access controller handler to test.
+   *
+   * @var \Drupal\feeds\FeedTypeAccessControlHandler
+   */
+  protected $controller;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {

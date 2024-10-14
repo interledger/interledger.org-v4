@@ -1,0 +1,2 @@
+route_callbacks:
+  - '\Drupal\feeds_test_entity\Routing\EntityTestRoutes::routes'

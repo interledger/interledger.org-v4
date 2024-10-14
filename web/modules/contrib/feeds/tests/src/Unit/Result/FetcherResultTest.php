@@ -41,7 +41,7 @@ class FetcherResultTest extends FeedsUnitTestCase {
   /**
    * @covers ::getRaw
    */
-  public function testNonExistantFile() {
+  public function testNonExistentFile() {
     $result = new FetcherResult('IDONOTEXIST');
     $this->expectException(\RuntimeException::class);
     $result->getRaw();

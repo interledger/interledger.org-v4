@@ -19,6 +19,7 @@ use Symfony\Component\Process\Process;
  * @requires extension pdo_sqlite
  *
  * @group Command
+ * @group #slow
  */
 class GenerateThemeTest extends QuickStartTestBase {
 
@@ -579,6 +580,24 @@ EDITED, file_get_contents($theme_path_absolute . '/src/TestCustomThemePreRender.
     self::assertFalse($info['base theme']);
     self::assertArrayHasKey('libraries', $info);
     self::assertEquals(['core/jquery'], $info['libraries']);
+  }
+
+  public function testIncludeDotFiles(): void {
+    file_put_contents($this->getWorkspaceDirectory() . '/core/themes/starterkit_theme/.gitignore', '*.map');
+    $tester = $this->runCommand(
+      [
+        'machine-name' => 'test_custom_theme',
+        '--name' => 'Test custom starterkit theme',
+        '--description' => 'Custom theme generated from a starterkit theme',
+      ]
+    );
+
+    $tester->assertCommandIsSuccessful($tester->getErrorOutput());
+    $this->assertThemeExists('themes/test_custom_theme');
+
+    // Verify that the .gitignore file is present in the generated theme.
+    $theme_path_absolute = $this->getWorkspaceDirectory() . '/themes/test_custom_theme';
+    self::assertFileExists($theme_path_absolute . '/.gitignore');
   }
 
   private function writeStarterkitConfig(array $config): void {

@@ -14,16 +14,16 @@ class FeedTypeListBuilderTest extends FeedsTamperBrowserTestBase {
    */
   public function testUiWithRestrictedPrivileges() {
     // Add two feed types.
-    $this->feedType = $this->createFeedType([
+    $this->createFeedType([
       'id' => 'my_feed_type',
       'label' => 'My feed type',
     ]);
-    $this->feedType = $this->createFeedType([
+    $this->createFeedType([
       'id' => 'my_feed_type_restricted',
       'label' => 'My feed type (restricted)',
     ]);
 
-    // Add an user who may only tamper 'my_feed_type'.
+    // Add a user who may only tamper 'my_feed_type'.
     $account = $this->drupalCreateUser([
       'administer feeds',
       'tamper my_feed_type',

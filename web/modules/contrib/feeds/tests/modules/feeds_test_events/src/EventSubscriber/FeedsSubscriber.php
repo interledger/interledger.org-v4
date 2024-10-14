@@ -43,7 +43,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       FeedsEvents::FEEDS_DELETE => ['onDelete'],
       FeedsEvents::INIT_IMPORT => ['onInitImport'],

@@ -1,0 +1,117 @@
+
+# Configuration file for PHPStan static code checking, see https://phpstan.org.
+
+includes:
+  - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+  level: 1
+  excludePaths:
+    # @todo PubSubHubbub feature is broken.
+    # @see https://www.drupal.org/project/feeds/issues/3341361
+    - src/EventSubscriber/PubSubHubbub.php
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    # new static() is a best practice in Drupal, so we cannot fix that.
+    - "#^Unsafe usage of new static#"
+
+    # Ignore deprecations from Drupal 10.3 for now.
+    # @todo remove when support for Drupal 12 gets added.
+    - "#in drupal:10.3.0 and is removed from drupal:12.0.0#"
+
+    # Ignore deprecated ExtensionManagerInterface usage. The library
+    # "laminas/laminas-feed" still makes active use of the interface as of
+    # version 2.22.0, so therefore we still need it. See for example
+    # \Laminas\Feed\Reader\Reader::setExtensionManager().
+    # @todo check if this can be removed when laminas-feed 3 gets released.
+    -
+      message: """
+        #^Class Drupal\\\\feeds\\\\Component\\\\ZfExtensionManagerSfContainer implements deprecated interface Laminas\\\\Feed\\\\Reader\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
+        #^Class Drupal\\\\feeds\\\\Component\\\\ZfExtensionManagerSfContainer implements deprecated interface Laminas\\\\Feed\\\\Writer\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
+        #^Fetching class constant class of deprecated interface Laminas\\\\Feed\\\\Reader\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
+        #^Fetching class constant class of deprecated interface Laminas\\\\Feed\\\\Writer\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
+        #^Parameter \\$feed_bridge_reader of method Drupal\\\\feeds\\\\Feeds\\\\Parser\\\\SyndicationParser\\:\\:__construct\\(\\) has typehint with deprecated interface Laminas\\\\Feed\\\\Reader\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Feeds/Parser/SyndicationParser.php
+
+    # Calling \Drupal\feeds\Feeds\Target\Text::__construct() without the
+    # $filter_format_storage argument is deprecated and the argument will be
+    # required in feeds:4.0.0.
+    # For now, we get a value for it from a global \Drupal call if it is not
+    # set.
+    # @see https://www.drupal.org/project/feeds/issues/3473603
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Feeds/Target/Text.php
+
+    # We should deprecate calling getConfiguration() with a parameter.
+    # @todo deprecate it for removal in Feeds 4.0. And update all calls in the
+    # code base.
+    # @see https://www.drupal.org/project/feeds/issues/3461140
+    -
+      message: "#^Method Drupal\\\\feeds\\\\Plugin\\\\Type\\\\PluginBase\\:\\:getConfiguration\\(\\) should return array but return statement is missing\\.$#"
+      count: 1
+      path: src/Plugin/Type/PluginBase.php
+
+    # It is not ideal that some services in Feeds plugins aren't injected, but
+    # trying to fix that likely causes BC breaks.
+    # It can be partially fixed by deprecated some methods like l() and url().
+    # @todo deprecate PluginBase::l(), PluginBase::url(),
+    # PluginBase::linkGenerator() and PluginBase::urlGenerator() for removal in
+    # Feeds 4.0.
+    # @see https://www.drupal.org/project/feeds/issues/3461142
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Plugin/Type/PluginBase.php
+    # @todo In Feeds 4.0, FieldTargetBase should inject services
+    # 'entity_field.manager' and 'entity_type.manager'.
+    # @see https://www.drupal.org/project/feeds/issues/3461141
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 3
+      path: src/Plugin/Type/Target/FieldTargetBase.php
+
+    # HttpFetcherResult and RawFetcherResult have an optional parameter
+    # $file_system which requires the file_system service. If an instance of
+    # either of these classes is created without injecting the service there is
+    # a global \Drupal call, of which PHPStan complains. However, making the
+    # parameter $file_system required would be a BC break, so therefore we
+    # should ignore the PHPStan rule for now.
+    # @see https://www.drupal.org/project/feeds/issues/3461143
+    # @see https://www.drupal.org/project/feeds/issues/3461144
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 2
+      path: src/Result/HttpFetcherResult.php
+    -
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/Result/RawFetcherResult.php

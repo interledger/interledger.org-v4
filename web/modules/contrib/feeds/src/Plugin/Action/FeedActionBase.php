@@ -51,7 +51,7 @@ abstract class FeedActionBase extends ActionBase implements ContainerFactoryPlug
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $temp_store = $container->get('tempstore.private')->get(static::ACTION);
+    $temp_store = $container->get('tempstore.private')->get($plugin_id);
 
     return new static(
       $configuration,

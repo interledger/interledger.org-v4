@@ -22,14 +22,6 @@ class FeedTypeTamperMetaTest extends UnitTestCase {
    */
   protected $feedTypeTamperMeta;
 
-
-  /**
-   * The mock FeedType used to create the FeedTypeTamperMeta.
-   *
-   * @var \Drupal\feeds\Entity\FeedType
-   */
-  protected $feedType;
-
   /**
    * {@inheritdoc}
    */
@@ -165,20 +157,20 @@ class FeedTypeTamperMetaTest extends UnitTestCase {
     $uuid_generator = $this->createMock(UuidInterface::class);
     $uuid_generator->expects($this->any())
       ->method('generate')
-      ->will($this->returnValue('uuid3'));
+      ->willReturn('uuid3');
 
     // Get the tamper manager.
     $tamper_manager = $this->createMock(TamperManagerInterface::class);
     $tamper_manager->expects($this->any())
       ->method('createInstance')
-      ->will($this->returnValue($this->createMock(TamperInterface::class)));
+      ->willReturn($this->createMock(TamperInterface::class));
 
     // Mock the feed type and let it always return two tampers.
-    $this->feed_type = $this->createMock(FeedTypeInterface::class);
-    $this->feed_type->expects($this->any())
+    $feed_type = $this->createMock(FeedTypeInterface::class);
+    $feed_type->expects($this->any())
       ->method('getThirdPartySetting')
       ->with('feeds_tamper', 'tampers')
-      ->will($this->returnValue([
+      ->willReturn([
         'uuid1' => [
           'uuid' => 'uuid1',
           'plugin' => 'explode',
@@ -193,14 +185,14 @@ class FeedTypeTamperMetaTest extends UnitTestCase {
           'source' => 'beta',
           'description' => 'Convert all characters to uppercase',
         ],
-      ]));
+      ]);
 
-    $this->feed_type->expects($this->any())
+    $feed_type->expects($this->any())
       ->method('getMappingSources')
-      ->will($this->returnValue($mapping_sources));
+      ->willReturn($mapping_sources);
 
     // Instantiate a feeds type tamper meta object.
-    return new FeedTypeTamperMeta($uuid_generator, $tamper_manager, $this->feed_type);
+    return new FeedTypeTamperMeta($uuid_generator, $tamper_manager, $feed_type);
   }
 
 }

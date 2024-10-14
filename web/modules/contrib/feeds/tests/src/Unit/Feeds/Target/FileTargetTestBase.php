@@ -39,6 +39,13 @@ abstract class FileTargetTestBase extends FieldTargetTestBase {
   protected $token;
 
   /**
+   * The entity field manager.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
    * The file and stream wrapper helper.
    *
    * @var \Drupal\Core\File\FileSystemInterface

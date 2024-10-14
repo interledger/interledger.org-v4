@@ -53,7 +53,7 @@ class ConfigEntityReferenceTest extends ConfigEntityReferenceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function createReferencableEntityType() {
+  protected function createReferenceableEntityType() {
     $referenceable_entity_type = $this->prophesize(ConfigEntityTypeInterface::class);
     $referenceable_entity_type->entityClassImplements(ConfigEntityInterface::class)->willReturn(TRUE)->shouldBeCalled();
     $referenceable_entity_type->getKey('label')->willReturn('label');
@@ -69,7 +69,7 @@ class ConfigEntityReferenceTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValue() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'id', 'foo')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'id', 'foo')
       ->willReturn(['foo'])
       ->shouldBeCalled();
 
@@ -86,7 +86,7 @@ class ConfigEntityReferenceTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValueReferenceNotFound() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'id', 'bar')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'id', 'bar')
       ->willReturn([])
       ->shouldBeCalled();
 

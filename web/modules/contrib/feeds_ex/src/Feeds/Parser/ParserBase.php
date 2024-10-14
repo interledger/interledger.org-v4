@@ -342,7 +342,7 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
    * @param array $expressions
    *   A map of machine name to expression.
    * @param array $variable_map
-   *   A map of machine name to varible name.
+   *   A map of machine name to variable name.
    *
    * @return array
    *   The fully-parsed item array.
@@ -400,7 +400,14 @@ abstract class ParserBase extends FeedsParserBase implements ParserInterface, Pl
    *   The prepared raw string.
    */
   protected function prepareRaw(FetcherResultInterface $fetcher_result) {
-    $raw = $this->getEncoder()->convertEncoding($fetcher_result->getRaw());
+    $raw = $fetcher_result->getRaw();
+
+    // Check if the raw data is string. If not, abort.
+    if (!is_string($raw)) {
+      throw new EmptyFeedException();
+    }
+
+    $raw = $this->getEncoder()->convertEncoding($raw);
 
     // Strip null bytes.
     $raw = trim(str_replace("\0", '', $raw));

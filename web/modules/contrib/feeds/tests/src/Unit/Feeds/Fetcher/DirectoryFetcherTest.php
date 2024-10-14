@@ -5,7 +5,6 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Fetcher\DirectoryFetcher;
-use Drupal\feeds\State;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
@@ -47,12 +46,12 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
     $this->fetcher = new DirectoryFetcher(['feed_type' => $feed_type], 'directory', []);
     $this->fetcher->setStringTranslation($this->getStringTranslationStub());
 
-    $this->state = new State();
+    $this->state = $this->createFeedsState();
 
     $this->feed = $this->createMock('Drupal\feeds\FeedInterface');
     $this->feed->expects($this->any())
       ->method('getSource')
-      ->will($this->returnValue('vfs://feeds'));
+      ->willReturn('vfs://feeds');
 
     // Prepare filesystem.
     touch('vfs://feeds/test_file_1.txt');
@@ -74,7 +73,7 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
     $feed = $this->createMock('Drupal\feeds\FeedInterface');
     $feed->expects($this->any())
       ->method('getSource')
-      ->will($this->returnValue('vfs://feeds/test_file_1.txt'));
+      ->willReturn('vfs://feeds/test_file_1.txt');
     $result = $this->fetcher->fetch($feed, $this->state);
     $this->assertSame('vfs://feeds/test_file_1.txt', $result->getFilePath());
   }
@@ -96,7 +95,7 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
   }
 
   /**
-   * Tests fetching a directory resursively.
+   * Tests fetching a directory recursively.
    *
    * @covers ::fetch
    */
@@ -120,7 +119,7 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
     $feed = $this->createMock('Drupal\feeds\FeedInterface');
     $feed->expects($this->any())
       ->method('getSource')
-      ->will($this->returnValue('vfs://feeds/emptydir'));
+      ->willReturn('vfs://feeds/emptydir');
 
     $this->expectException(EmptyFeedException::class);
     $result = $this->fetcher->fetch($feed, $this->state);

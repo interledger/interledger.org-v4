@@ -128,7 +128,7 @@ class PasswordTest extends FeedsBrowserTestBase {
   /**
    * Data provider for ::test().
    */
-  public function providerPasswordTypes() {
+  public static function providerPasswordTypes() {
     return [
       'plain' => [
         'source' => 'password',

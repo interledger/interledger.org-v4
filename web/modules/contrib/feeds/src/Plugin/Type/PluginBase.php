@@ -10,7 +10,6 @@ use Drupal\feeds\FeedTypeInterface;
 /**
  * The base class for the fetcher, parser, and processor plugins.
  *
- * @todo Move source* methods to another interface.
  * @todo This class is currently a dumping ground for methods that should be
  *   implemented by other interfaces. We're working on it.
  */
@@ -186,6 +185,11 @@ abstract class PluginBase extends DrupalPluginBase implements FeedsPluginInterfa
 
   /**
    * Returns the service container.
+   *
+   * This method is marked private to prevent sub-classes from retrieving
+   * services from the container through it. Instead,
+   * \Drupal\Core\DependencyInjection\ContainerInjectionInterface should be used
+   * for injecting services.
    *
    * @return \Symfony\Component\DependencyInjection\ContainerInterface
    *   The service container.

@@ -181,12 +181,6 @@ class HttpFetcher extends PluginBase implements ClearableInterface, FetcherInter
 
     $headers = [];
 
-    // Adding User-Agent header from the default guzzle client config for feeds
-    // that require that.
-    if (isset($this->client->getConfig('headers')['User-Agent'])) {
-      $headers['User-Agent'] = $this->client->getConfig('headers')['User-Agent'];
-    }
-
     // Add cached headers if requested.
     if ($cache_key && ($cache = $this->cache->get($cache_key))) {
       if (isset($cache->data['etag'])) {

@@ -38,7 +38,10 @@ class StripTags extends TamperBase {
       '#type' => 'textarea',
       '#title' => $this->t('Allowed tags'),
       '#default_value' => $this->getSetting(self::SETTING_ALLOWED_TAGS),
-      '#description' => $this->t('A list of allowed tags such as %a%b', ['%a' => '<a>', '%b' => '<em>']),
+      '#description' => $this->t('A list of allowed tags such as %a%b', [
+        '%a' => '<a>',
+        '%b' => '<em>',
+      ]),
     ];
 
     return $form;

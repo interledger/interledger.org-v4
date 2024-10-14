@@ -131,7 +131,7 @@ class GenericContentEntityProcessorTest extends FeedsKernelTestBase {
   /**
    * Data provider for testEntityImport().
    */
-  public function dataProviderEntityImport() {
+  public static function dataProviderEntityImport() {
     return [
       'entity_test' => [
         'entity_type' => 'entity_test',

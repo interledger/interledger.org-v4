@@ -15,17 +15,17 @@ class XmlParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'xml';
+  protected static $parserId = 'xml';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'xml';
+  protected static $customSourceType = 'xml';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['/items/item'],
     ];
@@ -34,7 +34,7 @@ class XmlParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['!! ', 'Invalid expression'],
     ];
@@ -49,7 +49,7 @@ class XmlParserTest extends ParserTestBase {
         'label' => 'Name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
         'raw' => FALSE,
         'inner' => FALSE,
       ],
@@ -90,7 +90,7 @@ class XmlParserTest extends ParserTestBase {
   /**
    * Data provider for ::testAddXmlSources().
    */
-  public function xmlSourcesDataProvider() {
+  public static function xmlSourcesDataProvider() {
     return [
       'raw' => [
         'expected_sources' => [
@@ -98,7 +98,7 @@ class XmlParserTest extends ParserTestBase {
             'label' => 'Name',
             'value' => 'name',
             'machine_name' => 'name',
-            'type' => $this->customSourceType,
+            'type' => static::$customSourceType,
             'raw' => TRUE,
             'inner' => FALSE,
           ],
@@ -117,7 +117,7 @@ class XmlParserTest extends ParserTestBase {
             'label' => 'Name',
             'value' => 'name',
             'machine_name' => 'name',
-            'type' => $this->customSourceType,
+            'type' => static::$customSourceType,
             'raw' => TRUE,
             'inner' => TRUE,
           ],

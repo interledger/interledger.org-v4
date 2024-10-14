@@ -37,6 +37,13 @@ class FeedsExecutableTest extends FeedsUnitTestCase {
   protected $feed;
 
   /**
+   * An instance of the feed executable.
+   *
+   * @var \Drupal\feeds\FeedsExecutable
+   */
+  protected $executable;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
@@ -52,10 +59,10 @@ class FeedsExecutableTest extends FeedsUnitTestCase {
     $this->feed = $this->createMock(FeedInterface::class);
     $this->feed->expects($this->any())
       ->method('id')
-      ->will($this->returnValue(10));
+      ->willReturn(10);
     $this->feed->expects($this->any())
       ->method('bundle')
-      ->will($this->returnValue('test_feed'));
+      ->willReturn('test_feed');
   }
 
   /**
@@ -99,7 +106,7 @@ class FeedsExecutableTest extends FeedsUnitTestCase {
       $event->setParserResult($parser_result);
     });
 
-    $this->dispatcher->addListener(FeedsEvents::PROCESS, function (ProcessEvent $event) use ($parser_result) {
+    $this->dispatcher->addListener(FeedsEvents::PROCESS, function (ProcessEvent $event) {
       $this->assertInstanceOf(ItemInterface::class, $event->getItem());
     });
   }

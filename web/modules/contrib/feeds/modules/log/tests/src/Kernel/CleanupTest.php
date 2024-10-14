@@ -94,8 +94,8 @@ class CleanupTest extends FeedsLogKernelTestBase {
     $feed->delete();
 
     // Assert that log entities no longer exist.
-    $this->assertNull($this->reloadEntity($import_log1));
-    $this->assertNull($this->reloadEntity($import_log2));
+    $this->assertNull($this->reloadEntityAllowNull($import_log1));
+    $this->assertNull($this->reloadEntityAllowNull($import_log2));
 
     // And assert things have been cleaned up.
     $this->assertCount(0, $this->getLogEntries());

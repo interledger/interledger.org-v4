@@ -38,7 +38,7 @@ class ImportFeedActionTest extends FeedsKernelTestBase {
   /**
    * Tests applying the action plugin "feeds_feed_import_action".
    */
-  public function testimportFeedAction() {
+  public function testImportFeedAction() {
     // Create a feed type.
     $feed_type = $this->createFeedType([
       'fetcher' => 'directory',
@@ -65,7 +65,7 @@ class ImportFeedActionTest extends FeedsKernelTestBase {
 
     /** @var \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store */
     $temp_store = $this->container->get('tempstore.private');
-    $store_entries = $temp_store->get('feeds_feed_multiple_import_confirm')->get($this->testUser->id() . ':feeds_feed');
+    $store_entries = $temp_store->get('feeds_feed_import_action')->get($this->testUser->id() . ':feeds_feed');
     $expected = [
       $feed1->id() => $feed1->id(),
       $feed2->id() => $feed2->id(),

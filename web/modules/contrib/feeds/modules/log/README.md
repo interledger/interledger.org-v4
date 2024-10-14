@@ -39,7 +39,7 @@ Here you can configure the following:
    Feeds Log stops after a certain amount of iterations with logging as else the
    filesystem could fill up with logged sources or processed items. You can
    configure the maximum allowed amount of logs per feed in a certain
-   timeframe.
+   time frame.
 
 ### Settings per feed type
 Logging can be enabled per feed type. It is enabled by default. Additionally,

@@ -52,42 +52,42 @@ abstract class TamperPluginTestBase extends UnitTestCase {
   }
 
   /**
-   * @covers ::getPluginId
+   * Covers ::getPluginId().
    */
   public function testGetPluginId() {
     $this->assertIsString($this->plugin->getPluginId());
   }
 
   /**
-   * @covers ::getPluginDefinition
+   * Covers ::getPluginDefinition().
    */
   public function testGetPluginDefinition() {
     $this->assertIsArray($this->plugin->getPluginDefinition());
   }
 
   /**
-   * @covers ::getConfiguration
+   * Covers ::getConfiguration().
    */
   public function testGetConfiguration() {
     $this->assertIsArray($this->plugin->getConfiguration());
   }
 
   /**
-   * @covers ::defaultConfiguration
+   * Covers ::defaultConfiguration().
    */
   public function testDefaultConfiguration() {
     $this->assertIsArray($this->plugin->defaultConfiguration());
   }
 
   /**
-   * @covers ::buildConfigurationForm
+   * Covers ::buildConfigurationForm().
    */
   public function testBuildConfigurationForm() {
     $this->assertIsArray($this->plugin->buildConfigurationForm([], $this->createMock(FormStateInterface::class)));
   }
 
   /**
-   * @covers ::multiple
+   * Covers ::multiple().
    */
   public function testMultiple() {
     $this->assertIsBool($this->plugin->multiple());

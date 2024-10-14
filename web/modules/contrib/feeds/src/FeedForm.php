@@ -179,7 +179,7 @@ class FeedForm extends ContentEntityForm {
       }
     }
 
-    parent::validateForm($form, $form_state);
+    return parent::validateForm($form, $form_state);
   }
 
   /**
@@ -212,7 +212,7 @@ class FeedForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $feed = $this->entity;
     $insert = $feed->isNew();
-    $feed->save();
+    $result = $feed->save();
 
     $context = ['@type' => $feed->bundle(), '%title' => $feed->label()];
     $t_args = [
@@ -243,6 +243,8 @@ class FeedForm extends ContentEntityForm {
     else {
       $form_state->setRedirect('<front>');
     }
+
+    return $result;
   }
 
   /**

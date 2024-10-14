@@ -114,7 +114,7 @@ class TimestampTest extends FeedsKernelTestBase {
   /**
    * Data provider for ::testWithConfig().
    */
-  public function withConfigProvider() {
+  public static function withConfigProvider() {
     $return = [];
 
     // When the source is already a timestamp, the timezone should not matter.

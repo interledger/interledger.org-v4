@@ -3,7 +3,6 @@
 namespace Drupal\feeds;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Session\AccountSwitcherInterface;
@@ -12,6 +11,7 @@ use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\FetchException;
 use Drupal\feeds\Exception\FileException;
 use Drupal\feeds\Result\FetcherResultInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -30,7 +30,7 @@ class FeedsQueueExecutable extends FeedsExecutable {
   /**
    * The logger channel for 'feeds'.
    *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -47,10 +47,10 @@ class FeedsQueueExecutable extends FeedsExecutable {
    *   The messenger service.
    * @param \Drupal\Core\Queue\QueueFactory $queue_factory
    *   The queue factory.
-   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   * @param \Psr\Log\LoggerInterface $logger
    *   The Feeds logger.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher, AccountSwitcherInterface $account_switcher, MessengerInterface $messenger, QueueFactory $queue_factory, LoggerChannelInterface $logger) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher, AccountSwitcherInterface $account_switcher, MessengerInterface $messenger, QueueFactory $queue_factory, LoggerInterface $logger) {
     parent::__construct($entity_type_manager, $event_dispatcher, $account_switcher, $messenger);
     $this->queueFactory = $queue_factory;
     $this->logger = $logger;
@@ -118,12 +118,7 @@ class FeedsQueueExecutable extends FeedsExecutable {
    *   Array of variables to replace in the message.
    */
   protected function logException(\Exception $exception, string $message, array $variables): void {
-    if (method_exists(Error::class, 'logException')) {
-      Error::logException($this->logger, $exception, $message, $variables);
-    }
-    else {
-      watchdog_exception('feeds', $exception, $message, $variables);
-    }
+    Error::logException($this->logger, $exception, $message, $variables);
   }
 
 }

@@ -1,0 +1,18 @@
+includes:
+  - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+  level: 1
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    # new static() is a best practice in Drupal, so we cannot fix that.
+    - "#^Unsafe usage of new static#"
+
+    - # Plugin managers that call the static method create() on a plugin class,
+      # must pass the Drupal container. All plugin managers in Drupal Core that
+      # are calling create() on a plugin class, are passing the Drupal container
+      # by calling \Drupal::getContainer(). So therefore we ignore the phpstan
+      # warning that we are making a \Drupal call here.
+      message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+      count: 1
+      path: src/TamperManager.php

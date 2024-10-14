@@ -10,5 +10,7 @@
         "source": "http://cgit.drupalcode.org/weight"
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require-dev": {
+        "drupal/feeds": "*"
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
+use Drupal\feeds\Event\EventBase;
+use Drupal\feeds\FeedInterface;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
@@ -14,9 +16,16 @@ class EventBaseTest extends FeedsUnitTestCase {
    * @covers ::getFeed
    */
   public function testGetFeed() {
-    $feed = $this->createMock('Drupal\feeds\FeedInterface');
-    $event = $this->getMockForAbstractClass('Drupal\feeds\Event\EventBase', [$feed]);
+    $feed = $this->createMock(FeedInterface::class);
+    $event = new EventMock($feed);
     $this->assertSame($feed, $event->getFeed());
   }
 
 }
+
+/**
+ * For testing methods from EventBase.
+ *
+ * Abstract classes cannot be mocked.
+ */
+class EventMock extends EventBase {}

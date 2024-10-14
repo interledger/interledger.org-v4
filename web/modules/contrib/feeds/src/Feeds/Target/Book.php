@@ -503,6 +503,8 @@ class Book extends TargetBase implements ConfigurableTargetInterface, ContainerF
    * {@inheritdoc}
    */
   public function getSummary() {
+    $summary = [];
+
     $options = $this->getPotentialFields();
 
     $reference_prefixes = ['book', 'parent'];

@@ -54,7 +54,7 @@ class FeedsItemUrlFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * Data provider for ::testFeedsItemUrlFormatter().
    */
-  public function providerUrls() {
+  public static function providerUrls() {
     return [
       'empty url' => ['', NULL],
       'http url' => [

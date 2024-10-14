@@ -3,6 +3,8 @@
 namespace Drupal\feeds\Feeds\Fetcher\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\feeds\Plugin\Type\ExternalPluginFormBase;
 
 /**
@@ -20,11 +22,23 @@ class HttpFetcherForm extends ExternalPluginFormBase {
       '#description' => $this->t('If the supplied URL does not point to a feed but an HTML document, attempt to extract a feed URL from the document.'),
       '#default_value' => $this->plugin->getConfiguration('auto_detect_feeds'),
     ];
+
+    // @todo PubSubHubbub is broken.
+    // @see https://www.drupal.org/project/feeds/issues/3341361
+    $url = Url::fromUri('https://www.drupal.org/project/feeds/issues/3341361', [
+      'attributes' => [
+        'target' => '_blank',
+      ],
+    ]);
+    $link = Link::fromTextAndUrl('https://www.drupal.org/project/feeds/issues/3341361', $url);
     $form['use_pubsubhubbub'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use PubSubHubbub'),
-      '#description' => $this->t('Attempt to use a <a href="http://en.wikipedia.org/wiki/PubSubHubbub">PubSubHubbub</a> subscription if available.'),
+      '#description' => $this->t('Attempt to use a <a href="http://en.wikipedia.org/wiki/PubSubHubbub">PubSubHubbub</a> subscription if available.') . '<br /><div class="color-warning">' . $this->t('Warning: this feature is broken. Help fix it at @url.', [
+        '@url' => $link->toString(),
+      ]) . '</div>',
       '#default_value' => $this->plugin->getConfiguration('use_pubsubhubbub'),
+      '#disabled' => TRUE,
     ];
     $form['always_download'] = [
       '#type' => 'checkbox',

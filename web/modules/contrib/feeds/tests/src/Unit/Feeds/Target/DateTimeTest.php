@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
-use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\feeds\Feeds\Target\DateTime;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
@@ -11,7 +10,7 @@ use Drupal\feeds\Plugin\Type\Target\TargetInterface;
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\DateTime
  * @group feeds
  */
-class DateTimeTest extends FieldTargetWithContainerTestBase {
+class DateTimeTest extends DateTestBase {
 
   /**
    * The ID of the plugin.
@@ -60,7 +59,7 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
       'feed_type' => $this->feedType,
       'target_definition' => $this->targetDefinition,
     ];
-    return new DateTime($configuration, static::$pluginId, []);
+    return new DateTime($configuration, static::$pluginId, [], $this->systemDateConfig->reveal());
   }
 
   /**
@@ -113,11 +112,8 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
    */
   public function testGetTimezoneConfiguration() {
     // Timezone setting for default timezone.
-    $container = new ContainerBuilder();
-    $config = ['system.date' => ['timezone.default' => 'UTC']];
-    $container->set('config.factory', $this->getConfigFactoryStub($config));
-    \Drupal::setContainer($container);
-
+    $this->systemDateConfig->get('timezone.default')
+      ->willReturn('UTC');
     $method = $this->getMethod('Drupal\feeds\Feeds\Target\DateTime', 'prepareTarget')->getClosure();
     $this->targetDefinition = $method($this->getMockFieldDefinition(['datetime_type' => 'date']));
 

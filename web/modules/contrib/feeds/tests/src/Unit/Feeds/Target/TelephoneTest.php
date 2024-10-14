@@ -33,7 +33,7 @@ class TelephoneTest extends FieldTargetTestBase {
     $field_definition = $this->getMockFieldDefinition();
     $field_definition->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue('string'));
+      ->willReturn('string');
     $configuration = [
       'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
       'target_definition' => $method($field_definition),
@@ -57,7 +57,7 @@ class TelephoneTest extends FieldTargetTestBase {
   /**
    * Data provider for testPrepareValue().
    */
-  public function dataProviderPrepareValue() {
+  public static function dataProviderPrepareValue() {
     return [
       // Custom string.
       ['string', 'string'],

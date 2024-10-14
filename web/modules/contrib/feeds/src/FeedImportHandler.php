@@ -2,14 +2,76 @@
 
 namespace Drupal\feeds;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\feeds\Exception\LockException;
 use Drupal\feeds\Result\RawFetcherResult;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Runs the actual import on a feed.
  */
 class FeedImportHandler extends FeedHandlerBase {
+
+  /**
+   * The class resolver.
+   *
+   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
+   */
+  protected $classResolver;
+
+  /**
+   * The key/value factory.
+   *
+   * @var \Drupal\Core\KeyValueStore\KeyValueFactoryInterface
+   */
+  protected $keyValueFactory;
+
+  /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
+   * Constructs a new FeedImportHandler object.
+   *
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   *   The event dispatcher.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database service.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+   *   The class resolver.
+   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $key_value_factory
+   *   The key/value factory.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
+   */
+  public function __construct(EventDispatcherInterface $event_dispatcher, Connection $database, ClassResolverInterface $class_resolver, KeyValueFactoryInterface $key_value_factory, TimeInterface $time) {
+    parent::__construct($event_dispatcher, $database);
+    $this->classResolver = $class_resolver;
+    $this->keyValueFactory = $key_value_factory;
+    $this->time = $time;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+    return new static(
+      $container->get('event_dispatcher'),
+      $container->get('database'),
+      $container->get('class_resolver'),
+      $container->get('keyvalue'),
+      $container->get('datetime.time'),
+    );
+  }
 
   /**
    * Imports the whole feed at once.
@@ -136,7 +198,7 @@ class FeedImportHandler extends FeedHandlerBase {
    */
   public function hasRecentProgress(FeedInterface $feed, int $seconds = 3600): bool {
     // Get the last activity for this feed.
-    $last_activity = \Drupal::keyValue('feeds_feed.' . $feed->id())->get('last_activity');
+    $last_activity = $this->keyValueFactory->get('feeds_feed.' . $feed->id())->get('last_activity');
 
     if (!$last_activity) {
       // No last activity known.
@@ -155,7 +217,7 @@ class FeedImportHandler extends FeedHandlerBase {
    *   A Unix timestamp.
    */
   protected function getRequestTime() {
-    return \Drupal::time()->getRequestTime();
+    return $this->time->getRequestTime();
   }
 
   /**
@@ -168,7 +230,7 @@ class FeedImportHandler extends FeedHandlerBase {
    *   A feeds executable.
    */
   protected function getExecutable($class) {
-    return \Drupal::service('class_resolver')->getInstanceFromDefinition($class);
+    return $this->classResolver->getInstanceFromDefinition($class);
   }
 
 }

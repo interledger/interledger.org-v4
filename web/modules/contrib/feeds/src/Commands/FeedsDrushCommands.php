@@ -74,12 +74,10 @@ class FeedsDrushCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function listFeeds($feed_type = '', array $options = [
-    'limit' => 0,
-    'enabled' => FALSE,
-    'disabled' => FALSE,
-    'format' => 'table',
-  ]) {
+  public function listFeeds(
+    $feed_type = '',
+    $options = ['limit' => 0, 'enabled' => FALSE, 'disabled' => FALSE, 'format' => 'table'],
+  ) {
     $entityQuery = $this->entityTypeManager->getStorage('feeds_feed')->getQuery()
       ->accessCheck(FALSE);
     if (!empty($feed_type)) {

@@ -40,7 +40,7 @@ class Explode extends TamperBase {
       '#type' => 'textfield',
       '#title' => $this->t('String separator'),
       '#default_value' => $this->getSetting(self::SETTING_SEPARATOR),
-      '#description' => $this->t('This will break up sequenced data into an array. For example, "a, b, c" would get broken up into the array(\'a\', \'b\', \'c\'). A space can be represented by %s, tabs by %t, and newlines by %n.'),
+      '#description' => $this->t('This will break up sequenced data into an array. For example, "a, b, c" would get broken up into the array(\'a\', \'b\', \'c\'). A space can be represented by %s, tabs by %t, newlines by %n, and carriage returns by %r.'),
     ];
 
     $form[self::SETTING_LIMIT] = [
@@ -71,7 +71,7 @@ class Explode extends TamperBase {
     if (!is_string($data)) {
       throw new TamperException('Input should be a string.');
     }
-    $separator = str_replace(['%s', '%t', '%n'], [' ', "\t", "\n"], $this->getSetting(self::SETTING_SEPARATOR));
+    $separator = str_replace(['%s', '%t', '%n', '%r'], [' ', "\t", "\n", "\r"], $this->getSetting(self::SETTING_SEPARATOR));
     $limit = is_numeric($this->getSetting(self::SETTING_LIMIT)) ? $this->getSetting(self::SETTING_LIMIT) : PHP_INT_MAX;
     return explode($separator, $data, $limit);
   }

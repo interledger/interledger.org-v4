@@ -92,7 +92,7 @@ interface StateInterface {
    * This should be used by plugins instead of the Drupal messenger service. It
    * will store messages and display them at the appropriate time.
    *
-   * @param string $message
+   * @param string|\Drupal\Component\Render\MarkupInterface $message
    *   (optional) The translated message to be displayed to the user. For
    *   consistency with other messages, it should begin with a capital letter
    *   and end with a period.

@@ -38,8 +38,8 @@ class CsvParserTest extends FeedsUnitTestCase {
     $second = array_slice($expected, 4);
 
     // // Test that rewinding works as expected.
-    $this->assertSame(3, count(iterator_to_array($parser)));
-    $this->assertSame(3, count(iterator_to_array($parser)));
+    $this->assertCount(3, iterator_to_array($parser));
+    $this->assertCount(3, iterator_to_array($parser));
     foreach ($parser as $delta => $row) {
       $this->assertSame($second[$delta], $row);
     }
@@ -48,7 +48,7 @@ class CsvParserTest extends FeedsUnitTestCase {
   /**
    * Data provider for testAlternateLineEnding().
    */
-  public function provider() {
+  public static function provider() {
     $expected = [
       ['Header A', 'Header B', 'Header C'],
       ['"1"', '"2"', '"3"'],
@@ -142,7 +142,7 @@ class CsvParserTest extends FeedsUnitTestCase {
   /**
    * Data provider for testCsvParsing().
    */
-  public function csvFileProvider() {
+  public static function csvFileProvider() {
     $path = dirname(dirname(dirname(dirname(__DIR__)))) . '/tests/resources/csv-parser-component-files';
     $return = [];
 

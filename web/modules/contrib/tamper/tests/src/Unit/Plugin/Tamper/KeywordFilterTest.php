@@ -31,7 +31,7 @@ class KeywordFilterTest extends TamperPluginTestBase {
   /**
    * Data provider for testKeywordFilter().
    */
-  public function providerKeywordFilter() {
+  public static function providerKeywordFilter() {
     return [
       'StriPosFilter' => [
         '', [

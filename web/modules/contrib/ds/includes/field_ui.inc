@@ -291,6 +291,11 @@ function ds_field_ui_row_region(array $row) {
 function ds_field_ui_after_build($form, FormStateInterface $form_state) {
   $table = &$form['fields'];
   $values = $form_state->getValue('fields');
+
+  if (!$table) {
+    return $form;
+  }
+
   foreach (Element::children($table) as $name) {
     $row = &$table[$name];
 

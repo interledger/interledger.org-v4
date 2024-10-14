@@ -140,8 +140,24 @@ trait FeedsCommonTrait {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The reloaded entity.
    */
-  protected function reloadEntity(EntityInterface $entity) {
-    /** @var \Drupal\Core\Entity\ $storageEntityStorageInterface */
+  protected function reloadEntity(EntityInterface $entity): EntityInterface {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+    $storage = $this->container->get('entity_type.manager')->getStorage($entity->getEntityTypeId());
+    $storage->resetCache([$entity->id()]);
+    return $storage->load($entity->id());
+  }
+
+  /**
+   * Reloads an entity where null is an allowed return value.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to reload.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The reloaded entity or null, if the entity could not be found.
+   */
+  protected function reloadEntityAllowNull(EntityInterface $entity): ?EntityInterface {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage($entity->getEntityTypeId());
     $storage->resetCache([$entity->id()]);
     return $storage->load($entity->id());

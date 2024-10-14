@@ -28,7 +28,7 @@ abstract class FeedsTamperBrowserTestBase extends FeedsBrowserTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // Create an user with Feeds admin privileges.
+    // Create a user with Feeds admin privileges.
     $this->adminUser = $this->drupalCreateUser([
       'administer feeds',
       'administer feeds_tamper',

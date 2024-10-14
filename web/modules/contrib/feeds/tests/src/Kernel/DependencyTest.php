@@ -76,7 +76,7 @@ class DependencyTest extends FeedsKernelTestBase {
       ->delete();
 
     // Assert that the feed type no longer exists.
-    $feed_type = $this->reloadEntity($feed_type);
+    $feed_type = $this->reloadEntityAllowNull($feed_type);
     $this->assertNull($feed_type);
   }
 

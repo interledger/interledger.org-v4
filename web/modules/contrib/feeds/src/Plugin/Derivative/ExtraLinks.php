@@ -56,8 +56,6 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   /**
    * Constructs a new ExtraLinks object.
    *
-   * @param string $base_plugin_id
-   *   The base plugin ID for the plugin ID.
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $feed_type_storage
    *   The storage handler for the config entity type 'feeds_feed_type'.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
@@ -67,7 +65,7 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
    */
-  public function __construct($base_plugin_id, ConfigEntityStorageInterface $feed_type_storage, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigEntityStorageInterface $feed_type_storage, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ConfigFactoryInterface $config_factory) {
     $this->feedTypeStorage = $feed_type_storage;
     $this->moduleHandler = $module_handler;
     $this->routeProvider = $route_provider;
@@ -83,7 +81,6 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
     return new static(
-      $base_plugin_id,
       $container->get('entity_type.manager')->getStorage('feeds_feed_type'),
       $container->get('module_handler'),
       $container->get('router.route_provider'),

@@ -25,10 +25,15 @@ class FeedHandlerBaseTest extends FeedsUnitTestCase {
     $container->set('event_dispatcher', $this->createMock(EventDispatcherInterface::class));
     $container->set('database', $this->createMock(Connection::class));
 
-    $mock = $this->getMockForAbstractClass(FeedHandlerBase::class, [], '', FALSE);
-    $mock_class = get_class($mock);
-    $handler = $mock_class::createInstance($container, $this->createMock(EntityTypeInterface::class));
+    $handler = FeedHandlerMock::createInstance($container, $this->createMock(EntityTypeInterface::class));
     $this->assertInstanceOf(FeedHandlerBase::class, $handler);
   }
 
 }
+
+/**
+ * For testing methods from FeedHandlerBase.
+ *
+ * Abstract classes cannot be mocked.
+ */
+class FeedHandlerMock extends FeedHandlerBase {}

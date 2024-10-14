@@ -98,8 +98,16 @@ abstract class FeedsFileSystemBase implements FeedsFileSystemInterface {
   protected function getDefaultDirectory(): string {
     $schemes = $this->streamWrapperManager->getWrappers(StreamWrapperInterface::VISIBLE);
     $scheme = isset($schemes['private']) ? 'private' : 'public';
-    return $scheme . '://' . static::DEFAULT_DIR;
+    return $scheme . '://' . $this->getRelativeDefaultDirectory();
   }
+
+  /**
+   * Returns the default directory without the scheme prefix.
+   *
+   * @return string
+   *   A path without the scheme prefix, for example 'feeds/in_progress'.
+   */
+  abstract protected function getRelativeDefaultDirectory(): string;
 
   /**
    * Prepares the specified directory for writing files to it.

@@ -2,6 +2,7 @@
 
 namespace Drupal\feeds\Feeds\Target;
 
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**
@@ -24,8 +25,8 @@ class DateTime extends DateTargetBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ImmutableConfig $system_date_config) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $system_date_config);
     $this->storageFormat = $this->settings['datetime_type'] === 'date' ? DateTimeItemInterface::DATE_STORAGE_FORMAT : DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
   }
 

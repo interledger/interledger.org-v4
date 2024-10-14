@@ -1,9 +1,9 @@
 name: Tamper
 description: Generic plugin to modify data.
 type: module
-core_version_requirement: ^8.8 || ^9 || ^10
+core_version_requirement: ^8.8 || ^9 || ^10 || ^11
 
-# Information added by Drupal.org packaging script on 2023-05-25
-version: '8.x-1.0-alpha4'
+# Information added by Drupal.org packaging script on 2024-09-08
+version: '8.x-1.0-alpha5'
 project: 'tamper'
-datestamp: 1684984839
+datestamp: 1725792626

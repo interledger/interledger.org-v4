@@ -13,12 +13,12 @@ class JmesPathLinesParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'jmespathlines';
+  protected static $parserId = 'jmespathlines';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'json';
+  protected static $customSourceType = 'json';
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class JmesPathLinesParserTest extends ParserTestBase {
         'label' => 'name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
       ],
     ];
     $custom_source = [

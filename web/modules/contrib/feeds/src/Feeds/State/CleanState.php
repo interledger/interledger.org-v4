@@ -6,7 +6,11 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\feeds\State;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * State for the clean stage.
@@ -42,6 +46,13 @@ class CleanState extends State implements CleanStateInterface {
   protected $connection;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Whether or not the list was initiated or not.
    *
    * @var bool
@@ -56,22 +67,37 @@ class CleanState extends State implements CleanStateInterface {
   protected $entityTypeId;
 
   /**
-   * Constructs a new CleanState.
+   * Constructs a new CleanState object.
    *
    * @param int $feed_id
-   *   The ID of the feed this state belongs to.
+   *   The ID of the feed that this state belongs to.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger for the feeds channel.
    * @param \Drupal\Core\Database\Connection $connection
-   *   (optional) The Connection object containing the feeds tables.
+   *   The Connection object containing the feeds tables.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct($feed_id, Connection $connection = NULL) {
+  public function __construct(int $feed_id, MessengerInterface $messenger, LoggerInterface $logger, Connection $connection, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct($messenger, $logger);
     $this->feedId = $feed_id;
+    $this->connection = $connection;
+    $this->entityTypeManager = $entity_type_manager;
+  }
 
-    if (empty($connection)) {
-      $this->connection = \Drupal::database();
-    }
-    else {
-      $this->connection = $connection;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, int $feed_id) {
+    return new static(
+      $feed_id,
+      $container->get('messenger'),
+      $container->get('logger.factory')->get('feeds'),
+      $container->get('database'),
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
@@ -164,7 +190,7 @@ class CleanState extends State implements CleanStateInterface {
       if (!$entity_type_id) {
         throw new \RuntimeException('The clean state does not have an entity type assigned.');
       }
-      $storage = \Drupal::entityTypeManager()->getStorage($this->getEntityTypeId());
+      $storage = $this->entityTypeManager->getStorage($this->getEntityTypeId());
     }
 
     $entity = $storage->load($entity_id);

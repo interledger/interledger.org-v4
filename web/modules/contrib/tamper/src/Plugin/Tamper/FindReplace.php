@@ -146,7 +146,7 @@ class FindReplace extends TamperBase {
   protected function getRegexPattern() {
     $regex = $this->getSetting(self::SETTING_WHOLE) ?
       '/^' . preg_quote($this->getSetting(self::SETTING_FIND), '/') . '$/u' :
-      '/\b' . preg_quote($this->getSetting(self::SETTING_FIND), '/') . '\b/u';;
+      '/\b' . preg_quote($this->getSetting(self::SETTING_FIND), '/') . '\b/u';
 
     if (!$this->getSetting(self::SETTING_CASE_SENSITIVE)) {
       $regex .= 'i';

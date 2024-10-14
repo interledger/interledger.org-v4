@@ -19,6 +19,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Event listener for PubSubHubbub subscriptions.
+ *
+ * @todo This feature is broken because GuzzleHttp\Url is gone.
+ * @see https://www.drupal.org/project/feeds/issues/3341361
  */
 class PubSubHubbub implements EventSubscriberInterface {
 
@@ -44,7 +47,7 @@ class PubSubHubbub implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = [];
     $events[FeedsEvents::FETCH][] = ['onPostFetch', FeedsEvents::AFTER];
     $events[FeedsEvents::FEEDS_DELETE][] = 'onDeleteMultipleFeeds';
@@ -87,6 +90,7 @@ class PubSubHubbub implements EventSubscriberInterface {
     }
 
     // Used to make other URLs absolute.
+    // @todo This is broken, it no longer exists.
     $source_url = Url::fromString($feed->getSource());
 
     $hub = (string) $source_url->combine($hub);
@@ -146,7 +150,7 @@ class PubSubHubbub implements EventSubscriberInterface {
         ],
       ],
       'progress_message' => $this->t('Subscribing: %title', ['%title' => $feed->label()]),
-      'error_message' => $this->t('An error occored while subscribing to %title.', ['%title' => $feed->label()]),
+      'error_message' => $this->t('An error occurred while subscribing to %title.', ['%title' => $feed->label()]),
     ];
 
     $this->batchSet($batch);
@@ -177,7 +181,7 @@ class PubSubHubbub implements EventSubscriberInterface {
         ],
       ],
       'progress_message' => $this->t('Unsubscribing: %title', ['%title' => $feed->label()]),
-      'error_message' => $this->t('An error occored while unsubscribing from %title.', ['%title' => $feed->label()]),
+      'error_message' => $this->t('An error occurred while unsubscribing from %title.', ['%title' => $feed->label()]),
     ];
 
     $this->batchSet($batch);
@@ -253,14 +257,13 @@ class PubSubHubbub implements EventSubscriberInterface {
    * @param int $retries
    *   (optional) The number of retries. Defaults to 3.
    *
-   * @return \GuzzleHttp\Message\Response
-   *   The Guzzle response.
+   * @return \GuzzleHttp\Message\Response|false
+   *   The Guzzle response or false if retrying failed.
    */
   protected static function retry(SubscriptionInterface $subscription, array $body, $retries = 3) {
     $tries = 0;
 
     do {
-
       $tries++;
 
       try {
@@ -270,6 +273,8 @@ class PubSubHubbub implements EventSubscriberInterface {
         \Drupal::logger('feeds')->warning('Subscription error: %error', ['%error' => $e->getMessage()]);
       }
     } while ($tries <= $retries);
+
+    return FALSE;
   }
 
   /**

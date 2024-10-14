@@ -30,13 +30,6 @@ class HashTest extends FeedsKernelTestBase {
           'type' => 'article',
         ],
       ],
-      'processor_configuration' => [
-        'authorize' => FALSE,
-        'update_existing' => ProcessorInterface::UPDATE_EXISTING,
-        'values' => [
-          'type' => 'article',
-        ],
-      ],
       'custom_sources' => [
         'guid' => [
           'label' => 'guid',

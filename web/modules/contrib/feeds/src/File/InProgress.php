@@ -8,13 +8,6 @@ namespace Drupal\feeds\File;
 class InProgress extends FeedsFileSystemBase {
 
   /**
-   * The default directory for saving files that are in progress.
-   *
-   * @var string
-   */
-  const DEFAULT_DIR = 'feeds/in_progress';
-
-  /**
    * {@inheritdoc}
    */
   public function getFeedsDirectory(): string {
@@ -24,6 +17,14 @@ class InProgress extends FeedsFileSystemBase {
     }
 
     return $this->getDefaultDirectory();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getRelativeDefaultDirectory(): string {
+    // The default directory for saving files that are in progress.
+    return 'feeds/in_progress';
   }
 
 }

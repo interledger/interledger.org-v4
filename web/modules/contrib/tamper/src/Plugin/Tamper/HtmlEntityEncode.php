@@ -2,10 +2,10 @@
 
 namespace Drupal\tamper\Plugin\Tamper;
 
+use Drupal\Component\Utility\Html;
 use Drupal\tamper\Exception\TamperException;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
-use Drupal\Component\Utility\Html;
 
 /**
  * Plugin implementation for html entity encode.

@@ -78,13 +78,20 @@ class LazySubscriberTest extends FeedsUnitTestCase {
   protected $processor;
 
   /**
+   * The logger service.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
     parent::setUp();
 
     $this->dispatcher = new EventDispatcher();
-
+    $this->logger = $this->createMock('Psr\Log\LoggerInterface');
     // Dispatcher used to verify things only get called once.
     $this->explodingDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
     $this->explodingDispatcher->expects($this->any())
@@ -95,11 +102,11 @@ class LazySubscriberTest extends FeedsUnitTestCase {
     $this->feed = $this->createMock('Drupal\feeds\FeedInterface');
     $this->feed->expects($this->any())
       ->method('getState')
-      ->will($this->returnValue($this->state));
+      ->willReturn($this->state);
     $this->feedType = $this->createMock('Drupal\feeds\FeedTypeInterface');
     $this->feedType->expects($this->any())
       ->method('getMappedSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $this->fetcher = $this->createMock('Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface');
     $this->parser = $this->createMock('Drupal\feeds\Plugin\Type\Parser\ParserInterface');
@@ -108,7 +115,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
     $this->feed
       ->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue($this->feedType));
+      ->willReturn($this->feedType);
   }
 
   /**
@@ -116,7 +123,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
    */
   public function testGetSubscribedEvents() {
     $events = LazySubscriber::getSubscribedEvents();
-    $this->assertSame(3, count($events));
+    $this->assertCount(3, $events);
   }
 
   /**
@@ -130,25 +137,25 @@ class LazySubscriberTest extends FeedsUnitTestCase {
     $this->fetcher->expects($this->once())
       ->method('fetch')
       ->with($this->feed, $this->state)
-      ->will($this->returnValue($fetcher_result));
+      ->willReturn($fetcher_result);
     $this->parser->expects($this->once())
       ->method('parse')
       ->with($this->feed, $fetcher_result, $this->state)
-      ->will($this->returnValue($parser_result));
+      ->willReturn($parser_result);
     $this->processor->expects($this->once())
       ->method('process');
 
     $this->feedType->expects($this->once())
       ->method('getFetcher')
-      ->will($this->returnValue($this->fetcher));
+      ->willReturn($this->fetcher);
     $this->feedType->expects($this->once())
       ->method('getParser')
-      ->will($this->returnValue($this->parser));
+      ->willReturn($this->parser);
     $this->feedType->expects($this->once())
       ->method('getProcessor')
-      ->will($this->returnValue($this->processor));
+      ->willReturn($this->processor);
 
-    $subscriber = new LazySubscriber();
+    $subscriber = new LazySubscriber($this->logger);
 
     // Fetch.
     $subscriber->onInitImport(new InitEvent($this->feed, 'fetch'), FeedsEvents::INIT_IMPORT, $this->dispatcher);
@@ -181,9 +188,9 @@ class LazySubscriberTest extends FeedsUnitTestCase {
 
     $this->feedType->expects($this->once())
       ->method('getPlugins')
-      ->will($this->returnValue([$clearable, $this->dispatcher, $clearable]));
+      ->willReturn([$clearable, $this->dispatcher, $clearable]);
 
-    $subscriber = new LazySubscriber();
+    $subscriber = new LazySubscriber($this->logger);
 
     $subscriber->onInitClear(new InitEvent($this->feed), FeedsEvents::INIT_CLEAR, $this->dispatcher);
     $this->dispatcher->dispatch(new ClearEvent($this->feed), FeedsEvents::CLEAR);
@@ -198,12 +205,12 @@ class LazySubscriberTest extends FeedsUnitTestCase {
   public function testOnInitExpire() {
     $this->feedType->expects($this->once())
       ->method('getProcessor')
-      ->will($this->returnValue($this->processor));
+      ->willReturn($this->processor);
     $this->processor->expects($this->once())
       ->method('expireItem')
       ->with($this->feed);
 
-    $subscriber = new LazySubscriber();
+    $subscriber = new LazySubscriber($this->logger);
     $subscriber->onInitExpire(new InitEvent($this->feed), FeedsEvents::INIT_IMPORT, $this->dispatcher);
     $this->dispatcher->dispatch(new ExpireEvent($this->feed, 1234), FeedsEvents::EXPIRE);
 

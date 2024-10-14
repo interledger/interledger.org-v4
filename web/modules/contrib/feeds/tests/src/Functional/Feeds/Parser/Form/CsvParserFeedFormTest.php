@@ -97,7 +97,7 @@ class CsvParserFeedFormTest extends FeedsBrowserTestBase {
   /**
    * Data provider for ::testDelimiterSetting().
    */
-  public function delimiterDataProvider() {
+  public static function delimiterDataProvider() {
     return [
       'comma' => [',', 'nodes_comma.csv'],
       'semicolon' => [';', 'nodes_semicolon.csv'],

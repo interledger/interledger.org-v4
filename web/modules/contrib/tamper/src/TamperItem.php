@@ -2,8 +2,6 @@
 
 namespace Drupal\tamper;
 
-use Drupal\tamper\TamperableItemInterface;
-
 /**
  * Defines a single tamper item class.
  */
@@ -20,7 +18,7 @@ class TamperItem implements TamperableItemInterface {
    * {@inheritdoc}
    */
   public function getSourceProperty($property) {
-    return isset($this->$property) ? $this->$property : NULL;
+    return $this->$property ?? NULL;
   }
 
   /**

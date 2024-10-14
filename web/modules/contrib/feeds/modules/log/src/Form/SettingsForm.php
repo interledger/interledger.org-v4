@@ -2,7 +2,6 @@
 
 namespace Drupal\feeds_log\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
@@ -21,40 +20,25 @@ class SettingsForm extends ConfigFormBase {
    *
    * @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
    */
-  protected $streamWrapperManager;
+  protected StreamWrapperManagerInterface $streamWrapperManager;
 
   /**
    * The feeds log file manager.
    *
    * @var \Drupal\feeds_log\LogFileManagerInterface
    */
-  protected $logFileManager;
-
-  /**
-   * Constructs a SettingsForm object.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
-   * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $stream_wrapper_manager
-   *   The stream wrapper manager.
-   * @param \Drupal\feeds_log\LogFileManagerInterface $log_file_manager
-   *   The feeds log file manager.
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, StreamWrapperManagerInterface $stream_wrapper_manager, LogFileManagerInterface $log_file_manager) {
-    parent::__construct($config_factory);
-    $this->streamWrapperManager = $stream_wrapper_manager;
-    $this->logFileManager = $log_file_manager;
-  }
+  protected LogFileManagerInterface $logFileManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('stream_wrapper_manager'),
-      $container->get('feeds_log.file_manager')
-    );
+    $instance = parent::create($container);
+
+    $instance->streamWrapperManager = $container->get('stream_wrapper_manager');
+    $instance->logFileManager = $container->get('feeds_log.file_manager');
+
+    return $instance;
   }
 
   /**
@@ -99,7 +83,7 @@ class SettingsForm extends ConfigFormBase {
       'max_amount' => [
         '#type' => 'number',
         '#title' => $this->t('Max amount'),
-        '#description' => $this->t('The maximum number of allowed logs for a single feed within a certain timeframe.'),
+        '#description' => $this->t('The maximum number of allowed logs for a single feed within a certain time frame.'),
         '#default_value' => $config->get('stampede')['max_amount'],
       ],
       'age' => [

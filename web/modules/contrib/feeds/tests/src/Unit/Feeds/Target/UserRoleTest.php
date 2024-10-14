@@ -99,14 +99,14 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getReferencableEntityTypeId() {
+  protected function getReferenceableEntityTypeId() {
     return 'user_role';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function createReferencableEntityType() {
+  protected function createReferenceableEntityType() {
     $referenceable_entity_type = $this->prophesize(ConfigEntityTypeInterface::class);
     $referenceable_entity_type->entityClassImplements(ConfigEntityInterface::class)->willReturn(TRUE)->shouldBeCalled();
     $referenceable_entity_type->getKey('label')->willReturn('label');
@@ -123,7 +123,7 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValue() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Foo')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'label', 'Foo')
       ->willReturn(['foo'])
       ->shouldBeCalled();
 
@@ -140,14 +140,14 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValueReferenceNotFound() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Bar')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'label', 'Bar')
       ->willReturn([])
       ->shouldBeCalled();
 
     $method = $this->getProtectedClosure($this->instantiatePlugin(), 'prepareValue');
     $values = ['target_id' => 'Bar'];
     $this->expectException(ReferenceNotFoundException::class);
-    $this->expectExceptionMessage("The role <em class=\"placeholder\">Bar</em> cannot be assigned because it does not exist.");
+    $this->expectExceptionMessage('The role <em class="placeholder">Bar</em> cannot be assigned because it does not exist.');
     $method(0, $values);
   }
 
@@ -158,7 +158,7 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValueNonAllowedRole() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Foo')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'label', 'Foo')
       ->willReturn(['foo'])
       ->shouldBeCalled();
 
@@ -169,7 +169,8 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
 
     $method = $this->getProtectedClosure($target_plugin, 'prepareValue');
     $values = ['target_id' => 'Foo'];
-    $this->expectException(TargetValidationException::class, 'The role <em class=\"placeholder\">foo</em> may not be referenced.');
+    $this->expectException(TargetValidationException::class);
+    $this->expectExceptionMessage('The role <em class="placeholder">foo</em> may not be referenced.');
     $method(0, $values);
   }
 
@@ -181,7 +182,7 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::createRole
    */
   public function testPrepareValueWithNewRole() {
-    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Bar')
+    $this->entityFinder->findEntities($this->getReferenceableEntityTypeId(), 'label', 'Bar')
       ->willReturn([])
       ->shouldBeCalled();
 
