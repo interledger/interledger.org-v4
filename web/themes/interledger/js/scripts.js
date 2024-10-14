@@ -96,36 +96,6 @@ function isClickOutside(event, nodeList) {
   return !clickedInsideTarget;
 }
 
-// Highlight text animation effect
-const highlightTxt = document.querySelector(".highlight");
-
-if (document.contains(highlightTxt)) {
-  const highlights = document.querySelectorAll(".highlight");
-  const options = {
-    rootMargin: "-10%",
-    threshold: 0,
-  };
-
-  const highlightObserver = new IntersectionObserver(callback, options);
-
-  highlights.forEach((highlight) => {
-    highlightObserver.observe(highlight);
-  });
-
-  document.querySelectorAll("[data-animate-highlight]").forEach((textBlock) => {
-    textBlock.classList.add("invisible");
-  });
-
-  function callback(entries, observer) {
-    const [entry] = entries;
-    if (!entry.isIntersecting) return;
-    const currentHighlight = entry.target.querySelector("p");
-    currentHighlight.classList.remove("invisible");
-
-    observer.unobserve(entry.target);
-  }
-}
-
 // Hero video controls
 const videoToggle = document.getElementById("hero__video-toggle");
 
