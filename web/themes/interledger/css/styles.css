@@ -290,7 +290,8 @@ figcaption {
     inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
 }
 
-.subscribe-btn, .subscribe-btn::before {
+.subscribe-btn,
+.subscribe-btn::before {
   box-shadow: none;
   border: 1px solid var(--color-primary-fallback);
   border: 1px solid var(--color-primary);
@@ -1217,7 +1218,7 @@ section {
 }
 
 .clickable-card .card-content-wrapper {
-  background-color:  transparent;
+  background-color: transparent;
 }
 
 /* CTA button content type styles */
@@ -1731,7 +1732,7 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 
 .text__body h2,
 .text__body h3,
-.text__body p:not(:last-of-type) {
+.text__body p:not(:last-child) {
   margin-block-end: var(--space-xs);
 }
 
