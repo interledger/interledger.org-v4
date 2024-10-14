@@ -4,6 +4,8 @@
 {% if node.field_card_link is not empty %}
   {% if node.field_card_link.0.url.external %}
     {% set href = node.field_card_link.uri %}
+  {% elseif node.field_card_link.0.uri == "route:<nolink>" %}
+    {% set href = 'javascript:void(0)' %}
   {% else %}
     {% set href = path(node.field_card_link.0.url.routeName, node.field_card_link.0.url.routeParameters) %}
   {% endif %}
