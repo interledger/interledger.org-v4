@@ -40,12 +40,12 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
     $this->entityType = $this->createMock('\Drupal\Core\Entity\EntityTypeInterface');
     $this->entityType->expects($this->once())
       ->method('id')
-      ->will($this->returnValue('feeds_feed'));
+      ->willReturn('feeds_feed');
     $this->controller = new FeedAccessControlHandler($this->entityType);
     $this->moduleHandler = $this->createMock('\Drupal\Core\Extension\ModuleHandlerInterface');
     $this->moduleHandler->expects($this->any())
       ->method('invokeAll')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $this->controller->setModuleHandler($this->moduleHandler);
   }
 
@@ -56,10 +56,10 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
     $feed = $this->createMock('\Drupal\feeds\FeedInterface');
     $feed->expects($this->any())
       ->method('bundle')
-      ->will($this->returnValue('feed_bundle'));
+      ->willReturn('feed_bundle');
     $feed->expects($this->any())
       ->method('language')
-      ->will($this->returnValue(new Language()));
+      ->willReturn(new Language());
 
     $account = $this->createMock('\Drupal\Core\Session\AccountInterface');
 
@@ -73,7 +73,7 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
     $account->expects($this->any())
       ->method('hasPermission')
       ->with($this->equalTo('administer feeds'))
-      ->will($this->returnValue(TRUE));
+      ->willReturn(TRUE);
 
     $this->assertTrue($this->controller->access($feed, 'clear', $account));
     $this->assertTrue($this->controller->access($feed, 'view', $account));
@@ -86,7 +86,7 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
            $this->equalTo('administer feeds'),
            $this->equalTo('delete feed_bundle feeds')
        ))
-      ->will($this->onConsecutiveCalls(FALSE, TRUE));
+      ->willReturn(FALSE, TRUE);
     $this->assertTrue($this->controller->access($feed, 'delete', $account));
   }
 
@@ -102,7 +102,7 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
            $this->equalTo('administer feeds'),
            $this->equalTo('create feed_bundle feeds')
        ))
-      ->will($this->onConsecutiveCalls(FALSE, FALSE));
+      ->willReturn(FALSE, FALSE);
     $this->assertFalse($this->controller->createAccess('feed_bundle', $account));
 
     $this->controller->resetCache();
@@ -114,7 +114,7 @@ class FeedAccessControlHandlerTest extends FeedsUnitTestCase {
            $this->equalTo('administer feeds'),
            $this->equalTo('create feed_bundle feeds')
        ))
-      ->will($this->onConsecutiveCalls(FALSE, TRUE));
+      ->willReturn(FALSE, TRUE);
     $this->assertTrue($this->controller->createAccess('feed_bundle', $account));
   }
 

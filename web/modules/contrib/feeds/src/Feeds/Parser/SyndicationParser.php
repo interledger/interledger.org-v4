@@ -34,7 +34,7 @@ class SyndicationParser extends ParserBase implements ParserInterface, Container
   protected $feedBridgeReader;
 
   /**
-   * Constructs a syndicationparser object.
+   * Constructs a SyndicationParser object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

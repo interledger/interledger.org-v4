@@ -29,25 +29,25 @@ abstract class UpdatePathTestBase extends CoreUpdatePathTestBase {
    *   A path to the drupal core fixture.
    */
   protected function getCoreFixturePath(int $core_version = 9): string {
-    $fixtures[8] = [
+    $fixtures_per_core_version[8] = [
       DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-8.8.0.bare.standard.php.gz',
     ];
-    $fixtures[9] = [
+    $fixtures_per_core_version[9] = [
       DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-9.3.0.bare.standard.php.gz',
       DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-9.4.0.bare.standard.php.gz',
     ];
+    $fixtures_per_core_version[10] = [
+      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-10.3.0.bare.standard.php.gz',
+    ];
 
-    switch ($core_version) {
-      case 8:
-        $fixtures = array_merge($fixtures[8], $fixtures[9]);
-        break;
-
-      default:
-        $fixtures = $fixtures[9];
-        break;
+    $selected_fixtures = [];
+    foreach ($fixtures_per_core_version as $fixtures_core_version => $core_version_fixtures) {
+      if ($fixtures_core_version >= $core_version) {
+        $selected_fixtures = array_merge($selected_fixtures, $core_version_fixtures);
+      }
     }
 
-    foreach ($fixtures as $fixture) {
+    foreach ($selected_fixtures as $fixture) {
       if (file_exists($fixture)) {
         return $fixture;
       }

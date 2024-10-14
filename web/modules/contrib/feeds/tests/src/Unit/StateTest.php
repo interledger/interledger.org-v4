@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
-use Drupal\feeds\State;
 use Drupal\feeds\StateInterface;
 
 /**
@@ -15,7 +14,7 @@ class StateTest extends FeedsUnitTestCase {
    * Tests public progress property.
    */
   public function testProgress() {
-    $state = new State();
+    $state = $this->createFeedsState();
     $state->progress(10, 10);
     $this->assertSame(StateInterface::BATCH_COMPLETE, $state->progress);
 

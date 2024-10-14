@@ -12,12 +12,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Utility\Error;
 use Drupal\feeds\Exception\MissingTargetException;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\MissingTargetDefinition;
 use Drupal\feeds\Plugin\Type\MappingPluginFormInterface;
 use Drupal\feeds\Plugin\Type\Target\ConfigurableTargetInterface;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -68,16 +70,26 @@ class MappingForm extends FormBase {
   protected $customSourcePluginManager;
 
   /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs a new MappingForm object.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $feed_type_storage
    *   The feed type storage.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $custom_source_plugin_manager
    *   The custom source plugin manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   A logger instance.
    */
-  public function __construct(ConfigEntityStorageInterface $feed_type_storage, PluginManagerInterface $custom_source_plugin_manager) {
+  public function __construct(ConfigEntityStorageInterface $feed_type_storage, PluginManagerInterface $custom_source_plugin_manager, LoggerInterface $logger) {
     $this->feedTypeStorage = $feed_type_storage;
     $this->customSourcePluginManager = $custom_source_plugin_manager;
+    $this->logger = $logger;
   }
 
   /**
@@ -86,7 +98,8 @@ class MappingForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager')->getStorage('feeds_feed_type'),
-      $container->get('plugin.manager.feeds.custom_source')
+      $container->get('plugin.manager.feeds.custom_source'),
+      $container->get('logger.channel.feeds')
     );
   }
 
@@ -377,7 +390,8 @@ class MappingForm extends FormBase {
     catch (MissingTargetException $e) {
       // The target plugin is missing!
       $this->messenger()->addWarning($e->getMessage());
-      watchdog_exception('feeds', $e);
+      Error::logException($this->logger, $e);
+
       $plugin = NULL;
     }
 

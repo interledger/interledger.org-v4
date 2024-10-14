@@ -25,8 +25,7 @@ abstract class ItemTestBase extends FeedsUnitTestCase {
   }
 
   /**
-   * @covers ::set
-   * @covers ::get
+   * Tests the set() and get() methods.
    */
   public function testSetAndGet() {
     $this->assertSame($this->item, $this->item->set('field', 'value'));
@@ -34,8 +33,7 @@ abstract class ItemTestBase extends FeedsUnitTestCase {
   }
 
   /**
-   * @covers ::toArray
-   * @covers ::set
+   * Tests the toArray() method.
    */
   public function testToArray() {
     $this->item->set('field', 'value');
@@ -49,8 +47,7 @@ abstract class ItemTestBase extends FeedsUnitTestCase {
   }
 
   /**
-   * @covers ::fromArray
-   * @covers ::get
+   * Tests the fromArray() and get() methods.
    */
   public function testFromArray() {
     $this->assertSame($this->item, $this->item->fromArray([

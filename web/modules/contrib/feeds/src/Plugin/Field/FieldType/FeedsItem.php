@@ -22,6 +22,11 @@ use Drupal\feeds\FeedsItemInterface;
  *   no_ui = TRUE,
  *   list_class = "\Drupal\feeds\Plugin\Field\FieldType\FeedsItemList",
  * )
+ *
+ * @property int $imported
+ * @property string $url
+ * @property string $guid
+ * @property string $hash
  */
 class FeedsItem extends EntityReferenceItem implements FeedsItemInterface {
 

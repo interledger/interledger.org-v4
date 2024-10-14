@@ -46,7 +46,7 @@ class LinkTest extends FieldTargetTestBase {
   /**
    * Data provider for ::testPrepareValue().
    */
-  public function providerUris() {
+  public static function providerUris() {
     return [
       // Normal uri.
       ['http://example.com', 'http://example.com'],

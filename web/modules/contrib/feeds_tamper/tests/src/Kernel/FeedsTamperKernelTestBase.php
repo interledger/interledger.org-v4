@@ -14,7 +14,7 @@ abstract class FeedsTamperKernelTestBase extends FeedsKernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'feeds_tamper',
     'tamper',

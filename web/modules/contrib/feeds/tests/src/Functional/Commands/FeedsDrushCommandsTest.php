@@ -439,7 +439,7 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
   /**
    * Data provider for ::testFeedCommandFailures().
    */
-  public function providerFeed() {
+  public static function providerFeed() {
     $return = [];
 
     $commands = [

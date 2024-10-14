@@ -15,17 +15,17 @@ class HtmlParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'html';
+  protected static $parserId = 'html';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'xml';
+  protected static $customSourceType = 'xml';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['//div[@class="post"]'],
     ];
@@ -34,7 +34,7 @@ class HtmlParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['!! ', 'Invalid expression'],
     ];
@@ -49,7 +49,7 @@ class HtmlParserTest extends ParserTestBase {
         'label' => 'Name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
         'raw' => FALSE,
         'inner' => FALSE,
       ],

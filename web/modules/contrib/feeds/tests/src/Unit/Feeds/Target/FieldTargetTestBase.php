@@ -14,6 +14,13 @@ use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 abstract class FieldTargetTestBase extends FeedsUnitTestCase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = '';
+
+  /**
    * Returns the target class.
    *
    * @return string
@@ -22,7 +29,7 @@ abstract class FieldTargetTestBase extends FeedsUnitTestCase {
   abstract protected function getTargetClass();
 
   /**
-   * @covers ::prepareTarget
+   * Tests the prepareTarget() method.
    */
   public function testPrepareTarget() {
     $method = $this->getMethod($this->getTargetClass(), 'prepareTarget')->getClosure();
@@ -69,7 +76,7 @@ abstract class FieldTargetTestBase extends FeedsUnitTestCase {
   }
 
   /**
-   * @covers ::prepareValue
+   * Tests prepareValue() without passing a null value.
    */
   public function testPrepareValueWithNullValue() {
     set_error_handler([$this, 'handleError'], E_DEPRECATED);

@@ -11,15 +11,17 @@ use Drupal\feeds\FeedInterface;
 class FeedDeleteMultipleAccessCheck extends FeedActionMultipleAccessCheck {
 
   /**
-   * The action to check access for.
-   */
-  const ACTION = 'feeds_feed_multiple_delete_confirm';
-
-  /**
    * {@inheritdoc}
    */
   protected function checkFeedAccess(AccountInterface $account, FeedInterface $feed) {
     return $feed->access('delete', $account);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getActionId(): string {
+    return 'feeds_feed_delete_action';
   }
 
 }

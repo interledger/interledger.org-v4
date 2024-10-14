@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\feeds\Feeds\Target\Text;
@@ -40,6 +38,13 @@ class TextTest extends FieldTargetTestBase {
   protected $filter;
 
   /**
+   * The storage for filter_format config entities.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   */
+  protected $filterFormatStorage;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
@@ -47,6 +52,8 @@ class TextTest extends FieldTargetTestBase {
 
     $this->filter = $this->prophesize(FilterFormatInterface::class);
     $this->filter->label()->willReturn('Test filter');
+
+    $this->filterFormatStorage = $this->prophesize(ConfigEntityStorageInterface::class);
 
     $this->target = $this->instantiatePlugin();
     $this->target->setStringTranslation($this->getStringTranslationStub());
@@ -75,8 +82,9 @@ class TextTest extends FieldTargetTestBase {
         static::$pluginId,
         [],
         $this->createMock(AccountInterface::class),
+        $this->filterFormatStorage->reveal(),
       ])
-      ->setMethods(['getFilterFormats'])
+      ->onlyMethods(['getFilterFormats'])
       ->getMock();
   }
 
@@ -109,20 +117,10 @@ class TextTest extends FieldTargetTestBase {
    * @covers ::getSummary
    */
   public function testGetSummary() {
-    $storage = $this->createMock(EntityStorageInterface::class);
-    $storage->expects($this->any())
-      ->method('loadByProperties')
-      ->with(['status' => '1', 'format' => 'plain_text'])
-      ->will($this->onConsecutiveCalls([$this->filter->reveal()], []));
-
-    $manager = $this->createMock(EntityTypeManagerInterface::class);
-    $manager->expects($this->exactly(2))
-      ->method('getStorage')
-      ->will($this->returnValue($storage));
-
-    $container = new ContainerBuilder();
-    $container->set('entity_type.manager', $manager);
-    \Drupal::setContainer($container);
+    $this->filterFormatStorage->loadByProperties([
+      'status' => '1',
+      'format' => 'plain_text',
+    ])->willReturn([$this->filter->reveal()], []);
 
     $this->assertSame('Format: <em class="placeholder">Test filter</em>', (string) current($this->target->getSummary()));
     $this->assertEquals([], $this->target->getSummary());

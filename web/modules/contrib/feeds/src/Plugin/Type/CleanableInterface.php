@@ -20,7 +20,7 @@ interface CleanableInterface {
    * An action can be:
    * - Deleting the entity;
    * - Unpublishing the entity;
-   * - Or any other action plugin that is applyable.
+   * - Or any other action plugin that is applicable.
    *
    * @param \Drupal\feeds\FeedInterface $feed
    *   The feed entity.

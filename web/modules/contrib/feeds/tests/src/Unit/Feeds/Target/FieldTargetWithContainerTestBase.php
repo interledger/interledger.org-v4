@@ -22,10 +22,10 @@ abstract class FieldTargetWithContainerTestBase extends FieldTargetTestBase {
     $language = $this->createMock(LanguageInterface::class);
     $language->expects($this->any())
       ->method('getId')
-      ->will($this->returnValue('en'));
+      ->willReturn('en');
     $language_manager->expects($this->any())
       ->method('getCurrentLanguage')
-      ->will($this->returnValue($language));
+      ->willReturn($language);
     $container->set('language_manager', $language_manager);
 
     \Drupal::setContainer($container);

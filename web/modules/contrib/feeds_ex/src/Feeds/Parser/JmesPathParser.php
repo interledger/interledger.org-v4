@@ -152,7 +152,7 @@ class JmesPathParser extends JsonParserBase {
     }
     catch (\Exception $e) {
       // There was an error executing this expression, transform it to a runtime
-      // exception, so that it gets properly catched by Feeds.
+      // exception, so that it gets properly caught by Feeds.
       throw new \RuntimeException($e->getMessage());
     }
 

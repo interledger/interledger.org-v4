@@ -33,7 +33,7 @@ class EntityReferenceTest extends FeedsBrowserTestBase {
   ];
 
   /**
-   * Tests that a bundle can get selected when autocreating terms.
+   * Tests that a bundle can get selected when auto-creating terms.
    */
   public function testAutocreateBundleSetting() {
     $vocabulary_storage = $this->container->get('entity_type.manager')
@@ -53,7 +53,7 @@ class EntityReferenceTest extends FeedsBrowserTestBase {
       'name' => 'Qux',
     ])->save();
 
-    // Create an entityreference field on article, select only 2 of the
+    // Create an entity reference field on article, select only 2 of the
     // available taxonomies.
     $this->createEntityReferenceField('node', 'article', 'field_term', 'Term', 'taxonomy_term', 'default', [
       'target_bundles' => ['foo', 'qux'],

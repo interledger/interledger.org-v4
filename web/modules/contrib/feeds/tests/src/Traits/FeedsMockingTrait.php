@@ -2,13 +2,20 @@
 
 namespace Drupal\Tests\feeds\Traits;
 
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\StatementInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\feeds\FeedInterface;
+use Drupal\feeds\Feeds\State\CleanState;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\State;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 /**
  * Provides methods for mocking certain Feeds classes.
@@ -30,7 +37,7 @@ trait FeedsMockingTrait {
     $feed_type->label = 'Test feed type';
     $feed_type->expects($this->any())
       ->method('label')
-      ->will($this->returnValue($feed_type->label));
+      ->willReturn($feed_type->label);
 
     return $feed_type;
   }
@@ -45,7 +52,7 @@ trait FeedsMockingTrait {
     $feed = $this->createMock(FeedInterface::class);
     $feed->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue($this->getMockFeedType()));
+      ->willReturn($this->getMockFeedType());
 
     return $feed;
   }
@@ -79,7 +86,7 @@ trait FeedsMockingTrait {
    *   The account's permissions.
    *
    * @return \Drupal\Core\Session\AccountInterface
-   *   The mocked acount object.
+   *   The mocked account object.
    */
   protected function getMockAccount(array $perms = []) {
     $account = $this->createMock(AccountInterface::class);
@@ -90,7 +97,7 @@ trait FeedsMockingTrait {
       }
       $account->expects($this->any())
         ->method('hasPermission')
-        ->will($this->returnValueMap($map));
+        ->willReturnMap($map);
     }
 
     return $account;
@@ -109,7 +116,7 @@ trait FeedsMockingTrait {
     $definition = $this->createMock(FieldDefinitionInterface::class);
     $definition->expects($this->any())
       ->method('getSettings')
-      ->will($this->returnValue($settings));
+      ->willReturn($settings);
 
     return $definition;
   }
@@ -124,15 +131,41 @@ trait FeedsMockingTrait {
     $definition = $this->createMock(FileSystemInterface::class);
     $definition->expects($this->any())
       ->method('tempnam')
-      ->will($this->returnCallback(function () {
+      ->willReturnCallback(function () {
         $args = func_get_args();
         $dir = $args[1];
         mkdir('vfs://feeds/' . $dir);
         $file = 'vfs://feeds/' . $dir . '/' . mt_rand(10, 1000);
         touch($file);
         return $file;
-      }));
+      });
     return $definition;
+  }
+
+  /**
+   * Returns a new State object.
+   *
+   * @return \Drupal\feeds\State
+   *   A feed state object.
+   */
+  protected function createFeedsState(): State {
+    return new State($this->createMock(MessengerInterface::class), $this->createMock(LoggerInterface::class));
+  }
+
+  /**
+   * Returns a new CleanState object.
+   *
+   * @param int $feed_id
+   *   The ID of the feed to create a clean state for.
+   *
+   * @return \Drupal\feeds\Feeds\State\CleanState
+   *   A feed clean state object.
+   */
+  protected function createFeedsCleanState(int $feed_id): CleanState {
+    $connection = $this->prophesize(Connection::class);
+    $connection->query(Argument::type('string'), Argument::type('array'))->willReturn($this->createMock(StatementInterface::class));
+
+    return new CleanState($feed_id, $this->createMock(MessengerInterface::class), $this->createMock(LoggerInterface::class), $connection->reveal(), $this->createMock(EntityTypeManagerInterface::class));
   }
 
 }

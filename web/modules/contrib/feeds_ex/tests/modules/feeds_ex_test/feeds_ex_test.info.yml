@@ -5,7 +5,7 @@ package: Testing
 dependencies:
   - feeds_ex:feeds_ex
 
-# Information added by Drupal.org packaging script on 2024-06-13
-version: '8.x-1.0-beta4'
+# Information added by Drupal.org packaging script on 2024-09-08
+version: '8.x-1.0-beta5'
 project: 'feeds_ex'
-datestamp: 1718270833
+datestamp: 1725794735

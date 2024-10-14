@@ -41,7 +41,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -52,7 +52,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'value' => 'description',
           'attribute' => '',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -78,7 +78,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -90,7 +90,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'attribute' => '',
           'raw' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -116,7 +116,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -129,7 +129,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'raw' => TRUE,
           'inner' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -155,7 +155,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -166,7 +166,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'value' => 'description',
           'attribute' => '',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -192,13 +192,13 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'url' => [
           'name' => 'URL',
           'value' => 'img',
           'attribute' => 'src',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(1, $result);
@@ -224,7 +224,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -235,7 +235,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'value' => 'description',
           'attribute' => '',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -264,7 +264,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -275,7 +275,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'value' => 'description',
           'attribute' => '',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -302,7 +302,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'name' => 'Title',
           'value' => 'title',
@@ -313,7 +313,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
           'value' => 'description',
           'attribute' => '',
         ],
-      ]));
+      ]);
 
     foreach (range(0, 2) as $delta) {
       $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
@@ -348,7 +348,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
   public function testEmptyFeed() {
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $this->parser->parse($this->feed, new RawFetcherResult(' ', $this->fileSystem), $this->state);
     $this->assertEmptyFeedMessage($this->parser->getMessenger()->getMessages());
   }

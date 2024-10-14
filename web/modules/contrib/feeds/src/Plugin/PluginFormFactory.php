@@ -82,7 +82,7 @@ class PluginFormFactory {
 
     // Ensure the resulting object is a plugin form.
     if (!$form_object instanceof PluginFormInterface) {
-      throw new \LogicException($plugin->getPluginId(), sprintf('The "%s" plugin did not specify a valid "%s" form class, must implement \Drupal\Core\Plugin\PluginFormInterface', $plugin->getPluginId(), $operation));
+      throw new \LogicException(sprintf('The "%s" plugin did not specify a valid "%s" form class, must implement \Drupal\Core\Plugin\PluginFormInterface', $plugin->getPluginId(), $operation));
     }
 
     if ($form_object instanceof PluginAwareInterface) {

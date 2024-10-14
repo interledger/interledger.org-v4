@@ -166,7 +166,7 @@ class UiTest extends FeedsLogBrowserTestBase {
     $this->assertSession()->addressEquals('/feed/1/log');
 
     // Assert that the import log entity no longer exists.
-    $import_log = $this->reloadEntity($import_log);
+    $import_log = $this->reloadEntityAllowNull($import_log);
     $this->assertNull($import_log);
 
     // Assert that no logs are shown anymore.
@@ -211,8 +211,8 @@ class UiTest extends FeedsLogBrowserTestBase {
     $this->assertSession()->addressEquals('/feed/1/log');
 
     // Assert that the import log entities no longer exists.
-    $this->assertNull($this->reloadEntity($import_log1));
-    $this->assertNull($this->reloadEntity($import_log2));
+    $this->assertNull($this->reloadEntityAllowNull($import_log1));
+    $this->assertNull($this->reloadEntityAllowNull($import_log2));
 
     // Assert that no logs are shown anymore.
     $this->assertSession()->pageTextContains('There are no logged imports yet.');

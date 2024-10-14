@@ -39,11 +39,11 @@ class PathTest extends FieldTargetTestBase {
     $definition = $this->createMock(FieldDefinitionInterface::class);
     $definition->expects($this->any())
       ->method('getSettings')
-      ->will($this->returnValue($settings));
+      ->willReturn($settings);
 
     $definition->expects($this->atLeastOnce())
       ->method('getFieldStorageDefinition')
-      ->will($this->returnValue($this->createMock(FieldStorageDefinitionInterface::class)));
+      ->willReturn($this->createMock(FieldStorageDefinitionInterface::class));
 
     return $definition;
   }
@@ -69,7 +69,7 @@ class PathTest extends FieldTargetTestBase {
   /**
    * Data provider for ::testPrepareValue().
    */
-  public function valuesProvider() {
+  public static function valuesProvider() {
     return [
       'without-slash' => [
         'expected' => '/path',

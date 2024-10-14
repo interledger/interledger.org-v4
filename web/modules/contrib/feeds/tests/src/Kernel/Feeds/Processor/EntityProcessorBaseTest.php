@@ -8,19 +8,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
-use Drupal\feeds\Feeds\State\CleanState;
 use Drupal\feeds\Feeds\Target\StringTarget;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\FieldTargetDefinition;
-use Drupal\feeds\State;
 use Drupal\feeds\StateInterface;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\Tests\feeds\Traits\FeedsMockingTrait;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Processor\EntityProcessorBase
  * @group feeds
  */
 class EntityProcessorBaseTest extends FeedsKernelTestBase {
+
+  use FeedsMockingTrait;
 
   /**
    * The processor under test.
@@ -61,9 +62,9 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $this->feedType = $this->createMock(FeedTypeInterface::class);
     $this->feedType->expects($this->any())
       ->method('getMappings')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
-    $this->processor = $this->getMockForAbstractClass(EntityProcessorBase::class, [
+    $this->processor = new EntityProcessorMock(
       [
         'values' => [
           'type' => 'article',
@@ -76,10 +77,6 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
         'title' => 'Node',
         'description' => 'Creates nodes from feed items.',
         'entity_type' => 'node',
-        'arguments' => [
-          '@entity_type.manager',
-          '@entity_type.bundle.info',
-        ],
         'form' => [
           'configuration' => 'Drupal\feeds\Feeds\Processor\Form\DefaultEntityProcessorForm',
           'option' => 'Drupal\feeds\Feeds\Processor\Form\EntityProcessorOptionForm',
@@ -97,25 +94,19 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
       \Drupal::service('logger.factory')->get('feeds'),
       \Drupal::service('database'),
       \Drupal::service('validation.constraint'),
-    ]);
+      \Drupal::service('config.installer'),
+    );
 
     $this->feed = $this->createMock(FeedInterface::class);
     $this->feed->expects($this->any())
       ->method('id')
-      ->will($this->returnValue(1));
+      ->willReturn(1);
     $this->feed->expects($this->any())
       ->method('getState')
       ->with(StateInterface::CLEAN)
-      ->will($this->returnValue(new CleanState($this->feed->id())));
+      ->willReturn($this->createFeedsCleanState($this->feed->id()));
 
-    $this->state = new State();
-
-    // @todo Remove installSchema() when Drupal 9.0 is no longer supported.
-    // https://www.drupal.org/node/3143286
-    if (version_compare(\Drupal::VERSION, '9.1', '<')) {
-      // Install key/value expire schema.
-      $this->installSchema('system', ['key_value_expire']);
-    }
+    $this->state = $this->createFeedsState();
   }
 
   /**
@@ -125,15 +116,15 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $item = $this->createMock(ItemInterface::class);
     $item->expects($this->any())
       ->method('toArray')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $this->feedType->expects($this->any())
       ->method('getMappedSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $this->processor->process($this->feed, $item, $this->state);
 
-    // @todo This method should be tested with multiple times with different
+    // @todo This method should be tested multiple times with different
     // settings.
     $this->markTestIncomplete('Test is a stub.');
   }
@@ -152,7 +143,7 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $hash = $node->get('feeds_item')->getItemByFeed($this->feed)->hash;
 
     // Clean.
-    $this->processor->clean($this->feed, $node, new CleanState($this->feed->id()));
+    $this->processor->clean($this->feed, $node, $this->createFeedsCleanState($this->feed->id()));
 
     // Assert that the hash did not change.
     $this->assertEquals($hash, $node->get('feeds_item')->getItemByFeed($this->feed)->hash);
@@ -176,7 +167,7 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $this->assertTrue($node->isPublished());
 
     // Clean.
-    $this->processor->clean($this->feed, $node, new CleanState($this->feed->id()));
+    $this->processor->clean($this->feed, $node, $this->createFeedsCleanState($this->feed->id()));
 
     // Reload node.
     $node = $this->container->get('entity_type.manager')->getStorage('node')->load($node->id());
@@ -204,7 +195,7 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $this->assertNodeCount(1);
 
     // Clean.
-    $this->processor->clean($this->feed, $node, new CleanState($this->feed->id()));
+    $this->processor->clean($this->feed, $node, $this->createFeedsCleanState($this->feed->id()));
 
     // Assert that the node is deleted.
     $this->assertNodeCount(0);
@@ -393,14 +384,14 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     $feed_type = $this->createMock(FeedTypeInterface::class);
     $feed_type->expects($this->once())
       ->method('getMappings')
-      ->will($this->returnValue([
+      ->willReturn([
         [
           'target' => 'title',
           'map' => [
             'value' => '',
           ],
         ],
-      ]));
+      ]);
 
     // And set this on the processor.
     $this->setProtectedProperty($this->processor, 'feedType', $feed_type);
@@ -429,7 +420,7 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
     // And let the feed type always return this plugin.
     $feed_type->expects($this->exactly(2))
       ->method('getTargetPlugin')
-      ->will($this->returnValue($target));
+      ->willReturn($target);
 
     // Map.
     $this->callProtectedMethod($this->processor, 'map', [
@@ -451,3 +442,10 @@ class EntityProcessorBaseTest extends FeedsKernelTestBase {
   }
 
 }
+
+/**
+ * For testing methods from EntityProcessorBase.
+ *
+ * Abstract classes cannot be mocked.
+ */
+class EntityProcessorMock extends EntityProcessorBase {}

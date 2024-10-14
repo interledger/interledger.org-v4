@@ -25,7 +25,7 @@ class FeedClearHandler extends FeedHandlerBase {
         [[$this, 'clear'], [$feed]],
       ],
       'progress_message' => $this->t('Deleting items from: %title', ['%title' => $feed->label()]),
-      'error_message' => $this->t('An error occored while clearing %title.', ['%title' => $feed->label()]),
+      'error_message' => $this->t('An error occurred while clearing %title.', ['%title' => $feed->label()]),
     ];
 
     $this->batchSet($batch);

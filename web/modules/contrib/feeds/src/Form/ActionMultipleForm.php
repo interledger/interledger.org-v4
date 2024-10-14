@@ -76,8 +76,16 @@ abstract class ActionMultipleForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return static::ACTION;
+    return $this->getActionId() . '_multiple_confirm';
   }
+
+  /**
+   * Returns the ID of the action to check access for.
+   *
+   * @return string
+   *   The action ID.
+   */
+  abstract protected function getActionId(): string;
 
   /**
    * {@inheritdoc}
@@ -90,7 +98,7 @@ abstract class ActionMultipleForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $this->feedIds = $this->tempStoreFactory->get(static::ACTION)->get($this->currentUser->id() . ':feeds_feed');
+    $this->feedIds = $this->tempStoreFactory->get($this->getActionId())->get($this->currentUser->id() . ':feeds_feed');
     if (empty($this->feedIds)) {
       return new RedirectResponse($this->getCancelUrl()->setAbsolute()->toString());
     }

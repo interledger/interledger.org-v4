@@ -13,12 +13,12 @@ class JsonPathLinesParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'jsonpathlines';
+  protected static $parserId = 'jsonpathlines';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'json';
+  protected static $customSourceType = 'json';
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class JsonPathLinesParserTest extends ParserTestBase {
         'label' => 'name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
       ],
     ];
     $custom_source = [

@@ -29,7 +29,7 @@ class FeedDeleteTest extends FeedsBrowserTestBase {
     $this->assertSession()->pageTextNotContains('The website encountered an unexpected error.');
 
     // Ensure that the feed no now longer exists.
-    $this->assertNull($this->reloadEntity($feed));
+    $this->assertNull($this->reloadEntityAllowNull($feed));
   }
 
   /**
@@ -58,7 +58,7 @@ class FeedDeleteTest extends FeedsBrowserTestBase {
     $this->submitForm([], 'Delete');
 
     // Ensure that the feed now no longer exists.
-    $this->assertNull($this->reloadEntity($feed));
+    $this->assertNull($this->reloadEntityAllowNull($feed));
 
     // Ensure that no errors are shown.
     $this->assertSession()->pageTextNotContains('The website encountered an unexpected error.');
@@ -90,7 +90,7 @@ class FeedDeleteTest extends FeedsBrowserTestBase {
     $this->assertSession()->pageTextNotContains('The website encountered an unexpected error.');
 
     // Ensure that the feed now no longer exists.
-    $this->assertNull($this->reloadEntity($feed));
+    $this->assertNull($this->reloadEntityAllowNull($feed));
   }
 
 }

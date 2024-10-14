@@ -70,23 +70,8 @@ class Feed {
   public static function findFeed($url, $html) {
     $use_error = libxml_use_internal_errors(TRUE);
 
-    // This mitigates a security issue in libxml older than version 2.9.0.
-    // See http://symfony.com/blog/security-release-symfony-2-0-17-released for
-    // details.
-    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
-    if (\PHP_VERSION_ID < 80000) {
-      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
-      $entity_loader = libxml_disable_entity_loader(TRUE);
-    }
-
     $dom = new \DOMDocument();
     $status = $dom->loadHTML(trim($html));
-
-    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
-    if (\PHP_VERSION_ID < 80000) {
-      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
-      libxml_disable_entity_loader($entity_loader);
-    }
 
     libxml_use_internal_errors($use_error);
 

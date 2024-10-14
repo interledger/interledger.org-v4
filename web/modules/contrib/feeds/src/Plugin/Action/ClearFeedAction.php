@@ -16,8 +16,6 @@ use Drupal\Core\Session\AccountInterface;
  */
 class ClearFeedAction extends FeedActionBase {
 
-  const ACTION = 'feeds_feed_multiple_clear_confirm';
-
   /**
    * {@inheritdoc}
    */

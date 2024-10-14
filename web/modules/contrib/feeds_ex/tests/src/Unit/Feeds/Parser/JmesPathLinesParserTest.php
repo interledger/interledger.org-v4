@@ -30,11 +30,11 @@ class JmesPathLinesParserTest extends JsonPathLinesParserTest {
     $factoryMock = $this->createMock('Drupal\feeds_ex\JmesRuntimeFactoryInterface');
     $factoryMock->expects($this->any())
       ->method('createRuntime')
-      ->will($this->returnCallback(
+      ->willReturnCallback(
         function () {
           return new AstRuntime();
         }
-      ));
+      );
 
     $this->parser = new JmesPathLinesParser($configuration, 'jmespathlines', [], $utility, $factoryMock);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
@@ -42,12 +42,12 @@ class JmesPathLinesParserTest extends JsonPathLinesParserTest {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'name',
         ],
-      ]));
+      ]);
 
     $this->fetcherResult = new FetcherResult($this->moduleDir . '/tests/resources/test.jsonl');
   }

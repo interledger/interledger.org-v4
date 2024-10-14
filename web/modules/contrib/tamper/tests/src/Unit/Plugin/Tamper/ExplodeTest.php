@@ -59,6 +59,53 @@ class ExplodeTest extends TamperPluginTestBase {
   }
 
   /**
+   * Tests the different separators behavior.
+   *
+   * @dataProvider explodeSeparatorsProvider
+   */
+  public function testExplodeSeparators($original, $separators, $expected) {
+    $config = [
+      Explode::SETTING_SEPARATOR => $separators,
+    ];
+    $plugin = new Explode($config, 'explode', [], $this->getMockSourceDefinition());
+
+    $this->assertEquals($expected, $plugin->tamper($original));
+  }
+
+  /**
+   * Data provider for testExplodeSeparators.
+   */
+  public static function explodeSeparatorsProvider() {
+    return [
+      [
+        "a,b c\td\ne\rf",
+        ',',
+        ["a", "b c\td\ne\rf"],
+      ],
+      [
+        "a,b c\td\ne\rf",
+        '%s',
+        ["a,b", "c\td\ne\rf"],
+      ],
+      [
+        "a,b c\td\ne\rf",
+        '%t',
+        ["a,b c", "d\ne\rf"],
+      ],
+      [
+        "a,b c\td\ne\rf",
+        '%n',
+        ["a,b c\td", "e\rf"],
+      ],
+      [
+        "a,b c\td\ne\rf",
+        '%r',
+        ["a,b c\td\ne", "f"],
+      ],
+    ];
+  }
+
+  /**
    * Returns default configuration for the plugin for this test.
    *
    * @return \Drupal\tamper\Plugin\Tamper\Explode

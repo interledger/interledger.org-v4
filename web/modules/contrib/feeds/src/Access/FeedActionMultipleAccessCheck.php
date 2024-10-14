@@ -25,7 +25,7 @@ abstract class FeedActionMultipleAccessCheck implements AccessInterface {
   /**
    * The tempstore service.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
   protected $tempStore;
 
@@ -48,7 +48,7 @@ abstract class FeedActionMultipleAccessCheck implements AccessInterface {
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, PrivateTempStoreFactory $temp_store_factory, RequestStack $request_stack) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->tempStore = $temp_store_factory->get(static::ACTION);
+    $this->tempStore = $temp_store_factory->get($this->getActionId());
     $this->requestStack = $request_stack;
   }
 
@@ -92,5 +92,13 @@ abstract class FeedActionMultipleAccessCheck implements AccessInterface {
    *   The feed to check access for.
    */
   abstract protected function checkFeedAccess(AccountInterface $account, FeedInterface $feed);
+
+  /**
+   * Returns the ID of the action to check access for.
+   *
+   * @return string
+   *   The action ID.
+   */
+  abstract protected function getActionId(): string;
 
 }

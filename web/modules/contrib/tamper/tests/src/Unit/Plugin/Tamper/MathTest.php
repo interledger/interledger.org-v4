@@ -34,6 +34,19 @@ class MathTest extends TamperPluginTestBase {
   }
 
   /**
+   * Tests addition using a decimal value.
+   */
+  public function testAdditionWithDecimalValue() {
+    $config = [
+      Math::SETTING_OPERATION => 'addition',
+      Math::SETTING_VALUE => 2.312,
+    ];
+
+    $plugin = new Math($config, 'math', [], $this->getMockSourceDefinition());
+    $this->assertEquals(3.772, $plugin->tamper(1.46));
+  }
+
+  /**
    * Test addition with weird values cast to int.
    */
   public function testAdditionWithCasting() {
@@ -119,7 +132,8 @@ class MathTest extends TamperPluginTestBase {
    * Test invalid data throws exception.
    */
   public function testInvalidDataUntouched() {
-    $this->expectException(TamperException::class, 'Math plugin failed because data was not numeric.');
+    $this->expectException(TamperException::class);
+    $this->expectExceptionMessage('Math plugin failed because data was not numeric.');
     $config = [
       Math::SETTING_OPERATION => 'subtraction',
       Math::SETTING_FLIP => TRUE,

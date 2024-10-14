@@ -4,13 +4,12 @@ namespace Drupal\feeds\Component;
 
 use Laminas\Feed\Reader\ExtensionManagerInterface as ReaderManagerInterface;
 use Laminas\Feed\Writer\ExtensionManagerInterface as WriterManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a bridge between the Laminas service manager to Symfony container.
  */
-class ZfExtensionManagerSfContainer implements ReaderManagerInterface, WriterManagerInterface, ContainerAwareInterface {
+class ZfExtensionManagerSfContainer implements ReaderManagerInterface, WriterManagerInterface {
 
   /**
    * A map of characters to be replaced through strtr.
@@ -65,10 +64,13 @@ class ZfExtensionManagerSfContainer implements ReaderManagerInterface, WriterMan
   /**
    * Constructs a ZfExtensionManagerSfContainer object.
    *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The service container.
    * @param string $prefix
    *   The prefix to be used when retrieving plugins from the container.
    */
-  public function __construct($prefix = '') {
+  public function __construct(ContainerInterface $container, $prefix = '') {
+    $this->container = $container;
     $this->prefix = $prefix;
   }
 
@@ -115,13 +117,6 @@ class ZfExtensionManagerSfContainer implements ReaderManagerInterface, WriterMan
     }
     // This is just for performance instead of using str_replace().
     return $this->canonicalNames[$name] = strtolower(strtr($name, $this->canonicalNamesReplacements));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setContainer(ContainerInterface $container = NULL): void {
-    $this->container = $container;
   }
 
   /**

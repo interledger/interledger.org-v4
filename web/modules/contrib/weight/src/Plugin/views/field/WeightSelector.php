@@ -2,11 +2,12 @@
 
 namespace Drupal\weight\Plugin\views\field;
 
-use Drupal\views\Plugin\views\field\FieldPluginBase;
-use Drupal\weight\Plugin\Field\FieldWidget\WeightSelectorWidget;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\ResultRow;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\Render\ViewsRenderPipelineMarkup;
+use Drupal\views\ResultRow;
+use Drupal\weight\Plugin\Field\FieldWidget\WeightSelectorWidget;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -26,11 +27,19 @@ class WeightSelector extends FieldPluginBase {
   protected $requestStack;
 
   /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RequestStack $request_stack) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RequestStack $request_stack, MessengerInterface $messenger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -41,7 +50,8 @@ class WeightSelector extends FieldPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('messenger')
     );
   }
 
@@ -114,7 +124,7 @@ class WeightSelector extends FieldPluginBase {
 
       $form[$this->options['id']][$row_index]['langcode'] = [
         '#type' => 'value',
-        '#value' => isset($row->{$field_langcode}) ? $row->{$field_langcode} : NULL,
+        '#value' => $row->{$field_langcode} ?? NULL,
       ];
     }
 
@@ -146,7 +156,7 @@ class WeightSelector extends FieldPluginBase {
       if ($entity && $entity->hasField($field_name)) {
         $entity->set($field_name, $row['weight']);
         $entity->save();
-        \Drupal::messenger()->addMessage($this->t('Your changes have been saved.'));
+        $this->messenger->addMessage($this->t('Your changes have been saved.'));
       }
     }
   }

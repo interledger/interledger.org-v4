@@ -54,9 +54,9 @@ class Email extends FieldTargetBase implements ConfigurableTargetInterface {
     $form = parent::buildConfigurationForm($form, $form_state);
     $form['defuse'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Defuse e-mail addresses'),
+      '#title' => $this->t('Defuse email addresses'),
       '#default_value' => $this->configuration['defuse'],
-      '#description' => $this->t('This appends _test to all imported e-mail addresses to ensure they cannot be used as recipients.'),
+      '#description' => $this->t('This appends _test to all imported email addresses to ensure they cannot be used as recipients.'),
     ];
 
     return $form;

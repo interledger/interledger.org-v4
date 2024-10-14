@@ -520,9 +520,7 @@ class UserRoleTest extends FeedsKernelTestBase {
   public function testImportWithExistingRole() {
     // Create a user with the editor role.
     $this->createRole([], 'editor');
-    $user = $this->createUser([
-      'name' => 'Morticia',
-    ]);
+    $user = $this->createUser([], 'Morticia');
     $user->addRole('editor');
     $user->save();
 

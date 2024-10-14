@@ -2,6 +2,7 @@
 
 namespace Drupal\feeds\Plugin\QueueWorker;
 
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueFactory;
@@ -43,6 +44,13 @@ abstract class FeedQueueWorkerBase extends QueueWorkerBase implements ContainerF
   protected $entityTypeManager;
 
   /**
+   * The class resolver.
+   *
+   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
+   */
+  protected $classResolver;
+
+  /**
    * Constructs a FeedQueueWorkerBase object.
    *
    * @param array $configuration
@@ -59,13 +67,16 @@ abstract class FeedQueueWorkerBase extends QueueWorkerBase implements ContainerF
    *   The account switcher.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+   *   The class resolver.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, QueueFactory $queue_factory, EventDispatcherInterface $event_dispatcher, AccountSwitcherInterface $account_switcher, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, QueueFactory $queue_factory, EventDispatcherInterface $event_dispatcher, AccountSwitcherInterface $account_switcher, EntityTypeManagerInterface $entity_type_manager, ClassResolverInterface $class_resolver) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->queueFactory = $queue_factory;
     $this->setEventDispatcher($event_dispatcher);
     $this->accountSwitcher = $account_switcher;
     $this->entityTypeManager = $entity_type_manager;
+    $this->classResolver = $class_resolver;
   }
 
   /**
@@ -79,7 +90,8 @@ abstract class FeedQueueWorkerBase extends QueueWorkerBase implements ContainerF
       $container->get('queue'),
       $container->get('event_dispatcher'),
       $container->get('account_switcher'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('class_resolver'),
     );
   }
 

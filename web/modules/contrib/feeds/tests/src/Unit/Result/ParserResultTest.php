@@ -25,12 +25,12 @@ class ParserResultTest extends FeedsUnitTestCase {
 
     // Add an item.
     $result->addItem($item1);
-    $this->assertSame(1, $result->count());
+    $this->assertCount(1, $result);
 
     // Add another two items.
     $result->addItem($item2);
     $result->addItem($item3);
-    $this->assertSame(3, $result->count());
+    $this->assertCount(3, $result);
 
     $this->assertSame($item1, $result->offsetGet(0));
     $this->assertSame($item2, $result->offsetGet(1));
@@ -49,7 +49,7 @@ class ParserResultTest extends FeedsUnitTestCase {
     $item3 = $this->createMock(ItemInterface::class);
 
     $result->addItems([$item1, $item2, $item3]);
-    $this->assertSame(3, $result->count());
+    $this->assertCount(3, $result);
 
     $this->assertSame($item1, $result->offsetGet(0));
     $this->assertSame($item2, $result->offsetGet(1));

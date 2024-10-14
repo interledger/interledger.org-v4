@@ -136,8 +136,8 @@ class Subscription extends ContentEntityBase implements SubscriptionInterface {
   /**
    * {@inheritdoc}
    */
-  public function preSave(EntityStorageInterface $storage_controller, $update = TRUE) {
-    parent::preSave($storage_controller, $update);
+  public function preSave(EntityStorageInterface $storage_controller) {
+    parent::preSave($storage_controller);
 
     $this->ensureSecret();
     $this->ensureToken();

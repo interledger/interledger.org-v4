@@ -7,6 +7,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,6 +27,20 @@ class LogListBuilder extends EntityListBuilder {
   protected $dateFormatter;
 
   /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
    * Constructs a new LogListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -33,10 +49,16 @@ class LogListBuilder extends EntityListBuilder {
    *   The entity storage class.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date formatter service.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator
+   *   The file URL generator.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, DateFormatterInterface $date_formatter) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, DateFormatterInterface $date_formatter, RendererInterface $renderer, FileUrlGeneratorInterface $file_url_generator) {
     parent::__construct($entity_type, $storage);
     $this->dateFormatter = $date_formatter;
+    $this->renderer = $renderer;
+    $this->fileUrlGenerator = $file_url_generator;
   }
 
   /**
@@ -46,7 +68,9 @@ class LogListBuilder extends EntityListBuilder {
     return new static(
       $entity_type,
       $container->get('entity_type.manager')->getStorage($entity_type->id()),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('renderer'),
+      $container->get('file_url_generator'),
     );
   }
 
@@ -101,14 +125,14 @@ class LogListBuilder extends EntityListBuilder {
       foreach ($sources as $delta => $source) {
         $sources_list['#items'][$delta] = [
           '#type' => 'link',
-          '#url' => Url::fromUri(\Drupal::service('file_url_generator')->generateAbsoluteString($source)),
+          '#url' => Url::fromUri($this->fileUrlGenerator->generateAbsoluteString($source)),
           '#title' => $source,
           '#attributes' => [
             'target' => '_blank',
           ],
         ];
       }
-      $row['sources'] = \Drupal::service('renderer')->render($sources_list);
+      $row['sources'] = $this->renderer->render($sources_list);
     }
     else {
       $row['sources'] = '';

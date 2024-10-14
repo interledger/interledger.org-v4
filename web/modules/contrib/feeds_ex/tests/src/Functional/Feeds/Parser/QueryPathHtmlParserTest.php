@@ -15,17 +15,17 @@ class QueryPathHtmlParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'querypathhtml';
+  protected static $parserId = 'querypathhtml';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'querypathxml';
+  protected static $customSourceType = 'querypathxml';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['.post'],
     ];
@@ -34,7 +34,7 @@ class QueryPathHtmlParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['!! ', 'CSS selector is not well formed.'],
     ];
@@ -50,7 +50,7 @@ class QueryPathHtmlParserTest extends ParserTestBase {
         'value' => 'name',
         'machine_name' => 'name',
         'attribute' => '',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
         'raw' => FALSE,
         'inner' => FALSE,
       ],

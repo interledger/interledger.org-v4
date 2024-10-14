@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\tamper\Unit\Plugin\Tamper;
 
-use Drupal\tamper\Exception\TamperException;
 use Drupal\tamper\Plugin\Tamper\Encode;
 
 /**
@@ -42,7 +41,6 @@ class EncodeTest extends TamperPluginTestBase {
     $plugin = new Encode($config, 'encode', [], $this->getMockSourceDefinition());
     $this->assertEquals([], $plugin->tamper('a:0:{}'));
   }
-
 
   /**
    * Test serialize on complex string.

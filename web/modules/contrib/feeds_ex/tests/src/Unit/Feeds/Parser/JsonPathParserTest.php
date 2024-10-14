@@ -41,7 +41,7 @@ class JsonPathParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -50,7 +50,7 @@ class JsonPathParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -88,7 +88,7 @@ class JsonPathParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -97,7 +97,7 @@ class JsonPathParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     foreach (range(0, 2) as $delta) {
       $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
@@ -126,12 +126,12 @@ class JsonPathParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'items[0].title',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(1, $result);
@@ -165,7 +165,7 @@ class JsonPathParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage("Invalid JSON: $invalid_json");
@@ -187,7 +187,7 @@ class JsonPathParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     try {
       $this->parser->parse($this->feed, new RawFetcherResult('invalid json', $this->fileSystem), $this->state);
@@ -210,7 +210,7 @@ class JsonPathParserTest extends ParserTestBase {
   public function testEmptyFeed() {
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $this->parser->parse($this->feed, new RawFetcherResult(' ', $this->fileSystem), $this->state);
     $this->assertEmptyFeedMessage($this->parser->getMessenger()->getMessages());
   }

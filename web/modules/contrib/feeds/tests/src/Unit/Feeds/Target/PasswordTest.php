@@ -5,7 +5,7 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Password\PasswordInterface;
-use Drupal\Core\Password\PhpassHashedPassword;
+use Drupal\Core\Password\PhpPassword;
 use Drupal\feeds\Exception\TargetValidationException;
 use Drupal\feeds\Feeds\Target\Password;
 use Drupal\feeds\FeedTypeInterface;
@@ -32,9 +32,18 @@ class PasswordTest extends FieldTargetTestBase {
   protected $passwordHasher;
 
   /**
+   * The module handler.
+   *
+   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
+    parent::setUp();
+
     $this->passwordHasher = $this->prophesize(PasswordInterface::class);
     $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
 
@@ -102,7 +111,7 @@ class PasswordTest extends FieldTargetTestBase {
 
     $method(0, $values);
     $this->assertSame('U$S$5psAlzq7nesZ7uXLLMRPHI45GL3PaadvAP9.kmYHIh6QMDq0EFhc', $values['value']);
-    $this->assertSame(TRUE, $values['pre_hashed']);
+    $this->assertTrue($values['pre_hashed']);
   }
 
   /**
@@ -139,7 +148,7 @@ class PasswordTest extends FieldTargetTestBase {
       'pass_encryption' => Password::PASS_SHA512,
     ]);
 
-    $hasher = new PhpassHashedPassword(1);
+    $hasher = new PhpPassword();
     $hash = $hasher->hash(md5('password'));
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
@@ -149,7 +158,7 @@ class PasswordTest extends FieldTargetTestBase {
 
     $method(0, $values);
     $this->assertSame($hash, $values['value']);
-    $this->assertSame(TRUE, $values['pre_hashed']);
+    $this->assertTrue($values['pre_hashed']);
   }
 
 }

@@ -7,7 +7,6 @@ use Drupal\feeds\Component\ZfExtensionManagerSfContainer;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Parser\SyndicationParser;
 use Drupal\feeds\Result\RawFetcherResult;
-use Drupal\feeds\State;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Laminas\Feed\Reader\StandaloneExtensionManager;
 
@@ -72,8 +71,7 @@ class SyndicationParserTest extends FeedsUnitTestCase {
     parent::setUp();
 
     $container = new ContainerBuilder();
-    $manager = new ZfExtensionManagerSfContainer('feed.reader.');
-    $manager->setContainer($container);
+    $manager = new ZfExtensionManagerSfContainer($container, 'feed.reader.');
     $manager->setStandalone(StandaloneExtensionManager::class);
 
     foreach ($this->readerExtensions as $key => $class) {
@@ -87,12 +85,12 @@ class SyndicationParserTest extends FeedsUnitTestCase {
     $this->parser = new SyndicationParser($configuration, 'syndication', [], $manager);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
 
-    $this->state = new State();
+    $this->state = $this->createFeedsState();
 
     $this->feed = $this->createMock('Drupal\feeds\FeedInterface');
     $this->feed->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue($this->feedType));
+      ->willReturn($this->feedType);
   }
 
   /**

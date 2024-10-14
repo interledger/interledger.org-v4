@@ -36,7 +36,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
     $pluginManager = $this->createMock(FeedsPluginManager::class);
     $pluginManager->expects($this->any())
       ->method('getDefinitions')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $default_stubs = [
       'getParser',
@@ -60,22 +60,22 @@ class FeedTypeTest extends FeedsUnitTestCase {
         ],
         'feeds_feed_type',
       ])
-      ->setMethods(array_merge($default_stubs, $stubs))
+      ->onlyMethods(array_merge($default_stubs, $stubs))
       ->getMock();
 
     // Parser.
     $parser = $this->createMock(ParserInterface::class);
     $parser->expects($this->any())
       ->method('getMappingSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $feed_type->expects($this->any())
       ->method('getParser')
-      ->will($this->returnValue($parser));
+      ->willReturn($parser);
 
     // Source plugin manager.
     $feed_type->expects($this->any())
       ->method('getSourcePluginManager')
-      ->will($this->returnValue($pluginManager));
+      ->willReturn($pluginManager);
 
     return $feed_type;
   }
@@ -97,7 +97,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
 
     $feed_type->expects($this->once())
       ->method('getMappings')
-      ->will($this->returnValue([
+      ->willReturn([
         [
           'target' => 'feeds_item',
           'map' => ['guid' => 'guid'],
@@ -114,7 +114,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
             ['format' => 'plain_text'],
           ],
         ],
-      ]));
+      ]);
 
     $expected = [
       'guid' => 'guid',
@@ -167,7 +167,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
     $this->assertSame($expected, $this->feedType->getCustomSource('source1'));
 
     // Get a non-existing source.
-    $this->assertSame(NULL, $this->feedType->getCustomSource('non_existing'));
+    $this->assertNull($this->feedType->getCustomSource('non_existing'));
   }
 
   /**
@@ -233,8 +233,8 @@ class FeedTypeTest extends FeedsUnitTestCase {
    * @covers ::customSourceExists
    */
   public function testCustomSourceExists() {
-    $this->assertSame(TRUE, $this->feedType->customSourceExists('source1'));
-    $this->assertSame(FALSE, $this->feedType->customSourceExists('non_existing'));
+    $this->assertTrue($this->feedType->customSourceExists('source1'));
+    $this->assertFalse($this->feedType->customSourceExists('non_existing'));
   }
 
   /**

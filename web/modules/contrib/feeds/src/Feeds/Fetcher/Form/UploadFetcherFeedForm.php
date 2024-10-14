@@ -74,8 +74,8 @@ class UploadFetcherFeedForm extends ExternalPluginFormBase implements ContainerI
       '#description' => $this->t('Select a file from your local system.'),
       '#default_value' => [$feed->getConfigurationFor($this->plugin)['fid']],
       '#upload_validators' => [
-        'file_validate_extensions' => [
-          $this->plugin->getConfiguration('allowed_extensions'),
+        'FileExtension' => [
+          'extensions' => $this->plugin->getConfiguration('allowed_extensions'),
         ],
       ],
       '#upload_location' => $this->plugin->getConfiguration('directory'),

@@ -25,6 +25,7 @@ class FeedsBatchExecutable extends FeedsExecutable {
       // Start a batch for expiring items.
       $feed->startBatchExpire();
     }
+    return $result;
   }
 
 }

@@ -47,7 +47,7 @@ class BooleanTest extends FieldTargetTestBase {
   /**
    * Data provider for testPrepareValue().
    */
-  public function valueProvider() {
+  public static function valueProvider() {
     return [
       [
         'expected' => TRUE,

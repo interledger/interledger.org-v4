@@ -15,17 +15,17 @@ class QueryPathXmlParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'querypathxml';
+  protected static $parserId = 'querypathxml';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'querypathxml';
+  protected static $customSourceType = 'querypathxml';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['items item'],
     ];
@@ -34,7 +34,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['!! ', 'CSS selector is not well formed.'],
     ];
@@ -50,7 +50,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
         'value' => 'name',
         'machine_name' => 'name',
         'attribute' => 'attribute-value',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
         'raw' => FALSE,
         'inner' => FALSE,
       ],
@@ -91,7 +91,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
   /**
    * Data provider for ::testAddQueryPathXmlSources().
    */
-  public function queryPathXmlSourcesDataProvider() {
+  public static function queryPathXmlSourcesDataProvider() {
     return [
       'raw' => [
         'expected_sources' => [
@@ -100,7 +100,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
             'value' => 'name',
             'machine_name' => 'name',
             'attribute' => '',
-            'type' => $this->customSourceType,
+            'type' => static::$customSourceType,
             'raw' => TRUE,
             'inner' => FALSE,
           ],
@@ -120,7 +120,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
             'value' => 'name',
             'machine_name' => 'name',
             'attribute' => '',
-            'type' => $this->customSourceType,
+            'type' => static::$customSourceType,
             'raw' => TRUE,
             'inner' => TRUE,
           ],
@@ -140,7 +140,7 @@ class QueryPathXmlParserTest extends ParserTestBase {
             'value' => 'name',
             'machine_name' => 'name',
             'attribute' => 'value',
-            'type' => $this->customSourceType,
+            'type' => static::$customSourceType,
             'raw' => FALSE,
             'inner' => FALSE,
           ],

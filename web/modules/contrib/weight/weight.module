@@ -4,13 +4,41 @@
  * @file
  * Defines weight field types.
  */
+use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ * Implements hook_help().
+ */
+function weight_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.weight':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provides a weight field that can be added to any fieldable entity.') . '</p>';
+      $output .= '<p>' . t('The weight field can be used to provide customized sorting.') . '</p>';
+      $output .= '<h3>' . t('How to use') . '</h3>';
+      $output .= '<p>' . t('Now the weight field is available to be used in any entity. So just as example, you can add the "weight" field in a content type:') . '</p>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Access: "Structure" » "Content types" » <CONTENT-TYPE> » "Manage fields"') . '</li>';
+      $output .= '<li>' . t('Go to "Add field" and select "General" » "Weight"') . '</li>';
+      $output .= '<li>' . t('Put a label and save.') . '</li>';
+      $output .= '<li>' . t('Now you can select a "Range" value that will be range of weights available to select. For example, a range of 20 will allow you to select a weight between -20 and 20.') . '</li>';
+      $output .= '<li>' . t('Save.') . '</li>';
+      $output .= '<li>' . t('Now you can add a node using this content type:') . '</li>';
+      $output .= '<li>' . t('Go to "Content" » "Add content" » <CONTENT-TYPE>') . '</li>';
+      $output .= '<li>' . t('Now you can see the "weight" and the range to select') . '</li>';
+      $output .= '</ul>';
+      return $output;
+
+    default:
+  }
+}
 /**
  * Implements hook_preprocess_views_view_table().
  */
 function weight_preprocess_views_view_table(&$variables) {
 
-  // Check if view return results
+  // Check if view return results.
   if (!$variables['result']) {
     return;
   }

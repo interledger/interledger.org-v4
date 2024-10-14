@@ -25,15 +25,6 @@ trait XmlParserTrait {
   protected static $_useError;
 
   /**
-   * The previous value of the entity loader.
-   *
-   * @var bool
-   *
-   * @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
-   */
-  protected static $_entityLoader;
-
-  /**
    * The errors reported during parsing.
    *
    * @var array
@@ -81,15 +72,6 @@ trait XmlParserTrait {
   protected static function startXmlErrorHandling() {
     static::$_useError = libxml_use_internal_errors(TRUE);
 
-    // This mitigates a security issue in libxml older than version 2.9.0.
-    // See http://symfony.com/blog/security-release-symfony-2-0-17-released for
-    // details.
-    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
-    if (\PHP_VERSION_ID < 80000) {
-      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
-      static::$_entityLoader = libxml_disable_entity_loader(TRUE);
-    }
-
     libxml_clear_errors();
   }
 
@@ -106,12 +88,6 @@ trait XmlParserTrait {
     }
     libxml_clear_errors();
     libxml_use_internal_errors(static::$_useError);
-
-    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
-    if (\PHP_VERSION_ID < 80000) {
-      // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
-      libxml_disable_entity_loader(static::$_entityLoader);
-    }
   }
 
   /**

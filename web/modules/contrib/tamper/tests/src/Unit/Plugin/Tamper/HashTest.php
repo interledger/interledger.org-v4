@@ -67,7 +67,7 @@ class HashTest extends TamperPluginTestBase {
   }
 
   /**
-   * Test the plugin behaviour without a tamperable item.
+   * Test the plugin behavior without a tamperable item.
    */
   public function testEmptyTamperableItem() {
     $this->expectException(TamperException::class);

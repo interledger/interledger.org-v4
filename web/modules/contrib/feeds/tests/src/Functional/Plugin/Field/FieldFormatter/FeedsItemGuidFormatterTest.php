@@ -59,7 +59,7 @@ class FeedsItemGuidFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * Data provider for ::testFeedsItemGuidFormatter().
    */
-  public function providerGuids() {
+  public static function providerGuids() {
     return [
       'integer guid' => ['1', '<div>1</div>'],
       'empty guid' => ['', NULL],

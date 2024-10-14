@@ -15,7 +15,7 @@ class TamperableFeedItemAdapterTest extends UnitTestCase {
   /**
    * A feed item.
    *
-   * @var \Drupal\feeds\Feeds\Item\ItemInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\feeds\Feeds\Item\ItemInterface|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $feedItem;
 
@@ -30,6 +30,7 @@ class TamperableFeedItemAdapterTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    parent::setUp();
     $this->feedItem = $this->createMock(ItemInterface::class);
     $this->adapter = new TamperableFeedItemAdapter($this->feedItem);
   }

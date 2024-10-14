@@ -20,7 +20,7 @@ class MathTest extends TamperPluginTestBase {
   /**
    * {@inheritdoc}
    */
-  public function formDataProvider(): array {
+  public static function formDataProvider(): array {
     return [
       'no values' => [
         'expected' => [],
@@ -49,6 +49,16 @@ class MathTest extends TamperPluginTestBase {
           'operation' => 'multiplication',
           'flip' => '1',
           'value' => '3',
+        ],
+      ],
+      'with decimal value' => [
+        'expected' => [
+          'operation' => 'addition',
+          'flip' => FALSE,
+          'value' => 2.312,
+        ],
+        'edit' => [
+          'value' => '2.312',
         ],
       ],
     ];

@@ -19,7 +19,7 @@ namespace Drupal\Tests\feeds\Unit\Element {
      */
     public function setUp(): void {
       parent::setUp();
-      
+
       // Set a stub for the string translation service.
       $container = new ContainerBuilder();
       $container->set('string_translation', $this->getStringTranslationStub());

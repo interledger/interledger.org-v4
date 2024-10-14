@@ -15,17 +15,17 @@ class JmesPathParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'jmespath';
+  protected static $parserId = 'jmespath';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'json';
+  protected static $customSourceType = 'json';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['items'],
       ['length(people)'],
@@ -36,7 +36,7 @@ class JmesPathParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['!! ', 'Syntax error at character'],
     ];
@@ -51,7 +51,7 @@ class JmesPathParserTest extends ParserTestBase {
         'label' => 'name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
       ],
     ];
     $custom_source = [

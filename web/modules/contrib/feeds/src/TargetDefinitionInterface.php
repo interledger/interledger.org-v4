@@ -81,7 +81,7 @@ interface TargetDefinitionInterface {
   public function getPropertyDescription($property);
 
   /**
-   * Retuns whether a property is unique.
+   * Returns whether a property is unique.
    *
    * @param string $property
    *   The property to check.

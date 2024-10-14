@@ -58,9 +58,9 @@ class CleanupTest extends FeedsLogBrowserTestBase {
     $this->cronRun();
 
     // Assert that import logs 1 and 3 are deleted, but 2 and 4 still exist.
-    $this->assertNull($this->reloadEntity($import_log1));
+    $this->assertNull($this->reloadEntityAllowNull($import_log1));
     $this->assertInstanceOf(ImportLog::class, ImportLog::load(2));
-    $this->assertNull($this->reloadEntity($import_log3));
+    $this->assertNull($this->reloadEntityAllowNull($import_log3));
     $this->assertInstanceOf(ImportLog::class, ImportLog::load(4));
   }
 
@@ -105,7 +105,7 @@ class CleanupTest extends FeedsLogBrowserTestBase {
     // Run cron again and assert that the first logged import has been cleaned
     // up, but the second has not.
     $this->cronRun();
-    $this->assertNull($this->reloadEntity($import_log1));
+    $this->assertNull($this->reloadEntityAllowNull($import_log1));
     $this->assertInstanceOf(ImportLog::class, $this->reloadEntity($import_log2));
   }
 
@@ -156,7 +156,7 @@ class CleanupTest extends FeedsLogBrowserTestBase {
 
     // Assert that the first logged import is cleaned up, since a newer import
     // exists.
-    $this->assertNull($this->reloadEntity($import_log1));
+    $this->assertNull($this->reloadEntityAllowNull($import_log1));
   }
 
   /**

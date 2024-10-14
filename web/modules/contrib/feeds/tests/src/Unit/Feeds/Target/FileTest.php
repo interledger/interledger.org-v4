@@ -67,7 +67,7 @@ class FileTest extends FileTargetTestBase {
   /**
    * Data provider for testPrepareValue().
    */
-  public function dataProviderPrepareValue() {
+  public static function dataProviderPrepareValue() {
     return [
       // Description.
       [

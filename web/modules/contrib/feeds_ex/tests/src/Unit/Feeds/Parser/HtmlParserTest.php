@@ -41,7 +41,7 @@ class HtmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'h3',
@@ -50,7 +50,7 @@ class HtmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'p',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -78,7 +78,7 @@ class HtmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'h3',
@@ -88,7 +88,7 @@ class HtmlParserTest extends ParserTestBase {
           'value' => 'p',
           'raw' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -116,7 +116,7 @@ class HtmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'h3',
@@ -127,7 +127,7 @@ class HtmlParserTest extends ParserTestBase {
           'raw' => TRUE,
           'inner' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -155,7 +155,7 @@ class HtmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'h3',
@@ -164,7 +164,7 @@ class HtmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'p',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -193,7 +193,7 @@ class HtmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'h3',
@@ -202,7 +202,7 @@ class HtmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'p',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -238,7 +238,7 @@ class HtmlParserTest extends ParserTestBase {
   public function testEmptyFeed() {
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $this->parser->parse($this->feed, new RawFetcherResult(' ', $this->fileSystem), $this->state);
     $this->assertEmptyFeedMessage($this->parser->getMessenger()->getMessages());
   }

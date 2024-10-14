@@ -9,8 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class DeleteMultipleForm extends ActionMultipleForm {
 
-  const ACTION = 'feeds_feed_multiple_delete_confirm';
-
   /**
    * {@inheritdoc}
    */
@@ -23,6 +21,13 @@ class DeleteMultipleForm extends ActionMultipleForm {
    */
   public function getConfirmText() {
     return $this->t('Delete');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getActionId(): string {
+    return 'feeds_feed_delete_action';
   }
 
   /**
@@ -42,14 +47,14 @@ class DeleteMultipleForm extends ActionMultipleForm {
         }
       }
       $this->storage->delete($feeds_to_delete);
-      $this->tempStoreFactory->get(static::ACTION)->delete($this->currentUser->id() . ':feeds_feed');
+      $this->tempStoreFactory->get($this->getActionId())->delete($this->currentUser->id() . ':feeds_feed');
       $count = count($feeds_to_delete);
       $this->logger('feeds')->notice('Deleted @count feeds.', ['@count' => $count]);
       $this->messenger()->addMessage($this->formatPlural($count, 'Deleted 1 feed.', 'Deleted @count feeds.'));
-    }
 
-    if ($inaccessible_feeds) {
-      $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      if (count($inaccessible_feeds) > 0) {
+        $this->messenger->addWarning($this->getInaccessibleMessage(count($inaccessible_feeds)));
+      }
     }
 
     $form_state->setRedirectUrl($this->getCancelUrl());
@@ -59,7 +64,7 @@ class DeleteMultipleForm extends ActionMultipleForm {
    * Returns the message to show the user when a feed has not been deleted.
    *
    * @param int $count
-   *   Number of feeds that were not deleted.
+   *   Number of feeds that weren't deleted.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The item inaccessible message.

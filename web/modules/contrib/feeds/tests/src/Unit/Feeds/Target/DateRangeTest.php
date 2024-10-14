@@ -10,7 +10,7 @@ use Drupal\feeds\Plugin\Type\Target\TargetInterface;
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\DateRange
  * @group feeds
  */
-class DateRangeTest extends FieldTargetWithContainerTestBase {
+class DateRangeTest extends DateTestBase {
 
   /**
    * The ID of the plugin.
@@ -59,7 +59,7 @@ class DateRangeTest extends FieldTargetWithContainerTestBase {
       'feed_type' => $this->feedType,
       'target_definition' => $this->targetDefinition,
     ];
-    return new DateRange($configuration, static::$pluginId, []);
+    return new DateRange($configuration, static::$pluginId, [], $this->systemDateConfig->reveal());
   }
 
   /**

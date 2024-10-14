@@ -6,7 +6,7 @@ dependencies:
   - feeds:entity_test
   - feeds:feeds
 
-# Information added by Drupal.org packaging script on 2024-06-13
-version: '8.x-3.0-beta5'
+# Information added by Drupal.org packaging script on 2024-09-19
+version: '8.x-3.0-rc2'
 project: 'feeds'
-datestamp: 1718270217
+datestamp: 1726755549

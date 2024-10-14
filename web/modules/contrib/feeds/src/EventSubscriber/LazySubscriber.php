@@ -2,6 +2,7 @@
 
 namespace Drupal\feeds\EventSubscriber;
 
+use Drupal\Core\Utility\Error;
 use Drupal\feeds\Event\CleanEvent;
 use Drupal\feeds\Event\ClearEvent;
 use Drupal\feeds\Event\ExpireEvent;
@@ -14,6 +15,7 @@ use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\CleanableInterface;
 use Drupal\feeds\Plugin\Type\ClearableInterface;
 use Drupal\feeds\StateInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -42,6 +44,23 @@ class LazySubscriber implements EventSubscriberInterface {
    * @var bool
    */
   protected $expireInited = FALSE;
+
+  /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * Constructs a new LazySubscriber object.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   A logger instance.
+   */
+  public function __construct(LoggerInterface $logger) {
+    $this->logger = $logger;
+  }
 
   /**
    * {@inheritdoc}
@@ -122,7 +141,7 @@ class LazySubscriber implements EventSubscriberInterface {
               $plugin->clean($feed, $event->getEntity(), $feed->getState(StateInterface::CLEAN));
             }
             catch (\Exception $e) {
-              watchdog_exception('feeds', $e);
+              Error::logException($this->logger, $e);
             }
           });
         }

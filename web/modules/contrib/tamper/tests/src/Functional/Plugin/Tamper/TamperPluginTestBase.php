@@ -24,6 +24,13 @@ abstract class TamperPluginTestBase extends BrowserTestBase {
   protected static $modules = ['entity_test', 'tamper', 'tamper_test'];
 
   /**
+   * The ID of the plugin to test.
+   *
+   * @var string
+   */
+  protected static $pluginId;
+
+  /**
    * The config entity to add third party settings to.
    *
    * @var \Drupal\entity_test\Entity\EntityTestWithBundle
@@ -98,7 +105,7 @@ abstract class TamperPluginTestBase extends BrowserTestBase {
   /**
    * Data provider for ::testForm().
    */
-  public function formDataProvider(): array {
+  public static function formDataProvider(): array {
     // Some plugins don't have special configuration.
     return [
       'no values' => [

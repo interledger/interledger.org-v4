@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\tamper\Unit\Plugin\Tamper;
 
-use Drupal\tamper\Plugin\Tamper\Transliteration;
 use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\tamper\Plugin\Tamper\Transliteration;
 
 /**
  * Tests the transliteration plugin.

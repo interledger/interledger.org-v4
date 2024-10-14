@@ -13,13 +13,6 @@ use Drupal\feeds\File\FeedsFileSystemBase;
 class LogFileManager extends FeedsFileSystemBase implements LogFileManagerInterface {
 
   /**
-   * The default directory for feeds log files.
-   *
-   * @var string
-   */
-  const DEFAULT_DIR = 'feeds/log';
-
-  /**
    * The feeds log configuration.
    *
    * @var \Drupal\Core\Config\Config
@@ -51,6 +44,14 @@ class LogFileManager extends FeedsFileSystemBase implements LogFileManagerInterf
     }
 
     return $this->getDefaultDirectory();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getRelativeDefaultDirectory(): string {
+    // The default directory for feeds log files.
+    return 'feeds/log';
   }
 
 }

@@ -20,7 +20,7 @@ class SprintfTest extends TamperPluginTestBase {
   /**
    * {@inheritdoc}
    */
-  public function formDataProvider(): array {
+  public static function formDataProvider(): array {
     return [
       'no values' => [
         'expected' => [

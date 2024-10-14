@@ -26,7 +26,7 @@ if (\Drupal::hasService('ludwig.require_once')) {
 function feeds_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.feeds':
-      return '<p>' . t('You can find the <a href=":feeds-help" target="_blank" rel="noopener">documention</a> for the Feeds module on drupal.org.', [':feeds-help' => 'https://www.drupal.org/docs/contributed-modules/feeds']) . '</p>';
+      return '<p>' . t('You can find the <a href=":feeds-help" target="_blank" rel="noopener">documentation</a> for the Feeds module on drupal.org.', [':feeds-help' => 'https://www.drupal.org/docs/contributed-modules/feeds']) . '</p>';
 
     case 'entity.feeds_feed_type.collection':
       return '<p>' . t('Create one or more feed types for pulling content into Drupal.') . '</p>';
@@ -42,7 +42,7 @@ function feeds_help($route_name, RouteMatchInterface $route_match) {
       ];
 
       return new FormattableMarkup('<p>@help1</p><p>@help2 @help3</p><p>@help4</p>', [
-        '@help1' => t('Define which elements of a single item of a feed (= %sources_label) map to which content pieces in Drupal (= %targets_label). To avoid importing duplicates, make sure that at least one definition has an %unique_target_label. An unique target means that a value for a target can only occur once. For example, only one item with the URL %example_url can exist.', [
+        '@help1' => t('Define which elements of a single item of a feed (= %sources_label) map to which content pieces in Drupal (= %targets_label). To avoid importing duplicates, make sure that at least one definition has an %unique_target_label. A unique target means that a value for a target can only occur once. For example, only one item with the URL %example_url can exist.', [
           '%sources_label' => t('Sources'),
           '%targets_label' => t('Targets'),
           '%unique_target_label' => t('Unique target'),
@@ -127,15 +127,6 @@ function feeds_cron() {
  */
 function feeds_theme() {
   return [
-    'feeds_feed_status' => [
-      'variables' => [
-        'progress_importing' => NULL,
-        'progress_clearing' => NULL,
-        'imported' => NULL,
-        'count' => NULL,
-      ],
-      'file' => 'feeds.theme.inc',
-    ],
     'feeds_feed' => [
       'render element' => 'elements',
       'template' => 'feeds_feed',

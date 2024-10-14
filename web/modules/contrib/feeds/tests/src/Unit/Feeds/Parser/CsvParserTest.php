@@ -7,7 +7,6 @@ use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Parser\CsvParser;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Result\FetcherResult;
-use Drupal\feeds\State;
 use Drupal\feeds\StateInterface;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
@@ -56,12 +55,12 @@ class CsvParserTest extends FeedsUnitTestCase {
     $this->parser = new CsvParser($configuration, 'csv', []);
     $this->parser->setStringTranslation($this->getStringTranslationStub());
 
-    $this->state = new State();
+    $this->state = $this->createFeedsState();
 
     $this->feed = $this->createMock(FeedInterface::class);
     $this->feed->expects($this->any())
       ->method('getType')
-      ->will($this->returnValue($this->feedType));
+      ->willReturn($this->feedType);
   }
 
   /**
@@ -71,12 +70,12 @@ class CsvParserTest extends FeedsUnitTestCase {
    */
   public function testParse() {
     $this->feedType->method('getMappingSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     $this->feed->expects($this->any())
       ->method('getConfigurationFor')
       ->with($this->parser)
-      ->will($this->returnValue($this->parser->defaultFeedConfiguration()));
+      ->willReturn($this->parser->defaultFeedConfiguration());
 
     $file = $this->resourcesPath() . '/csv/example.csv';
     $fetcher_result = new FetcherResult($file);
@@ -105,11 +104,11 @@ class CsvParserTest extends FeedsUnitTestCase {
     $this->feed->expects($this->any())
       ->method('getConfigurationFor')
       ->with($this->parser)
-      ->will($this->returnValue($config));
+      ->willReturn($config);
 
     // Provide mapping sources.
     $this->feedType->method('getMappingSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'column1' => [
           'label' => 'Column 1',
           'value' => 0,
@@ -120,7 +119,7 @@ class CsvParserTest extends FeedsUnitTestCase {
           'value' => 1,
           'machine_name' => 'column2',
         ],
-      ]));
+      ]);
 
     $file = $this->resourcesPath() . '/csv/content.csv';
     $fetcher_result = new FetcherResult($file);
@@ -145,7 +144,7 @@ class CsvParserTest extends FeedsUnitTestCase {
    */
   public function testEmptyFeed() {
     $this->feedType->method('getMappingSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     touch('vfs://feeds/empty_file');
     $result = new FetcherResult('vfs://feeds/empty_file');
@@ -159,7 +158,7 @@ class CsvParserTest extends FeedsUnitTestCase {
    */
   public function testFeedWithExtraBlankLines() {
     $this->feedType->method('getMappingSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
 
     // Set an high line limit.
     $configuration = ['feed_type' => $this->feedType, 'line_limit' => 100];
@@ -169,7 +168,7 @@ class CsvParserTest extends FeedsUnitTestCase {
     $this->feed->expects($this->any())
       ->method('getConfigurationFor')
       ->with($this->parser)
-      ->will($this->returnValue($this->parser->defaultFeedConfiguration()));
+      ->willReturn($this->parser->defaultFeedConfiguration());
 
     $file = $this->resourcesPath() . '/csv/with-empty-lines.csv';
     $fetcher_result = new FetcherResult($file);

@@ -49,7 +49,7 @@ class FeedRefresh extends FeedQueueWorkerBase {
    *   A feeds executable.
    */
   protected function getExecutable() {
-    return \Drupal::service('class_resolver')->getInstanceFromDefinition(FeedsQueueExecutable::class);
+    return $this->classResolver->getInstanceFromDefinition(FeedsQueueExecutable::class);
   }
 
   /**

@@ -20,7 +20,7 @@ class StrPadTest extends TamperPluginTestBase {
   /**
    * {@inheritdoc}
    */
-  public function formDataProvider(): array {
+  public static function formDataProvider(): array {
     return [
       'no values' => [
         'expected' => [
@@ -38,7 +38,7 @@ class StrPadTest extends TamperPluginTestBase {
         'edit' => [
           'pad_length' => '12',
           'pad_string' => '0',
-          'pad_type' => STR_PAD_BOTH,
+          'pad_type' => (string) STR_PAD_BOTH,
         ],
       ],
     ];

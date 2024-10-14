@@ -5,7 +5,7 @@ namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\feeds\Feeds\Target\File;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
-use Drupal\node\entity\Node;
+use Drupal\node\Entity\Node;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\File
@@ -44,7 +44,7 @@ class FileTest extends FileTestBase {
   /**
    * Data provider for testPrepareValue().
    */
-  public function dataProviderPrepareValue() {
+  public static function dataProviderPrepareValue() {
     return [
       // Description.
       'description' => [

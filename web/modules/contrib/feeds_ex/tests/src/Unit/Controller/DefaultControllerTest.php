@@ -57,7 +57,7 @@ class DefaultControllerTest extends UnitTestBase {
    * @return array
    *   The encoding autocomplete suggestions.
    */
-  public function providerTestEncodingAutocompleteResults(): array {
+  public static function providerTestEncodingAutocompleteResults(): array {
     $test_parameters = [];
     $test_parameters[] = [
       'string' => 'Asc',

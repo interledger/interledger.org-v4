@@ -55,7 +55,7 @@ abstract class FeedsUnitTestCase extends UnitTestCase {
    *   A mocked stream wrapper manager.
    */
   protected function getMockStreamWrapperManager() {
-    $mock = $this->createMock(StreamWrapperManager::class, [], [], '', FALSE);
+    $mock = $this->createMock(StreamWrapperManager::class);
 
     $wrappers = [
       'vfs' => 'VFS',
@@ -64,11 +64,11 @@ abstract class FeedsUnitTestCase extends UnitTestCase {
 
     $mock->expects($this->any())
       ->method('getDescriptions')
-      ->will($this->returnValue($wrappers));
+      ->willReturn($wrappers);
 
     $mock->expects($this->any())
       ->method('getWrappers')
-      ->will($this->returnValue($wrappers));
+      ->willReturn($wrappers);
 
     return $mock;
   }

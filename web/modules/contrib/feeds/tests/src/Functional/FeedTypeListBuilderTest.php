@@ -21,7 +21,7 @@ class FeedTypeListBuilderTest extends FeedsBrowserTestBase {
     $this->assertSession()->pageTextNotContains('The website encountered an unexpected error.');
 
     // Now add a feed type.
-    $this->feedType = $this->createFeedType([
+    $this->createFeedType([
       'id' => 'my_feed_type',
       'label' => 'My feed type',
     ]);

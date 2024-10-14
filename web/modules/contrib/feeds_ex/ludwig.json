@@ -9,8 +9,8 @@
             "url": "https://github.com/SoftCreatR/JSONPath/archive/0.7.5.zip"
         },
         "gravitypdf/querypath": {
-            "version": "3.2.3",
-            "url": "https://github.com/GravityPDF/querypath/archive/3.2.3.zip"
+            "version": "4.0.0",
+            "url": "https://github.com/GravityPDF/querypath/archive/4.0.0.zip"
         }
     }
 }

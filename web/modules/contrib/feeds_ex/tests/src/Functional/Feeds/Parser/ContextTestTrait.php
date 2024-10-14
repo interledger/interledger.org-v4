@@ -37,7 +37,7 @@ trait ContextTestTrait {
   /**
    * Data provider for testSetContext().
    */
-  abstract public function dataProviderValidContext();
+  abstract public static function dataProviderValidContext();
 
   /**
    * Tests setting an invalid context on the mapping form.
@@ -65,14 +65,14 @@ trait ContextTestTrait {
   /**
    * Data provider for testSetInvalidContext().
    */
-  abstract public function dataProviderInvalidContext();
+  abstract public static function dataProviderInvalidContext();
 
   /**
    * Sets the context on the mapping form.
    */
   protected function setupContext() {
     // First, set context.
-    $data = $this->dataProviderValidContext();
+    $data = static::dataProviderValidContext();
     $contexts = reset($data);
     $context = reset($contexts);
 

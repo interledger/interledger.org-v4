@@ -46,7 +46,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -55,7 +55,7 @@ class XmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -81,7 +81,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -91,7 +91,7 @@ class XmlParserTest extends ParserTestBase {
           'value' => 'description',
           'raw' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -117,7 +117,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -128,7 +128,7 @@ class XmlParserTest extends ParserTestBase {
           'raw' => TRUE,
           'inner' => TRUE,
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -154,7 +154,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -163,7 +163,7 @@ class XmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -192,7 +192,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -201,7 +201,7 @@ class XmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
     $this->assertCount(3, $result);
@@ -228,7 +228,7 @@ class XmlParserTest extends ParserTestBase {
 
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([
+      ->willReturn([
         'title' => [
           'label' => 'Title',
           'value' => 'title',
@@ -237,7 +237,7 @@ class XmlParserTest extends ParserTestBase {
           'label' => 'Description',
           'value' => 'description',
         ],
-      ]));
+      ]);
 
     foreach (range(0, 2) as $delta) {
       $result = $this->parser->parse($this->feed, $fetcher_result, $this->state);
@@ -297,7 +297,7 @@ class XmlParserTest extends ParserTestBase {
   public function testEmptyFeed() {
     $this->feedType->expects($this->any())
       ->method('getCustomSources')
-      ->will($this->returnValue([]));
+      ->willReturn([]);
     $this->parser->parse($this->feed, new RawFetcherResult(' ', $this->fileSystem), $this->state);
     $messages = $this->parser->getMessenger()->getMessages();
     $this->assertCount(1, $messages, 'The expected number of messages.');

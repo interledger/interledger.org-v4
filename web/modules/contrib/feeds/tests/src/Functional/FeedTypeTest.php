@@ -180,7 +180,7 @@ class FeedTypeTest extends FeedsBrowserTestBase {
 
     // Confirm deletion.
     $this->submitForm([], 'Delete');
-    $this->assertNull($this->reloadEntity($feed_type), 'The feed type is deleted.');
+    $this->assertNull($this->reloadEntityAllowNull($feed_type), 'The feed type is deleted.');
     $this->assertSession()->pageTextContains("The feed type $feed_type_label has been deleted.");
   }
 

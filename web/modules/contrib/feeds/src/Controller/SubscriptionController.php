@@ -176,7 +176,7 @@ class SubscriptionController extends ControllerBase implements ContainerInjectio
     }
 
     // X-Hub-Signature is in the format sha1=signature.
-    parse_str($request->headers->get('X-Hub-Signature'), $result);
+    parse_str($request->headers->get('X-Hub-Signature', ''), $result);
 
     if (empty($result['sha1']) || !$feeds_subscription->checkSignature($result['sha1'], $request->getContent())) {
       throw new NotFoundHttpException();

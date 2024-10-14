@@ -15,17 +15,17 @@ class JsonPathParserTest extends ParserTestBase {
    *
    * @var string
    */
-  protected $parserId = 'jsonpath';
+  protected static $parserId = 'jsonpath';
 
   /**
    * {@inheritdoc}
    */
-  protected $customSourceType = 'json';
+  protected static $customSourceType = 'json';
 
   /**
    * {@inheritdoc}
    */
-  public function dataProviderValidContext() {
+  public static function dataProviderValidContext() {
     return [
       ['$.items.*'],
     ];
@@ -34,7 +34,7 @@ class JsonPathParserTest extends ParserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function dataProviderInvalidContext() {
+  public static function dataProviderInvalidContext() {
     return [
       ['.hello*', 'Unable to parse token hello* in expression: .hello*'],
       ['!!', 'Unable to parse token !! in expression: .!!'],
@@ -50,7 +50,7 @@ class JsonPathParserTest extends ParserTestBase {
         'label' => 'name',
         'value' => 'name',
         'machine_name' => 'name',
-        'type' => $this->customSourceType,
+        'type' => static::$customSourceType,
       ],
     ];
     $custom_source = [

@@ -4,7 +4,6 @@ namespace Drupal\feeds\Plugin\Type;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Plugin\Discovery\AnnotatedClassDiscovery;
 use Drupal\Core\Plugin\PluginFormInterface;
@@ -33,12 +32,10 @@ class FeedsPluginManager extends DefaultPluginManager {
    *   keyed by the corresponding namespace to look for plugin implementations.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   Cache backend instance to use.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
    */
-  public function __construct($type, \Traversable $namespaces, CacheBackendInterface $cache_backend, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler) {
+  public function __construct($type, \Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
     $type_annotations = [
       'fetcher' => 'Drupal\feeds\Annotation\FeedsFetcher',
       'parser' => 'Drupal\feeds\Annotation\FeedsParser',
@@ -46,14 +43,6 @@ class FeedsPluginManager extends DefaultPluginManager {
       'source' => 'Drupal\feeds\Annotation\FeedsSource',
       'custom_source' => 'Drupal\feeds\Annotation\FeedsCustomSource',
       'target' => 'Drupal\feeds\Annotation\FeedsTarget',
-    ];
-    $plugin_interfaces = [
-      'fetcher' => 'Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface',
-      'parser' => 'Drupal\feeds\Plugin\Type\Parser\ParserInterface',
-      'processor' => 'Drupal\feeds\Plugin\Type\Processor\ProcessorInterface',
-      'source' => 'Drupal\feeds\Plugin\Type\Source\SourceInterface',
-      'custom_source' => 'Drupal\feeds\Plugin\Type\CustomSource\CustomSourceInterface',
-      'target' => 'Drupal\feeds\Plugin\Type\Target\TargetInterface',
     ];
 
     $this->pluginType = $type;
@@ -63,7 +52,6 @@ class FeedsPluginManager extends DefaultPluginManager {
     }
     $this->discovery = new AnnotatedClassDiscovery($this->subdir, $namespaces, $type_annotations[$type]);
     $this->discovery = new OverridableDerivativeDiscoveryDecorator($this->discovery);
-    $this->factory = new FeedsAnnotationFactory($this, $plugin_interfaces[$type]);
     $this->moduleHandler = $module_handler;
     $this->alterInfo("feeds_{$type}_plugins");
     $this->setCacheBackend($cache_backend, "feeds_{$type}_plugins");

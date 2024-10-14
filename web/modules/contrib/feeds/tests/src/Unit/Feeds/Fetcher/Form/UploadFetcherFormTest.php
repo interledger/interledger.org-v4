@@ -57,7 +57,7 @@ class UploadFetcherFormTest extends FeedsUnitTestCase {
     $form_state->setValue(['allowed_extensions'], 'csv');
 
     $form_object->validateConfigurationForm($form, $form_state);
-    $this->assertSame(0, count($form_state->getErrors()));
+    $this->assertCount(0, $form_state->getErrors());
 
     // Validate.
     $form_state->setValue(['directory'], 'vfs://noroot');

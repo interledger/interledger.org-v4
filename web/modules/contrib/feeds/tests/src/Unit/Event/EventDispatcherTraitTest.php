@@ -3,7 +3,9 @@
 namespace Drupal\Tests\feeds\Unit\Event;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\feeds\Event\EventDispatcherTrait;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -17,8 +19,8 @@ class EventDispatcherTraitTest extends FeedsUnitTestCase {
    * @covers ::dispatchEvent
    */
   public function test() {
-    $mock = $this->getMockForTrait('Drupal\feeds\Event\EventDispatcherTrait');
-    $dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+    $mock = $this->createMock(EventDispatcherTraitMock::class);
+    $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
     $container = new ContainerBuilder();
     $container->set('event_dispatcher', $dispatcher);
@@ -36,5 +38,14 @@ class EventDispatcherTraitTest extends FeedsUnitTestCase {
     $method = $this->getMethod(get_class($mock), 'dispatchEvent');
     $method->invokeArgs($mock, ['test_event', $event]);
   }
+
+}
+
+/**
+ * Mock for EventDispatcherTrait.
+ */
+class EventDispatcherTraitMock {
+
+  use EventDispatcherTrait;
 
 }

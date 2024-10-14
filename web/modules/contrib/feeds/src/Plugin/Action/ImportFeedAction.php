@@ -16,8 +16,6 @@ use Drupal\Core\Session\AccountInterface;
  */
 class ImportFeedAction extends FeedActionBase {
 
-  const ACTION = 'feeds_feed_multiple_import_confirm';
-
   /**
    * {@inheritdoc}
    */

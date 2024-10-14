@@ -35,11 +35,11 @@ class CountryToCodeTest extends TamperPluginTestBase {
     $this->countryManagerMock = $this->createMock(CountryManagerInterface::class);
     $this->countryManagerMock->expects($this->any())
       ->method('getList')
-      ->will($this->returnValue([
+      ->willReturn([
         'AG' => 'Antigua and Barbuda',
         'CA' => 'Canada',
         'US' => 'United States of America',
-      ]));
+      ]);
 
     parent::setUp();
 

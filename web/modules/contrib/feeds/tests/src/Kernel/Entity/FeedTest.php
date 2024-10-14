@@ -142,13 +142,6 @@ class FeedTest extends FeedsKernelTestBase {
    * @covers ::getQueuedTime
    */
   public function testStartCronImport() {
-    // @todo Remove installSchema() when Drupal 9.0 is no longer supported.
-    // https://www.drupal.org/node/3143286
-    if (version_compare(\Drupal::VERSION, '9.1', '<')) {
-      // Install key/value expire schema.
-      $this->installSchema('system', ['key_value_expire']);
-    }
-
     $feed = $this->createFeed($this->feedType->id(), [
       'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
     ]);
@@ -169,13 +162,6 @@ class FeedTest extends FeedsKernelTestBase {
    * @covers ::startCronImport
    */
   public function testStartCronImportFailsOnLockedFeed() {
-    // @todo Remove installSchema() when Drupal 9.0 is no longer supported.
-    // https://www.drupal.org/node/3143286
-    if (version_compare(\Drupal::VERSION, '9.1', '<')) {
-      // Install key/value expire schema.
-      $this->installSchema('system', ['key_value_expire']);
-    }
-
     $feed = $this->createFeed($this->feedType->id(), [
       'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
     ]);
@@ -281,7 +267,7 @@ class FeedTest extends FeedsKernelTestBase {
   public function testDispatchImportFinishedEvent() {
     $dispatcher = new EventDispatcher();
     $feed = $this->getMockBuilder(Feed::class)
-      ->setMethods(['eventDispatcher', 'getType'])
+      ->onlyMethods(['eventDispatcher', 'getType', 'label'])
       ->setConstructorArgs([
         ['type' => $this->feedType->id()],
         'feeds_feed',
@@ -296,6 +282,10 @@ class FeedTest extends FeedsKernelTestBase {
     $feed->expects($this->once())
       ->method('eventDispatcher')
       ->willReturn($dispatcher);
+
+    $feed->expects($this->any())
+      ->method('label')
+      ->willReturn('Foo');
 
     $dispatcher->addListener(FeedsEvents::IMPORT_FINISHED, function (ImportFinishedEvent $event) {
       throw new \Exception();
@@ -473,7 +463,7 @@ class FeedTest extends FeedsKernelTestBase {
       $plugin = $this->createMock($class);
       $plugin->expects($this->atLeastOnce())
         ->method('defaultFeedConfiguration')
-        ->will($this->returnValue([]));
+        ->willReturn([]);
 
       $this->assertIsArray($feed->getConfigurationFor($plugin));
     }
@@ -498,7 +488,7 @@ class FeedTest extends FeedsKernelTestBase {
       $plugin = $this->createMock($class);
       $plugin->expects($this->atLeastOnce())
         ->method('defaultFeedConfiguration')
-        ->will($this->returnValue([]));
+        ->willReturn([]);
 
       $feed->setConfigurationFor($plugin, [
         'foo' => 'bar',
@@ -541,15 +531,15 @@ class FeedTest extends FeedsKernelTestBase {
 
     // Activate feed.
     $feed->setActive(TRUE);
-    $this->assertSame(TRUE, $feed->isActive());
+    $this->assertTrue($feed->isActive());
 
     // Deactivate feed.
     $feed->setActive(FALSE);
-    $this->assertSame(FALSE, $feed->isActive());
+    $this->assertFalse($feed->isActive());
 
     // Activate feed again.
     $feed->setActive(TRUE);
-    $this->assertSame(TRUE, $feed->isActive());
+    $this->assertTrue($feed->isActive());
   }
 
   /**
@@ -562,15 +552,15 @@ class FeedTest extends FeedsKernelTestBase {
 
     // Lock feed.
     $feed->lock();
-    $this->assertSame(TRUE, $feed->isLocked());
+    $this->assertTrue($feed->isLocked());
 
     // Unlock feed.
     $feed->unlock();
-    $this->assertSame(FALSE, $feed->isLocked());
+    $this->assertFalse($feed->isLocked());
 
     // Lock feed again.
     $feed->lock();
-    $this->assertSame(TRUE, $feed->isLocked());
+    $this->assertTrue($feed->isLocked());
   }
 
 }

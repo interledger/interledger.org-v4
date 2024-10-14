@@ -3,12 +3,14 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
 use Drupal\feeds\Feeds\Target\Timestamp;
+use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Timestamp
  * @group feeds
  */
-class TimestampTest extends FieldTargetWithContainerTestBase {
+class TimestampTest extends DateTestBase {
 
   /**
    * The ID of the plugin.
@@ -22,6 +24,20 @@ class TimestampTest extends FieldTargetWithContainerTestBase {
    */
   protected function getTargetClass() {
     return Timestamp::class;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
+    $target_class = $this->getTargetClass();
+    $method = $this->getMethod($target_class, 'prepareTarget')->getClosure();
+
+    $configuration += [
+      'feed_type' => $this->createMock(FeedTypeInterface::class),
+      'target_definition' => $method($this->getMockFieldDefinition()),
+    ];
+    return new $target_class($configuration, static::$pluginId, [], $this->systemDateConfig->reveal());
   }
 
   /**
