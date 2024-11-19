@@ -1730,6 +1730,15 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
   height: 100%;
 }
 
+.text__body iframe {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--border-radius);
+  margin-block-end: var(--space-s);
+}
+
 .text__body h2,
 .text__body h3,
 .text__body p:not(:last-child) {
