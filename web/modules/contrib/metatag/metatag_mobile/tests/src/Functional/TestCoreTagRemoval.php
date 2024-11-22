@@ -20,6 +20,11 @@ class TestCoreTagRemoval extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     // These are needed for the tests.
     'node',

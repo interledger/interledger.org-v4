@@ -230,7 +230,7 @@ class MetatagViewsCacheWrapper extends CachePluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function trustedCallbacks() {
+  public static function trustedCallbacks(): array|string {
     return CachePluginBase::trustedCallbacks();
   }
 
@@ -307,14 +307,14 @@ class MetatagViewsCacheWrapper extends CachePluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function preRenderAddFieldsetMarkup(array $form) {
+  public static function preRenderAddFieldsetMarkup(array $form): array {
     return CachePluginBase::preRenderAddFieldsetMarkup($form);
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function preRenderFlattenData($form) {
+  public static function preRenderFlattenData($form): array {
     return CachePluginBase::preRenderFlattenData($form);
   }
 
@@ -335,7 +335,7 @@ class MetatagViewsCacheWrapper extends CachePluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function queryLanguageSubstitutions() {
+  public static function queryLanguageSubstitutions(): array {
     return CachePluginBase::queryLanguageSubstitutions();
   }
 
@@ -384,7 +384,7 @@ class MetatagViewsCacheWrapper extends CachePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function setMessenger(MessengerInterface $messenger) {
+  public function setMessenger(MessengerInterface $messenger): MessengerInterface {
     $this->plugin->setMessenger($messenger);
   }
 

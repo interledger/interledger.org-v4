@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\rename_admin_paths\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -7,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Tests to ensure that the admin form works correctly.
  *
- * @group tests
+ * @group rename_admin_paths
  */
 class AdminFormTest extends BrowserTestBase {
 
@@ -34,7 +36,7 @@ class AdminFormTest extends BrowserTestBase {
   /**
    * Test admin is able to view the settings form.
    */
-  public function testViewForm() {
+  public function testViewForm(): void {
     $this->drupalGet('admin/config/system/rename-admin-paths');
 
     $this->assertRenameAdminPathFormIsVisible();
@@ -46,7 +48,7 @@ class AdminFormTest extends BrowserTestBase {
   /**
    * Test /admin + /user paths removed when changed to /backend + /member.
    */
-  public function testEnablePathReplacements() {
+  public function testEnablePathReplacements(): void {
     $output = $this->drupalGet('user/1');
     $this->assertStringContainsString('Member for', $output);
 
@@ -74,7 +76,7 @@ class AdminFormTest extends BrowserTestBase {
   /**
    * Test to confirm that the module settings form appears properly.
    */
-  private function assertRenameAdminPathFormIsVisible() {
+  private function assertRenameAdminPathFormIsVisible(): void {
     $output = $this->getSession()->getPage()->getContent();
     $this->assertStringContainsString('Rename admin path', $output);
     $this->assertStringContainsString('Replace "admin" in admin path by', $output);

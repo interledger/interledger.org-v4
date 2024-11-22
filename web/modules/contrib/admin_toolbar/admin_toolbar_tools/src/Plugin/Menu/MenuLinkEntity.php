@@ -65,7 +65,7 @@ class MenuLinkEntity extends MenuLinkDefault {
    * {@inheritdoc}
    */
   public function getDescription() {
-    if (method_exists($this->entity, 'getDescription')) {
+    if ($this->entity && method_exists($this->entity, 'getDescription')) {
       $description = $this->entity->getDescription();
     }
     return $description ?? parent::getDescription();

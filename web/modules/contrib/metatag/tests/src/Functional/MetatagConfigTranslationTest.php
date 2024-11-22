@@ -106,10 +106,8 @@ class MetatagConfigTranslationTest extends BrowserTestBase {
     foreach ($defaults as $config_name) {
       $config_entity = $config_manager->loadConfigEntityByName($config_name);
       $this->assertNotNull($config_entity);
-      if (!empty($config_entity)) {
-        $this->drupalGet('admin/config/search/metatag/' . $config_entity->id() . '/translate');
-        $session->statusCodeEquals(200);
-      }
+      $this->drupalGet('admin/config/search/metatag/' . $config_entity->id() . '/translate');
+      $session->statusCodeEquals(200);
     }
   }
 

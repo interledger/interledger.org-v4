@@ -91,9 +91,9 @@ class EntityTestMetatagTest extends EntityTestResourceTestBase {
       'name' => 'Llama',
       'type' => 'entity_test',
       'field_metatag' => [
-        'value' => [
+        'value' => Json::encode([
           'description' => 'This is a description for use in Search Engines',
-        ],
+        ]),
       ],
     ]);
     $entity_test->setOwnerId(0);

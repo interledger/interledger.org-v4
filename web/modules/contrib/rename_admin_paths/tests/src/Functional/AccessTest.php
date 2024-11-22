@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\rename_admin_paths\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -7,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Test to confirm access permissions.
  *
- * @group tests
+ * @group rename_admin_paths
  */
 class AccessTest extends BrowserTestBase {
 
@@ -24,7 +26,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test that the admin is still protected after renaming it.
    */
-  public function testAdminNotAccessibleAfterRenaming() {
+  public function testAdminNotAccessibleAfterRenaming(): void {
     $output = $this->drupalGet('admin');
     $this->assertStringContainsString('You are not authorized to access this page.', $output);
 

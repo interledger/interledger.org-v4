@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\metatag\Kernel;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -95,9 +96,9 @@ class MetatagSerializationTest extends EntityKernelTestBase {
       'name' => 'Llama',
       'type' => 'entity_test',
       'field_test' => [
-        'value' => [
+        'value' => Json::encode([
           'description' => 'This is a description for use in Search Engines',
-        ],
+        ]),
       ],
     ]);
     assert($entity instanceof EntityTest);

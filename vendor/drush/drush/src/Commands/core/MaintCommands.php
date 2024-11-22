@@ -6,11 +6,13 @@ namespace Drush\Commands\core;
 
 use Drupal\Core\State\StateInterface;
 use Drush\Attributes as CLI;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class MaintCommands extends DrushCommands
 {
+    use AutowireTrait;
+
     const KEY = 'system.maintenance_mode';
     const GET = 'maint:get';
     const SET = 'maint:set';
@@ -18,15 +20,6 @@ final class MaintCommands extends DrushCommands
 
     public function __construct(protected StateInterface $state)
     {
-    }
-
-    public static function create(ContainerInterface $container): self
-    {
-        $commandHandler = new static(
-            $container->get('state')
-        );
-
-        return $commandHandler;
     }
 
     public function getState(): StateInterface
@@ -69,7 +62,7 @@ final class MaintCommands extends DrushCommands
      * exit code distinguishes from a failure to complete.
      */
     #[CLI\Command(name: self::STATUS, aliases: ['mstatus'])]
-    #[CLI\Usage(name: 'drush maint:status && drush cron', description: 'Only run cron when Drupal is not in maintenance mode.')]
+    #[CLI\Usage(name: 'drush maint:status &amp;&amp; drush cron', description: 'Only run cron when Drupal is not in maintenance mode.')]
     #[CLI\Version(version: '11.5')]
     public function status(): int
     {

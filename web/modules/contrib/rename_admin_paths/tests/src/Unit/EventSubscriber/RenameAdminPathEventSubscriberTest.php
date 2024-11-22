@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\rename_admin_paths\Unit\EventSubscriber;
 
 use Drupal\Core\Routing\RouteBuildEvent;
@@ -12,24 +14,23 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * Tests to confirm the event subscriber renames paths properly.
  *
- * @group tests
+ * @group rename_admin_paths
  */
 class RenameAdminPathEventSubscriberTest extends UnitTestCase {
 
   /**
    * Test that the event subscriber gets the correct events.
    */
-  public function testGetSubscribedEvents() {
+  public function testGetSubscribedEvents(): void {
     $events = RenameAdminPathsEventSubscriber::getSubscribedEvents();
 
-    $this->assertIsArray($events);
     $this->assertCount(1, $events);
   }
 
   /**
    * Test that paths are not renamed just by enabling the module.
    */
-  public function testDoNotRenamePaths() {
+  public function testDoNotRenamePaths(): void {
     $this->assertRoutePaths(
       [],
       [
@@ -58,7 +59,7 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
   /**
    * Test that admin paths can be renamed.
    */
-  public function testRenameAdminPath() {
+  public function testRenameAdminPath(): void {
     $this->assertRoutePaths(
       [
         'admin_path' => TRUE,
@@ -90,7 +91,7 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
   /**
    * Test that user paths can be renamed.
    */
-  public function testRenameUserPath() {
+  public function testRenameUserPath(): void {
     $this->assertRoutePaths(
       [
         'user_path' => TRUE,
@@ -121,7 +122,7 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
   /**
    * Test that admin and user paths can be renamed.
    */
-  public function testRenameAdminPaths() {
+  public function testRenameAdminPaths(): void {
     $this->assertRoutePaths(
       [
         'admin_path' => TRUE,
@@ -160,7 +161,7 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
    * @param array $routes
    *   The routes to assert.
    */
-  private function assertRoutePaths(array $config, array $routes) {
+  private function assertRoutePaths(array $config, array $routes): void {
     $routeCollection = $this->getRouteCollection();
 
     $config = new Config($this->getConfigFactoryStub(
@@ -183,7 +184,7 @@ class RenameAdminPathEventSubscriberTest extends UnitTestCase {
    * @return \Symfony\Component\Routing\RouteCollection
    *   The route collection.
    */
-  private function getRouteCollection() {
+  private function getRouteCollection(): RouteCollection {
     $routeCollection = new RouteCollection();
     foreach ([
       'home' => '/',

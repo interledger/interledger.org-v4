@@ -25,7 +25,6 @@ class MetatagAdminTest extends BrowserTestBase {
     // @see testAvailableConfigEntities
     'block',
     'block_content',
-    'comment',
     'contact',
     'field_ui',
     'menu_link_content',
@@ -190,7 +189,6 @@ class MetatagAdminTest extends BrowserTestBase {
     // Check through the values that are in the 'select' list, make sure that
     // unwanted items are not present.
     $this->assertArrayNotHasKey('block_content', $types, 'Custom block entities are not supported.');
-    $this->assertArrayNotHasKey('comment', $types, 'Comment entities are not supported.');
     $this->assertArrayNotHasKey('menu_link_content', $types, 'Menu link entities are not supported.');
     $this->assertArrayNotHasKey('shortcut', $types, 'Shortcut entities are not supported.');
     $this->assertArrayHasKey('node__page', $types, 'Nodes are supported.');

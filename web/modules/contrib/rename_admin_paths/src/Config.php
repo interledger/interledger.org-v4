@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\rename_admin_paths;
 
 use Drupal\Core\Config\Config as CoreConfig;
@@ -21,21 +23,21 @@ class Config {
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private $configFactory;
+  private ConfigFactoryInterface $configFactory;
 
   /**
    * The module config in an editable state.
    *
    * @var \Drupal\Core\Config\Config
    */
-  private $configEditable;
+  private CoreConfig $configEditable;
 
   /**
    * The module config in a non-editable state.
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  private $configImmutable;
+  private ImmutableConfig $configImmutable;
 
   /**
    * Constructs config for the Rename Admin Paths module.
@@ -45,36 +47,10 @@ class Config {
    */
   public function __construct(ConfigFactoryInterface $configFactory) {
     $this->configFactory = $configFactory;
-  }
-
-  /**
-   * Returns the admin paths config in an editable state.
-   *
-   * @return \Drupal\Core\Config\Config
-   *   The config in an editable state.
-   */
-  private function getEditableConfig(): CoreConfig {
-    if (empty($this->configEditable)) {
-      $this->configEditable = $this->configFactory->getEditable(
-        self::CONFIG_KEY
-      );
-    }
-
-    return $this->configEditable;
-  }
-
-  /**
-   * Returns the admin paths config in a non-editable state.
-   *
-   * @return \Drupal\Core\Config\ImmutableConfig
-   *   The config in a non-editable state.
-   */
-  private function getImmutableConfig(): ImmutableConfig {
-    if (empty($this->configImmutable)) {
-      $this->configImmutable = $this->configFactory->get(self::CONFIG_KEY);
-    }
-
-    return $this->configImmutable;
+    $this->configEditable = $this->configFactory->getEditable(
+      self::CONFIG_KEY
+    );
+    $this->configImmutable = $this->configFactory->get(self::CONFIG_KEY);
   }
 
   /**
@@ -87,7 +63,7 @@ class Config {
    *   TRUE if the path is enabled.
    */
   public function isPathEnabled(string $path): bool {
-    return !empty($this->getImmutableConfig()->get(sprintf('%s_path', $path)));
+    return (int) $this->configImmutable->get(sprintf('%s_path', $path)) === 1;
   }
 
   /**
@@ -100,7 +76,7 @@ class Config {
    *   The value of the requested path.
    */
   public function getPathValue(string $path): string {
-    return $this->getImmutableConfig()->get(sprintf('%s_path_value', $path));
+    return $this->configImmutable->get(sprintf('%s_path_value', $path));
   }
 
   /**
@@ -108,11 +84,11 @@ class Config {
    *
    * @param string $path
    *   The path to override.
-   * @param string $enabled
-   *   The form value to use for the path (the new path).
+   * @param int $enabled
+   *   Zero if disabled, one if enabled.
    */
-  public function setPathEnabled(string $path, string $enabled): void {
-    $this->getEditableConfig()->set(sprintf('%s_path', $path), $enabled);
+  public function setPathEnabled(string $path, int $enabled): void {
+    $this->configEditable->set(sprintf('%s_path', $path), $enabled);
   }
 
   /**
@@ -124,14 +100,14 @@ class Config {
    *   The value to set.
    */
   public function setPathValue(string $path, string $value): void {
-    $this->getEditableConfig()->set(sprintf('%s_path_value', $path), $value);
+    $this->configEditable->set(sprintf('%s_path_value', $path), $value);
   }
 
   /**
    * Saves the config.
    */
   public function save(): void {
-    $this->getEditableConfig()->save();
+    $this->configEditable->save();
   }
 
 }

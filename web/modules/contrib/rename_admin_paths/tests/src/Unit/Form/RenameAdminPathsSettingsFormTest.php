@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\rename_admin_paths\Unit\Form;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -14,7 +16,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Tests the behavior of the module settings form.
  *
- * @group tests
+ * @group rename_admin_paths
  */
 class RenameAdminPathsSettingsFormTest extends UnitTestCase {
 
@@ -23,7 +25,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
   /**
    * Test when an invalid value is provided.
    */
-  public function testValidatePathWithoutValue() {
+  public function testValidatePathWithoutValue(): void {
     $element = [];
     $this->getForm()->validate($element, $this->getInvalidFormState());
   }
@@ -36,7 +38,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    *
    * @dataProvider validValues
    */
-  public function testWithValidValue(string $value) {
+  public function testWithValidValue(string $value): void {
     $element = ['#value' => $value];
     $this->getForm()->validate($element, $this->getValidFormState());
   }
@@ -49,7 +51,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    *
    * @dataProvider invalidValues
    */
-  public function testWithInvalidValue(string $value) {
+  public function testWithInvalidValue(string $value): void {
     $element = ['#value' => $value];
     $this->getForm()->validate($element, $this->getInvalidFormState());
   }
@@ -60,7 +62,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    * @return \Generator
    *   The set of valid values.
    */
-  public function validValues() {
+  public function validValues(): \Generator {
     yield ['backend'];
     yield ['back-end'];
     yield ['Backend'];
@@ -77,7 +79,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    * @return \Generator
    *   The set of invalid values.
    */
-  public function invalidValues() {
+  public function invalidValues(): \Generator {
     yield ['backend!'];
     yield ['back@end'];
     yield ['(Backend)'];
@@ -95,7 +97,7 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    * @return \Drupal\rename_admin_paths\Form\RenameAdminPathsSettingsForm
    *   The admin settings form.
    */
-  private function getForm() {
+  private function getForm(): RenameAdminPathsSettingsForm {
     $config = $this->createMock(Config::class);
 
     $routeBuilder = $this->createMock(RouteBuilderInterface::class);
@@ -114,9 +116,11 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    * @return \Drupal\Core\Form\FormStateInterface
    *   A valid form state.
    */
-  private function getValidFormState() {
-    $formState = $this->getProphet()->prophesize(FormStateInterface::class);
-    $formState->setError()->shouldNotBeCalled();
+  private function getValidFormState(): FormStateInterface {
+    $formState = $this->prophesize(FormStateInterface::class);
+    $element = Argument::any();
+    // @phpstan-ignore-next-line phpstan-phpunit does not detect this method.
+    $formState->setError($element)->shouldNotBeCalled();
 
     return $formState->reveal();
   }
@@ -127,9 +131,11 @@ class RenameAdminPathsSettingsFormTest extends UnitTestCase {
    * @return \Drupal\Core\Form\FormStateInterface
    *   An invalid form state.
    */
-  private function getInvalidFormState() {
-    $formState = $this->getProphet()->prophesize(FormStateInterface::class);
-    $formState->setError(Argument::any(), Argument::any())->shouldBeCalled();
+  private function getInvalidFormState(): FormStateInterface {
+    $formState = $this->prophesize(FormStateInterface::class);
+    $element = Argument::any();
+    // @phpstan-ignore-next-line phpstan-phpunit does not detect method.
+    $formState->setError($element, Argument::any())->shouldBeCalled();
 
     return $formState->reveal();
   }

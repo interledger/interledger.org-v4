@@ -106,6 +106,7 @@ class MetatagDefaultsForm extends EntityForm {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $metatag_defaults */
     $metatag_defaults = $this->entity;
 
     $form['#ajax_wrapper_id'] = 'metatag-defaults-form-ajax-wrapper';
@@ -353,8 +354,6 @@ class MetatagDefaultsForm extends EntityForm {
     $unsupported_types = [
       // Custom blocks.
       'block_content',
-      // Comments.
-      'comment',
       // Contact messages are the messages submitted on individual contact forms
       // so obviously shouldn't get meta tags.
       'contact_message',
@@ -374,7 +373,6 @@ class MetatagDefaultsForm extends EntityForm {
       'commerce_shipment',
       'commerce_shipping_method',
       'commerce_stock_location',
-      'commerce_store',
       // LinkChecker.
       'linkcheckerlink',
       // Redirect.

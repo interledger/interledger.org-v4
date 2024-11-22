@@ -586,9 +586,12 @@ class MetatagManager implements MetatagManagerInterface {
       return [];
     }
 
+    // Use the entity's language code, if one is defined.
+    $langcode = NULL;
     // Prepare any tokens that might exist.
     $token_replacements = [];
     if ($entity) {
+      $langcode = $entity->language()->getId();
       // @todo This needs a better way of discovering the context.
       if ($entity instanceof ViewEntityInterface) {
         // Views tokens require the ViewExecutable, not the config entity.
@@ -598,12 +601,6 @@ class MetatagManager implements MetatagManagerInterface {
       elseif ($entity instanceof ContentEntityInterface) {
         $token_replacements = [$entity->getEntityTypeId() => $entity];
       }
-    }
-
-    // Use the entity's language code, if one is defined.
-    $langcode = NULL;
-    if ($entity) {
-      $langcode = $entity->language()->getId();
     }
 
     $definitions = $this->sortedTags();
@@ -673,9 +670,11 @@ class MetatagManager implements MetatagManagerInterface {
     }
 
     $entity_identifier = '_none';
+    // Use the entity's language code, if one is defined.
+    $langcode = NULL;
     if ($entity) {
-      $entity_identifier = $entity->getEntityTypeId() . ':' . ($entity->uuid() ?? $entity->id()) . ':' . $entity->language()
-        ->getId();
+      $langcode = $entity->language()->getId();
+      $entity_identifier = $entity->getEntityTypeId() . ':' . ($entity->uuid() ?? $entity->id()) . ':' . $langcode;
     }
 
     if (!isset($this->processedTokenCache[$entity_identifier])) {
@@ -702,7 +701,7 @@ class MetatagManager implements MetatagManagerInterface {
               $token_replacements = [$entity->getEntityTypeId() => $entity];
             }
           }
-          $processed_value = $this->processTagValue($tag, $value, $token_replacements, TRUE);
+          $processed_value = $this->processTagValue($tag, $value, $token_replacements, TRUE, $langcode);
           $this->processedTokenCache[$entity_identifier][$tag_name] = $tag->multiple() ? explode($tag->getSeparator(), $processed_value) : $processed_value;
         }
       }

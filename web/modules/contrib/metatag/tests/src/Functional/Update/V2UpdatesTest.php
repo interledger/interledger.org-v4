@@ -40,17 +40,17 @@ class V2UpdatesTest extends UpdatePathTestBase {
    * {@inheritdoc}
    */
   protected function setDatabaseDumpFiles() {
-    // Drupal 9.5+ uses the 9.4.0 data dump, 9.4 uses the 9.3.0 data dump.
-    $core93 = static::getDrupalRoot() . '/core/modules/system/tests/fixtures/update/drupal-9.3.0.bare.standard.php.gz';
-    $core94 = static::getDrupalRoot() . '/core/modules/system/tests/fixtures/update/drupal-9.4.0.bare.standard.php.gz';
-    if (file_exists($core94)) {
+    // Drupal 10 uses the D9 core fixture, D11 uses the D10 fixture.
+    $core9 = static::getDrupalRoot() . '/core/modules/system/tests/fixtures/update/drupal-9.4.0.bare.standard.php.gz';
+    $core10 = static::getDrupalRoot() . '/core/modules/system/tests/fixtures/update/drupal-10.3.0.bare.standard.php.gz';
+    if (file_exists($core9)) {
       $this->databaseDumpFiles = [
-        $core94,
+        $core9,
       ];
     }
     else {
       $this->databaseDumpFiles = [
-        $core93,
+        $core10,
       ];
     }
 

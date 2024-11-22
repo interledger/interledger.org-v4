@@ -25,7 +25,7 @@ An alternative way to populate Drush configuration is to define environment vari
 correspond to config keys. For example, to populate the `options.uri` config item,
 create an environment variable `DRUSH_OPTIONS_URI=http://example.com`.
 As you can see, variable names should be uppercased, prefixed with `DRUSH_`, and periods
-replaced with dashes.
+replaced with underscores.
 
 ### Config examples
 
@@ -171,12 +171,12 @@ notify:
   duration: 30
   # Specify a command to run. Defaults to Notification Center (OSX) or libnotify (Linux)
   cmd: /path/to/program
-  # See https://github.com/drush-ops/drush/blob/12.x/src/Commands/core/NotifyCommands.php for more settings.
+  # See https://github.com/drush-ops/drush/blob/13.x/src/Commands/core/NotifyCommands.php for more settings.
 
 xh:
   # Start profiling via xhprof/tideways and show a link to the run report.
   link: http://xhprof.local
-  # See https://github.com/drush-ops/drush/blob/12.x/src/Commands/core/XhprofCommands.php for more settings.
+  # See https://github.com/drush-ops/drush/blob/13.x/src/Commands/core/XhprofCommands.php for more settings.
   profile-builtins: true
   profile-cpu: false
   profile-memory: false

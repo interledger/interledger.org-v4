@@ -113,9 +113,9 @@ class MetatagEntitiesTest extends MigrateDrupal7TestBase {
   }
 
   /**
-   * Test Metatag migration from Drupal 7 to 8.
+   * Test Metatag entity data migration from Drupal 7 to 8.
    */
-  public function testMetatag() {
+  public function testMetatagEntities() {
     /** @var \Drupal\node\Entity\Node $node */
     $node = Node::load(998);
     $this->assertInstanceOf(NodeInterface::class, $node);
