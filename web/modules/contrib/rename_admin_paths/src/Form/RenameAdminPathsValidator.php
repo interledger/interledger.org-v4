@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\rename_admin_paths\Form;
 
 use Drupal\rename_admin_paths\EventSubscriber\RenameAdminPathsEventSubscriber;
@@ -38,7 +40,8 @@ class RenameAdminPathsValidator {
   public static function isDefaultPath(string $value): bool {
     return in_array(
       strtolower($value),
-      RenameAdminPathsEventSubscriber::ADMIN_PATHS
+      RenameAdminPathsEventSubscriber::ADMIN_PATHS,
+      TRUE
     );
   }
 

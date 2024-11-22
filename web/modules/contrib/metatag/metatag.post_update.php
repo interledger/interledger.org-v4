@@ -63,6 +63,7 @@ function _metatag_list_entity_field_tables(): array {
         $entity_type = $entity_type_manager->getDefinition($entity_type_id);
 
         // Determine the table and "value" field names.
+        /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
         $table_mapping = $entity_type_manager->getStorage($entity_type_id)
           ->getTableMapping();
         $field_table = $table_mapping->getFieldTableName($field_name);

@@ -18,7 +18,7 @@ class SqlMysql extends SqlBase
     public static function make(array $dbSpec, array $options)
     {
         // First get a MySQL instance
-        $instance = new static($dbSpec, $options);
+        $instance = new self($dbSpec, $options);
         $sql = 'SELECT VERSION();"';
         $instance->alwaysQuery($sql);
         $out = trim($instance->getProcess()->getOutput());
@@ -229,7 +229,7 @@ EOT;
 
             // Run mysqldump again and append output if we need some structure only tables.
             if (!empty($structure_tables)) {
-                $exec .= " && mysqldump " . $only_db_name . " --no-data $extra " . implode(' ', $structure_tables);
+                $exec .= " && " . $this->dumpProgram() . " " . $only_db_name . " --no-data $extra " . implode(' ', $structure_tables);
                 $parens = true;
             }
         }

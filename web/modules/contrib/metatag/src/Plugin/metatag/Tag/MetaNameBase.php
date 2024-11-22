@@ -644,6 +644,7 @@ abstract class MetaNameBase extends PluginBase {
       $settings = \Drupal::config('metatag.settings');
       $trimMethod = $settings->get('tag_trim_method');
       $trimMaxlengthArray = $settings->get('tag_trim_maxlength');
+      $trimEndChars = $settings->get('tag_trim_end');
       if (empty($trimMethod) || empty($trimMaxlengthArray)) {
         return $value;
       }
@@ -654,7 +655,8 @@ abstract class MetaNameBase extends PluginBase {
         }
       }
       $trimmerService = \Drupal::service('metatag.trimmer');
-      $value = $trimmerService->trimByMethod($value, $currentMaxValue, $trimMethod);
+      // Do the trimming:
+      $value = $trimmerService->trimByMethod($value, $currentMaxValue, $trimMethod, $trimEndChars);
     }
     return $value;
   }

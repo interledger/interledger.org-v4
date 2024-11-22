@@ -486,21 +486,25 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
 
     // If module Update Manager is enabled.
     if ($this->moduleHandler->moduleExists('update')) {
-      $links['update.module_install'] = [
-        'title' => $this->t('Install new module'),
-        'route_name' => 'update.module_install',
-        'parent' => 'system.modules_list',
-      ] + $base_plugin_definition;
+      if (version_compare(\Drupal::VERSION, '11.0.0', '<')) {
+        $links['update.module_install'] = [
+          'title' => $this->t('Install new module'),
+          'route_name' => 'update.module_install',
+          'parent' => 'system.modules_list',
+        ] + $base_plugin_definition;
+      }
       $links['update.module_update'] = [
         'title' => $this->t('Update'),
         'route_name' => 'update.module_update',
         'parent' => 'system.modules_list',
       ] + $base_plugin_definition;
-      $links['update.theme_install'] = [
-        'title' => $this->t('Install new theme'),
-        'route_name' => 'update.theme_install',
-        'parent' => 'system.themes_page',
-      ] + $base_plugin_definition;
+      if (version_compare(\Drupal::VERSION, '11.0.0', '<')) {
+        $links['update.theme_install'] = [
+          'title' => $this->t('Install new theme'),
+          'route_name' => 'update.theme_install',
+          'parent' => 'system.themes_page',
+        ] + $base_plugin_definition;
+      }
       $links['update.theme_update'] = [
         'title' => $this->t('Update'),
         'route_name' => 'update.theme_update',

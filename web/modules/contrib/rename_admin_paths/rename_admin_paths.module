@@ -5,6 +5,8 @@
  * Hook implementations for the Rename Admin Paths module.
  */
 
+declare(strict_types=1);
+
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -12,7 +14,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_help().
  */
-function rename_admin_paths_help($routeName, RouteMatchInterface $routeMatch) {
+function rename_admin_paths_help(string $routeName, RouteMatchInterface $routeMatch): string {
   switch ($routeName) {
     case 'help.page.rename_admin_paths':
       $output = '<h3>' . t('About') . '</h3>';
@@ -35,7 +37,7 @@ function rename_admin_paths_help($routeName, RouteMatchInterface $routeMatch) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function rename_admin_paths_preprocess_html(&$variables) {
+function rename_admin_paths_preprocess_html(array &$variables): void {
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
     $variables['attributes']['class'][] = 'path-admin';
   }

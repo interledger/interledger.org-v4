@@ -1,0 +1,12 @@
+parameters:
+	checkGenericClassInNonGenericObjectType: false
+	# Sometimes Drupal gets it wrong.
+	treatPhpDocTypesAsCertain: false
+	level: 6
+	ignoreErrors:
+		# Drupal does not define its own arrays.
+		- '#no value type specified in iterable type array#'
+		# https://www.drupal.org/project/drupal/issues/3029358
+		- '#Dynamic call to static method PHPUnit#'
+		# Core bug: https://www.drupal.org/project/drupal/issues/3338439
+		- '#FormStateInterface::setError\(\) expects string#'

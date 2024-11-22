@@ -4,52 +4,37 @@ declare(strict_types=1);
 
 namespace Drush\Commands\core;
 
-use Consolidation\AnnotatedCommand\Hooks\HookManager;
-use Drupal\Core\Queue\QueueInterface;
-use Consolidation\AnnotatedCommand\CommandData;
-use Consolidation\AnnotatedCommand\CommandError;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drupal\Core\Queue\DelayableQueueInterface;
 use Drupal\Core\Queue\DelayedRequeueException;
 use Drupal\Core\Queue\QueueFactory;
+use Drupal\Core\Queue\QueueGarbageCollectionInterface;
+use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Queue\QueueWorkerManagerInterface;
 use Drupal\Core\Queue\RequeueException;
 use Drupal\Core\Queue\SuspendQueueException;
 use Drush\Attributes as CLI;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
-use Drupal\Core\Queue\QueueGarbageCollectionInterface;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class QueueCommands extends DrushCommands
 {
-    const VALIDATE_QUEUE = 'validate-queue';
+    use AutowireTrait;
+
     const RUN = 'queue:run';
     const LIST = 'queue:list';
     const DELETE = 'queue:delete';
 
-    /**
-     * @var QueueWorkerManagerInterface
-     */
-    protected QueueWorkerManagerInterface $workerManager;
+    // Keep track of queue definitions.
+    protected static array $queues;
 
-    protected $queueService;
-
-    public function __construct(QueueWorkerManagerInterface $workerManager, QueueFactory $queueService)
-    {
-        $this->workerManager = $workerManager;
-        $this->queueService = $queueService;
-    }
-
-    public static function create(ContainerInterface $container): self
-    {
-        $commandHandler = new static(
-            $container->get('plugin.manager.queue_worker'),
-            $container->get('queue')
-        );
-
-        return $commandHandler;
+    public function __construct(
+        protected QueueWorkerManagerInterface $workerManager,
+        protected QueueFactory $queueService
+    ) {
+        parent::__construct();
     }
 
     public function getWorkerManager(): QueueWorkerManagerInterface
@@ -63,21 +48,14 @@ final class QueueCommands extends DrushCommands
     }
 
     /**
-     * Keep track of queue definitions.
-     *
-     * @var array
-     */
-    protected static $queues;
-
-    /**
      * Run a specific queue by name.
      */
     #[CLI\Command(name: self::RUN, aliases: ['queue-run'])]
-    #[CLI\Argument(name: 'name', description: 'The name of the queue to run, as defined in either hook_queue_info or hook_cron_queue_info.')]
+    #[CLI\Argument(name: 'name', description: 'The name of the queue to run.')]
     #[CLI\Option(name: 'time-limit', description: 'The maximum number of seconds allowed to run the queue.')]
     #[CLI\Option(name: 'items-limit', description: 'The maximum number of items allowed to run the queue.')]
     #[CLI\Option(name: 'lease-time', description: 'The maximum number of seconds that an item remains claimed.')]
-    #[CLI\HookSelector(name: self::VALIDATE_QUEUE, value: 'name')]
+    #[CLI\ValidateQueueName(argumentName: 'name')]
     #[CLI\Complete(method_name_or_callable: 'queueComplete')]
     public function run(string $name, $options = ['time-limit' => self::REQ, 'items-limit' => self::REQ, 'lease-time' => self::REQ]): void
     {
@@ -98,11 +76,13 @@ final class QueueCommands extends DrushCommands
 
         while ((!$time_limit || $remaining > 0) && (!$items_limit || $count < $items_limit) && ($item = $queue->claimItem($lease_time))) {
             try {
-                $this->logger()->info(dt('Processing item @id from @name queue.', ['@name' => $name, '@id' => $item->item_id]));
+                // @phpstan-ignore-next-line
+                $this->logger()->info(dt('Processing item @id from @name queue.', ['@name' => $name, '@id' => $item->item_id ?? $item->qid]));
+                // @phpstan-ignore-next-line
                 $worker->processItem($item->data);
                 $queue->deleteItem($item);
                 $count++;
-            } catch (RequeueException $e) {
+            } catch (RequeueException) {
                 // The worker requested the task to be immediately requeued.
                 $queue->releaseItem($item);
             } catch (SuspendQueueException $e) {
@@ -156,28 +136,14 @@ final class QueueCommands extends DrushCommands
      * Delete all items in a specific queue.
      */
     #[CLI\Command(name: self::DELETE, aliases: ['queue-delete'])]
-    #[CLI\Argument(name: 'name', description: 'The name of the queue to delete, as defined in either hook_queue_info or hook_cron_queue_info.')]
-    #[CLI\HookSelector(name: self::VALIDATE_QUEUE, value: 'name')]
+    #[CLI\Argument(name: 'name', description: 'The name of the queue to delete.')]
+    #[CLI\ValidateQueueName(argumentName: 'name')]
     #[CLI\Complete(method_name_or_callable: 'queueComplete')]
     public function delete($name): void
     {
         $queue = $this->getQueue($name);
         $queue->deleteQueue();
         $this->logger()->success(dt('All items in @name queue deleted.', ['@name' => $name]));
-    }
-
-    /**
-     * Validate that a queue exists.
-     */
-    #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, selector: self::VALIDATE_QUEUE)]
-    public function validateQueueName(CommandData $commandData)
-    {
-        $arg_name = $commandData->annotationData()->get(self::VALIDATE_QUEUE, null);
-        $name = $commandData->input()->getArgument($arg_name);
-        if (!array_key_exists($name, self::getQueues())) {
-            $msg = dt('Queue not found: !name', ['!name' => $name]);
-            return new CommandError($msg);
-        }
     }
 
     public function getQueues(): array

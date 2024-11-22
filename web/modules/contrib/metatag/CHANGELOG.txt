@@ -1,3 +1,31 @@
+Metatag 2.1.0, 2024-11-07
+-------------------------
+#2563651 by damienmckenna, alison, bob.hinrichs, benjifisher: Migration for
+  Metatag-D7 default configurations.
+#3454473 by damienmckenna: Migrations: Metatag-D7 misc settings.
+#3479994 by damienmckenna: Split D7 settings migration into a separate test.
+#3485053 by damienmckenna: Fix cspell errors.
+#3433376 by damienmckenna, ankitv18, murilohp, project update bot, jrglasgow,
+  chandu7929: Automated Drupal 11 compatibility fixes.
+#3311415 by grevil, damienmckenna, anybody: Allow to trim special characters
+  from the end.
+#3470415 by murilohp, waspper, damienmckenna: Support the commerce_store entity
+  type.
+#3466343 by damienmckenna, eyesyte: Support the comment entity type.
+#3377205 by damienmckenna, grevil, gillesbailleux, anybody: Allow OG "See also"
+  to have multiple values.
+#3469049 by damienmckenna, ankitv18, anybody: Minor typo in metatag.install.
+#3380911 by naveenvalecha, abhisekmazumdar, eleonel, anybody, damienmckenna,
+  2dareis2do, joachim: Add Custom Meta as a submodule.
+#2952675 by biancaradu27, loze, alvar0hurtad0, id.conky, damienmckenna,
+  marysmech, musa.thomas, justskew, smavri, anybody, jason.bell, waldomero,
+  zaporylie: Add support for contextual path arguments.
+#3426426 by damienmckenna, erwangel: Explain that the Administer Metatag
+  permission does not control access to the per-entity field.
+#3422406 by eduardo morales alberti, sascha_meissner, damienmckenna: Generate
+  tokens values method does not take into account the entity language.
+
+
 Metatag 2.0.2, 2024-08-05
 -------------------------
 #3465991 by podarok, DamienMcKenna: Allow installation on Drupal 11 via

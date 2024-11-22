@@ -78,7 +78,7 @@ class MetatagFieldInstanceTest extends MigrateSqlSourceTestBase {
   /**
    * {@inheritdoc}
    */
-  public function providerSource() {
+  public static function providerSource(): array {
     $tests[0]['source_data']['metatag'] = [
       [
         'entity_type' => 'node',

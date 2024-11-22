@@ -5,10 +5,10 @@
  * This is the module to create a drop-down menu for the core toolbar.
  */
 
-use Drupal\admin_toolbar\Render\Element\AdminToolbar;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\admin_toolbar\Render\Element\AdminToolbar;
 
 /**
  * Implements hook_toolbar_alter().

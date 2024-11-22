@@ -39,7 +39,10 @@ class NodewordsEntities extends ProcessPluginBase {
 
     // Re-shape D6 entries into for D8 entries.
     $old_tags = array_map(static function ($value) {
-      return unserialize($value, ['allowed_classes' => FALSE]);
+      // Shouldn't need to hide the errors, but this started to fail despite
+      // no relevant code changes.
+      // @todo Is there a better way of handling this?
+      return @unserialize($value, ['allowed_classes' => FALSE]);
     }, $value);
 
     foreach ($old_tags as $d6_metatag_name => $metatag_value) {

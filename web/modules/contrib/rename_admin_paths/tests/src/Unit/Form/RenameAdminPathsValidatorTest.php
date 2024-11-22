@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\rename_admin_paths\Unit\Form;
 
 use Drupal\rename_admin_paths\Form\RenameAdminPathsValidator;
@@ -8,7 +10,7 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests the processing of the path validator.
  *
- * @group tests
+ * @group rename_admin_paths
  */
 class RenameAdminPathsValidatorTest extends UnitTestCase {
 
@@ -20,7 +22,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    *
    * @dataProvider defaultPaths
    */
-  public function testMatchDefaultPath(string $value) {
+  public function testMatchDefaultPath(string $value): void {
     $this->assertTrue(RenameAdminPathsValidator::isDefaultPath($value));
   }
 
@@ -30,7 +32,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    * @return \Generator
    *   The set of default paths with various capitalization.
    */
-  public function defaultPaths() {
+  public function defaultPaths(): \Generator {
     yield ['user'];
     yield ['admin'];
     yield ['ADMIN'];
@@ -47,7 +49,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    *
    * @dataProvider nonDefaultPaths
    */
-  public function testDefaultPath(string $value) {
+  public function testDefaultPath(string $value): void {
     $this->assertFalse(RenameAdminPathsValidator::isDefaultPath($value));
   }
 
@@ -57,7 +59,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    * @return \Generator
    *   The set of non-default paths.
    */
-  public function nonDefaultPaths() {
+  public function nonDefaultPaths(): \Generator {
     yield ['user2'];
     yield ['my-admin'];
     yield ['backend'];
@@ -71,7 +73,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    *
    * @dataProvider validPaths
    */
-  public function testValidPath(string $value) {
+  public function testValidPath(string $value): void {
     $this->assertTrue(RenameAdminPathsValidator::isValidPath($value));
   }
 
@@ -81,7 +83,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    * @return \Generator
    *   The set of valid values.
    */
-  public function validPaths() {
+  public function validPaths(): \Generator {
     yield ['backend'];
     yield ['back-end'];
     yield ['Backend'];
@@ -103,7 +105,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    *
    * @dataProvider invalidPaths
    */
-  public function testInvalidPath(string $value) {
+  public function testInvalidPath(string $value): void {
     $this->assertFalse(RenameAdminPathsValidator::isValidPath($value));
   }
 
@@ -113,7 +115,7 @@ class RenameAdminPathsValidatorTest extends UnitTestCase {
    * @return \Generator
    *   The set of invalid values.
    */
-  public function invalidPaths() {
+  public function invalidPaths(): \Generator {
     yield ['backend!'];
     yield ['back@end'];
     yield ['(Backend)'];

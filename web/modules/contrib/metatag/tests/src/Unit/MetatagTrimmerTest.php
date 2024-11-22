@@ -90,4 +90,39 @@ class MetatagTrimmerTest extends UnitTestCase {
     $this->assertEquals('Test 123', $trimResult3);
   }
 
+  /**
+   * Tests how the end of the string is trimmed.
+   */
+  public function testEndOfTheWordTrimming() {
+    // Test standard end char trimming:
+    $trimResult = $this->metatagTrimmer->trimEndChars('Test ');
+    $this->assertEquals('Test', $trimResult);
+
+    $trimResult = $this->metatagTrimmer->trimEndChars("Test\n");
+    $this->assertEquals('Test', $trimResult);
+
+    // Test end char trimming with specific chars provided:
+    $trimEndChars = '|"';
+    $trimResult = $this->metatagTrimmer->trimEndChars('Test|', $trimEndChars);
+    $this->assertEquals('Test', $trimResult);
+
+    $trimEndChars .= "\\n";
+    $trimResult = $this->metatagTrimmer->trimEndChars("Test\\n", $trimEndChars);
+    $this->assertEquals("Test", $trimResult);
+
+    $trimResult = $this->metatagTrimmer->trimEndChars('Test"', $trimEndChars);
+    $this->assertEquals('Test', $trimResult);
+
+    $trimEndChars .= "'";
+    $trimResult = $this->metatagTrimmer->trimEndChars("Test'", $trimEndChars);
+    $this->assertEquals('Test', $trimResult);
+
+    $trimEndChars .= '&';
+    $trimResult = $this->metatagTrimmer->trimEndChars("Test&'", $trimEndChars);
+    $this->assertEquals('Test', $trimResult);
+
+    $trimResult = $this->metatagTrimmer->trimEndChars("Test&|'", $trimEndChars);
+    $this->assertEquals('Test', $trimResult);
+  }
+
 }

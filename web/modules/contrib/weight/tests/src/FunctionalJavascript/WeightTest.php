@@ -5,10 +5,10 @@ namespace Drupal\Tests\weight\FunctionalJavascript;
 use Behat\Mink\Exception\ExpectationException;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\field_ui\Traits\FieldUiTestTrait;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\views\Tests\ViewTestData;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
+use Drupal\views\Tests\ViewTestData;
 
 /**
  * Test basic functionality of weight.
@@ -175,8 +175,8 @@ class WeightTest extends WebDriverTestBase {
     // @todo Test also the reverse, 'Article 2' over 'Article 1', when
     // https://www.drupal.org/node/2769825 is fixed.
     // @see https://www.drupal.org/node/2769825
-    $dragged = $this->xpath("//tr[@class='draggable'][1]//a[@class='tabledrag-handle']")[0];
-    $target = $this->xpath("//tr[@class='draggable'][2]//a[@class='tabledrag-handle']")[0];
+    $dragged = $this->xpath("//tr[contains(@class, 'draggable')][1]//a[contains(@class, 'tabledrag-handle')]")[0];
+    $target = $this->xpath("//tr[contains(@class, 'draggable')][2]//a[contains(@class, 'tabledrag-handle')]")[0];
     $dragged->dragTo($target);
 
     // Give javascript some time to manipulate the DOM.
@@ -253,8 +253,8 @@ class WeightTest extends WebDriverTestBase {
     // @todo Test also the reverse, 'Article 2' over 'Article 1', when
     // https://www.drupal.org/node/2769825 is fixed.
     // @see https://www.drupal.org/node/2769825
-    $dragged = $this->xpath("//tr[@class='draggable'][1]//a[@class='tabledrag-handle']")[0];
-    $target = $this->xpath("//tr[@class='draggable'][2]//a[@class='tabledrag-handle']")[0];
+    $dragged = $this->xpath("//tr[contains(@class, 'draggable')][1]//a[contains(@class, 'tabledrag-handle')]")[0];
+    $target = $this->xpath("//tr[contains(@class, 'draggable')][2]//a[contains(@class, 'tabledrag-handle')]")[0];
     $dragged->dragTo($target);
 
     // Give javascript some time to manipulate the DOM.

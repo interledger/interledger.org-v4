@@ -12,7 +12,8 @@
 # To test a Drupal 7 project, change the first include filename from .main.yml to .main-d7.yml
 include:
   - project: $_GITLAB_TEMPLATES_REPO
-    ref: $_GITLAB_TEMPLATES_REF
+    # Keep reference on 1.5.10 to support testing against actual current versions of Drupal.
+    ref: "1.5.10"
     file:
       - "/includes/include.drupalci.main.yml"
       - "/includes/include.drupalci.variables.yml"

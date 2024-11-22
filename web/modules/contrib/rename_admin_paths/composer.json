@@ -1,12 +1,21 @@
 {
   "name": "drupal/rename_admin_paths",
   "type": "drupal-module",
-  "description": "The purpose of this module is to secure drupal backend by renaming the admin paths.",
+  "description": "This module helps secure the Drupal backend by overriding the admin path.",
   "keywords": ["protect", "security", "admin", "guess", "override"],
   "license": "GPL-2.0",
   "homepage": "https://www.drupal.org/project/rename_admin_paths",
   "require": {
-    "php": ">=7.1",
-    "drupal/core": ">=8.9"
+    "php": ">=8.1",
+    "drupal/core": ">=10"
+  },
+  "require-dev": {
+    "mglaman/phpstan-drupal": "^1.2",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan-deprecation-rules": "^1.1",
+    "phpstan/phpstan-phpunit": "^1.3",
+    "phpstan/phpstan-strict-rules": "^1.5",
+    "phpstan/phpstan-webmozart-assert": "^1.2",
+    "thecodingmachine/phpstan-strict-rules": "^1"
   }
 }

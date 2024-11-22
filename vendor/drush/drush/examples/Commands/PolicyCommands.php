@@ -7,14 +7,12 @@ use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Drush\Attributes as CLI;
 use Drush\Commands\core\RsyncCommands;
 use Drush\Commands\core\UpdateDBCommands;
-use Drush\Commands\DrushCommands;
 use Drush\Commands\sql\SqlSyncCommands;
-use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Load this commandfile using the --include option - e.g. `drush --include=/path/to/drush/examples`
  *
- * See [Drush Test Traits](https://github.com/drush-ops/drush/blob/12.x/docs/contribute/unish.md#about-the-test-suites) for info on testing Drush commands.
+ * See [Drush Test Traits](https://github.com/drush-ops/drush/blob/13.x/docs/contribute/unish.md#about-the-test-suites) for info on testing Drush commands.
  */
 
 class PolicyCommands extends DrushCommands
@@ -28,7 +26,7 @@ class PolicyCommands extends DrushCommands
     #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, target: SqlSyncCommands::SYNC)]
     public function sqlSyncValidate(CommandData $commandData)
     {
-        if ($commandData->input()->getArgument('destination') == '@prod') {
+        if ($commandData->input()->getArgument('target') == '@prod') {
             throw new \Exception(dt('Per !file, you may never overwrite the production database.', ['!file' => __FILE__]));
         }
     }
@@ -39,7 +37,7 @@ class PolicyCommands extends DrushCommands
     #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, target: RsyncCommands::RSYNC)]
     public function rsyncValidate(CommandData $commandData)
     {
-        if (preg_match("/^@prod/", $commandData->input()->getArgument('destination'))) {
+        if (preg_match("/^@prod/", $commandData->input()->getArgument('target'))) {
             throw new \Exception(dt('Per !file, you may never rsync to the production site.', ['!file' => __FILE__]));
         }
     }

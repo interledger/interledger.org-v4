@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\rename_admin_paths\EventSubscriber;
 
 use Drupal\Core\Routing\RouteBuildEvent;
@@ -26,7 +28,7 @@ class RenameAdminPathsEventSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\rename_admin_paths\Config
    */
-  private $config;
+  private Config $config;
 
   /**
    * Constructs an event subscriber.
@@ -45,7 +47,7 @@ class RenameAdminPathsEventSubscriber implements EventSubscriberInterface {
    * admin route which is mostly done in other event subscribers like the
    * AdminRouteSubscriber.
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       RoutingEvents::ALTER => [
         ['onRoutesAlter', -2048],
@@ -59,7 +61,7 @@ class RenameAdminPathsEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Routing\RouteBuildEvent $event
    *   The route generation event.
    */
-  public function onRoutesAlter(RouteBuildEvent $event) {
+  public function onRoutesAlter(RouteBuildEvent $event): void {
     foreach (self::ADMIN_PATHS as $path) {
       if ($this->config->isPathEnabled($path)) {
         $this->alterRouteCollection(

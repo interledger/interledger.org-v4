@@ -3,6 +3,7 @@
 namespace Drupal\metatag_views\Form;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -101,14 +102,20 @@ class MetatagViewsTranslationForm extends FormBase {
   protected $baseData = [];
 
   /**
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected ModuleHandlerInterface $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(MetatagManagerInterface $metatag_manager, EntityTypeManagerInterface $entity_type_manager, MetatagToken $token, MetatagTagPluginManager $tagPluginManager, ConfigurableLanguageManagerInterface $language_manager) {
+  public function __construct(MetatagManagerInterface $metatag_manager, EntityTypeManagerInterface $entity_type_manager, MetatagToken $token, MetatagTagPluginManager $tagPluginManager, ConfigurableLanguageManagerInterface $language_manager, ModuleHandlerInterface $moduleHandler) {
     $this->metatagManager = $metatag_manager;
     $this->viewsManager = $entity_type_manager->getStorage('view');
     $this->tokenService = $token;
     $this->tagPluginManager = $tagPluginManager;
     $this->languageManager = $language_manager;
+    $this->moduleHandler = $moduleHandler;
   }
 
   /**
@@ -120,7 +127,8 @@ class MetatagViewsTranslationForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('metatag.token'),
       $container->get('plugin.manager.metatag.tag'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('module_handler')
     );
   }
 
@@ -170,7 +178,11 @@ class MetatagViewsTranslationForm extends FormBase {
 
     // Get meta tags from the view entity.
     $form['#tree'] = TRUE;
-    $form['#attached']['library'][] = 'config_translation/drupal.config_translation.admin';
+    if ($this->moduleHandler->moduleExists('config_translation')) {
+      // Only add the config_translation/drupal.config_translation.admin if the
+      // module is enabled.
+      $form['#attached']['library'][] = 'config_translation/drupal.config_translation.admin';
+    }
 
     $form['#title'] = $this->t('Edit @language translation for %view: %display metatags', [
       '%view' => $this->view->label(),
