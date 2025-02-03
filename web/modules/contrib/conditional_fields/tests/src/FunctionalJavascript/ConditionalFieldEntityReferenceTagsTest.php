@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
-use Drupal\conditional_fields\ConditionalFieldsInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
-use Drupal\node\Entity\Node;
 use Drupal\Tests\RandomGeneratorTrait;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
+use Drupal\conditional_fields\ConditionalFieldsInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Test Conditional Fields Entity Reference Tags Plugin.
@@ -15,7 +15,7 @@ use Drupal\Tests\RandomGeneratorTrait;
  */
 class ConditionalFieldEntityReferenceTagsTest extends ConditionalFieldTestBase {
 
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
   use RandomGeneratorTrait;
 
   /**

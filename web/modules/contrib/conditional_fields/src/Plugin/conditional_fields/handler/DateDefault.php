@@ -2,9 +2,9 @@
 
 namespace Drupal\conditional_fields\Plugin\conditional_fields\handler;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\conditional_fields\ConditionalFieldsHandlerBase;
 use Drupal\conditional_fields\ConditionalFieldsInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**

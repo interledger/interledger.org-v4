@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Item;
 
-use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Feeds\Item\ItemInterface;
 
 /**
  * Base class for item tests.

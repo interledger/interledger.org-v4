@@ -3,8 +3,8 @@
 namespace Drupal\feeds\Plugin\Type\Source;
 
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
 
 /**

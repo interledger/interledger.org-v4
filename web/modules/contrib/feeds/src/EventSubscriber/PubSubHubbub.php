@@ -164,7 +164,7 @@ class PubSubHubbub implements EventSubscriberInterface {
    * @param \Drupal\feeds\SubscriptionInterface $subscription
    *   The subscription to unsubscribe.
    */
-  protected function unsubscribe(FeedInterface $feed, SubscriptionInterface $subscription = NULL) {
+  protected function unsubscribe(FeedInterface $feed, ?SubscriptionInterface $subscription = NULL) {
     if (!$subscription) {
       return;
     }

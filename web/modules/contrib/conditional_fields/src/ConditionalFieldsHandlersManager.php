@@ -2,13 +2,13 @@
 
 namespace Drupal\conditional_fields;
 
-use Drupal\Component\Plugin\Factory\DefaultFactory;
+use Drupal\Component\Plugin\Discovery\StaticDiscovery;
+use Drupal\Component\Plugin\Discovery\StaticDiscoveryDecorator;
 use Drupal\Component\Plugin\FallbackPluginManagerInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
-use Drupal\Component\Plugin\Discovery\StaticDiscovery;
-use Drupal\Component\Plugin\Discovery\StaticDiscoveryDecorator;
+use Drupal\Core\Plugin\Factory\ContainerFactory;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
@@ -32,7 +32,7 @@ class ConditionalFieldsHandlersManager extends DefaultPluginManager implements F
 
     $this->alterInfo('handler_info');
     $this->setCacheBackend($cache_backend, 'handler_plugins');
-    $this->factory = new DefaultFactory($this->getDiscovery());
+    $this->factory = new ContainerFactory($this->getDiscovery());
   }
 
   /**

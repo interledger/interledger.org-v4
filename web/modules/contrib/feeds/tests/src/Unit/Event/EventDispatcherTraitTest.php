@@ -3,8 +3,8 @@
 namespace Drupal\Tests\feeds\Unit\Event;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\feeds\Event\EventDispatcherTrait;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Event\EventDispatcherTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 

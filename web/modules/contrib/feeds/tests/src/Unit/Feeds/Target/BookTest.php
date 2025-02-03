@@ -2,24 +2,24 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target {
 
-  use Drupal\book\BookManagerInterface;
   use Drupal\Core\Database\Connection;
   use Drupal\Core\DependencyInjection\ContainerBuilder;
   use Drupal\Core\Entity\EntityFieldManagerInterface;
   use Drupal\Core\Field\FieldStorageDefinitionInterface;
   use Drupal\Core\Messenger\MessengerInterface;
+  use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+  use Drupal\book\BookManagerInterface;
   use Drupal\feeds\EntityFinderInterface;
   use Drupal\feeds\Exception\EmptyFeedException;
   use Drupal\feeds\Exception\ReferenceNotFoundException;
   use Drupal\feeds\Exception\TargetValidationException;
   use Drupal\feeds\FeedInterface;
-  use Drupal\feeds\Feeds\Target\Book;
   use Drupal\feeds\FeedTypeInterface;
+  use Drupal\feeds\Feeds\Target\Book;
   use Drupal\feeds\StateInterface;
   use Drupal\feeds\TargetDefinition;
   use Drupal\node\NodeInterface;
   use Drupal\node\NodeStorageInterface;
-  use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
   use Prophecy\Argument;
 
   /**

@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
 use Drupal\conditional_fields\ConditionalFieldsInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
 
 /**
  * Test Conditional Fields Text Handler.
@@ -53,7 +53,7 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
    *
    * @var string
    */
-  protected $targetFieldWrapp = '';
+  protected $targetFieldWrap = '';
 
   /**
    * The field storage definition used to created the field storage.
@@ -83,7 +83,7 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
     parent::setUp();
 
     $this->fieldSelector = '[name="field_' . $this->fieldName . '[0][value]"]';
-    $this->targetFieldWrapp = '.field--name-' . str_replace('_', '-', $this->targetFieldName);
+    $this->targetFieldWrap = '.field--name-' . str_replace('_', '-', $this->targetFieldName);
 
     $this->fieldStorageDefinition = [
       'field_name' => 'field_' . $this->fieldName,
@@ -138,17 +138,17 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Change field that should not show the body.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Check that the field Body is visible.
     $this->changeField($this->fieldSelector, $text);
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body again.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
   }
 
   /**
@@ -184,27 +184,27 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Check that the field Body is not visible.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body.
     $this->changeField($this->fieldSelector, 'https://drupal.org');
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, $text[0]);
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, $text[1]);
     $this->createScreenshot($this->screenshotPath . '07-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field value to hide the body again.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '08-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
   }
 
   /**
@@ -240,27 +240,27 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Check that the field Body is not visible.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body.
     $this->changeField($this->fieldSelector, 'https://drupal.org');
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, $text[0]);
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, $text[1]);
     $this->createScreenshot($this->screenshotPath . '07-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field value to hide the body again.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '08-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
   }
 
   /**
@@ -283,8 +283,8 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
       'effect' => 'show',
     ];
 
-    $text_without_expresion = 'The field in not empty';
-    $text_with_expresion = 'The field has data=2 text';
+    $text_without_expression = 'The field in not empty';
+    $text_with_expression = 'The field has data=2 text';
 
     $this->submitForm($data, 'Save settings');
     $this->createScreenshot($this->screenshotPath . '02-' . $this->testName . __FUNCTION__ . '.png');
@@ -299,22 +299,22 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Change field that should not show the body.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body.
-    $this->changeField($this->fieldSelector, $text_without_expresion);
+    $this->changeField($this->fieldSelector, $text_without_expression);
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Check that the field Body is visible.
-    $this->changeField($this->fieldSelector, $text_with_expresion);
+    $this->changeField($this->fieldSelector, $text_with_expression);
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field that should not show the body again.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
   }
 
   /**
@@ -349,22 +349,22 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Check that the field Body is visible.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field that should not show the body.
     $this->changeField($this->fieldSelector, $text[0]);
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body again.
     $this->changeField($this->fieldSelector, $text[1]);
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '07-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
   }
 
   /**
@@ -399,22 +399,22 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
 
     // Check that the field Body is invisible.
     $this->createScreenshot($this->screenshotPath . '04-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
 
     // Change field that should not show the body.
     $this->changeField($this->fieldSelector, $text[0]);
     $this->createScreenshot($this->screenshotPath . '05-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field that should not show the body again.
     $this->changeField($this->fieldSelector, $text[1]);
     $this->createScreenshot($this->screenshotPath . '06-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is not visible');
 
     // Change field value to show the body.
     $this->changeField($this->fieldSelector, '');
     $this->createScreenshot($this->screenshotPath . '07-' . $this->testName . __FUNCTION__ . '.png');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, 'Article \'' . $this->targetFieldName . '\' field is visible');
   }
 
   /**
@@ -434,9 +434,9 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
     $this->drupalGet('node/add/article');
 
     // Check that the field Body is not visible.
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, 'Article \'' . $this->targetFieldName . '\' field is visible');
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, 'Article \'' . $this->targetFieldName . '\' field is not visible');
   }
 
   /**
@@ -455,9 +455,9 @@ class ConditionalFieldTextTextareaTest extends ConditionalFieldTestBase implemen
     // Visit Article Add form to check that conditions are applied.
     $this->drupalGet('node/add/article');
 
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, 'Article \'' . $this->targetFieldName . '\' field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, 'Article \'' . $this->targetFieldName . '\' field is visible');
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, 'Article \'' . $this->targetFieldName . '\' field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, 'Article \'' . $this->targetFieldName . '\' field is not visible');
   }
 
 }

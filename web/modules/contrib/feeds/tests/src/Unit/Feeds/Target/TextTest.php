@@ -5,8 +5,8 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\feeds\Feeds\Target\Text;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Target\Text;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 use Drupal\filter\FilterFormatInterface;
 

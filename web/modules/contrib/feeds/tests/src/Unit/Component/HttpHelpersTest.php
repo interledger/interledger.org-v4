@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Component;
 
-use Drupal\feeds\Component\HttpHelpers;
 use Drupal\Tests\UnitTestCase;
+use Drupal\feeds\Component\HttpHelpers;
 
 // cspell:ignore de\'letztes
 

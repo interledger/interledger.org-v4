@@ -118,7 +118,7 @@ trait FeedsCommonTrait {
    * @return string
    *   The location to where the file was saved.
    */
-  protected function copyResourceFileToDir(string $file, string $dir = NULL): string {
+  protected function copyResourceFileToDir(string $file, ?string $dir = NULL): string {
     $file_system = $this->container->get('file_system');
 
     if (is_null($dir)) {

@@ -2,12 +2,12 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ParseEvent;
 use Drupal\node\Entity\Node;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
-use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 
 // Workaround to support tests against both Drupal 10.1 and Drupal 11.0.
 // @todo Remove once we depend on Drupal 10.2.

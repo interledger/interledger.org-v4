@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\feeds\Functional;
 
-use Drupal\feeds\FeedInterface;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\Traits\Core\CronRunTrait;
 use Drupal\Tests\feeds\Traits\FeedCreationTrait;
 use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
-use Drupal\Tests\Traits\Core\CronRunTrait;
+use Drupal\feeds\FeedInterface;
 
 /**
  * Provides a base class for Feeds functional tests.

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Component;
 
-use Drupal\feeds\Component\CsvParser;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Component\CsvParser;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Component\CsvParser

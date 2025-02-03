@@ -3,8 +3,8 @@
 namespace Drupal\Tests\feeds\Unit\Controller;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\feeds\Controller\SubscriptionController;
 use Drupal\Tests\UnitTestCase;
+use Drupal\feeds\Controller\SubscriptionController;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

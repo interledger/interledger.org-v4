@@ -5,8 +5,8 @@ namespace Drupal\Tests\feeds\Unit\Element {
   use Drupal\Core\DependencyInjection\ContainerBuilder;
   use Drupal\Core\Form\FormState;
   use Drupal\Core\StreamWrapper\StreamWrapperManager;
-  use Drupal\feeds\Element\Uri;
   use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+  use Drupal\feeds\Element\Uri;
 
   /**
    * @coversDefaultClass \Drupal\feeds\Element\Uri

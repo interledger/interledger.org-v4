@@ -2,7 +2,6 @@
 
 namespace Drupal\feeds\Feeds\Target;
 
-use Drupal\book\BookManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Connection;
@@ -12,6 +11,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
+use Drupal\book\BookManagerInterface;
 use Drupal\feeds\EntityFinderInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\ReferenceNotFoundException;

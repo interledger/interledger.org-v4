@@ -134,7 +134,7 @@ class FeedImportHandler extends FeedHandlerBase {
    * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   (optional) The file system service.
    */
-  public function pushImport(FeedInterface $feed, $payload, FileSystemInterface $file_system = NULL) {
+  public function pushImport(FeedInterface $feed, $payload, ?FileSystemInterface $file_system = NULL) {
     $feed->lock();
     $fetcher_result = new RawFetcherResult($payload, $file_system);
 

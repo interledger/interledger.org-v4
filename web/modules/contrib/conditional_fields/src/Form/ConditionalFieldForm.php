@@ -3,14 +3,15 @@
 namespace Drupal\conditional_fields\Form;
 
 use Drupal\Component\Uuid\UuidInterface;
-use Drupal\conditional_fields\Conditions;
-use Drupal\conditional_fields\DependencyHelper;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\conditional_fields\Conditions;
+use Drupal\conditional_fields\DependencyHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,34 +36,6 @@ class ConditionalFieldForm extends FormBase {
   protected $deletePath = 'conditional_fields.delete_form';
 
   /**
-   * Uuid generator.
-   *
-   * @var \Drupal\Component\Uuid\UuidInterface
-   */
-  protected $uuidGenerator;
-
-  /**
-   * Provides an interface for an entity field manager.
-   *
-   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
-   */
-  protected $entityFieldManager;
-
-  /**
-   * Provides an interface for entity type managers.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * CF lists builder.
-   *
-   * @var \Drupal\conditional_fields\Conditions
-   */
-  protected $list;
-
-  /**
    * Form array.
    *
    * @var array
@@ -74,56 +47,40 @@ class ConditionalFieldForm extends FormBase {
    *
    * @var \Drupal\Core\Form\FormStateInterface
    */
-  protected $form_state;
+  protected $formState;
 
   /**
    * Name of the entity type being configured.
    *
    * @var string
    */
-  protected $entity_type;
+  protected $entityType;
 
   /**
    * Name of the entity bundle being configured.
    *
    * @var string
    */
-  protected $bundle_name;
+  protected $bundleName;
 
-  /**
-   * Class constructor.
-   *
-   * @param \Drupal\conditional_fields\Conditions $list
-   *   Conditions list provider.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
-   *   Provides an interface for an entity field manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   Provides an interface for entity type managers.
-   * @param \Drupal\Component\Uuid\UuidInterface $uuid
-   *   Uuid generator.
-   */
   public function __construct(
-    Conditions $list,
-    EntityFieldManagerInterface $entity_field_manager,
-    EntityTypeManagerInterface $entity_type_manager,
-    UuidInterface $uuid
-  ) {
-    $this->entityFieldManager = $entity_field_manager;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->list = $list;
-    $this->uuidGenerator = $uuid;
-  }
+    protected EntityFieldManagerInterface $entityFieldManager,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected Conditions $list,
+    protected UuidInterface $uuidGenerator,
+    protected ModuleHandlerInterface $moduleHandler,
+  ) {}
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
     return new static(
-      $container->get('conditional_fields.conditions'),
       $container->get('entity_field.manager'),
       $container->get('entity_type.manager'),
-      $container->get('uuid')
+      $container->get('conditional_fields.conditions'),
+      $container->get('uuid'),
+      $container->get('module_handler'),
     );
   }
 
@@ -139,18 +96,18 @@ class ConditionalFieldForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $entity_type = NULL, $bundle = NULL) {
     $this->form = $form;
-    $this->form_state = $form_state;
-    $this->entity_type = $entity_type;
-    $this->bundle_name = $bundle;
+    $this->formState = $form_state;
+    $this->entityType = $entity_type;
+    $this->bundleName = $bundle;
 
     $this->form['entity_type'] = [
       '#type' => 'hidden',
-      '#value' => $this->entity_type,
+      '#value' => $this->entityType,
     ];
 
     $this->form['bundle'] = [
       '#type' => 'hidden',
-      '#value' => $this->bundle_name,
+      '#value' => $this->bundleName,
     ];
 
     $this->buildTable();
@@ -172,7 +129,7 @@ class ConditionalFieldForm extends FormBase {
       array_key_exists('dependent', $conditional_values)
     ) {
       $dependent = $conditional_values['dependent'];
-      $state = isset($conditional_values['state']) ? $conditional_values['state'] : NULL;
+      $state = $conditional_values['state'] ?? NULL;
       $instances = $this->entityFieldManager
         ->getFieldDefinitions($form_state->getValue('entity_type'), $form_state->getValue('bundle'));
 
@@ -220,7 +177,7 @@ class ConditionalFieldForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $table = $form_state->getValue('table');
     if (empty($table['add_new_dependency']) || !is_array($table['add_new_dependency'])) {
-      parent::submitForm($form, $form_state);
+      return;
     }
 
     $field_names = [];
@@ -291,8 +248,8 @@ class ConditionalFieldForm extends FormBase {
   protected function buildTable() {
     $table = [
       '#type' => 'table',
-      '#entity_type' => $this->entity_type,
-      '#bundle_name' => $this->bundle_name,
+      '#entity_type' => $this->entityType,
+      '#bundle_name' => $this->bundleName,
       '#header' => [
         $this->t('Target field'),
         $this->t('Controlled by'),
@@ -308,12 +265,12 @@ class ConditionalFieldForm extends FormBase {
     /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display_entity */
     $form_display_entity = $this->entityTypeManager
       ->getStorage('entity_form_display')
-      ->load("$this->entity_type.$this->bundle_name.default");
+      ->load("$this->entityType.$this->bundleName.default");
 
-    if (empty($form_display_entity) && $this->entity_type == 'taxonomy_term') {
+    if (is_null($form_display_entity) && $this->entityType == 'taxonomy_term') {
       $form_display_entity = $this->entityTypeManager->getStorage('entity_form_display')->create([
         'targetEntityType' => 'taxonomy_term',
-        'bundle' => $this->bundle_name,
+        'bundle' => $this->bundleName,
         'mode' => 'default',
         'status' => TRUE,
       ]);
@@ -431,7 +388,7 @@ class ConditionalFieldForm extends FormBase {
    * Build options list of available fields.
    */
   protected function getFieldsList() {
-    $dependency_helper = new DependencyHelper($this->entity_type, $this->bundle_name);
+    $dependency_helper = new DependencyHelper($this->entityType, $this->bundleName, $this->moduleHandler, $this->entityTypeManager);
     $fields = [];
     foreach ($dependency_helper->getAvailableConditionalFields() as $name => $label) {
       $fields[$name] = $label . ' (' . $name . ')';

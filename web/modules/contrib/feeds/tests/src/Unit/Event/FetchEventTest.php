@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
-use Drupal\feeds\Event\FetchEvent;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Event\FetchEvent;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\FetchEvent

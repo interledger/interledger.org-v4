@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Event\EventBase;
 use Drupal\feeds\FeedInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\EventBase

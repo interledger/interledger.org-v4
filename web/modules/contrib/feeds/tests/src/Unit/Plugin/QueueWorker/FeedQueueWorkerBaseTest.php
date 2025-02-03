@@ -6,9 +6,9 @@ use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Queue\QueueFactory;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Plugin\QueueWorker\FeedQueueWorkerBase;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**

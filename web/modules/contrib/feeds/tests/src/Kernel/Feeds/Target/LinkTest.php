@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
-use Drupal\node\Entity\Node;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\node\Entity\Node;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Link

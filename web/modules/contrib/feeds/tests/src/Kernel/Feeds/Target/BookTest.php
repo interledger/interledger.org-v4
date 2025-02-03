@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 
 /**
  * Tests for the book target.

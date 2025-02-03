@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Kernel\Plugin\Field\FieldType;
 
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Plugin\Field\FieldType\FeedsItem

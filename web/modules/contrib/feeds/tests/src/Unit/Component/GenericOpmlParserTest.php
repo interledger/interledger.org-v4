@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Component;
 
-use Drupal\feeds\Component\GenericOpmlParser;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Component\GenericOpmlParser;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Component\GenericOpmlParser

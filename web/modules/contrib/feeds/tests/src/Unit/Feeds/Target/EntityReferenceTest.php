@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\ReferenceNotFoundException;
-use Drupal\feeds\Feeds\Target\EntityReference;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Target\EntityReference;
 use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 

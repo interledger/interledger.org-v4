@@ -18,9 +18,9 @@ use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ImportFinishedEvent;
 use Drupal\feeds\Exception\LockException;
 use Drupal\feeds\FeedInterface;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\State\CleanState;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
 use Drupal\feeds\StateInterface;
 use Drupal\user\UserInterface;
@@ -76,6 +76,7 @@ use Drupal\user\UserInterface;
  *     "schedule-import-form" = "/feed/{feeds_feed}/schedule-import",
  *     "clear-form" = "/feed/{feeds_feed}/delete-items",
  *     "unlock" = "/feed/{feeds_feed}/unlock",
+ *     "template" = "/feed/{feeds_feed}/template",
  *   }
  * )
  */
@@ -423,7 +424,7 @@ class Feed extends ContentEntityBase implements FeedInterface {
   /**
    * {@inheritdoc}
    */
-  public function setState($stage, StateInterface $state = NULL) {
+  public function setState($stage, ?StateInterface $state = NULL) {
     $this->states[$stage] = $state;
   }
 

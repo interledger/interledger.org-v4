@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
-use Drupal\feeds\Event\DeleteFeedsEvent;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Event\DeleteFeedsEvent;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\DeleteFeedsEvent

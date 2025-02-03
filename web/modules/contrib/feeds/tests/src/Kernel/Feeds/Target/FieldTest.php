@@ -3,11 +3,11 @@
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ParseEvent;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 
 /**
  * Tests for mapping to text and numeric fields.

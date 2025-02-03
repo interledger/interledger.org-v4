@@ -3,16 +3,19 @@
 namespace Drupal\conditional_fields\Form;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\conditional_fields\ConditionalFieldsInterface;
-use Drupal\conditional_fields\Conditions;
-use Drupal\conditional_fields\DependencyHelper;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Utility\Error;
+use Drupal\conditional_fields\ConditionalFieldsInterface;
+use Drupal\conditional_fields\Conditions;
+use Drupal\conditional_fields\DependencyHelper;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -30,45 +33,24 @@ class ConditionalFieldEditForm extends FormBase {
    */
   protected $redirectPath = 'conditional_fields.conditions_list';
 
-  /**
-   * CF lists builder.
-   *
-   * @var \Drupal\conditional_fields\Conditions
-   */
-  protected $list;
-
-  /**
-   * Provides an interface for entity type managers.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * Provides an interface for form building and processing.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
-  /**
-   * Class constructor.
-   */
-  public function __construct(Conditions $list, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder) {
-    $this->list = $list;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->formBuilder = $form_builder;
-  }
+  public function __construct(
+    protected Conditions $list,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected FormBuilderInterface $formBuilder,
+    protected ModuleHandlerInterface $moduleHandler,
+    protected LoggerChannelInterface $logger,
+  ) {}
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    // Instantiates this form class.
     return new static(
       $container->get('conditional_fields.conditions'),
       $container->get('entity_type.manager'),
-      $container->get('form_builder')
+      $container->get('form_builder'),
+      $container->get('module_handler'),
+      $container->get('logger.factory')->get('conditional_fields'),
     );
   }
 
@@ -234,7 +216,7 @@ class ConditionalFieldEditForm extends FormBase {
       '#description' => $this->t('The dependency is triggered when all the values of the dependee %field match the regular expression. The expression should be valid both in PHP and in Javascript. Do not include delimiters.', ['%field' => $label]) . '<br>' . $this->t('Note: If the dependee has allowed values, these are actually the keys, not the labels, of those values.'),
       '#maxlength' => 2048,
       '#size' => 120,
-      '#default_value' => isset($settings['regex']) ? $settings['regex'] : '',
+      '#default_value' => $settings['regex'] ?? '',
       '#states' => [
         'visible' => [
           ':input[name="values_set"]' => ['value' => (string) ConditionalFieldsInterface::CONDITIONAL_FIELDS_DEPENDENCY_VALUES_REGEX],
@@ -575,7 +557,16 @@ class ConditionalFieldEditForm extends FormBase {
       $form_object->setEntity($dummy_entity);
     }
     catch (InvalidPluginDefinitionException $e) {
-      watchdog_exception('conditional_fields', $e);
+      // @todo Backwards compatibility of error logging. See
+      // https://www.drupal.org/node/2932520. This can be removed when we no
+      // longer support Drupal < 10.2.
+      if (version_compare(\Drupal::VERSION, '10.1', '>=')) {
+        Error::logException($this->logger, $e);
+      }
+      else {
+        // @phpstan-ignore-next-line
+        watchdog_exception('conditional_fields', $e);
+      }
       // @todo May be it make sense to return markup?
       return NULL;
     }
@@ -612,7 +603,7 @@ class ConditionalFieldEditForm extends FormBase {
    */
   protected function setFieldProperty(&$field, $property, $value) {
     $elements = Element::children($field);
-    if (isset($elements) && count($elements) > 0) {
+    if (count($elements) > 0) {
       foreach ($elements as $element) {
         $field[$element][$property] = $value;
         $this->setFieldProperty($field[$element], $property, $value);
@@ -624,7 +615,7 @@ class ConditionalFieldEditForm extends FormBase {
    * Determine whether a field supports inheritance.
    */
   protected function fieldSupportsInheritance($entity_type, $bundle, $field_name) {
-    $dependency_helper = new DependencyHelper($entity_type, $bundle);
+    $dependency_helper = new DependencyHelper($entity_type, $bundle, $this->moduleHandler, $this->entityTypeManager);
     return $dependency_helper->fieldHasChildren($field_name);
   }
 

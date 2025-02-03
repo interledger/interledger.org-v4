@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
+use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
 use Drupal\conditional_fields\ConditionalFieldsInterface;
 use Drupal\language\Entity\ContentLanguageSettings;
-use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
 
 /**
  * Test Conditional Fields Language Select Plugin.

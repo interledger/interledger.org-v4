@@ -23,3 +23,8 @@ conditional_fields.conditional_fields.user:
   route_name: conditional_fields.tab.user
   base_route: entity.user.admin_form
   weight: 10
+conditional_fields.conditional_fields.paragraphs_type:
+  title: Manage Dependencies
+  route_name: conditional_fields.tab.paragraph
+  base_route: entity.paragraphs_type.edit_form
+  weight: 10

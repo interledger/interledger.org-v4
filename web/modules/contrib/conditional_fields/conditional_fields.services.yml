@@ -7,10 +7,20 @@ services:
     parent: default_plugin_manager
   conditional_fields.controller:
     class: Drupal\conditional_fields\Controller\ConditionalFieldController
-    arguments: ['@entity_type.manager', '@form_builder', '@entity_type.bundle.info', '@entity_field.manager']
+    arguments:
+      - '@entity_type.manager'
+      - '@form_builder'
+      - '@entity_type.bundle.info'
+      - '@entity_field.manager'
   conditional_fields.form_helper:
     class: Drupal\conditional_fields\ConditionalFieldsFormHelper
-    arguments: ['@plugin.manager.element_info', '@plugin.manager.conditional_fields_handlers']
+    arguments:
+      - '@plugin.manager.element_info'
+      - '@plugin.manager.conditional_fields_handlers'
+      - '@entity_display.repository'
+      - '@language_manager'
   conditional_fields.element_alter_helper:
     class: Drupal\conditional_fields\ConditionalFieldsElementAlterHelper
-    arguments: []
+    arguments:
+      - '@module_handler'
+      - '@entity_type.manager'

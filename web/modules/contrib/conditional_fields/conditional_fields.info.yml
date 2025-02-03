@@ -1,8 +1,7 @@
 name: Conditional Fields
 type: module
 description: Define dependencies between fields based on their states and values.
-core: 8.x
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 configure: conditional_fields
 package: Fields
 dependencies:
@@ -11,7 +10,7 @@ dependencies:
 test_dependencies:
   - paragraphs:paragraphs
 
-# Information added by Drupal.org packaging script on 2023-09-27
-version: '4.0.0-alpha5'
+# Information added by Drupal.org packaging script on 2024-12-11
+version: '4.0.0-alpha6'
 project: 'conditional_fields'
-datestamp: 1695850053
+datestamp: 1733933535

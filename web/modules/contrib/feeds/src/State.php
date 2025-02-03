@@ -17,7 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[\AllowDynamicProperties]
 class State implements StateInterface, ContainerStateInterface {
 
-  use DependencySerializationTrait;
+  use DependencySerializationTrait {
+    __sleep as dependencySerializationTraitSleep;
+    __wakeup as dependencySerializationTraitWakeUp;
+  }
   use EventDispatcherTrait;
 
   /**
@@ -130,6 +133,40 @@ class State implements StateInterface, ContainerStateInterface {
       $container->get('messenger'),
       $container->get('logger.factory')->get('feeds')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __sleep() {
+    $vars = $this->dependencySerializationTraitSleep();
+
+    // Do not serialize the logger object.
+    $key = array_search('logger', $vars);
+    if ($key !== FALSE) {
+      unset($vars[$key]);
+    }
+
+    return $vars;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\ReturnTypeWillChange]
+  public function __wakeup() {
+    $this->dependencySerializationTraitWakeUp();
+
+    // Restore the logger.
+    $container = \Drupal::getContainer();
+    $this->logger = $container->get('logger.factory')->get('feeds');
+
+    // If the messenger service did not get restored because the State object
+    // was serialized in a Feeds version before 8.x-3.0-rc1, make sure that the
+    // messenger service does get restored.
+    if (!$this->messenger instanceof MessengerInterface) {
+      $this->messenger = $container->get('messenger');
+    }
   }
 
   /**

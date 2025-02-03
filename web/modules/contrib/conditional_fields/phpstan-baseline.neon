@@ -1,0 +1,17 @@
+parameters:
+	ignoreErrors:
+
+		-
+			message: "#^Variable \\$selectors in empty\\(\\) is never defined\\.$#"
+			count: 1
+			path: src/Plugin/conditional_fields/handler/TextAreaFormatted.php
+
+		-
+			message: "#^Undefined variable\\: \\$selectors$#"
+			count: 1
+			path: src/Plugin/conditional_fields/handler/TextAreaFormatted.php
+
+		-
+			message: "#^Variable \\$regex in empty\\(\\) is never defined\\.$#"
+			count: 1
+			path: src/Plugin/conditional_fields/handler/LanguageSelect.php

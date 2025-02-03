@@ -4,9 +4,9 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher\Form;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormState;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Feeds\Fetcher\Form\DirectoryFetcherForm;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\Form\DirectoryFetcherForm

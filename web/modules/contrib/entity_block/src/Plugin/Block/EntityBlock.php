@@ -2,27 +2,34 @@
 
 namespace Drupal\entity_block\Plugin\Block;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity_block\Plugin\Derivative\EntityBlockDeriver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the block for similar articles.
- *
- * @Block(
- *   id = "entity_block",
- *   admin_label = @Translation("Entity block"),
- *   deriver = "Drupal\entity_block\Plugin\Derivative\EntityBlock"
- * )
  */
+#[Block(
+  id: "entity_block",
+  admin_label: new TranslatableMarkup("Entity block"),
+  deriver: EntityBlockDeriver::class
+)]
 class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -37,21 +44,14 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *
    * @var string
    */
-  protected $entityTypeName;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  public $entityTypeManager;
+  protected string $entityTypeName;
 
   /**
    * The entity storage for our entity type.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $entityStorage;
+  protected EntityStorageInterface $entityStorage;
 
   /**
    * The view builder for our entity type.
@@ -65,52 +65,47 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *
    * @var array
    */
-  protected $view_mode_options;
+  protected array $viewModeOptions;
 
   /**
    * An array of counters for the recursive rendering protection.
    *
    * @var array
    */
-  protected static $recursiveRenderDepth = [];
-
-  /**
-   * The logger factory.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
-   */
-  protected $loggerFactory;
+  protected static array $recursiveRenderDepth = [];
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, EntityDisplayRepositoryInterface $entityDisplayRepository, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    EntityDisplayRepositoryInterface $entityDisplayRepository,
+    protected LoggerChannelFactoryInterface $loggerFactory,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
-    // Determine what entity type we are referring to.
-    $this->entityTypeName = $this->getDerivativeId();
+    try {
+      // Determine what entity type we are referring to.
+      $this->entityTypeName = $this->getDerivativeId();
 
-    // Load various utilities related to our entity type.
-    $this->entityTypeManager = $entityTypeManager;
-    $this->entityStorage = $entityTypeManager->getStorage($this->entityTypeName);
-
-    // Panelizer replaces the view_builder handler, but we want to use the
-    // original which has been moved to fallback_view_builder.
-    if ($entityTypeManager->hasHandler($this->entityTypeName, 'fallback_view_builder')) {
-      $this->entityViewBuilder = $entityTypeManager->getHandler($this->entityTypeName, 'fallback_view_builder');
-    }
-    else {
+      // Load various utilities related to our entity type.
+      $entityTypeManager = $this->entityTypeManager;
+      $this->entityStorage = $entityTypeManager->getStorage($this->entityTypeName);
       $this->entityViewBuilder = $entityTypeManager->getHandler($this->entityTypeName, 'view_builder');
+      $this->viewModeOptions = $entityDisplayRepository->getViewModeOptions($this->entityTypeName);
     }
-
-    $this->view_mode_options = $entityDisplayRepository->getViewModeOptions($this->entityTypeName);
-    $this->loggerFactory = $logger_factory;
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
+      $this->loggerFactory->get('entity')->error($e->getMessage());
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
       $configuration, $plugin_id, $plugin_definition,
       $container->get('entity_type.manager'),
@@ -122,7 +117,16 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function defaultConfiguration(): array {
+    return [
+      'label_display' => FALSE,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->configuration;
 
@@ -145,7 +149,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['view_mode'] = [
       '#type' => 'select',
       '#title' => $this->t('View mode'),
-      '#options' => $this->view_mode_options,
+      '#options' => $this->viewModeOptions,
       '#default_value' => $view_mode,
     ];
 
@@ -155,16 +159,19 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildConfigurationForm($form, $form_state);
 
     // Hide default block form fields that are undesired in this case.
     $form['admin_label']['#access'] = FALSE;
-    $form['label']['#access'] = FALSE;
-    $form['label_display']['#access'] = FALSE;
 
-    // Hide the block title by default.
-    $form['label_display']['#value'] = FALSE;
+    $form['label']['#states'] = [
+      'visible' => [
+        ':input[name="settings[label_display]"]' => ['checked' => TRUE],
+      ],
+    ];
+
+    $form['label_display']['#description'] = $this->t('If left unchecked the block will automatically generate a title.');
 
     return $form;
   }
@@ -172,7 +179,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state): void {
     parent::blockSubmit($form, $form_state);
 
     $this->configuration['entity'] = $form_state->getValue('entity');
@@ -181,17 +188,20 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
     if ($entity = $this->entityStorage->load($this->configuration['entity'])) {
       $plugin_definition = $this->getPluginDefinition();
       $admin_label = $plugin_definition['admin_label'];
-      $this->configuration['label'] = new FormattableMarkup('@entity_label (@admin_label)', [
-        '@entity_label' => $entity->label(),
-        '@admin_label' => $admin_label,
-      ]);
+      if ($this->configuration['label_display'] !== 'visible') {
+        $this->configuration['label'] = new FormattableMarkup('@entity_label (@admin_label)', [
+          '@entity_label' => $entity->label(),
+          '@admin_label' => $admin_label,
+        ]);
+      }
+
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     if ($entity = $this->getEntity()) {
       $recursive_render_id = $entity->getEntityTypeId() . ':' . $entity->id();
       if (isset(static::$recursiveRenderDepth[$recursive_render_id])) {
@@ -207,8 +217,6 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
           '%entity_type' => $entity->getEntityTypeId(),
           '%entity_id' => $entity->id(),
         ]);
-
-//        return [];
       }
 
       $render_controller = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
@@ -223,7 +231,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  protected function blockAccess(AccountInterface $account) {
+  protected function blockAccess(AccountInterface $account): AccessResultInterface {
     $entity = $this->getEntity();
     if ($entity && $entity->access('view', $account)) {
       return AccessResult::allowed()
@@ -238,7 +246,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     $entity = $this->getEntity();
     $contexts = $entity ? $entity->getCacheContexts() : [];
     return Cache::mergeContexts(parent::getCacheContexts(), $contexts);
@@ -247,7 +255,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $entity = $this->getEntity();
     $cache_tags = $entity ? $entity->getCacheTags() : [];
     return Cache::mergeTags(parent::getCacheTags(), $cache_tags);
@@ -256,7 +264,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCacheMaxAge() {
+  public function getCacheMaxAge(): int {
     $entity = $this->getEntity();
     $max_age = $entity ? $entity->getCacheMaxAge() : Cache::PERMANENT;
     return Cache::mergeMaxAges(parent::getCacheMaxAge(), $max_age);
@@ -265,7 +273,7 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * Gets our entity.
    */
-  public function getEntity() {
+  public function getEntity(): ?EntityInterface {
     if ($entity_id = $this->configuration['entity']) {
       return $this->entityStorage->load($entity_id);
     }

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
-use Drupal\feeds\Feeds\Target\Timestamp;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Target\Timestamp;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**

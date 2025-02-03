@@ -16,13 +16,13 @@ function conditional_fields_update_8001() {
   $bundle_info = \Drupal::service('entity_type.bundle.info');
   $entity_types = $cf_service->getEntityTypes();
   foreach ($entity_types as $entity_type) {
-    $etid = $entity_type->id();
-    $bundles = $bundle_info->getBundleInfo($etid);
+    $entity_id = $entity_type->id();
+    $bundles = $bundle_info->getBundleInfo($entity_id);
     foreach ($bundles as $bundle_name => $bundle) {
       /** @var \Drupal\Core\Entity\Entity\EntityFormDisplay  $entity */
       $entity = \Drupal::entityTypeManager()
         ->getStorage('entity_form_display')
-        ->load("$etid.$bundle_name.default");
+        ->load("$entity_id.$bundle_name.default");
       // Replace keys.
       if ($entity instanceof EntityInterface) {
         _conditional_fields_update_conditional_fields_settings($entity);

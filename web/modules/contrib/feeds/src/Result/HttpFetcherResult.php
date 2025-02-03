@@ -38,7 +38,7 @@ class HttpFetcherResult extends FetcherResult implements HttpFetcherResultInterf
    * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   (optional) The file system service.
    */
-  public function __construct($file_path, array $headers, FileSystemInterface $file_system = NULL) {
+  public function __construct($file_path, array $headers, ?FileSystemInterface $file_system = NULL) {
     parent::__construct($file_path);
     $this->headers = array_change_key_case($headers);
     if (is_null($file_system)) {
@@ -75,7 +75,7 @@ class HttpFetcherResult extends FetcherResult implements HttpFetcherResultInterf
    */
   public function cleanUp() {
     if ($this->filePath) {
-      $this->fileSystem->unlink($this->filePath);
+      $this->fileSystem->delete($this->filePath);
     }
   }
 

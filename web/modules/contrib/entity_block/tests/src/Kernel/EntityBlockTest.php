@@ -27,6 +27,11 @@ final class EntityBlockTest extends EntityKernelTestBase {
     'entity_block',
   ];
 
+  /**
+   * Tests Entity block config schema.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   public function testBlockConfigSchema(): void {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
@@ -51,6 +56,12 @@ final class EntityBlockTest extends EntityKernelTestBase {
     $this->assertConfigSchemaByName($block->getConfigDependencyName());
   }
 
+  /**
+   * Test Entity block build.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Exception
+   */
   public function testBuild(): void {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
@@ -81,7 +92,6 @@ final class EntityBlockTest extends EntityKernelTestBase {
     $block_build = $block->getPlugin()->build();
     unset($block_build['#entity_test']);
     self::assertEquals($view_builder_build, $block_build);
-
   }
 
 }

@@ -2,15 +2,18 @@
 
 namespace Drupal\ds\Plugin\DsFieldTemplate;
 
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\ds\Attribute\DsFieldTemplate;
+
 /**
  * Plugin for the expert field template.
- *
- * @DsFieldTemplate(
- *   id = "expert",
- *   title = @Translation("Expert"),
- *   theme = "ds_field_expert",
- * )
  */
+#[DsFieldTemplate(
+  id: 'expert',
+  title: new TranslatableMarkup('Expert'),
+  theme: 'ds_field_expert'
+)]
 class Expert extends DsFieldTemplateBase {
 
   /**
@@ -259,7 +262,10 @@ class Expert extends DsFieldTemplateBase {
               $field_settings[$identifier] = \Drupal::token()->replace(
                 $field_settings[$identifier],
                 [$entity->getEntityTypeId() => $entity],
-                ['clear' => TRUE]
+                [
+                  'clear' => TRUE,
+                  'langcode' => \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
+                ]
               );
             }
           }

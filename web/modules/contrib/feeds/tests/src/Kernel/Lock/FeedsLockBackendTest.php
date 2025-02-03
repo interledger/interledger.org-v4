@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Lock;
 
-use Drupal\feeds\FeedsExecutableInterface;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\feeds\FeedsExecutableInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Lock\FeedsLockBackend

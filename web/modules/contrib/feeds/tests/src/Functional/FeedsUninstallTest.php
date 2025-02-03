@@ -64,7 +64,7 @@ class FeedsUninstallTest extends FeedsBrowserTestBase {
    * @param string $message
    *   (optional) The message to display.
    */
-  protected function assertFeedsQueueTasksCount(int $expected, string $message = NULL) {
+  protected function assertFeedsQueueTasksCount(int $expected, ?string $message = NULL) {
     $num = (int) $this->container->get('database')->select('queue')
       ->condition('name', '%feeds%', 'LIKE')
       ->countQuery()

@@ -6,9 +6,9 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\LinkGeneratorInterface;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Feeds\Fetcher\Form\HttpFetcherForm;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Prophecy\Argument;
 
 /**

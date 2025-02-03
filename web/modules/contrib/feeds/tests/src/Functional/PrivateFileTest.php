@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional;
 
-use Drupal\file\Entity\File;
 use Drupal\Tests\file\Functional\FileFieldTestBase;
+use Drupal\file\Entity\File;
 
 /**
  * Tests private files work with the Feeds module.

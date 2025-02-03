@@ -3,10 +3,10 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher\Form;
 
 use Drupal\Core\Form\FormState;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Fetcher\Form\DirectoryFetcherFeedForm;
 use Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\Form\DirectoryFetcherFeedForm

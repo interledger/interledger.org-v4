@@ -62,7 +62,9 @@ class TextDefault extends ConditionalFieldsHandlerBase {
             $options['condition'] => $values_array,
           ];
         }
-        $state[$options['state']] = $input_states;
+        if (isset($input_states)) {
+          $state[$options['state']] = $input_states;
+        }
         break;
 
       default:

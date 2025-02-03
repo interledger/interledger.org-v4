@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Processor;
 
-use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\entity_test\Entity\EntityTestBundle;
 
 /**
  * Tests import various entity types.

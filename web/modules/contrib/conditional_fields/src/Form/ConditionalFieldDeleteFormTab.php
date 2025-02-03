@@ -17,7 +17,7 @@ class ConditionalFieldDeleteFormTab extends ConditionalFieldDeleteForm {
    *
    * @var string
    */
-  protected $entity_type;
+  protected $entityType;
 
   /**
    * The bundle type this conditional field is attached to.
@@ -30,8 +30,14 @@ class ConditionalFieldDeleteFormTab extends ConditionalFieldDeleteForm {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('conditional_fields.tab' . "." . $this->entity_type, [
-      "{$this->entity_type}_type" => $this->bundle,
+    if ($this->entityType == 'paragraph') {
+      return Url::fromRoute('conditional_fields.tab' . "." . $this->entityType, [
+        "{$this->entityType}s_type" => $this->bundle,
+      ]);
+    }
+
+    return Url::fromRoute('conditional_fields.tab' . "." . $this->entityType, [
+      "{$this->entityType}_type" => $this->bundle,
     ]);
   }
 
@@ -46,7 +52,7 @@ class ConditionalFieldDeleteFormTab extends ConditionalFieldDeleteForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $entity_type = NULL, $bundle = NULL, $field_name = NULL, $uuid = NULL) {
-    $this->entity_type = $entity_type;
+    $this->entityType = $entity_type;
     $this->bundle = $bundle;
     return parent::buildForm($form, $form_state, $entity_type, $bundle, $field_name, $uuid);
   }

@@ -45,7 +45,7 @@ final class CsvController extends ControllerBase {
    * @param Drupal\Core\Extension\ModuleExtensionList $extensionList
    *   The module extension list service.
    */
-  public function __construct(StateInterface $state, ModuleExtensionList $extensionList = NULL) {
+  public function __construct(StateInterface $state, ModuleExtensionList $extensionList) {
     $this->state = $state;
     $this->extensionList = $extensionList;
   }

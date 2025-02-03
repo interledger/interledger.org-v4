@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional\Plugin\Action;
 
-use Drupal\feeds\Entity\Feed;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
+use Drupal\feeds\Entity\Feed;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Plugin\Action\ClearFeedAction

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional\Form;
 
-use Drupal\feeds\Entity\Feed;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
+use Drupal\feeds\Entity\Feed;
 
 /**
  * Tests the delete multiple confirmation form.

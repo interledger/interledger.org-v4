@@ -113,7 +113,7 @@ class MappingForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FeedTypeInterface $feeds_feed_type = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FeedTypeInterface $feeds_feed_type = NULL) {
     $feed_type = $this->feedType = $feeds_feed_type;
     $this->targets = $targets = $feed_type->getMappingTargets();
 

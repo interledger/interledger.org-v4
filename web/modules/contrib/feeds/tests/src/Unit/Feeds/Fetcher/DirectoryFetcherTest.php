@@ -3,9 +3,9 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Fetcher\DirectoryFetcher;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\DirectoryFetcher

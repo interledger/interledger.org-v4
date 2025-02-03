@@ -53,7 +53,7 @@ class Text extends StringTarget implements ConfigurableTargetInterface, Containe
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $filter_format_storage
    *   The storage for filter_format config entities.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, AccountInterface $user, ConfigEntityStorageInterface $filter_format_storage = NULL) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, AccountInterface $user, ?ConfigEntityStorageInterface $filter_format_storage = NULL) {
     $this->user = $user;
     if (!isset($filter_format_storage)) {
       @trigger_error('Calling ' . __METHOD__ . '() without the $filter_format_storage argument is deprecated in feeds:3.0.0-rc2 and will be required in feeds:4.0.0. See https://www.drupal.org/node/3473603', E_USER_DEPRECATED);

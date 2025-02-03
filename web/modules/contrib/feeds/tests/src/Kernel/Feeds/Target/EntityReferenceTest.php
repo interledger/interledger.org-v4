@@ -3,12 +3,12 @@
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
-use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 
 // Workaround to support tests against both Drupal 10.1 and Drupal 11.0.
 // @todo Remove once we depend on Drupal 10.2.

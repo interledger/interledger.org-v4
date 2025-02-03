@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Unit\Result;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Result\ParserResult;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Result\ParserResult

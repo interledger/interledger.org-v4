@@ -3,11 +3,11 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Component\ZfExtensionManagerSfContainer;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Parser\SyndicationParser;
 use Drupal\feeds\Result\RawFetcherResult;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Laminas\Feed\Reader\StandaloneExtensionManager;
 
 /**

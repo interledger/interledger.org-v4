@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional\Feeds\Fetcher;
 
-use Drupal\feeds\Entity\Feed;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
+use Drupal\feeds\Entity\Feed;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\UploadFetcher

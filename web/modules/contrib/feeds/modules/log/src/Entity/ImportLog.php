@@ -101,9 +101,14 @@ class ImportLog extends ContentEntityBase implements ImportLogInterface {
 
     $this->sanitizeLogEntry($entry);
 
+    // Update entry without passing 'lid' again to fix issue with alternative
+    // database drivers.
+    $record = $entry;
+    unset($record['lid']);
+
     return $database->update(static::ENTRY_TABLE)
       ->condition('lid', $entry['lid'])
-      ->fields($entry)
+      ->fields($record)
       ->execute();
   }
 

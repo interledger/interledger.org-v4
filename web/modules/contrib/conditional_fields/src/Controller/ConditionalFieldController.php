@@ -2,7 +2,6 @@
 
 namespace Drupal\conditional_fields\Controller;
 
-use Drupal\conditional_fields\Form\ConditionalFieldFormTab;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -10,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Url;
+use Drupal\conditional_fields\Form\ConditionalFieldFormTab;
 
 /**
  * Returns responses for conditional_fields module routes.
@@ -214,6 +214,19 @@ class ConditionalFieldController extends ControllerBase {
    */
   public function getMediaEditFormTab($media_type) {
     return $this->formBuilder->getForm(ConditionalFieldFormTab::class, 'media', $media_type);
+  }
+
+  /**
+   * Provide arguments for ConditionalFieldFormTab.
+   *
+   * @param string $paragraphs_type
+   *   Paragraphs type.
+   *
+   * @return array
+   *   Form array.
+   */
+  public function getParagraphEditFormTab($paragraphs_type) {
+    return $this->formBuilder->getForm(ConditionalFieldFormTab::class, 'paragraph', $paragraphs_type);
   }
 
   /**
