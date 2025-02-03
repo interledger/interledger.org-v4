@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Plugin\Action;
 
-use Drupal\system\Entity\Action;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\system\Entity\Action;
 use Drupal\user\Entity\User;
 
 /**

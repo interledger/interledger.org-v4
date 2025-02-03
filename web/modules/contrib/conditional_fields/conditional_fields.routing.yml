@@ -77,6 +77,14 @@ conditional_fields.tab.user:
   requirements:
     _permission: 'view conditional fields'
 
+conditional_fields.tab.paragraph:
+  path: '/admin/structure/paragraphs_type/{paragraphs_type}/conditionals'
+  defaults:
+    _title: 'Manage Dependencies'
+    _controller: 'conditional_fields.controller:getParagraphEditFormTab'
+  requirements:
+    _permission: 'view conditional fields'
+
 conditional_fields.edit_form.tab:
   path: '/admin/structure/conditional_fields/{entity_type}/{bundle}/{field_name}/{uuid}/tab/edit'
   defaults:

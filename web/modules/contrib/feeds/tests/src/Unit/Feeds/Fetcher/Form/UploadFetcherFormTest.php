@@ -7,9 +7,9 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Feeds\Fetcher\Form\UploadFetcherForm;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\Form\UploadFetcherForm

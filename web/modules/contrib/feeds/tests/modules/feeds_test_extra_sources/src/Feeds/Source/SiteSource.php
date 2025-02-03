@@ -5,8 +5,8 @@ namespace Drupal\feeds_test_extra_sources\Feeds\Source;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Plugin\Type\Source\SourceBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -78,6 +78,22 @@ entity.feeds_feed.unlock:
     _entity_access: 'feeds_feed.unlock'
     feeds_feed: \d+
 
+# Feed template.
+entity.feeds_feed_type.template:
+  path: '/feed/template/{feeds_feed_type}'
+  defaults:
+    _controller: 'Drupal\feeds\Controller\TemplateController::page'
+  requirements:
+    _entity_access: 'feeds_feed_type.template'
+
+entity.feeds_feed.template:
+  path: '/feed/{feeds_feed}/template'
+  defaults:
+    _controller: 'Drupal\feeds\Controller\TemplateController::feedPage'
+  requirements:
+    _entity_access: 'feeds_feed.template'
+    feeds_feed: \d+
+
 # PubSubHubbub.
 entity.feeds_feed.receive:
   path: '/feed/{feeds_subscription}/{feeds_push_token}/push_callback'

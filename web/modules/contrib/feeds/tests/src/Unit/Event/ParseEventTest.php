@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
-use Drupal\feeds\Event\ParseEvent;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Event\ParseEvent;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\ParseEvent

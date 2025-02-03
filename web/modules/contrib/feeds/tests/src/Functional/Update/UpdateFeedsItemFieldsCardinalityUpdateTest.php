@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\feeds\Functional\Update;
 
+use Drupal\Tests\feeds\Traits\FeedCreationTrait;
+use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\FieldStorageConfigInterface;
-use Drupal\Tests\feeds\Traits\FeedCreationTrait;
-use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
 
 /**
  * Provides a test to check updating feeds_item cardinality.

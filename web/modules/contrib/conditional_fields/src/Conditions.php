@@ -2,8 +2,8 @@
 
 namespace Drupal\conditional_fields;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Provide conditional field's lists.
@@ -93,7 +93,7 @@ class Conditions {
    * Builds a list of supported effects.
    *
    * That may be applied to a dependent field
-   * when it changes from visible to invisible and viceversa. The effects may
+   * when it changes from visible to invisible and vice versa. The effects may
    * have options that will be passed as Javascript settings and used by
    * conditional_fields.js.
    *

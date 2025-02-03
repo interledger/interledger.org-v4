@@ -3,9 +3,9 @@
 namespace Drupal\Tests\feeds_log\Kernel\Entity;
 
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Tests\feeds_log\Kernel\FeedsLogKernelTestBase;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
-use Drupal\Tests\feeds_log\Kernel\FeedsLogKernelTestBase;
 
 /**
  * @coversDefaultClass \Drupal\feeds_log\Entity\ImportLog

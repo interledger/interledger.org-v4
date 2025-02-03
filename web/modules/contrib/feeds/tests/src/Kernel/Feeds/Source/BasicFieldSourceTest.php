@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Source;
 
-use Drupal\node\Entity\Node;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
+use Drupal\node\Entity\Node;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Source\BasicFieldSource

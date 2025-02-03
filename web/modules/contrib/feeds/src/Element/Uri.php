@@ -25,7 +25,7 @@ class Uri extends Url {
   /**
    * Form element validation handler for #type 'feeds_uri'.
    */
-  public static function validateUrl(&$element, FormStateInterface $form_state, &$complete_form, StreamWrapperManagerInterface $stream_wrapper_manager = NULL) {
+  public static function validateUrl(&$element, FormStateInterface $form_state, &$complete_form, ?StreamWrapperManagerInterface $stream_wrapper_manager = NULL) {
     if (empty($stream_wrapper_manager)) {
       $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager');
     }

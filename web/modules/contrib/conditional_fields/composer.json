@@ -1,0 +1,16 @@
+{
+    "name": "drupal/conditional_fields",
+    "description": "Enables conditional field behaviors.",
+    "type":"drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "homepage": "https://www.drupal.org/project/conditional_fields",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/conditional_fields",
+        "source": "https://git.drupalcode.org/project/conditional_fields"
+    },
+    "require-dev": {
+        "drupal/entity_reference_revisions": "1.x-dev",
+        "drupal/paragraphs": "^1"
+    }
+}

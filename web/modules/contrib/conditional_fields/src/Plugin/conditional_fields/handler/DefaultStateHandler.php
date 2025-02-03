@@ -25,7 +25,13 @@ class DefaultStateHandler extends ConditionalFieldsHandlerBase {
 
     switch ($values_set) {
       case ConditionalFieldsInterface::CONDITIONAL_FIELDS_DEPENDENCY_VALUES_WIDGET:
-        $values[$options['condition']] = $options['value_form'];
+        /* @todo This change fixes problem within inline_entity_form fields.
+         * `[$options['condition']]` is removed because 'value_form' already
+         * contain condition name as key.
+         * But this need to be retested not to break any previous functionality.
+         */
+        // $values[$options['condition']] = $options['value_form'];
+        $values = $options['value_form'];
         break;
 
       case ConditionalFieldsInterface::CONDITIONAL_FIELDS_DEPENDENCY_VALUES_REGEX:

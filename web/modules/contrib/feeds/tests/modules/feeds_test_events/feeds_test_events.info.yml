@@ -5,7 +5,7 @@ package: Testing
 dependencies:
   - feeds:feeds
 
-# Information added by Drupal.org packaging script on 2024-09-19
-version: '8.x-3.0-rc2'
+# Information added by Drupal.org packaging script on 2025-01-15
+version: '8.x-3.0'
 project: 'feeds'
-datestamp: 1726755549
+datestamp: 1736951430

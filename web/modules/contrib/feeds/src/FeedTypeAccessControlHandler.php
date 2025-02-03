@@ -28,6 +28,10 @@ class FeedTypeAccessControlHandler extends EntityAccessControlHandler {
       case 'delete':
         return parent::checkAccess($entity, $operation, $account)->addCacheableDependency($entity);
 
+      case 'template':
+        $has_perm = $account->hasPermission('administer feeds') || $account->hasPermission("create {$entity->id()} feeds") || $account->hasPermission("update {$entity->id()} feeds") || $account->hasPermission("update own {$entity->id()} feeds") || $account->hasPermission("import {$entity->id()} feeds") || $account->hasPermission("import own {$entity->id()} feeds") || $account->hasPermission("schedule_import {$entity->id()} feeds") || $account->hasPermission("schedule_import own {$entity->id()} feeds");
+        return AccessResult::allowedIf($has_perm);
+
       default:
         return parent::checkAccess($entity, $operation, $account);
     }

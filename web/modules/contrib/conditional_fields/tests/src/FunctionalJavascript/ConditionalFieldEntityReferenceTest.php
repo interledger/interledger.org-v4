@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
-use Drupal\conditional_fields\ConditionalFieldsInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
-use Drupal\node\Entity\Node;
+use Drupal\Tests\RandomGeneratorTrait;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldFilledEmptyInterface;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
-use Drupal\Tests\RandomGeneratorTrait;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
+use Drupal\conditional_fields\ConditionalFieldsInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Test Conditional Fields Entity Reference Plugin.
@@ -17,7 +17,7 @@ use Drupal\Tests\RandomGeneratorTrait;
  */
 class ConditionalFieldEntityReferenceTest extends ConditionalFieldTestBase implements ConditionalFieldValueInterface, ConditionalFieldFilledEmptyInterface {
 
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
   use RandomGeneratorTrait;
 
   /**
@@ -105,7 +105,7 @@ class ConditionalFieldEntityReferenceTest extends ConditionalFieldTestBase imple
 
     $referenced_format_1 = sprintf("%s (%d)", $node->label(), $node->id());
     $referenced_format_2 = sprintf("%s", $node->label());
-    $referenced_format_wrong = sprintf("%s ", $node->label(), $node->id());
+    $referenced_format_wrong = sprintf("%s ", $node->label());
 
     // Visit a ConditionalFields configuration page for Content bundles.
     $this->createCondition('body', 'field_' . $this->fieldName, 'visible', 'value');

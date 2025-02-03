@@ -5,11 +5,11 @@
  * Contains conditional_fields.module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\WidgetInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
 /**
@@ -51,10 +51,11 @@ function conditional_fields_theme() {
  */
 function conditional_fields_entity_operation(EntityInterface $entity) {
   $operations = [];
-  if ($entity->getEntityTypeId() == 'node_type') {
+  $url = Url::fromRoute('conditional_fields.tab.node', [$entity->getEntityTypeId() => $entity->id()]);
+  if ($entity->getEntityTypeId() == 'node_type' && $url->access()) {
     $operations['dependencies'] = [
-      'title' => t('Dependencies'),
-      'url' => Url::fromRoute('conditional_fields.tab.node', [$entity->getEntityTypeId() => $entity->id()]),
+      'title' => t('Manage dependencies'),
+      'url' => $url,
       'weight' => 29,
     ];
   }
@@ -95,7 +96,7 @@ function conditional_fields_conditional_fields_alter(&$fields, $entity_type, $bu
 }
 
 /**
- * After build function to process field depencies.
+ * After build function to process field dependencies.
  */
 function conditional_fields_element_after_build($element, FormStateInterface &$form_state) {
   return \Drupal::service('conditional_fields.element_alter_helper')->afterBuild($element, $form_state);
@@ -109,7 +110,7 @@ function conditional_fields_element_after_build($element, FormStateInterface &$f
  * @param array $field
  *   The field form element.
  *
- * @return string|FALSE
+ * @return string|false
  *   A jQuery selector string.
  */
 function conditional_fields_field_selector($field) {
@@ -158,31 +159,52 @@ function conditional_fields_field_widget_third_party_settings_form(WidgetInterfa
  * Implements hook_form_alter().
  *
  * Hook_form_alter() that attaches an 'afterbuild' function to the form.
- *
- * @param $form
- *   The form to attach the callback to.
- * @param $form_state
- *   Not used, part of the hook interface.
- * @param $form_id
- *   Not used, part of the hook interface.
  */
 function conditional_fields_form_alter(&$form, &$form_state, $form_id) {
   $form['#after_build'][] = 'conditional_fields_form_after_build';
 }
 
 /**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ *
+ * Hook_inline_entity_form_entity_form_alter() that attaches an 'afterbuild'
+ * function to the form.
+ */
+function conditional_fields_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  $entity_form['#after_build'][] = 'conditional_fields_form_after_build';
+}
+
+/**
+ * Implements hook_form_after_build().
+ *
  * Runs the 'afterbuild' validation of a form with dependencies.
- *
  * This function will run only once per form.
- *
- * @param $form
- *   The form to validate
- * @param $form_state
- *   The form's state.
- *
- * @return mixed
- *   The form.
  */
 function conditional_fields_form_after_build($form, &$form_state) {
   return \Drupal::service('conditional_fields.form_helper')->afterBuild($form, $form_state);
+}
+
+/**
+ * Allows identify dependents/dependees with predictable IDs.
+ */
+function conditional_fields_get_simpler_id($id) {
+  // Removes an appended identifier used for individual options.
+  // preg_match('/.*([-]{2,}[a-zA-Z0-9]+)$/', $id, $matches);.
+  preg_match('/.*(--[a-zA-Z0-9-_]+)$/', $id, $matches);
+  if ($matches[1] ?? FALSE) {
+    $id = str_replace($matches[1], '', $id);
+  }
+
+  $strings_to_remove = [
+    '-0-value',
+    '-value',
+  ];
+  foreach ($strings_to_remove as $string_to_remove) {
+    $string_to_remove_strlen = strlen($string_to_remove);
+    if ((strrpos($id, $string_to_remove) + $string_to_remove_strlen) == strlen($id)) {
+      return substr($id, 0, -$string_to_remove_strlen);
+    }
+  }
+
+  return $id;
 }

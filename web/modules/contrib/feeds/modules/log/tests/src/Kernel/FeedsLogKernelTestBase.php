@@ -46,7 +46,7 @@ abstract class FeedsLogKernelTestBase extends FeedsKernelTestBase {
    * @return \stdClass[]
    *   A list of log entries.
    */
-  protected function getLogEntries(int $import_id = NULL): array {
+  protected function getLogEntries(?int $import_id = NULL): array {
     $query = $this->container->get('database')
       ->select('feeds_import_log_entry')
       ->fields('feeds_import_log_entry', []);

@@ -37,7 +37,7 @@ trait EventDispatcherTrait {
    * @return \Symfony\Contracts\EventDispatcher\Event
    *   The invoked event.
    */
-  protected function dispatchEvent($event_name, Event $event = NULL) {
+  protected function dispatchEvent($event_name, ?Event $event = NULL) {
     return $this->getEventDispatcher()->dispatch($event, $event_name);
   }
 

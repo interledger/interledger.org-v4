@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\feeds\Exception\MissingTargetException;
-use Drupal\feeds\Feeds\FeedsSingleLazyPluginCollection;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\FeedsSingleLazyPluginCollection;
 use Drupal\feeds\Plugin\DependentWithRemovalPluginInterface;
 use Drupal\feeds\Plugin\Type\LockableInterface;
 use Drupal\feeds\Plugin\Type\Target\ConfigurableTargetInterface;
@@ -215,9 +215,10 @@ class FeedType extends ConfigEntityBundleBase implements FeedTypeInterface, Enti
     // \Drupal\Core\Entity\EntityType instance which can contain a
     // stringTranslation object that is not serializable.
     // @see https://www.drupal.org/project/drupal/issues/2893029
-    $vars = array_flip($vars);
-    unset($vars['pluginCollection']);
-    $vars = array_flip($vars);
+    $key = array_search('pluginCollection', $vars);
+    if ($key !== FALSE) {
+      unset($vars[$key]);
+    }
 
     return $vars;
   }

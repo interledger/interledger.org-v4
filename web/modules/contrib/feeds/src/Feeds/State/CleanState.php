@@ -171,7 +171,7 @@ class CleanState extends State implements CleanStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function nextEntity(EntityStorageInterface $storage = NULL) {
+  public function nextEntity(?EntityStorageInterface $storage = NULL) {
     if (!$this->initiated()) {
       return;
     }

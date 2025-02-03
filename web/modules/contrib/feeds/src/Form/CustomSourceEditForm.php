@@ -76,7 +76,7 @@ class CustomSourceEditForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FeedTypeInterface $feeds_feed_type = NULL, $key = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FeedTypeInterface $feeds_feed_type = NULL, $key = NULL) {
     $this->feedType = $feeds_feed_type;
     if (!$this->feedType->customSourceExists($key)) {
       throw new NotFoundHttpException();

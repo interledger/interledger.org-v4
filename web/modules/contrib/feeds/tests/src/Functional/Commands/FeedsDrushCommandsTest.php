@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional\Commands;
 
-use Drupal\node\Entity\Node;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
+use Drupal\node\Entity\Node;
 use Drush\TestTraits\DrushTestTrait;
 
 /**

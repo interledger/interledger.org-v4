@@ -5,3 +5,6 @@ block.settings.entity_block:*:
     entity:
       type: string
       label: 'Entity'
+    view_mode:
+      type: machine_name
+      label: 'View mode'

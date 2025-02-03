@@ -5,8 +5,9 @@ namespace Drupal\Tests\feeds\Unit\Result;
 use Drupal\Component\DependencyInjection\ReverseContainer;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\feeds\Result\HttpFetcherResult;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Result\HttpFetcherResult;
+use Prophecy\Argument;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Result\HttpFetcherResult
@@ -22,6 +23,7 @@ class HttpFetcherResultTest extends FeedsUnitTestCase {
 
     // Set a mock for the file_system service.
     $file_system = $this->prophesize(FileSystemInterface::class);
+    $file_system->delete(Argument::any())->willReturn(TRUE);
     $container = new ContainerBuilder();
     $container->set(ReverseContainer::class, new ReverseContainer($container));
     $container->set('file_system', $file_system->reveal());

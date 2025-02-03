@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
-use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
-use Drupal\node\Entity\Node;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
+use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Path

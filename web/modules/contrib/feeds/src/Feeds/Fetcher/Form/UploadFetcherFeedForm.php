@@ -67,7 +67,7 @@ class UploadFetcherFeedForm extends ExternalPluginFormBase implements ContainerI
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $form['source'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('File'),
@@ -88,7 +88,7 @@ class UploadFetcherFeedForm extends ExternalPluginFormBase implements ContainerI
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     // We need to store this for later so that we have the feed id.
     $new_fid = reset($form_state->getValue('source'));
     $feed_config = $feed->getConfigurationFor($this->plugin);

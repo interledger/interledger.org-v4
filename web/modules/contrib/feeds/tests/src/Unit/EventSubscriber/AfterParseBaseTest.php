@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Unit\EventSubscriber;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ParseEvent;
 use Drupal\feeds\EventSubscriber\AfterParseBase;
@@ -9,7 +10,6 @@ use Drupal\feeds\Exception\SkipItemException;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Result\ParserResult;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**

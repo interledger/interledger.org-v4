@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
-use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\user\UserInterface;
 
 /**

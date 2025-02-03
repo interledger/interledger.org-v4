@@ -1,8 +1,13 @@
 # Conditional Fields
 
-Conditional Fields allows you to manage sets of dependencies between fields. When a field is “dependent”, it will only be available for editing and displayed if the state of the “dependee” field matches the right condition.
-When editing a node (or any other entity type that supports fields, like users and categories), the dependent fields are dynamically modified with the States API.
-A simple use case would be defining a custom “Article teaser" field that is shown only if a "Has teaser" checkbox is checked, but much more complex options are available.
+Conditional Fields allows you to manage sets of dependencies between fields.
+When a field is “dependent”, it will only be available for editing and displayed
+if the state of the “dependee” field matches the right condition.
+When editing a node (or any other entity type that supports fields, like users
+and categories), the dependent fields are dynamically modified with the States
+API. A simple use case would be defining a custom “Article teaser" field that is
+shown only if a "Has teaser" checkbox is checked, but much more complex options
+are available.
 
 For a full description of the module, visit the
 [project page](https://www.drupal.org/project/conditional_fields).
@@ -33,7 +38,8 @@ information, see
 
 ## Configuration
 
-After enable the module, you can create conditional fields on /admin/structure/conditional_fields.
+After enable the module, you can create conditional fields on
+/admin/structure/conditional_fields.
 
 
 ## Maintainers

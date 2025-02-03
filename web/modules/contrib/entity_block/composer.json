@@ -1,0 +1,6 @@
+{
+  "name": "drupal/entity_block",
+  "description": "Let site administrators place content entities as blocks.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later"
+}

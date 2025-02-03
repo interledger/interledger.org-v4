@@ -5,8 +5,8 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\feeds\Exception\ReferenceNotFoundException;
-use Drupal\feeds\Feeds\Target\ConfigEntityReference;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Target\ConfigEntityReference;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**

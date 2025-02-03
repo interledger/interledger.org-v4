@@ -2,9 +2,9 @@
 
 namespace Drupal\conditional_fields\Plugin\conditional_fields\handler;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\conditional_fields\ConditionalFieldsHandlerBase;
 use Drupal\conditional_fields\ConditionalFieldsInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Provides states handler for date lists.
@@ -42,12 +42,12 @@ class DateList extends ConditionalFieldsHandlerBase {
         $parts = preg_split($pattern, $options['regex']);
         if (is_array($parts)) {
           $date_patterns = [
-            'year' => isset($parts[0]) ? $parts[0] : '.*',
-            'month' => isset($parts[1]) ? $parts[1] : '.*',
-            'day' => isset($parts[2]) ? $parts[2] : '.*',
-            'hour' => isset($parts[3]) ? $parts[3] : '.*',
-            'minute' => isset($parts[4]) ? $parts[4] : '.*',
-            'second' => isset($parts[5]) ? $parts[5] : '.*',
+            'year' => $parts[0] ?? '.*',
+            'month' => $parts[1] ?? '.*',
+            'day' => $parts[2] ?? '.*',
+            'hour' => $parts[3] ?? '.*',
+            'minute' => $parts[4] ?? '.*',
+            'second' => $parts[5] ?? '.*',
           ];
           if (isset($field['#value']) && is_array($field['#value'])) {
             foreach ($field['#value'] as $key => $default_value) {

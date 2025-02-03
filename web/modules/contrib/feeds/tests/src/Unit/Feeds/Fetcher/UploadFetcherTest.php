@@ -4,12 +4,12 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Feeds\Fetcher\UploadFetcher;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Fetcher\UploadFetcher;
 use Drupal\feeds\StateInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\UploadFetcher

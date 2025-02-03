@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Laminas\Extension\Georss;
 
-use Drupal\feeds\Laminas\Extension\Georss\Entry;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Laminas\Extension\Georss\Entry;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Laminas\Extension\Georss\Entry

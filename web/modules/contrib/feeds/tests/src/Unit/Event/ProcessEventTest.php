@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Unit\Event;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Event\ProcessEvent;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\ProcessEvent

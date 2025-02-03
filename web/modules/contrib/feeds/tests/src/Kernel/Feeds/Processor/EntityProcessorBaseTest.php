@@ -5,15 +5,15 @@ namespace Drupal\Tests\feeds\Kernel\Feeds\Processor;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\Tests\feeds\Traits\FeedsMockingTrait;
 use Drupal\feeds\FeedInterface;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\Processor\EntityProcessorBase;
 use Drupal\feeds\Feeds\Target\StringTarget;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\StateInterface;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
-use Drupal\Tests\feeds\Traits\FeedsMockingTrait;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Processor\EntityProcessorBase

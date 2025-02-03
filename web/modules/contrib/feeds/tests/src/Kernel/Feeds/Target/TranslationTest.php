@@ -2,12 +2,12 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
+use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\language\ConfigurableLanguageInterface;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
-use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 
 /**
  * Test for the entity field translation.

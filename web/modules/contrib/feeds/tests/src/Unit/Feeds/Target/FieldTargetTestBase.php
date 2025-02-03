@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * Base class for testing feeds field targets.

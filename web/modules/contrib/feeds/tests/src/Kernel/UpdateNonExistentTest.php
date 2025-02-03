@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Kernel;
 
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\feeds\StateInterface;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests the feature of updating items that are no longer available in the feed.

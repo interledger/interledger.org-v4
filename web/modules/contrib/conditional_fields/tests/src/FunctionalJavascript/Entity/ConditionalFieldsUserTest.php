@@ -3,10 +3,10 @@
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript\Entity;
 
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Tests\conditional_fields\FunctionalJavascript\ConditionalFieldTestBase;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Tests\conditional_fields\FunctionalJavascript\ConditionalFieldTestBase;
-use Drupal\Core\Entity\Entity\EntityFormDisplay;
 
 /**
  * Test Conditional Fields check User entity.

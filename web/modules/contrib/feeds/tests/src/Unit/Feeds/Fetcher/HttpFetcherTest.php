@@ -4,12 +4,12 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Fetcher;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Feeds\Fetcher\HttpFetcher;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Fetcher\HttpFetcher;
 use Drupal\feeds\File\FeedsFileSystemInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
@@ -73,6 +73,7 @@ class HttpFetcherTest extends FeedsUnitTestCase {
     $this->feed = $this->prophesize(FeedInterface::class);
     $this->feed->id()->willReturn(1);
     $this->feed->getSource()->willReturn('http://example.com');
+    $this->feed->getConfigurationFor(Argument::any())->willReturn([]);
   }
 
   /**

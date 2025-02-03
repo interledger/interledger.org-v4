@@ -3,10 +3,11 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser\Form;
 
 use Drupal\Core\Form\FormState;
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\FeedInterface;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Parser\Form\CsvParserFeedForm;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Parser\Form\CsvParserFeedForm
@@ -24,6 +25,10 @@ class CsvParserFeedFormTest extends FeedsUnitTestCase {
   public function testFeedForm() {
     $plugin = $this->createMock(FeedsPluginInterface::class);
 
+    $feed_type = $this->prophesize(FeedTypeInterface::class);
+    $feed_type->id()->willReturn('foo');
+    $feed_type->getMappings()->willReturn([]);
+
     $feed = $this->prophesize(FeedInterface::class);
     $feed->getConfigurationFor($plugin)
       ->willReturn(['delimiter' => ',', 'no_headers' => FALSE]);
@@ -31,6 +36,8 @@ class CsvParserFeedFormTest extends FeedsUnitTestCase {
       'delimiter' => ';',
       'no_headers' => TRUE,
     ])->shouldBeCalled();
+    $feed->isNew()->willReturn(TRUE);
+    $feed->getType()->willReturn($feed_type->reveal());
 
     $form_object = new CsvParserFeedForm();
 

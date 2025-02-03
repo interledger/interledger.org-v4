@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Functional\Plugin\Field\FieldFormatter;
 
-use Drupal\feeds\FeedInterface;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
+use Drupal\feeds\FeedInterface;
 
 /**
  * Base class for the feeds item field formatter tests.

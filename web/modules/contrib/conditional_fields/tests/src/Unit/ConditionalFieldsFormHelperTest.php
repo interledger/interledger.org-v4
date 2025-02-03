@@ -2,12 +2,14 @@
 
 namespace Drupal\Tests\conditional_fields\Unit;
 
+use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
+use Drupal\Core\Form\FormState;
+use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Render\ElementInfoManager;
+use Drupal\Tests\UnitTestCase;
 use Drupal\conditional_fields\ConditionalFieldsFormHelper;
 use Drupal\conditional_fields\ConditionalFieldsHandlersManager;
-use Drupal\Core\Form\FormState;
-use Drupal\Core\Render\ElementInfoManager;
 use Drupal\node\NodeForm;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * Unit test the ConditionalFieldsFormHelper class.
@@ -25,7 +27,9 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
 
     // Set up fixtures.
     $sutClass->effects = [];
@@ -49,8 +53,9 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
-
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
     // Set up fixtures.
     $sutClass->effects = ['some_effect'];
     $sutClass->form = [];
@@ -76,14 +81,16 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
 
     // Set up fixtures.
     $formState = $this->createMock(FormState::class);
     $formState->expects($this->exactly(1))
       ->method('setValue')
       ->with('conditional_fields_untriggered_dependents', []);
-    $sutClass->form_state = $formState;
+    $sutClass->formState = $formState;
     $sutClass->form = [];
 
     // Run the method under test.
@@ -168,14 +175,16 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
 
     // Set up fixtures.
     $sutClass->form = ['#conditional_fields' => []];
     $formState = $this->createMock(FormState::class);
     $formState->expects($this->exactly(0))
       ->method('getFormObject');
-    $sutClass->form_state = $formState;
+    $sutClass->formState = $formState;
 
     // Run the method under test.
     $result = $sutClass->hasConditionalFields();
@@ -193,7 +202,9 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
 
     // Set up fixtures.
     $sutClass->form = ['#conditional_fields' => ['test' => 'test']];
@@ -201,7 +212,7 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     $formState->expects($this->exactly(1))
       ->method('getFormObject')
       ->willReturnOnConsecutiveCalls(new \stdClass());
-    $sutClass->form_state = $formState;
+    $sutClass->formState = $formState;
 
     // Run the method under test.
     $result = $sutClass->hasConditionalFields();
@@ -219,7 +230,9 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     // Create an instance of the class we are testing.
     $elementInfo = $this->createMock(ElementInfoManager::class);
     $cfHandlersManager = $this->createMock(ConditionalFieldsHandlersManager::class);
-    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager);
+    $entityDisplayRepository = $this->createMock(EntityDisplayRepositoryInterface::class);
+    $languageManager = $this->createMock(LanguageManager::class);
+    $sutClass = new ConditionalFieldsFormHelper($elementInfo, $cfHandlersManager, $entityDisplayRepository, $languageManager);
 
     // Set up fixtures.
     $sutClass->form = ['#conditional_fields' => ['test' => 'test']];
@@ -228,7 +241,7 @@ class ConditionalFieldsFormHelperTest extends UnitTestCase {
     $formState->expects($this->exactly(1))
       ->method('getFormObject')
       ->willReturnOnConsecutiveCalls($formObject);
-    $sutClass->form_state = $formState;
+    $sutClass->formState = $formState;
 
     // Run the method under test.
     $result = $sutClass->hasConditionalFields();

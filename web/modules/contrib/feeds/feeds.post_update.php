@@ -7,8 +7,8 @@
 
 use Drupal\Core\Config\Entity\ConfigEntityUpdater;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\feeds\Feeds\Parser\CsvParser;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Parser\CsvParser;
 use Drupal\field\FieldStorageConfigInterface;
 
 /**

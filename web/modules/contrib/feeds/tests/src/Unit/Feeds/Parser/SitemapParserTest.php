@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Parser\SitemapParser;
 use Drupal\feeds\Result\RawFetcherResult;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Parser\SitemapParser

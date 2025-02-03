@@ -2,12 +2,12 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
-use Drupal\conditional_fields\ConditionalFieldsInterface;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldFilledEmptyInterface;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
+use Drupal\conditional_fields\ConditionalFieldsInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Test Conditional Fields Text Handler.
@@ -15,8 +15,8 @@ use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFi
  * @group conditional_fields
  */
 class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
-    ConditionalFieldValueInterface,
-    ConditionalFieldFilledEmptyInterface {
+  ConditionalFieldValueInterface,
+  ConditionalFieldFilledEmptyInterface {
 
   /**
    * {@inheritdoc}
@@ -42,7 +42,7 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
    *
    * @var string
    */
-  protected $targetFieldWrapp = '';
+  protected $targetFieldWrap = '';
 
   /**
    * Jquery selector of field in a document.
@@ -58,7 +58,7 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     parent::setUp();
 
     $this->fieldSelector = '[name="field_' . $this->fieldName . '[0][value]"]';
-    $this->targetFieldWrapp = '.field--name-' . str_replace('_', '-', $this->targetFieldName);
+    $this->targetFieldWrap = '.field--name-' . str_replace('_', '-', $this->targetFieldName);
 
     $fieldStorageDefinition = [
       'field_name' => 'field_' . $this->fieldName,
@@ -112,12 +112,12 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     $this->drupalGet('node/add/article');
 
     // Check that the field Body is not visible.
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
     $this->changeField($this->fieldSelector, $text);
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '02. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '02. Article Body field is not visible');
     // Change a select value set to hide the body again.
     $this->changeField($this->fieldSelector, $text . 'a');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '03. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '03. Article Body field is visible');
   }
 
   /**
@@ -136,8 +136,8 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
       'effect' => 'show',
     ];
 
-    $text_without_expresion = 'The field in not empty';
-    $text_with_expresion = 'The field has data=2 text';
+    $text_without_expression = 'The field in not empty';
+    $text_with_expression = 'The field has data=2 text';
 
     $this->submitForm($data, 'Save settings');
 
@@ -147,13 +147,13 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
       ->pageTextContains($this->targetFieldName . ' ' . 'field_' . $this->fieldName . ' visible value');
 
     $this->drupalGet('node/add/article');
-    $this->assertSession()->elementExists('css', $this->targetFieldWrapp);
+    $this->assertSession()->elementExists('css', $this->targetFieldWrap);
 
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
-    $this->changeField($this->fieldSelector, $text_without_expresion);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '02. Article Body field is visible');
-    $this->changeField($this->fieldSelector, $text_with_expresion);
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '03. Article Body field is not visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
+    $this->changeField($this->fieldSelector, $text_without_expression);
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '02. Article Body field is visible');
+    $this->changeField($this->fieldSelector, $text_with_expression);
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '03. Article Body field is not visible');
 
   }
 
@@ -182,21 +182,21 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     $this->submitForm($data, 'Save settings');
 
     $this->drupalGet('node/add/article');
-    $this->assertSession()->elementExists('css', $this->targetFieldWrapp);
+    $this->assertSession()->elementExists('css', $this->targetFieldWrap);
 
     $text_false = implode(' ', [$text_1, $text_2]);
 
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, $text_false);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '02. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '02. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, $text_1);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '03. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '03. Article Body field is visible');
 
     // Change a value value to hide the body again.
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '04. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '04. Article Body field is visible');
 
   }
 
@@ -234,23 +234,23 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     $this->drupalGet('node/add/article');
 
     // Check that the field Body is not visible.
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
 
     // Change value that should not show the body.
     $this->changeField($this->fieldSelector, 'wrong');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '02. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '02. Article Body field is visible');
 
     // Change a value value to show the body.
     $this->changeField($this->fieldSelector, $text1);
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '03. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '03. Article Body field is not visible');
 
     // Change a value value to show the body.
     $this->changeField($this->fieldSelector, $text2);
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '04. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '04. Article Body field is not visible');
 
     // Change a value value to hide the body again.
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '05. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '05. Article Body field is visible');
   }
 
   /**
@@ -284,19 +284,19 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
 
     $this->drupalGet('node/add/article');
 
-    $this->waitUntilVisible($this->targetFieldWrapp, 0, '01. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 0, '01. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, 'some-unique-text');
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '02. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '02. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, $text_1);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '03. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '03. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, $text_2);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '04. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '04. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, "");
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '05. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '05. Article Body field is not visible');
   }
 
   /**
@@ -329,20 +329,20 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
       ->pageTextContains($this->targetFieldName . ' ' . 'field_' . $this->fieldName . ' visible value');
 
     $this->drupalGet('node/add/article');
-    $this->assertSession()->elementExists('css', $this->targetFieldWrapp);
+    $this->assertSession()->elementExists('css', $this->targetFieldWrap);
 
     $text_false = 'same unique value';
 
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, $text_false);
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '02. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '02. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, $text_1);
-    $this->waitUntilVisible($this->targetFieldWrapp, 50, '03. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 50, '03. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, "");
-    $this->waitUntilHidden($this->targetFieldWrapp, 50, '04. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 50, '04. Article Body field is visible');
   }
 
   /**
@@ -363,13 +363,13 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     $this->drupalGet('node/add/article');
 
     // Check that the field Body is not visible.
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, '02. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, '02. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilHidden($this->targetFieldWrapp, 10, '03. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 10, '03. Article Body field is visible');
   }
 
   /**
@@ -385,13 +385,13 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
 
     $this->drupalGet('node/add/article');
 
-    $this->waitUntilVisible($this->targetFieldWrapp, 0, '01. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 0, '01. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilHidden($this->targetFieldWrapp, 10, '02. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 10, '02. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, '03. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, '03. Article Body field is not visible');
   }
 
   /**
@@ -407,13 +407,13 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
 
     $this->drupalGet('node/add/article');
 
-    $this->waitUntilVisible($this->targetFieldWrapp, 0, '01. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 0, '01. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilHidden($this->targetFieldWrapp, 10, '02. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 10, '02. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, '03. Article Body field is  notvisible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, '03. Article Body field is not visible');
   }
 
   /**
@@ -433,13 +433,13 @@ class ConditionalFieldTextfieldTest extends ConditionalFieldTestBase implements
     // Visit Article Add form to check that conditions are applied.
     $this->drupalGet('node/add/article');
 
-    $this->waitUntilHidden($this->targetFieldWrapp, 0, '01. Article Body field is visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 0, '01. Article Body field is visible');
 
     $this->changeField($this->fieldSelector, 'This field is not empty.');
-    $this->waitUntilVisible($this->targetFieldWrapp, 10, '02. Article Body field is not visible');
+    $this->waitUntilVisible($this->targetFieldWrap, 10, '02. Article Body field is not visible');
 
     $this->changeField($this->fieldSelector, '');
-    $this->waitUntilHidden($this->targetFieldWrapp, 10, '03. Article Body field is not visible');
+    $this->waitUntilHidden($this->targetFieldWrap, 10, '03. Article Body field is not visible');
   }
 
 }

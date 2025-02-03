@@ -3,13 +3,13 @@
 namespace Drupal\Tests\feeds\FunctionalJavascript;
 
 use Drupal\Component\Utility\Html;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\Tests\Traits\Core\CronRunTrait;
+use Drupal\Tests\feeds\Traits\FeedCreationTrait;
+use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
 use Drupal\feeds\Entity\FeedType;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedTypeInterface;
-use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\Tests\feeds\Traits\FeedCreationTrait;
-use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
-use Drupal\Tests\Traits\Core\CronRunTrait;
 
 /**
  * Base class for Feeds javascript tests.

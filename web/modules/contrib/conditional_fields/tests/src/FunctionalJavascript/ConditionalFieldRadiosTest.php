@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
-use Drupal\conditional_fields\ConditionalFieldsInterface;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
-use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldCheckedUncheckedInterface;
 use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
+use Drupal\conditional_fields\ConditionalFieldsInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Test Conditional Fields States.
@@ -16,10 +16,10 @@ use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFi
  * @group conditional_fields
  */
 class ConditionalFieldRadiosTest extends ConditionalFieldTestBase implements
-    ConditionalFieldValueInterface,
-    ConditionalFieldCheckedUncheckedInterface {
+  ConditionalFieldValueInterface,
+  ConditionalFieldCheckedUncheckedInterface {
 
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
 
   /**
    * {@inheritdoc}

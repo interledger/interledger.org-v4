@@ -19,7 +19,7 @@ class ClearFeedAction extends FeedActionBase {
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     return $object->access('clear', $account, $return_as_object);
   }
 

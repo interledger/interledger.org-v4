@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\FunctionalJavascript\Form;
 
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\feeds\FunctionalJavascript\FeedsJavascriptTestBase;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Form\MappingForm

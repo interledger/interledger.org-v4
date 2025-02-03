@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\conditional_fields\FunctionalJavascript;
 
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
 use Drupal\conditional_fields\ConditionalFieldsInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\Tests\conditional_fields\FunctionalJavascript\TestCases\ConditionalFieldValueInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Test Conditional Fields States.

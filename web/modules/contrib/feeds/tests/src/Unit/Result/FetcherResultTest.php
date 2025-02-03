@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Result;
 
-use Drupal\feeds\Result\FetcherResult;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Result\FetcherResult;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Result\FetcherResult

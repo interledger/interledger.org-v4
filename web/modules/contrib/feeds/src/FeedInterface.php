@@ -282,7 +282,7 @@ interface FeedInterface extends ContentEntityInterface, EntityChangedInterface, 
    * @param \Drupal\feeds\StateInterface|null $state
    *   A state object or null to unset the state for the given stage.
    */
-  public function setState($stage, StateInterface $state = NULL);
+  public function setState($stage, ?StateInterface $state = NULL);
 
   /**
    * Clears all state objects for the feed.

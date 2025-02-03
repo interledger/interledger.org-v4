@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\feeds\Unit\Entity;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Entity\FeedType;
 use Drupal\feeds\Plugin\Type\FeedsPluginManager;
 use Drupal\feeds\Plugin\Type\Parser\ParserInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Entity\FeedType

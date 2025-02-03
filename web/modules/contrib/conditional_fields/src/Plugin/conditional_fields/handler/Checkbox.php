@@ -60,7 +60,7 @@ class Checkbox extends ConditionalFieldsHandlerBase {
    *   Values for triggering events.
    */
   public function getWidgetValue(array $value_form) {
-    return isset($value_form[0]['value']) ? $value_form[0]['value'] : $value_form;
+    return $value_form[0]['value'] ?? $value_form;
   }
 
 }

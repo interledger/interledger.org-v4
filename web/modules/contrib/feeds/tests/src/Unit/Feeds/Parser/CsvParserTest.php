@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Parser;
 
+use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\Feeds\Parser\CsvParser;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Parser\CsvParser;
 use Drupal\feeds\Result\FetcherResult;
 use Drupal\feeds\StateInterface;
-use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Parser\CsvParser
@@ -190,6 +190,208 @@ class CsvParserTest extends FeedsUnitTestCase {
   public function testGetMappingSources() {
     // Not really much to test here.
     $this->assertSame([], $this->parser->getMappingSources());
+  }
+
+  /**
+   * @covers ::getTemplateContents
+   *
+   * @param string $expected
+   *   The expected contents of the CSV template.
+   * @param string $delimiter
+   *   The delimiter to test with.
+   * @param array $columns
+   *   The CSV columns, keyed by machine name.
+   *
+   * @dataProvider getTemplateDataProvider
+   */
+  public function testGetTemplateContentsForFeedType($expected, $delimiter, array $columns) {
+    // Set mapping sources.
+    $sources = [];
+    foreach ($columns as $machine_name => $column) {
+      $sources[$machine_name] = [
+        'label' => $column,
+        'value' => $column,
+        'machine_name' => $machine_name,
+      ];
+    }
+
+    // Also add custom sources of a different type.
+    $sources['blank'] = [
+      'label' => 'Blank',
+      'value' => 'blank',
+      'machine_name' => 'blank',
+      'type' => 'blank',
+    ];
+    $sources['parent:title'] = [
+      'label' => 'Feed: @label',
+      'description' => 'The title of this feed, always treated as non-markup plain text.',
+      'id' => 'basic_field',
+      'type' => 'Feed entity',
+    ];
+
+    $this->feedType->method('getMappingSources')
+      ->willReturn($sources);
+
+    // Set delimiter config.
+    $config = $this->parser->getConfiguration();
+    $config['delimiter'] = $delimiter;
+    $this->parser->setConfiguration($config);
+
+    $this->assertSame($expected, $this->parser->getTemplateContents($this->feedType));
+  }
+
+  /**
+   * Data provider for ::testGetTemplate().
+   */
+  public static function getTemplateDataProvider(): array {
+    $default_columns = [
+      'title_' => 'title+;|',
+      'alpha_beta_gamma' => 'alpha, beta + gamma',
+      'guid' => 'guid',
+    ];
+
+    return [
+      // Delimiter ',' test. Source keys containing a ',' should be wrapped in
+      // quotes.
+      [
+        'expected' => 'title+;|,"alpha, beta + gamma",guid' . "\n",
+        'delimiter' => ',',
+        'columns' => $default_columns,
+      ],
+
+      // Delimiter ';' test. Source keys containing a ';' should be wrapped in
+      // quotes.
+      [
+        'expected' => '"title;)";alpha, beta + gamma;guid' . "\n",
+        'delimiter' => ';',
+        'columns' => [
+          'title_' => 'title;)',
+        ] + $default_columns,
+      ],
+
+      // Delimiter 'TAB' test.
+      [
+        'expected' => 'title,;|	alpha, beta + gamma	guid' . "\n",
+        'delimiter' => 'TAB',
+        'columns' => [
+          'title_' => 'title,;|',
+        ] + $default_columns,
+      ],
+
+      // Delimiter '|' test. Source keys containing a '|' should be wrapped in
+      // quotes.
+      [
+        'expected' => 'title+;,|"alpha|beta|gamma"|guid' . "\n",
+        'delimiter' => '|',
+        'columns' => [
+          'title_' => 'title+;,',
+          'alpha_beta_gamma' => 'alpha|beta|gamma',
+        ] + $default_columns,
+      ],
+
+      // Delimiter '+' test. Source keys containing a '+' should be wrapped in
+      // quotes.
+      [
+        'expected' => 'title,;|+"alpha, beta + gamma"+guid' . "\n",
+        'delimiter' => '+',
+        'columns' => [
+          'title_' => 'title,;|',
+        ] + $default_columns,
+      ],
+
+      // Ensure that when a source key is used multiple times in mapping, the
+      // key is only printed once in the CSV template.
+      [
+        'expected' => 'text,guid,date' . "\n",
+        'delimiter' => ',',
+        'columns' => [
+          'text' => 'text',
+          'guid' => 'guid',
+          'date' => 'date',
+        ],
+      ],
+
+      // Special characters. Things like '&' shouldn't be converted to '&amp;'
+      // for example.
+      [
+        'expected' => '&,alpha&beta,<created>,guid' . "\n",
+        'delimiter' => ',',
+        'columns' => [
+          'title_' => '&',
+          'alpha_beta_gamma' => 'alpha&beta',
+          'created' => '<created>',
+          'guid' => 'guid',
+        ],
+      ],
+
+      // Blank sources (source which name only contains spaces) should not end
+      // up in the template, but a zero should.
+      [
+        'expected' => '0' . "\n",
+        'delimiter' => ',',
+        'columns' => [
+          '0' => '0',
+          'empty' => ' ',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * @covers ::getTemplateContents
+   */
+  public function testGetTemplateContentsForFeed() {
+    // Set mapping sources.
+    $sources = [
+      'foo_1' => [
+        'label' => 'Foo 1',
+        'value' => 'Foo',
+        'machine_name' => 'foo_1',
+      ],
+      'bar' => [
+        'label' => 'Bar',
+        'value' => 'bar',
+        'machine_name' => 'bar',
+      ],
+      'alpha_beta_gamma' => [
+        'label' => 'Alpha, Beta plus Gamma',
+        'value' => 'alpha, beta + gamma',
+        'machine_name' => 'alpha_beta_gamma',
+      ],
+    ];
+
+    // Also add custom sources of a different type.
+    $sources['blank'] = [
+      'label' => 'Blank',
+      'value' => 'blank',
+      'machine_name' => 'blank',
+      'type' => 'blank',
+    ];
+    $sources['parent:title'] = [
+      'label' => 'Feed: @label',
+      'description' => 'The title of this feed, always treated as non-markup plain text.',
+      'id' => 'basic_field',
+      'type' => 'Feed entity',
+    ];
+
+    $this->feedType->method('getMappingSources')
+      ->willReturn($sources);
+
+    // Set delimiter config on the parser.
+    $config = $this->parser->getConfiguration();
+    $config['delimiter'] = ',';
+    $this->parser->setConfiguration($config);
+
+    // Set delimiter config on the feed.
+    $this->feed->expects($this->any())
+      ->method('getConfigurationFor')
+      ->with($this->parser)
+      ->willReturn([
+        'delimiter' => 'TAB',
+      ] + $this->parser->defaultFeedConfiguration());
+
+    $expected = 'Foo	bar	alpha, beta + gamma' . "\n";
+    $this->assertSame($expected, $this->parser->getTemplateContents($this->feedType, $this->feed));
   }
 
 }

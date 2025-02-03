@@ -15,7 +15,7 @@ class DirectoryFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $args = ['%schemes' => implode(', ', $this->plugin->getConfiguration('allowed_schemes'))];
 
     $form['source'] = [
@@ -32,7 +32,7 @@ class DirectoryFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $source = $form_state->getValue('source');
 
     if (!is_readable($source) || (!is_dir($source) && !is_file($source))) {
@@ -55,7 +55,7 @@ class DirectoryFetcherFeedForm extends ExternalPluginFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, FeedInterface $feed = NULL) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state, ?FeedInterface $feed = NULL) {
     $feed->setSource($form_state->getValue('source'));
   }
 

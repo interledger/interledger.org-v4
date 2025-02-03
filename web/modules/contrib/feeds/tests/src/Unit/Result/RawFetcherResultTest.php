@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds\Unit\Result;
 
-use Drupal\feeds\Result\RawFetcherResult;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
+use Drupal\feeds\Result\RawFetcherResult;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Result\RawFetcherResult
