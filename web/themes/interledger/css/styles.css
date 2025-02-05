@@ -81,6 +81,7 @@
   --color-card-outline: rgba(25, 25, 25, 0.3);
   --color-btn-outline: rgba(25, 25, 25, 0.45);
   --color-btn-outline-pressed: rgba(25, 25, 25, 0.85);
+  --color-inline-code-bg: hsl(224, 20%, 94%);
 
   --color-tech-main-fallback: #007777;
   --color-tech-main: oklch(51.54% 0.088 194.77);
@@ -1104,6 +1105,10 @@ section {
   gap: var(--space-xs);
   list-style: none;
   padding-inline-start: 0;
+}
+
+p.blog-footer {
+  font-style: italic;
 }
 
 /* Blockquote content type styles */
@@ -2190,4 +2195,13 @@ button[aria-expanded="true"] + .faq__ans-wrapper {
 .talk__teaser p {
   font-size: var(--step--1);
   margin-block-end: var(--space-2xs);
+}
+
+code {
+  font-family: monospace;
+  background-color: var(--color-inline-code-bg);
+  padding: .125rem .375rem;
+  border-radius: 6px;
+  font-size: 0.95em;
+  white-space: nowrap;
 }
