@@ -18,7 +18,7 @@ use Drupal\media\Plugin\media\Source\File;
  *   thumbnail_alt_metadata_attribute = "thumbnail_alt_value"
  * )
  */
-class SVG extends File {
+class Svg extends File {
 
   /**
    * {@inheritdoc}

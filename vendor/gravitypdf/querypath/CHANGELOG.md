@@ -1,12 +1,23 @@
 QueryPath Changelog
 ===========================
 
+# Unreleased changes
+
+-
+
+# 4.1.0
+
+- Update composer.json to mark library as PHP 8.4 compatible
+- Use `\QueryPath\CSS\DOMTraverser\Util::parseAnB()` in `\QueryPath\CSS\QueryPathEventHandler` class to parse the `:nth-child(an+b)` syntax
+- Deprecate protected method `\QueryPath\CSS\QueryPathEventHandler::parseAnB()` in favor of public static method `\QueryPath\CSS\DOMTraverser\Util::parseAnB()`
+
 # 4.0.1
 
 - Only define global functions qp(), htmlqp(), and html5qp() if they haven't been defined already.
 - Fix for :nth-child(n+B) to select B-th and all following elements
 - Fix for :nth-child(-n+B) to select first B elements
 - Update PHPUnit Test Suite to use @dataProvider in testPseudoClassNthChild() to reduce code repetition
+- Fix error when getting parents() for HTML elements
 
 # 4.0.0
 

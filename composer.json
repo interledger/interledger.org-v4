@@ -27,7 +27,7 @@
         "drupal/feeds": "^3.0",
         "drupal/feeds_ex": "^1.0@beta",
         "drupal/feeds_tamper": "^2.0@beta",
-        "drupal/honeypot": "2.2.0",
+        "drupal/honeypot": "2.2.1",
         "drupal/layout_builder_admin_theme": "^2.0",
         "drupal/metatag": "^2.1",
         "drupal/paragraphs": "^1.16",

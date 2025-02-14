@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\svg_image_field\Traits;
 
 use Drupal\field\Entity\FieldConfig;
@@ -21,8 +23,8 @@ trait SvgImageFieldCreationTrait {
    *   (optional) A list of field storage settings that will be added to the
    *   defaults.
    * @param array $field_settings
-   *   (optional) A list of instance settings that will be added to the instance
-   *   defaults.
+   *   (optional) A list of instance settings that will be added to the
+   *   instance defaults.
    * @param array $widget_settings
    *   (optional) Widget settings to be added to the widget defaults.
    * @param array $formatter_settings

@@ -11,8 +11,8 @@ use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use enshrined\svgSanitize\Sanitizer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'svg_formatter' formatter.
@@ -265,7 +265,7 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
         // context to ensure different file URLs are generated for different
         // sites in a multisite setup, including HTTP and HTTPS versions of the
         // same site. Fix in https://www.drupal.org/node/2646744.
-        $url = \Drupal::service('file_url_generator')->generate($uri);
+        $url = $this->fileUrlGenerator->generate($uri);
         $cache_contexts[] = 'url.site';
       }
 
@@ -336,7 +336,7 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
     libxml_use_internal_errors(TRUE);
     $dom->loadXML($svg_file);
 
-    $element = null;
+    $element = NULL;
     if (isset($dom->documentElement)) {
       if ($this->getSetting('force_fill')) {
         $dom->documentElement->setAttribute('fill', 'currentColor');
@@ -424,7 +424,7 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) {
     return new static(
       $plugin_id,

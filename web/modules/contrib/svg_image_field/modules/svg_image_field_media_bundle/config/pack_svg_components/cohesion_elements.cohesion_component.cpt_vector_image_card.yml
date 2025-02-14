@@ -3665,7 +3665,7 @@ json_values: |
           },
           "0b0d8c6e-1050-4596-b46a-9b18c3b1f521": {
               "settings": {
-                  "title": "Vector Image",
+                  "title": "Vector image",
                   "type": "cohEntityBrowser",
                   "showConfig": false,
                   "hideRowHeading": true,
