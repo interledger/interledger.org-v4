@@ -713,6 +713,7 @@ section {
   border: 1px solid var(--color-primary);
   max-width: 10em;
   margin-inline: auto;
+  text-decoration: none;
   transition: transform 200ms ease-in-out;
 }
 
