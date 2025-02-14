@@ -291,14 +291,6 @@ figcaption {
     inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
 }
 
-.subscribe-btn,
-.subscribe-btn::before {
-  box-shadow: none;
-  border: 1px solid var(--color-primary-fallback);
-  border: 1px solid var(--color-primary);
-  text-decoration: none;
-}
-
 input:not([type="submit"]):not([type="file"]),
 textarea,
 select {
@@ -721,6 +713,11 @@ section {
   border: 1px solid var(--color-primary);
   max-width: 10em;
   margin-inline: auto;
+  transition: transform 200ms ease-in-out;
+}
+
+.site-footer .subscribe-btn:hover {
+  transform: scale(1.15);
 }
 
 .mailing-list h3 {
