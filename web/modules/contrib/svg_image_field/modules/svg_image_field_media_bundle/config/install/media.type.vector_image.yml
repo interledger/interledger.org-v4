@@ -4,7 +4,7 @@ dependencies:
   module:
     - svg_image_field
 id: vector_image
-label: 'Vector Image'
+label: 'Vector image'
 description: 'A locally hosted Scalable Vector Graphics file.'
 source: svg
 queue_thumbnail_downloads: false

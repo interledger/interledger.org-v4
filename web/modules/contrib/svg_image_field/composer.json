@@ -1,31 +1,42 @@
 {
-  "name": "drupal/svg_image_field",
-  "description": "Provides SVG Image field.",
-  "type": "drupal-module",
-  "homepage": "https://www.drupal.org/project/svg_image_field",
-  "authors": [
-    {
-      "name": "See contributors",
-      "homepage": "https://www.drupal.org/node/2863622/committers"
+    "name": "drupal/svg_image_field",
+    "type": "drupal-module",
+    "description": "Provides SVG Image field.",
+    "license": "GPL-2.0+",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
+    "require": {
+        "enshrined/svg-sanitize": "~0.15",
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "drupal/stage_file_proxy": "^2.0 || ^3.0",
+        "drush/drush": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "drupalspoons/composer-plugin": true,
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
+        }
+    },
+    "homepage": "https://www.drupal.org/project/svg_image_field",
+    "authors": [
+        {
+            "name": "See contributors",
+            "homepage": "https://www.drupal.org/node/2863622/committers"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/svg_image_field",
+        "source": "https://git.drupalcode.org/project/svg_image_field"
     }
-  ],
-  "repositories": [
-    {
-        "type": "composer",
-        "url": "https://packages.drupal.org/8"
-    }
-  ],
-  "support": {
-    "issues": "https://www.drupal.org/project/issues/svg_image_field",
-    "source": "https://git.drupalcode.org/project/svg_image_field"
-  },
-  "license": "GPL-2.0+",
-  "minimum-stability": "dev",
-  "require": {
-    "enshrined/svg-sanitize": "~0.15",
-    "php": ">=8.0"
-  },
-  "require-dev": {
-    "drupal/stage_file_proxy": "^2.0"
-  }
 }

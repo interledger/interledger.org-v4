@@ -2,17 +2,18 @@
 
 namespace Drupal\svg_image_field\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Renderer;
 use Drupal\Core\Render\ElementInfoManagerInterface;
+use Drupal\Core\Render\Renderer;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\Entity\File;
 use Drupal\file\Plugin\Field\FieldWidget\FileWidget;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'image_image' widget.
@@ -128,7 +129,18 @@ class SvgImageFieldWidget extends FileWidget {
       // If there's only one field, return it as delta 0.
       if (empty($elements[0]['#default_value']['fids'])) {
         $file_upload_help['#description'] = $this->getFilteredDescription();
-        $elements[0]['#description'] = $this->renderer->renderPlain($file_upload_help);
+        if (!class_exists(DeprecationHelper::class)) {
+          // @phpstan-ignore-next-line
+          $elements[0]['#description'] = $this->renderer->renderPlain($file_upload_help);
+        }
+        else {
+          $elements[0]['#description'] = DeprecationHelper::backwardsCompatibleCall(
+            currentVersion: \Drupal::VERSION,
+            deprecatedVersion: '10.3',
+            currentCallable: fn() => $this->renderer->renderInIsolation($file_upload_help),
+            deprecatedCallable: fn() => $this->renderer->renderPlain($file_upload_help),
+          );
+        }
       }
     }
     else {
@@ -145,8 +157,19 @@ class SvgImageFieldWidget extends FileWidget {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     $field_settings = $this->getFieldSettings();
-    $element['#upload_validators']['file_validate_extensions'][0] = 'svg';
-    $element['#upload_validators']['svg_image_field_validate_mime_type'] = [];
+
+    if (version_compare(\Drupal::VERSION, '10.2.0', '<')) {
+      $element['#upload_validators']['file_validate_extensions'][0] = 'svg';
+      $element['#upload_validators']['svg_image_field_validate_mime_type'] = [];
+    }
+    else {
+      $element['#upload_validators']['FileExtension'] = [
+        'extensions' => 'svg',
+      ];
+      $element['#upload_validators']['FileIsSvgImage'] = [];
+    }
+
+    $element['#accept'] = 'image/svg+xml';
 
     // Add properties needed by process() method.
     $element['#preview_image_max_width'] = $this->getSetting('preview_image_max_width');

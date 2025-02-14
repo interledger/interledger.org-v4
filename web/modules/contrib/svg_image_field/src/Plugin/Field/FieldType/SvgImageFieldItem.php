@@ -5,17 +5,20 @@ namespace Drupal\svg_image_field\Plugin\Field\FieldType;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Plugin implementation of the 'svg_image' field type.
  *
  * @FieldType(
  *   id = "svg_image_field",
- *   label = @Translation("Svg Image"),
- *   description = @Translation("This field stores the ID of an image file as an integer value."),
+ *   label = @Translation("Vector image"),
+ *   description = {
+ *     @Translation("For uploading scalable vector graphics (SVG) images."),
+ *     @Translation("Can be configured with display options such as inline rendering, SVG sanitization, apply dimensions, and more."),
+ *   },
  *   category = "file_upload",
  *   default_widget = "svg_image_field_widget",
  *   default_formatter = "svg_image_field_formatter",

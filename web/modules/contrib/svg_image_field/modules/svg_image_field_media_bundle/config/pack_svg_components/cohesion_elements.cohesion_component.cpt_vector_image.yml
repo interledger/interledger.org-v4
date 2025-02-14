@@ -7,7 +7,7 @@ dependencies:
     - cohesion_elements.cohesion_component_category.cpt_cat_basic_components
   content:
     - 'file:file:97a42030-e1d1-4288-b23c-2ee4ddd85c8e'
-label: 'Vector Image'
+label: 'Vector image'
 id: cpt_vector_image
 json_values: |
   {
@@ -1008,7 +1008,7 @@ json_values: |
           },
           "86a552b7-50ad-49f8-8835-117bf8f045da": {
               "settings": {
-                  "title": "Vector Image",
+                  "title": "Vector image",
                   "type": "cohEntityBrowser",
                   "showConfig": false,
                   "hideRowHeading": true,

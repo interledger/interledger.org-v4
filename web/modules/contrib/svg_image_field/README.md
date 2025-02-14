@@ -1,8 +1,6 @@
-SVG image field
-===============
+# SVG image field
 
-CONTENTS OF THIS FILE
----------------------
+## CONTENTS OF THIS FILE
 
   * Introduction
   * Requirements
@@ -11,8 +9,7 @@ CONTENTS OF THIS FILE
   * Author
   * Similar projects and how they are different
 
-INTRODUCTION
-------------
+## INTRODUCTION
 
 Standard image field in Drupal 8 doesn't support SVG images. If you really want
 to display SVG images on your website then you need another solution. This
@@ -22,23 +19,20 @@ Module based on core image and file modules and contrib svg_formatter.
 In formatter settings you can set default image size and enable
 alt and title attributes.
 
-REQUIREMENTS
-------------
+## REQUIREMENTS
 
 Image
 
-INSTALLATION
-------------
+## INSTALLATION
 
 1. Install module as usual via Drupal UI, Drush or Composer.
 2. Go to "Extend" and enable the SVG image field module.
 
-CONFIGURATION
-----------------
+## CONFIGURATION
 
 Basic Field Configuration
 
-1. Add "Svg Image" field to your content type or taxonomy vocabulary.
+1. Add "Vector image" field to your content type or taxonomy vocabulary.
 2. Go to the 'Manage display' => formatter settings and set image dimensions
  if you want and enable or disable attributes.
 
@@ -75,15 +69,8 @@ and Acquia Site Studio components (if the requirements are installed).
    which can be found within the config/dx8 directory, inside the SVG Image
    Field Media Bundle submodule.
 
-MAINTAINERS
------------
+## SIMILAR PROJECTS AND HOW THEY ARE DIFFERENT
 
-* Martin Anderson-Clutz (mandclu) - https://www.drupal.org/u/mandclu
-* James Wilson (jwilson3) - https://www.drupal.org/u/jwilson3
-* Anton (shmel210) - https://www.drupal.org/u/shmel210
-
-SIMILAR PROJECTS AND HOW THEY ARE DIFFERENT
--------------------------------------------
 Limitations of module svg_formatter
 - There is no way to set custom alt on image because it uses file field.
  File field does not support alt on db level.
@@ -94,9 +81,21 @@ select field formatter its not intuitive for user.
  break output
 - It not have preview image on file upload.
 - There is less ways what we can do with this all without breaking
-existiing installations
+existing installations
 
 Module svg_image_field does not have this weakness.
-You simply click add field, set field type to "Svg Image" and its done.
+You simply click add field, set field type to "Vector image" and its done.
 As for me there is much less ways to shoot yourself in the leg
-with svg_image_field:)
+with svg_image_field:
+
+## CONTRIBUTING
+
+See [CONTRIBUTING](./CONTRIBUTING.md).
+
+## MAINTAINERS
+[//]: # cSpell:disable
+[//]: # Do not add maintainers to cspell-project-words file
+
+* Martin Anderson-Clutz (mandclu) - https://www.drupal.org/u/mandclu
+* James Wilson (jwilson3) - https://www.drupal.org/u/jwilson3
+* Anton (shmel210) - https://www.drupal.org/u/shmel210

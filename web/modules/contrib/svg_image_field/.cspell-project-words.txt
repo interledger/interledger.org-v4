@@ -1,0 +1,9 @@
+# Site Studio config words
+Acquia
+boxshadow
+cohesionapi
+colorpicker
+entityupdate
+helptext
+Typeahead
+typeahead
