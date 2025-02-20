@@ -1,0 +1,162 @@
+/* Shared custom property values */
+/* @link https://utopia.fyi/type/calculator?c=360,18,1.25,1280,24,1.25,6,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+:root {
+  --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --step--2: clamp(0.72rem, 0.6261rem + 0.4174vi, 0.96rem);
+  --step--1: clamp(0.9rem, 0.7826rem + 0.5217vi, 1.2rem);
+  --step-0: clamp(1.125rem, 0.9783rem + 0.6522vi, 1.5rem);
+  --step-1: clamp(1.4063rem, 1.2228rem + 0.8152vi, 1.875rem);
+  --step-2: clamp(1.7578rem, 1.5285rem + 1.019vi, 2.3438rem);
+  --step-3: clamp(2.1973rem, 1.9107rem + 1.2738vi, 2.9297rem);
+  --step-4: clamp(2.7466rem, 2.3883rem + 1.5922vi, 3.6621rem);
+  --step-5: clamp(3.4332rem, 2.9854rem + 1.9903vi, 4.5776rem);
+  --step-6: clamp(4.2915rem, 3.7318rem + 2.4878vi, 5.722rem);
+  --space-3xs: clamp(0.3125rem, 0.288rem + 0.1087vi, 0.375rem);
+  --space-2xs: clamp(0.5625rem, 0.4891rem + 0.3261vi, 0.75rem);
+  --space-xs: clamp(0.875rem, 0.7772rem + 0.4348vi, 1.125rem);
+  --space-s: clamp(1.125rem, 0.9783rem + 0.6522vi, 1.5rem);
+  --space-m: clamp(1.6875rem, 1.4674rem + 0.9783vi, 2.25rem);
+  --space-l: clamp(2.25rem, 1.9565rem + 1.3043vi, 3rem);
+  --space-xl: clamp(3.375rem, 2.9348rem + 1.9565vi, 4.5rem);
+  --space-2xl: clamp(4.5rem, 3.913rem + 2.6087vi, 6rem);
+  --space-3xl: clamp(6.75rem, 5.8696rem + 3.913vi, 9rem);
+  --border-radius: 6px;
+  --max-content-width: 1100px;
+  --site-header-height: 4.375rem;
+  --admin-nav-height: 39px;
+
+  --box-shadow: 0px 1px 1px hsla(0, 0%, 0%, 0.06),
+    0px 2px 2px hsla(0, 0%, 0%, 0.06);
+  --color-white: #fff;
+  --color-black: #000;
+  --color-gray: #444;
+  --color-frost: rgba(255, 255, 255, 0.5);
+
+  --color-nav-hover: #eee;
+  --color-btn-txt: var(--color-white);
+  --color-admin-bg: var(--color-white);
+  --color-header-bg: var(--color-white);
+  --color-card-bg: var(--color-white);
+  --color-card-outline: rgba(25, 25, 25, 0.3);
+  --color-btn-outline: rgba(25, 25, 25, 0.45);
+  --color-btn-outline-pressed: rgba(25, 25, 25, 0.85);
+  --color-inline-code-bg: hsl(224, 20%, 94%);
+
+  --color-tech-main-fallback: #007777;
+  --color-tech-main: oklch(51.54% 0.088 194.77);
+  --color-tech-secondary: oklch(55.46% 0.206 32.58);
+  --color-tech-light-bg: oklch(98.21% 0.021 193.19);
+  --color-tech-gradient: linear-gradient(
+    to right,
+    oklch(76.55% 0.102 184.83),
+    oklch(91.46% 0.049 186.79)
+  );
+  --color-tech-gradient-dark: linear-gradient(
+    to right,
+    var(--color-tech-main),
+    oklch(74.53% 0.082 202.65)
+  );
+  --filter-tech: invert(18%) sepia(85%) saturate(4735%) hue-rotate(172deg)
+    brightness(93%) contrast(101%);
+
+  --color-mission-main-fallback: #cf2801;
+  --color-mission-main: oklch(55.27% 0.205 32.62);
+  --color-mission-secondary: oklch(62.58% 0.151 148.73);
+  --color-mission-gradient: linear-gradient(
+    to right,
+    oklch(79.3% 0.147 60.58),
+    oklch(91.1% 0.061 64.53)
+  );
+  --color-mission-gradient-dark: linear-gradient(
+    to right,
+    var(--color-mission-main),
+    oklch(76.1% 0.164 65)
+  );
+  --filter-mission: invert(22%) sepia(92%) saturate(1896%) hue-rotate(3deg)
+    brightness(101%) contrast(123%);
+
+  --color-vision-main-fallback: #6500d8;
+  --color-vision-main: oklch(46.08% 0.258 291.47);
+  --color-vision-secondary: oklch(57.02% 0.229 3.9);
+  --color-vision-gradient: linear-gradient(
+    to right,
+    oklch(73.61% 0.156 297.21),
+    oklch(90.94% 0.051 300.18)
+  );
+  --color-vision-gradient-dark: linear-gradient(
+    to right,
+    var(--color-vision-main),
+    oklch(68.24% 0.206 303.127)
+  );
+  --filter-vision: invert(18%) sepia(100%) saturate(6622%) hue-rotate(271deg)
+    brightness(78%) contrast(123%);
+
+  --color-values-main-fallback: #d80068;
+  --color-values-main: oklch(56.84% 0.229 3.717);
+  --color-values-secondary: var(--color-vision-main);
+  --color-values-gradient: linear-gradient(
+    to right,
+    oklch(76.01% 0.163 355.138),
+    oklch(91.64% 0.052 347.23)
+  );
+  --color-values-gradient-dark: linear-gradient(
+    to right,
+    var(--color-values-main),
+    oklch(73% 0.158 351.42)
+  );
+  --filter-values: invert(20%) sepia(62%) saturate(4370%) hue-rotate(316deg)
+    brightness(81%) contrast(118%);
+
+  --color-primary-fallback: var(--color-vision-main-fallback);
+  --color-primary: var(--color-vision-main);
+  --filter-primary: var(--filter-vision);
+}
+
+[class*="page-node-type-summit"],
+.path-summit {
+  --color-primary-fallback: #08ffff;
+  --color-primary: oklch(90.54% 0.154 194.77);
+  --filter-primary: invert(87%) sepia(60%) saturate(2857%) hue-rotate(111deg)
+    brightness(101%) contrast(108%);
+  --color-gray: #eee;
+
+  --color-nav-hover: #444;
+  --color-btn-txt: var(--color-black);
+  --color-admin-txt: var(--color-white);
+  --color-admin-bg: var(--color-black);
+  --color-header-bg: var(--color-black);
+  --color-card-bg: var(--color-black);
+  --color-card-outline: rgba(255, 255, 255, 0.3);
+  --color-frost: rgba(255, 255, 255, 0.5);
+}
+
+/* Page theme styles */
+.page-node-type-page [data-pillar="vision"] {
+  --color-btn-outline: rgba(101, 1, 216, 0.45);
+  --color-btn-outline-pressed: rgb(85, 17, 181);
+}
+
+.page-node-type-page [data-pillar="mission"] {
+  --color-primary-fallback: var(--color-mission-main-fallback);
+  --color-primary: var(--color-mission-main);
+  --color-btn-outline: rgba(207, 40, 2, 0.45);
+  --color-btn-outline-pressed: rgb(152, 26, 0);
+  --filter-primary: var(--filter-mission);
+}
+
+.page-node-type-page [data-pillar="tech"] {
+  --color-primary-fallback: var(--color-tech-main-fallback);
+  --color-primary: var(--color-tech-main);
+  --color-btn-outline: rgba(0, 119, 119, 0.45);
+  --color-btn-outline-pressed: rgb(0, 96, 96);
+  --filter-primary: var(--filter-tech);
+}
+
+.page-node-type-page [data-pillar="values"] {
+  --color-primary-fallback: var(--color-values-main-fallback);
+  --color-primary: var(--color-values-main);
+  --color-btn-outline: rgba(216, 0, 104, 0.45);
+  --color-btn-outline-pressed: rgb(158, 0, 74);
+  --filter-primary: var(--filter-values);
+}

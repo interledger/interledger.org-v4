@@ -1,0 +1,75 @@
+/* Admin interface element styles */
+.dialog-off-canvas-main-canvas {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.toolbar-fixed .dialog-off-canvas-main-canvas {
+  min-height: calc(100vh - var(--admin-nav-height));
+}
+
+.toolbar-fixed header {
+  top: var(--admin-nav-height);
+}
+
+.toolbar-horizontal.toolbar-tray-open .dialog-off-canvas-main-canvas,
+.toolbar-horizontal.toolbar-tray-open header {
+  --admin-nav-height: 79px;
+}
+
+.region-admin {
+  background-color: var(--color-admin-bg);
+  color: var(--color-admin-txt);
+  z-index: 1;
+  padding: var(--space-xs);
+}
+
+#block-interledger-primary-local-tasks > ul {
+  display: flex;
+  list-style: none;
+  gap: var(--space-xs);
+  padding-inline-start: 0;
+}
+
+#block-interledger-pagetitle {
+  margin-block-end: var(--space-2xs);
+}
+
+/* Login page styling */
+.user-wrapper {
+  padding-inline: 5%;
+}
+
+.user-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.user-wrapper [data-drupal-messages] {
+  margin-block-end: var(--space-xs);
+  padding: var(--space-2xs);
+  border: 1px solid maroon;
+  width: max-content;
+  font-size: var(--step--1);
+  background-color: mistyrose;
+  border-radius: var(--border-radius);
+}
+
+.user-login-form,
+.user-pass {
+  max-width: 25em;
+}
+
+.user-login-form label,
+.user-pass label {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: bold;
+}
+
+.user-wrapper .form-item,
+.user-pass p,
+.user-wrapper .form-submit {
+  margin-block-start: var(--space-xs);
+}

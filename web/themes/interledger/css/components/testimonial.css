@@ -1,0 +1,14 @@
+/* Testimonial content type styles */
+.testimonial blockquote {
+  padding: var(--space-m);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--color-frost);
+}
+
+.testimonial p {
+  font-size: var(--step-1);
+  font-style: italic;
+  position: relative;
+  margin-block-end: var(--space-xs);
+}

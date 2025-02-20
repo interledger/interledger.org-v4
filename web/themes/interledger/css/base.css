@@ -1,0 +1,48 @@
+/* Base element styles */
+html {
+  min-height: 100%;
+  overflow-x: clip;
+}
+
+body {
+  font-family: "Titillium Web", var(--system-ui);
+  min-width: 360px;
+  overflow-x: clip;
+}
+
+main {
+  font-size: var(--step-0);
+  flex: 1;
+}
+
+main::before {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-image: url(../img/bg-swirl.svg);
+  background-repeat: repeat;
+  background-size: 100%;
+  filter: blur(150px) opacity(0.25);
+  transform: translate3d(0, 0, 0);
+  content: "";
+}
+
+@media screen and (max-width: 430px) {
+  main::before {
+    content: initial;
+  }
+}
+
+/* Site header styles */
+.site-header {
+  background-color: var(--color-header-bg);
+  padding: 0 var(--space-m);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-block-start: 2px solid var(--color-nav-hover);
+  box-shadow: var(--box-shadow);
+}

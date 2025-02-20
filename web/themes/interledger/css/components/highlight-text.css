@@ -1,0 +1,22 @@
+/* Highlight text content type styles */
+.highlight {
+  font-size: var(--step-3);
+  font-weight: 400;
+  color: var(--color-primary-fallback);
+  color: var(--color-primary);
+  line-height: 1.15;
+}
+
+.highlight p {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 450ms ease-in, transform 450ms ease-out;
+  line-height: 1.1;
+  margin-block-end: var(--space-xs);
+  hyphens: auto;
+}
+
+.highlight p.invisible {
+  opacity: 0;
+  transform: translateX(150px);
+}

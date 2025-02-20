@@ -1,0 +1,70 @@
+/* Team member content type styles */
+.team-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.team-wrapper a {
+  color: currentColor;
+  position: relative;
+  display: block;
+  transition: color 200ms ease-out;
+}
+
+.team-wrapper a:hover {
+  color: var(--color-primary-fallback);
+  color: var(--color-primary);
+}
+
+.team-wrapper .member__socials {
+  margin-block-start: var(--space-3xs);
+}
+
+.team-wrapper .member__socials svg {
+  height: 1em;
+  width: 1.1em;
+  transition: transform 200ms ease-in-out;
+}
+
+.team-wrapper .member__socials a:hover svg {
+  transform: scale(1.15);
+}
+
+.member {
+  padding: var(--space-s);
+  display: flex;
+  gap: var(--space-s);
+  align-items: start;
+}
+
+@media screen and (max-width: 859px) {
+  .member {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.member img {
+  flex: none;
+}
+
+.member__text {
+  flex: 3;
+}
+
+.member__socials {
+  list-style: none;
+  padding-inline-start: 0;
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.member__text ul {
+  margin-block-start: var(--space-s);
+  margin-block-end: var(--space-s);
+}
+
+.member__text ul svg {
+  height: 1.25em;
+  width: 1.3em;
+}

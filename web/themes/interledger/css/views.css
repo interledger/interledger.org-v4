@@ -1,0 +1,10 @@
+.views-element-container {
+  padding-inline: 5%;
+}
+
+.views-exposed-form {
+  display: flex;
+  gap: var(--space-s);
+  margin-block-end: var(--space-m);
+  align-items: center;
+}

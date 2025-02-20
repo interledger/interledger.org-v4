@@ -1,0 +1,57 @@
+/* The engineering blog CTA is hard-coded in the views-view--news-listing-page.html.twig template */
+.blog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+@media screen and (max-width: 460px) {
+  .blog__header {
+    flex-direction: column;
+    padding-block-end: var(--space-m);
+  }
+
+  .blog__header h1 {
+    padding-block-end: var(--space-xs);
+  }
+}
+
+.cta__eng-blog {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  padding: var(--space-3xs) var(--space-2xs);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  font-size: var(--step--1);
+  background-image: radial-gradient(
+    var(--color-white),
+    var(--color-tech-light-bg)
+  );
+}
+
+.cta__eng-blog a {
+  text-decoration: underline;
+}
+
+.cta__eng-blog p {
+  flex: none;
+}
+
+.cta__eng-blog svg {
+  width: 4em;
+}
+
+.pager__items {
+  list-style: none;
+  padding-inline-start: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-m);
+  padding-block-end: var(--space-l);
+}
+
+.pager__item.is-active a {
+  text-decoration: underline;
+}

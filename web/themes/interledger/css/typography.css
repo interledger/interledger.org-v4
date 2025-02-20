@@ -1,0 +1,19 @@
+a {
+  text-decoration-color: transparent;
+  color: var(--color-primary-fallback);
+  color: var(--color-primary);
+  transition: text-decoration-color ease-in-out 200ms;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+p {
+  line-height: 1.39;
+}
+
+figcaption {
+  font-style: italic;
+  margin-block-start: var(--space-3xs);
+}
