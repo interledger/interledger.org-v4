@@ -2,6 +2,42 @@ global-styling:
   version: 1.1.4
   css:
     theme:
-      css/main.css: {}
+      css/fonts.css: {}
+      css/variables.css: {}
+      css/reset.css: {}
+      css/base.css: {}
+      css/typography.css: {}
+      css/buttons.css: {}
+      css/admin.css: {}
+      css/views.css: {}
+      css/layout.css: {}
+      css/navigation.css: {}
+      css/footer.css: {}
+      css/code.css: {}
+      css/pages/news.css: {}
+      css/pages/podcast.css: {}
+      css/pages/blog.css: {}
+      css/pages/contact.css: {}
+      css/pages/error.css: {}
+      css/pages/summit.css: {}
+      css/components/forms.css: {}
+      css/components/people.css: {}
+      css/components/ambassador.css: {}
+      css/components/article.css: {}
+      css/components/blockquote.css: {}
+      css/components/callout.css: {}
+      css/components/cards.css: {}
+      css/components/cta-button.css: {}
+      css/components/faq.css: {}
+      css/components/hero.css: {}
+      css/components/highlight-text.css: {}
+      css/components/podcast.css: {}
+      css/components/team.css: {}
+      css/components/testimonial.css: {}
+      css/components/text-block.css: {}
+      css/components/tile.css: {}
+      css/components/summit-speaker.css: {}
+      css/components/summit-talk.css: {}
+      css/overrides.css: {}
   js:
     js/scripts.js: {}
