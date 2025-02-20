@@ -1,0 +1,21 @@
+/* Specific overrides/customisations (relatively fragile) */
+.node--537 {
+  /* WM hero image */
+  background-color: white;
+  background-image: url(../img/lines.svg), url(../img/wm-bg-tile.svg);
+  background-repeat: repeat-x, repeat;
+  background-size: 20em, 40%;
+  background-position: bottom, center;
+}
+
+@media screen and (min-width: 800px) {
+  .node--537 .content-wrapper .hero__img {
+    /* WM hero image */
+    max-width: 26rem;
+  }
+}
+
+.node--725 .layout--twocol-section--50-50 {
+  /* Technology page 2-col */
+  align-items: start;
+}

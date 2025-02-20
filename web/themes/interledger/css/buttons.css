@@ -1,0 +1,33 @@
+.button {
+  border: 0;
+  background-color: var(--color-primary-fallback);
+  background-color: var(--color-primary);
+  color: var(--color-btn-txt);
+  border-radius: var(--border-radius);
+  padding-inline: var(--space-xs);
+  padding-block: var(--space-3xs);
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.16), 0px 4px 4px rgba(0, 0, 0, 0.4),
+    0px 0px 0px 2px var(--color-btn-outline);
+  font-size: var(--step--1);
+}
+
+.button::before {
+  content: "";
+  display: block;
+  height: calc(100% - calc(var(--border-width) * 2));
+  width: calc(100% - calc(var(--border-width) * 2));
+  position: absolute;
+  top: var(--border-width);
+  left: var(--border-width);
+  border-radius: calc(var(--border-radius) - var(--border-width));
+  z-index: -1;
+}
+
+.button:active {
+  box-shadow: -9px 5px 4px -16px rgba(232, 232, 232, 0.5),
+    0px 5px 12px -16px #c6c6c6, 0px 4px 5px rgba(0, 0, 0, 0.02),
+    0px 8px 5px rgba(0, 0, 0, 0.11),
+    0px 0px 0px 2px var(--color-btn-outline-pressed),
+    inset 10px -16px 28px -16px rgba(198, 198, 198, 0.28);
+}

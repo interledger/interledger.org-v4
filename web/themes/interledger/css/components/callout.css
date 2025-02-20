@@ -1,0 +1,4 @@
+/* Callout text content type styles */
+.callout p {
+  font-size: var(--step-2);
+}

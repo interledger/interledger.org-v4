@@ -1,0 +1,113 @@
+/* Summit talk styling */
+.talks-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.talk {
+  padding-inline: 5%;
+}
+
+.talk__breadcrumbs {
+  list-style: none;
+  display: flex;
+  padding-inline-start: 0;
+  font-size: var(--step--1);
+  font-weight: 700;
+  padding-block-start: var(--space-l);
+}
+
+.talk__breadcrumbs li:not(:first-child)::before {
+  content: ">";
+  display: inline-flex;
+  margin-inline-start: var(--space-3xs);
+}
+
+.talk__header {
+  padding-block-start: var(--space-s);
+  padding-block-end: var(--space-l);
+}
+
+.talk__header h1 {
+  line-height: 1.19;
+  margin-block-end: var(--space-2xs);
+}
+
+.talk__header p {
+  font-size: var(--step--1);
+}
+
+.talk__video {
+  aspect-ratio: 16 / 9;
+  margin-inline: auto;
+  margin-block-end: var(--space-m);
+}
+
+.talk__video iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.talk__info {
+  display: flex;
+  gap: var(--space-m);
+}
+
+@media screen and (max-width: 799px) {
+  .talk__info {
+    flex-direction: column;
+  }
+
+  .talk__speakers {
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .talk__speakers {
+    min-width: 7em;
+    flex-direction: column;
+  }
+}
+
+.talk__speakers {
+  display: flex;
+  gap: var(--space-m);
+}
+
+.talk__speakers a {
+  max-width: 8em;
+  color: currentColor;
+}
+
+.talk__speakers h2 {
+  margin-block-start: var(--space-2xs);
+  font-size: var(--step-0);
+}
+
+.talk__speakers p {
+  font-size: var(--step--1);
+}
+
+.talks-listing li {
+  display: flex;
+  gap: var(--space-m);
+  align-items: start;
+  margin-block-end: var(--space-m);
+}
+
+.talks-listing img {
+  max-width: 8em;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary-fallback);
+  border: 2px solid var(--color-primary);
+}
+
+.talks-listing h2 {
+  font-size: var(--step-1);
+}
+
+.talk__teaser p {
+  font-size: var(--step--1);
+  margin-block-end: var(--space-2xs);
+}

@@ -1,0 +1,107 @@
+/* Site footer styles */
+.site-footer {
+  --color-primary: var(--color-gray);
+  padding: var(--space-m) 0;
+  margin-inline: var(--space-m);
+  margin-block-start: var(--space-l);
+  text-align: center;
+  border-block-start: 1px solid var(--color-primary-fallback);
+  border-block-start: 1px solid;
+}
+
+.site-footer ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 0;
+}
+
+@media screen and (min-width: 780px) {
+  .connect-wrapper {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    gap: var(--space-xl);
+    text-align: left;
+  }
+}
+
+.site-footer .subscribe-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-end: var(--space-s);
+  box-shadow: none;
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+  max-width: 10em;
+  margin-inline: auto;
+  text-decoration: none;
+  transition: transform 200ms ease-in-out;
+}
+
+.site-footer .subscribe-btn:hover {
+  transform: scale(1.15);
+}
+
+.mailing-list h3 {
+  margin-block-end: var(--space-2xs);
+}
+
+.social-links h3 {
+  margin-block-end: var(--space-2xs);
+}
+
+.social-links ul {
+  gap: var(--space-s);
+  margin-block-end: var(--space-s);
+  flex-wrap: wrap;
+}
+
+.social-links li {
+  flex: none;
+}
+
+.social-links svg {
+  height: 2em;
+  width: 2em;
+  transition: transform 200ms ease-in-out;
+}
+
+.social-links a:hover svg {
+  transform: scale(1.15);
+}
+
+.site-footer p {
+  margin-block-end: var(--space-3xs);
+}
+
+.footer-links a {
+  padding: 0 var(--space-s);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  color: currentColor;
+}
+
+.footer-links a:hover {
+  text-decoration-style: solid;
+}
+
+@media screen and (max-width: 479px) {
+  ul.footer-links {
+    display: initial;
+  }
+
+  .footer-links li {
+    margin-block-end: var(--space-2xs);
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .footer-links li:not(:first-of-type)::before {
+    content: "|";
+    display: inline;
+  }
+}

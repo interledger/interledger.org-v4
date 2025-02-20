@@ -1,0 +1,35 @@
+/* Contact page styles */
+.contact-wrapper {
+  --max-content-width: 1440px;
+  padding-inline: 5%;
+}
+
+.contact-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.contact-wrapper form {
+  max-width: 30em;
+}
+
+.contact-wrapper label {
+  font-weight: bold;
+}
+
+.contact-wrapper .form-item {
+  margin-block-end: var(--space-s);
+}
+
+.contact-wrapper select,
+.contact-wrapper input {
+  display: block;
+}
+
+.contact-wrapper form .description {
+  font-size: var(--step--1);
+}
+
+.contact-wrapper .form-actions {
+  margin-block-start: var(--space-m);
+}

@@ -54,3 +54,6 @@
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Ignore dev dependencies
+node_modules
