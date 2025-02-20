@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "This is a Drupal powered CMS that manages all the content for the Interledger Foundation website. All the documentation for this project is in [the wiki](https://github.com/interledger/interledger.org-v4/wiki).",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:css": "postcss ./web/themes/interledger/css/main.css -o ./web/themes/interledger/css/main.min.css",
+    "watch:css": "postcss ./web/themes/interledger/css/main.css -o ./web/themes/interledger/css/main.min.css --watch"
   },
   "devDependencies": {
     "postcss-clean": "^1.2.2",
