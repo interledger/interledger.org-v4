@@ -33,7 +33,7 @@
 }
 
 #block-interledger-pagetitle {
-  margin-block-end: var(--space-2xs);
+  margin-block-end: var(--space-3xs);
 }
 
 /* Login page styling */
