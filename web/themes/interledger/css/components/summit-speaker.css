@@ -1,0 +1,52 @@
+/* Summit speaker styling */
+.speakers-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.speakers-listing a {
+  color: currentColor;
+}
+
+.speaker__header {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: var(--space-m);
+  padding-inline: 5%;
+  margin-block-end: var(--space-l);
+}
+
+.speaker__header::before {
+  content: "";
+  background-color: var(--color-primary-fallback);
+  background-color: var(--color-primary);
+  opacity: 6%;
+  mix-blend-mode: color-dodge;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.speaker__header p {
+  padding-block-end: var(--space-m);
+}
+
+.speaker__info {
+  padding-inline: 5%;
+}
+
+.speaker__talks {
+  padding: var(--space-m);
+  margin-block-start: var(--space-m);
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+}
+
+.speaker__talk:not(:first-of-type) {
+  margin-block-start: var(--space-m);
+}
+
+.speaker__talk h2 {
+  margin-block-end: var(--space-2xs);
+}

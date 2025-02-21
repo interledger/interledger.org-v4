@@ -1,0 +1,8 @@
+/* Error pages styling */
+[class*="page-4"] main {
+  display: flex;
+}
+
+.error-block {
+  margin: auto;
+}

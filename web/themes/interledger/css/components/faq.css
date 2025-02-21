@@ -1,0 +1,66 @@
+/* FAQ content type styles */
+.faqs-wrapper h1 {
+  padding-block-start: var(--space-l);
+  padding-block-end: var(--space-m);
+}
+
+.faq-item {
+  max-width: 50rem;
+}
+
+.faq__qns {
+  background-color: transparent;
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+  padding: var(--space-s);
+  user-select: text;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+}
+
+.faq__qns h3 {
+  font-size: var(--step-0);
+  font-weight: normal;
+}
+
+[class*="page-node-type-summit"] .faq__qns h3 {
+  color: var(--color-white);
+}
+
+.faq__qns[aria-expanded]::after {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.045 25.829"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1.414 24.414 11.631-11.5-11.631-11.5"></path></svg>');
+  filter: var(--filter-primary);
+  flex: none;
+  width: 0.6em;
+  margin-inline-start: auto;
+  transition: transform 150ms ease-in-out;
+}
+
+.faq__qns[aria-expanded="true"]::after {
+  transform: rotate(90deg) translateY(8px);
+  transform-origin: center;
+}
+
+.faq__ans-wrapper {
+  display: grid;
+  transition: grid-template-rows 0.3s ease-out;
+  padding: var(--space-xs) var(--space-s) var(--space-s) var(--space-s);
+}
+
+.js .faq__ans-wrapper {
+  grid-template-rows: 0fr;
+}
+
+button[aria-expanded="false"] + .faq__ans-wrapper {
+  grid-template-rows: 0fr;
+}
+
+button[aria-expanded="true"] + .faq__ans-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.faq__ans {
+  overflow: hidden;
+}

@@ -1,0 +1,181 @@
+/* Hero banner content type styles */
+.hero {
+  padding-block: var(--space-m);
+  background-image: var(--bg-image);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  margin-block-end: var(--space-xl);
+}
+
+.hero h2 {
+  font-size: var(--step-6);
+  max-width: 10em;
+  line-height: 1.2;
+  color: var(--color-hero-txt);
+  font-weight: 200;
+}
+
+@media screen and (max-width: 529px) {
+  .hero h2 {
+    hyphens: auto;
+  }
+}
+
+.hero h2 small {
+  font-size: var(--step-2);
+  display: block;
+  margin-block-start: var(--space-2xs);
+}
+
+.hero__desc {
+  color: var(--color-hero-txt);
+  margin-block-start: var(--space-xs);
+  margin-block-end: var(--space-s);
+}
+
+@media screen and (max-width: 799px) {
+  .hero__desc {
+    text-align: center;
+  }
+
+  .hero__cta {
+    display: flex;
+    width: max-content;
+    margin-inline: auto;
+    margin-block-end: var(--space-m);
+  }
+}
+
+.hero--photography {
+  justify-content: start;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  background-position: center;
+}
+
+.hero--photography h2 {
+  padding: var(--space-m);
+  border-radius: var(--border-radius);
+}
+
+.hero--photography .hero__cta {
+  margin-inline-start: var(--space-m);
+}
+
+.hero__caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-size: var(--step--2);
+  font-weight: semibold;
+  padding: var(--space-3xs) var(--space-2xs);
+}
+
+.hero--illustration {
+  --bg-image: linear-gradient(
+    to right,
+    var(--gradient-start) 0%,
+    var(--gradient-end) 100%
+  );
+}
+
+.hero--illustration h2 {
+  font-weight: 600;
+}
+
+.hero--video {
+  position: relative;
+}
+
+.background-wrapper video {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+
+.background-wrapper button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: transparent;
+  border: 0;
+  background-color: var(--color-frost);
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 384"><path d="M309.2 168.9 30.8 3.2C27.4 1.2 23.9 0 19.9 0 9 0 .1 9 .1 20H0v344h.1c0 11 8.9 20 19.8 20 4.1 0 7.5-1.4 11.2-3.4l278.1-165.5c6.6-5.5 10.8-13.8 10.8-23.1s-4.2-17.5-10.8-23.1Z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 45%;
+  height: 2em;
+  width: 2em;
+  opacity: 0.75;
+}
+
+.background-wrapper button.is-playing {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 384"><path d="M96 371.8V12.1C96 5.4 90.6 0 83.8 0H12.2C5.4 0 0 5.4 0 12.1v359.7c0 6.7 5.4 12.2 12.2 12.2h71.6c6.8 0 12.2-5.4 12.2-12.2ZM243.8 0h-71.6C165.5 0 160 5.4 160 12.1v359.7c0 6.7 5.4 12.2 12.2 12.2h71.6c6.7 0 12.2-5.4 12.2-12.2V12.1C256 5.4 250.6 0 243.8 0Z"/></svg>');
+  background-size: auto 50%;
+  opacity: 0.75;
+}
+
+@media screen and (max-width: 799px) {
+  .hero--illustration {
+    padding-block-start: var(--space-xl);
+  }
+
+  .hero--illustration .content-wrapper img {
+    max-width: 20rem;
+    margin-inline: auto;
+    display: block;
+  }
+
+  .hero--illustration .content-wrapper h2 {
+    margin-inline: auto;
+    text-align: center;
+    margin-block-end: var(--space-m);
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .hero {
+    min-height: 70vh;
+  }
+
+  .hero--photography {
+    background-position: var(--bg-pos, center) right;
+  }
+
+  .hero--illustration .content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    width: 100%;
+  }
+
+  .hero--illustration .content-wrapper h2 {
+    flex: 3;
+  }
+
+  .hero--illustration .content-wrapper img {
+    flex: 0 1 auto;
+    max-width: 30rem;
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .hero--photography .content-wrapper {
+    width: var(--max-content-width);
+    position: relative;
+    left: calc(-1 * var(--space-m));
+  }
+}

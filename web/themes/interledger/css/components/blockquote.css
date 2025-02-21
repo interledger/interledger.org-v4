@@ -1,0 +1,9 @@
+/* Blockquote content type styles */
+.blockquote blockquote {
+  padding-inline-start: var(--space-s);
+  border-inline-start: 4px solid var(--color-primary-fallback);
+  border-inline-start: 4px solid var(--color-primary);
+  font-size: var(--step-1);
+  font-style: italic;
+  position: relative;
+}

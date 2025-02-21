@@ -1,0 +1,11 @@
+.js-pager__items {
+  display: flex;
+  list-style: none;
+  gap: var(--space-xs);
+  justify-content: center;
+  align-items: center;
+}
+
+.pager-stepper {
+  font-size: var(--step--1);
+}
