@@ -21,7 +21,7 @@
         "drupal/conditional_fields": "4.0.0-alpha6",
         "drupal/core-composer-scaffold": "^11.1",
         "drupal/core-project-message": "^11.1",
-        "drupal/core-recommended": "^10.1",
+        "drupal/core-recommended": "^10.4.3",
         "drupal/ds": "^3.28.0",
         "drupal/entity_block": "^2.0",
         "drupal/feeds": "^3.0",
