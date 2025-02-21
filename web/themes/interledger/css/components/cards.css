@@ -148,3 +148,46 @@
 .podcast__footer {
   margin-block-start: var(--space-xs);
 }
+
+/* Annual report block styling */
+.report-cards-wrapper {
+  display: grid;
+  gap: var(--space-s);
+  min-height: 70rem;
+}
+
+.report-cards-wrapper .card:nth-child(3n + 1),
+.report-cards-wrapper .card:nth-child(3n + 3) {
+  margin-top: var(--space-m);
+}
+
+.report-cards-wrapper .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px; /* Optional rounded corners */
+  aspect-ratio: 3 / 2; /* Maintains consistent rectangle shape */
+  width: 100%; /* Ensures full width within the grid */
+  height: 100%;
+}
+
+.report-cards-wrapper .card__media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.report-cards-wrapper .card__media img {
+  border-radius: 50%; /* Makes it a circle */
+  object-fit: cover; /* Ensures the image fills the circular area */
+  display: block;
+}
+
+/* 2024 Annual report grid layout */
+.report-cards-wrapper.report-2024 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
