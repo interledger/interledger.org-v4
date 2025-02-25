@@ -55,7 +55,7 @@
   background-position: center;
 }
 
-.hero--photography h2, .hero--photography .hero__desc {
+.hero--photography .content-wrapper {
   padding: var(--space-m);
   border-radius: var(--border-radius);
 }
