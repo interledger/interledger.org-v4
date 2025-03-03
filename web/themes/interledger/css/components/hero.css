@@ -61,7 +61,7 @@
 }
 
 .hero--photography .hero__cta {
-  margin-inline-start: var(--space-m);
+  margin-block-start: var(--space-m);
 }
 
 .hero__caption {
@@ -76,11 +76,7 @@
 }
 
 .hero--illustration {
-  --bg-image: linear-gradient(
-    to right,
-    var(--gradient-start) 0%,
-    var(--gradient-end) 100%
-  );
+  --bg-image: linear-gradient(to right, var(--gradient-start) 0%, var(--gradient-end) 100%);
 }
 
 .hero--illustration h2 {
