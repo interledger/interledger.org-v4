@@ -108,7 +108,7 @@
 .news-article h2,
 .news-article h3,
 .news-article figure,
-.news-article img {
+.news-article img :not(.news-feature-img img) {
   margin-block-end: var(--space-s);
 }
 
