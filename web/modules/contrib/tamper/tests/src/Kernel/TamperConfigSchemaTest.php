@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\tamper\Kernel;
 
-use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\tamper\SourceDefinition;
 use Drupal\tamper\TamperInterface;
 use Drupal\tamper\TamperPluginCollection;

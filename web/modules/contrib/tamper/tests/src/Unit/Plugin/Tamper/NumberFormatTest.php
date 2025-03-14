@@ -76,7 +76,6 @@ class NumberFormatTest extends TamperPluginTestBase {
     $plugin = new NumberFormat($config, 'number_format', [], $this->getMockSourceDefinition());
 
     $this->assertEquals('1 234,57', $plugin->tamper(1234.5678));
-
   }
 
 }

@@ -144,4 +144,95 @@ class MathTest extends TamperPluginTestBase {
     $plugin->tamper('boo');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->assertSame(0, $this->plugin->tamper(NULL));
+    $this->plugin->setConfiguration([
+      Math::SETTING_SKIP_ON_NAN => TRUE,
+    ]);
+    $this->assertNull($this->plugin->tamper(NULL));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertSame(0, $this->plugin->tamper(''));
+    $this->plugin->setConfiguration([
+      Math::SETTING_SKIP_ON_NAN => TRUE,
+    ]);
+    $this->assertSame('', $this->plugin->tamper(''));
+  }
+
+  /**
+   * Test with an empty string.
+   *
+   * @dataProvider emptyDataDataProvider
+   */
+  public function testWithEmptyDataForeachOperation(?int $expected, array $config, ?string $exception_message = NULL) {
+    $this->plugin->setConfiguration($config);
+    if (isset($exception_message)) {
+      $this->expectException(TamperException::class);
+      $this->expectExceptionMessage($exception_message);
+    }
+    $this->assertEquals($expected, $this->plugin->tamper(''));
+    $this->assertEquals($expected, $this->plugin->tamper(NULL));
+    $this->assertEquals($expected, $this->plugin->tamper(FALSE));
+  }
+
+  /**
+   * Data provider for testWithEmptyStringForeachOperation().
+   */
+  public static function emptyDataDataProvider(): array {
+    return [
+      'addition' => [
+        'expected' => 2,
+        'config' => [
+          Math::SETTING_OPERATION => 'addition',
+          Math::SETTING_VALUE => 2,
+        ],
+      ],
+      'subtraction' => [
+        'expected' => -2,
+        'config' => [
+          Math::SETTING_OPERATION => 'subtraction',
+          Math::SETTING_VALUE => 2,
+        ],
+      ],
+      'subtraction-flipped' => [
+        'expected' => 2,
+        'config' => [
+          Math::SETTING_OPERATION => 'subtraction',
+          Math::SETTING_FLIP => TRUE,
+          Math::SETTING_VALUE => 2,
+        ],
+      ],
+      'multiplication' => [
+        'expected' => 0,
+        'config' => [
+          Math::SETTING_OPERATION => 'multiplication',
+          Math::SETTING_VALUE => 2,
+        ],
+      ],
+      'division' => [
+        'expected' => 0,
+        'config' => [
+          Math::SETTING_OPERATION => 'division',
+          Math::SETTING_VALUE => 2,
+        ],
+      ],
+      'division-flipped' => [
+        'expected' => NULL,
+        'config' => [
+          Math::SETTING_OPERATION => 'division',
+          Math::SETTING_FLIP => TRUE,
+          Math::SETTING_VALUE => 2,
+        ],
+        'exception_message' => 'Math plugin failed because divide by zero was attempted.',
+      ],
+    ];
+  }
+
 }

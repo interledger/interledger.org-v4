@@ -109,6 +109,18 @@ class AggregateTest extends TamperPluginTestBase {
         'range' => 30,
         'sum' => 216,
       ],
+      // Empty array.
+      [
+        'values' => [],
+        'average' => NULL,
+        'count' => 0,
+        'max' => NULL,
+        'median' => NULL,
+        'min' => NULL,
+        'mode' => NULL,
+        'range' => NULL,
+        'sum' => 0,
+      ],
     ];
   }
 
@@ -117,9 +129,9 @@ class AggregateTest extends TamperPluginTestBase {
    *
    * @dataProvider functionValues
    */
-  public function testFunction(string $function, float $expected, array $values) {
+  public function testFunction(string $function, ?float $expected, array $values) {
     $plugin = $this->instantiatePluginWithConfig([
-      aggregate::SETTING_FUNCTION => $function,
+      Aggregate::SETTING_FUNCTION => $function,
     ]);
 
     $this->assertEquals($expected, $plugin->tamper($values));
@@ -200,7 +212,7 @@ class AggregateTest extends TamperPluginTestBase {
     $this->expectException(TamperException::class);
     $this->expectExceptionMessage('Input should be an array.');
     $plugin = $this->instantiatePluginWithConfig([
-      aggregate::SETTING_FUNCTION => 'average',
+      Aggregate::SETTING_FUNCTION => 'average',
     ]);
     $plugin->tamper('boo');
   }

@@ -23,33 +23,42 @@ class KeywordFilterTest extends TamperPluginTestBase {
   public static function formDataProvider(): array {
     return [
       'no values' => [
+        'expected' => [],
+        'edit' => [],
+        'errors' => [
+          'Words or phrases to filter on field is required.',
+        ],
+      ],
+      'only words' => [
         'expected' => [
           'words' => '',
+          'words_list' => [
+            '[Foo]',
+            'Bar',
+          ],
           'word_boundaries' => FALSE,
           'exact' => FALSE,
           'case_sensitive' => FALSE,
           'invert' => FALSE,
-          'word_list' => [],
-          'regex' => FALSE,
-          'function' => 'mb_stripos',
+        ],
+        'edit' => [
+          'words' => "[Foo]\nBar",
         ],
       ],
       'with values' => [
         'expected' => [
-          'words' => "[Foo]\nBar",
+          'words' => '',
+          'words_list' => [
+            'F[o]o',
+            'Bar',
+          ],
           'word_boundaries' => TRUE,
           'exact' => TRUE,
           'case_sensitive' => TRUE,
           'invert' => TRUE,
-          'word_list' => [
-            '/^\[Foo\]$/u',
-            '/^Bar$/u',
-          ],
-          'regex' => TRUE,
-          'function' => 'matchRegex',
         ],
         'edit' => [
-          'words' => "[Foo]\nBar",
+          'words' => "F[o]o\nBar",
           'word_boundaries' => '1',
           'exact' => '1',
           'case_sensitive' => '1',
@@ -58,18 +67,16 @@ class KeywordFilterTest extends TamperPluginTestBase {
       ],
       'word boundaries' => [
         'expected' => [
-          'words' => "F[o]o\n_Bar_\n88x88",
+          'words' => '',
+          'words_list' => [
+            'F[o]o',
+            '_Bar_',
+            '88x88',
+          ],
           'word_boundaries' => TRUE,
           'exact' => FALSE,
           'case_sensitive' => FALSE,
           'invert' => FALSE,
-          'word_list' => [
-            '/\bF\[o\]o\b/ui',
-            '/\b_Bar_\b/ui',
-            '/\b88x88\b/ui',
-          ],
-          'regex' => TRUE,
-          'function' => 'matchRegex',
         ],
         'edit' => [
           'words' => "F[o]o\n_Bar_\n88x88",
@@ -88,16 +95,14 @@ class KeywordFilterTest extends TamperPluginTestBase {
       ],
       'case_sensitive' => [
         'expected' => [
-          'words' => 'Foo',
+          'words' => '',
+          'words_list' => [
+            'Foo',
+          ],
           'word_boundaries' => FALSE,
           'exact' => FALSE,
           'case_sensitive' => TRUE,
           'invert' => FALSE,
-          'word_list' => [
-            'Foo',
-          ],
-          'regex' => FALSE,
-          'function' => 'mb_strpos',
         ],
         'edit' => [
           'words' => 'Foo',

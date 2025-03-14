@@ -3,8 +3,8 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for converting text value to boolean value.
@@ -154,7 +154,7 @@ class ConvertBoolean extends TamperBase {
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     // Copy field value in case 'pass' is set.
     $match_field = $data;
     $truth_value = $this->getSetting(self::SETTING_TRUTH_VALUE);
@@ -163,7 +163,7 @@ class ConvertBoolean extends TamperBase {
     // Convert match field, truth and false values to lowercase, if no match
     // case required.
     if (!$this->getSetting(self::SETTING_MATCH_CASE)) {
-      $match_field = mb_strtolower($match_field);
+      $match_field = mb_strtolower((string) $match_field);
       $truth_value = mb_strtolower($truth_value);
       $false_value = mb_strtolower($false_value);
     }

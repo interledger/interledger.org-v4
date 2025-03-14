@@ -6,7 +6,7 @@ dependencies:
   - drupal:entity_test
   - tamper:tamper
 
-# Information added by Drupal.org packaging script on 2024-09-08
-version: '8.x-1.0-alpha5'
+# Information added by Drupal.org packaging script on 2025-02-27
+version: '8.x-1.0-beta1'
 project: 'tamper'
-datestamp: 1725792626
+datestamp: 1740654929

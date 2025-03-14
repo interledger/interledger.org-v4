@@ -4,8 +4,8 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\tamper\Exception\TamperException;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the Word Count plugin.
@@ -57,10 +57,22 @@ class WordCount extends TamperBase {
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
+    // Don't process null values.
+    if (is_null($data)) {
+      return $data;
+    }
+
     if (!is_string($data)) {
       throw new TamperException('Input should be a string.');
     }
+
+    // If the data is an empty string or only contains spaces, the number of
+    // words should be 0.
+    if (strlen(trim($data)) < 1) {
+      return 0;
+    }
+
     $limit = is_numeric($this->getSetting(self::SETTING_LIMIT)) ? $this->getSetting(self::SETTING_LIMIT) : PHP_INT_MAX;
     $words = explode(' ', $data, $limit);
     return count($words);

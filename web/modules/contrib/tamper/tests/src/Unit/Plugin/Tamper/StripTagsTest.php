@@ -28,8 +28,8 @@ class StripTagsTest extends TamperPluginTestBase {
       StripTags::SETTING_ALLOWED_TAGS => NULL,
     ];
     $this->plugin->setConfiguration($config);
-    $this->assertEquals('sdfsdfsdfsdfsdfsdfsdfsdf', $this->plugin->tamper('sdfsdfsdfsdf<b>sdfsdf</b>sdfsdf'));
-    $this->assertEquals('sdfsdfsdfsdfsdfsdfsdfsdf', $this->plugin->tamper('sdfsdfsdfsdf<b>sdfsdfsdfsdf'));
+    $this->assertEquals('supercalifragilisticexpialidocious', $this->plugin->tamper('super<b>cali</b>fragil<b>istic</b>expi<b>ali</b>docious'));
+    $this->assertEquals('HelloWorld', $this->plugin->tamper('Hello<b>World'));
   }
 
   /**
@@ -40,14 +40,7 @@ class StripTagsTest extends TamperPluginTestBase {
       StripTags::SETTING_ALLOWED_TAGS => '<i>',
     ];
     $this->plugin->setConfiguration($config);
-    $this->assertEquals('sdfsdfsdfsdf<i>sdfsdf</i>sdfsdfsdfsdf', $this->plugin->tamper('sdfsdfsdfsdf<i>sdfsdf</i><b>sdfs</b>dfsdfsdf'));
-  }
-
-  /**
-   * Test the plugin behavior with null.
-   */
-  public function testNullTamper() {
-    $this->assertEquals(NULL, $this->plugin->tamper(NULL));
+    $this->assertEquals('Chitty<i>Chitty</i>BangBang', $this->plugin->tamper('Chitty<i>Chitty</i><b>Bang</b>Bang'));
   }
 
   /**

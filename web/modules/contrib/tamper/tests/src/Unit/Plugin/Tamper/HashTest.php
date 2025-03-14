@@ -75,4 +75,18 @@ class HashTest extends TamperPluginTestBase {
     $this->plugin->tamper('foo');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->assertEquals('2b0eeb49f0ad7ef475c49c652cc22a3a', $this->plugin->tamper(NULL, $this->getMockItem()));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertEquals('2b0eeb49f0ad7ef475c49c652cc22a3a', $this->plugin->tamper('', $this->getMockItem()));
+  }
+
 }

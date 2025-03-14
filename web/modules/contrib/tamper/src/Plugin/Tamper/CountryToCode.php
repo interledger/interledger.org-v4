@@ -4,8 +4,8 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\tamper\Exception\TamperException;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,7 +30,12 @@ class CountryToCode extends TamperBase implements ContainerFactoryPluginInterfac
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
+    // Don't process empty or null values.
+    if (is_null($data) || $data === '') {
+      return $data;
+    }
+
     if (!is_string($data)) {
       throw new TamperException('Input should be a string.');
     }

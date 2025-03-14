@@ -4,8 +4,8 @@ namespace Drupal\Tests\tamper\Unit\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
-use Drupal\tamper\SourceDefinitionInterface;
 use Drupal\Tests\UnitTestCase;
+use Drupal\tamper\SourceDefinitionInterface;
 
 /**
  * Base class for tamper plugin tests.
@@ -91,6 +91,20 @@ abstract class TamperPluginTestBase extends UnitTestCase {
    */
   public function testMultiple() {
     $this->assertIsBool($this->plugin->multiple());
+  }
+
+  /**
+   * Test with a null value.
+   */
+  public function testWithNullValue() {
+    $this->assertNull($this->plugin->tamper(NULL));
+  }
+
+  /**
+   * Test with an empty string.
+   */
+  public function testWithEmptyString() {
+    $this->assertSame('', $this->plugin->tamper(''));
   }
 
 }

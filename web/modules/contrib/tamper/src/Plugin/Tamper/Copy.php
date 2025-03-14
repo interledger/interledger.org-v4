@@ -3,8 +3,8 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the copy plugin.
@@ -74,7 +74,7 @@ class Copy extends TamperBase {
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     $source = $this->getSetting(self::SETTING_SOURCE);
 
     if ($this->getSetting(self::SETTING_TO_FROM) == "to") {
