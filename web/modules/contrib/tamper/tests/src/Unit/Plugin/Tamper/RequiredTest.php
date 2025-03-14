@@ -124,14 +124,6 @@ class RequiredTest extends TamperPluginTestBase {
   }
 
   /**
-   * Test required with empty array.
-   */
-  public function testRequiredWithNull() {
-    $this->expectException(SkipTamperItemException::class);
-    $this->plugin->tamper(NULL);
-  }
-
-  /**
    * Test required with null.
    */
   public function testInvertedRequiredWithNull() {
@@ -164,6 +156,22 @@ class RequiredTest extends TamperPluginTestBase {
     ];
     $plugin = new Required($config, 'required', [], $this->getMockSourceDefinition());
     return $plugin;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->expectException(SkipTamperItemException::class);
+    $this->plugin->tamper(NULL);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->expectException(SkipTamperItemException::class);
+    $this->plugin->tamper('');
   }
 
 }

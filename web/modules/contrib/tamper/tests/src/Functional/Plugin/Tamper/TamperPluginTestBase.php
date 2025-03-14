@@ -3,8 +3,8 @@
 namespace Drupal\Tests\tamper\Functional\Plugin\Tamper;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\entity_test\Entity\EntityTestBundle;
 
 /**
  * Tests configuring Tamper plugins in the UI.
@@ -86,9 +86,7 @@ abstract class TamperPluginTestBase extends BrowserTestBase {
       $session->pageTextContains('Configuration saved.');
     }
 
-    $this->entity = $this->reloadEntity($this->entity);
-    $tampers = $this->entity->getThirdPartySetting('tamper_test', 'tampers');
-    $this->assertSame($expected, $tampers[static::$pluginId]);
+    $this->assertTamperValues($expected);
 
     // Flush cache in order for the entity to not get served from cache.
     drupal_flush_all_caches();
@@ -97,9 +95,7 @@ abstract class TamperPluginTestBase extends BrowserTestBase {
     // Submit the form again with no values and assert that the plugin is still
     // configured the same.
     $this->submitForm([], 'Submit');
-    $this->entity = $this->reloadEntity($this->entity);
-    $tampers = $this->entity->getThirdPartySetting('tamper_test', 'tampers');
-    $this->assertSame($expected, $tampers[static::$pluginId]);
+    $this->assertTamperValues($expected);
   }
 
   /**
@@ -128,6 +124,18 @@ abstract class TamperPluginTestBase extends BrowserTestBase {
     $storage = $this->container->get('entity_type.manager')->getStorage($entity->getEntityTypeId());
     $storage->resetCache([$entity->id()]);
     return $storage->load($entity->id());
+  }
+
+  /**
+   * Asserts that the tamper plugin settings are saved on the entity.
+   *
+   * @param array $expected
+   *   The expected values on the entity for the current plugin.
+   */
+  protected function assertTamperValues(array $expected) {
+    $this->entity = $this->reloadEntity($this->entity);
+    $tampers = $this->entity->getThirdPartySetting('tamper_test', 'tampers');
+    $this->assertSame($expected, $tampers[static::$pluginId]);
   }
 
 }

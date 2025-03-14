@@ -81,4 +81,11 @@ class WordCountTest extends TamperPluginTestBase {
     return new WordCount($config, 'word_count', [], $this->getMockSourceDefinition());
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertEquals(0, $this->plugin->tamper(''));
+  }
+
 }

@@ -2,6 +2,12 @@ tamper.*:
   type: mapping
   label: 'Tamper plugin'
 
+tamper.absolute_url:
+  mapping:
+    base_url_source:
+      type: string
+      label: 'Source'
+
 tamper.aggregate:
   mapping:
     function:
@@ -62,6 +68,21 @@ tamper.encode:
     mode:
       type: string
       label: 'Serialization mode'
+
+tamper.entity_finder:
+  mapping:
+    entity_type:
+      type: string
+      label: 'Entity type'
+    bundle:
+      type: string
+      label: 'Bundle'
+    field:
+      type: string
+      label: 'Field'
+    column:
+      type: string
+      label: 'Column'
 
 tamper.explode:
   mapping:
@@ -141,6 +162,12 @@ tamper.keyword_filter:
     words:
       type: string
       label: 'Words or phrases to filter on'
+    words_list:
+      type: sequence
+      label: 'Word list'
+      sequence:
+        type: string
+        label: 'Word'
     word_boundaries:
       type: boolean
       label: 'Respect word boundaries'
@@ -153,18 +180,6 @@ tamper.keyword_filter:
     invert:
       type: boolean
       label: 'Invert filter'
-    word_list:
-      type: sequence
-      label: 'Word list'
-      sequence:
-        type: string
-        label: 'Word'
-    regex:
-      type: boolean
-      label: 'Use regex'
-    function:
-      type: string
-      label: 'Keyword filtering function'
 
 tamper.math:
   mapping:
@@ -177,6 +192,9 @@ tamper.math:
     value:
       type: float
       label: 'Value'
+    skip_on_nan:
+      type: boolean
+      label: 'Skip calculation when the data is not numeric'
 
 tamper.number_format:
   mapping:

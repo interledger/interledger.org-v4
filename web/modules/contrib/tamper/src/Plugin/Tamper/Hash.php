@@ -4,8 +4,8 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\tamper\Exception\TamperException;
-use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the hash plugin.
@@ -57,7 +57,7 @@ class Hash extends TamperBase {
   /**
    * {@inheritdoc}
    */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
     if (NULL === $item) {
       throw new TamperException('Tamperable item can not be null.');
     }

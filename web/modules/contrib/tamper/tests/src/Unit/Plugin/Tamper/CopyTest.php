@@ -26,7 +26,7 @@ class CopyTest extends TamperPluginTestBase {
    * @return \Drupal\tamper\TamperItem
    *   The tamperable item to use in the test.
    */
-  protected function getTamperItem() {
+  protected function getTamperItem(): TamperItem {
     $item = new TamperItem();
     $item->setSourceProperty('title', 'Robots are cool.');
     $item->setSourceProperty('body', 'Robots are scary!');
@@ -66,6 +66,20 @@ class CopyTest extends TamperPluginTestBase {
     $item = $this->getTamperItem();
 
     $this->assertEquals('Robots are cool.', $plugin->tamper('Robots are scary!', $item));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->assertEquals(NULL, $this->plugin->tamper(NULL, $this->getTamperItem()));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertEquals('', $this->plugin->tamper('', $this->getTamperItem()));
   }
 
 }

@@ -65,7 +65,7 @@ class TamperManager extends DefaultPluginManager implements TamperManagerInterfa
   /**
    * {@inheritdoc}
    */
-  public function getGroupedDefinitions(array $definitions = NULL) {
+  public function getGroupedDefinitions(?array $definitions = NULL) {
     $definitions = $this->getSortedDefinitions($definitions ?? $this->getDefinitions());
     $grouped_definitions = [];
     foreach ($definitions as $id => $definition) {
@@ -80,7 +80,7 @@ class TamperManager extends DefaultPluginManager implements TamperManagerInterfa
    * @return \Drupal\tamper\TamperInterface[]
    *   List of tamper plugins.
    */
-  public function getSortedDefinitions(array $definitions = NULL) {
+  public function getSortedDefinitions(?array $definitions = NULL) {
     // Sort the plugins first by category, then by label.
     $definitions = $definitions ?? $this->getDefinitions();
     uasort($definitions, function ($a, $b) {

@@ -72,7 +72,7 @@ class TamperForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, EntityTestBundle $entity_test_bundle = NULL, string $tamper_plugin_id = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?EntityTestBundle $entity_test_bundle = NULL, ?string $tamper_plugin_id = NULL) {
     $this->entity = $entity_test_bundle;
 
     // Instantiate plugin or get existing one.

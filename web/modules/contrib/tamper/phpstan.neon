@@ -16,3 +16,26 @@ parameters:
       message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
       count: 1
       path: src/TamperManager.php
+
+    -
+      # The "words" setting from the Keyword Filter plugin is deprecated, but
+      # still used by the plugin itself for backwards compatibility.
+      # @todo Remove this ignore on Tamper 2.0.0.
+      message: """
+        #^Fetching deprecated class constant WORDS of class Drupal\\\\tamper\\\\Plugin\\\\Tamper\\\\KeywordFilter\\:
+        in tamper\\:8\\.x-1\\.0\\-alpha6 and is removed from tamper\\:2\\.0\\.0\\. Use
+          the 'words_list' setting instead\\.$#
+      """
+      count: 6
+      path: src/Plugin/Tamper/KeywordFilter.php
+    -
+      # The "words" setting from the Keyword Filter plugin is deprecated, but
+      # still used by the plugin itself for backwards compatibility.
+      # @todo Remove this ignore on Tamper 2.0.0.
+      message: """
+        #^Fetching deprecated class constant WORDS of class Drupal\\\\tamper\\\\Plugin\\\\Tamper\\\\KeywordFilter\\:
+        in tamper\\:8\\.x-1\\.0\\-alpha6 and is removed from tamper\\:2\\.0\\.0\\. Use
+          the 'words_list' setting instead\\.$#
+      """
+      count: 21
+      path: tests/src/Unit/Plugin/Tamper/KeywordFilterTest.php

@@ -33,8 +33,8 @@ class DefaultValueTest extends TamperPluginTestBase {
       DefaultValue::SETTING_ONLY_IF_EMPTY => FALSE,
     ];
     $plugin = new DefaultValue($config, 'default_value', [], $this->getMockSourceDefinition());
-    $this->assertEquals('HEYO!', $plugin->tamper('asdfasdf'));
-    $this->assertEquals('HEYO!', $plugin->tamper(['asdfasdf']));
+    $this->assertEquals('HEYO!', $plugin->tamper('hello world'));
+    $this->assertEquals('HEYO!', $plugin->tamper(['supercalifragilisticexpialidocious']));
     $this->assertEquals('HEYO!', $plugin->tamper([]));
   }
 
@@ -49,6 +49,20 @@ class DefaultValueTest extends TamperPluginTestBase {
     $plugin = new DefaultValue($config, 'default_value', [], $this->getMockSourceDefinition());
     $this->assertEquals('HEYO!', $plugin->tamper([]));
     $this->assertEquals([1], $plugin->tamper([1]));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->assertEquals('HEYO!', $this->plugin->tamper(NULL));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertEquals('HEYO!', $this->plugin->tamper(''));
   }
 
 }

@@ -28,6 +28,7 @@ class StrLenTest extends TamperPluginTestBase {
   public function testStrLen() {
     $this->assertEquals(15, $this->plugin->tamper('a simple string'));
     $this->assertEquals(47, $this->plugin->tamper('a string with special characters like äöü or è.'));
+    $this->assertEquals(0, $this->plugin->tamper(''));
   }
 
   /**
@@ -36,6 +37,13 @@ class StrLenTest extends TamperPluginTestBase {
   public function testTamperExceptionWithInvalidInput() {
     $this->expectException(TamperException::class);
     $this->plugin->tamper(new \stdClass());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertEquals(0, $this->plugin->tamper(''));
   }
 
 }

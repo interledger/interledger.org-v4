@@ -4,8 +4,9 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\tamper\TamperableItemInterface;
+use Drupal\tamper\Exception\SkipTamperItemException;
 use Drupal\tamper\TamperBase;
+use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for filtering based on a list of words/phrases.
@@ -22,11 +23,21 @@ class KeywordFilter extends TamperBase {
 
   /**
    * A list of words/phrases appearing in the text. Enter one value per line.
+   *
+   * @deprecated in tamper:8.x-1.0-alpha6 and is removed from tamper:2.0.0. Use
+   *   the 'words_list' setting instead.
+   *
+   * @see https://www.drupal.org/node/3485191
    */
   const WORDS = 'words';
 
   /**
-   * If checked, then "book" will match "book" but not "bookcase"..
+   * Index for the word list configuration option.
+   */
+  const WORD_LIST = 'words_list';
+
+  /**
+   * If checked, then "book" will match "book" but not "bookcase".
    */
   const WORD_BOUNDARIES = 'word_boundaries';
 
@@ -46,26 +57,11 @@ class KeywordFilter extends TamperBase {
   const INVERT = 'invert';
 
   /**
-   * Index for the word list configuration option.
+   * Flag indicating whether there are multiple values.
    *
-   * The word list option holds the calculated value of the word list after all
-   * settings are applied.
+   * @var bool
    */
-  const WORD_LIST = 'word_list';
-
-  /**
-   * Flags whether or not we'll be using regex to match.
-   *
-   * This value is calculated by other options.
-   */
-  const REGEX = 'regex';
-
-  /**
-   * Holds which string position function will be used.
-   *
-   * This value is calculated by other options.
-   */
-  const FUNCTION = 'function';
+  protected $multiple = FALSE;
 
   /**
    * {@inheritdoc}
@@ -73,13 +69,11 @@ class KeywordFilter extends TamperBase {
   public function defaultConfiguration() {
     $config = parent::defaultConfiguration();
     $config[self::WORDS] = '';
+    $config[self::WORD_LIST] = [];
     $config[self::WORD_BOUNDARIES] = FALSE;
     $config[self::EXACT] = FALSE;
     $config[self::CASE_SENSITIVE] = FALSE;
     $config[self::INVERT] = FALSE;
-    $config[self::WORD_LIST] = [];
-    $config[self::REGEX] = FALSE;
-    $config[self::FUNCTION] = 'matchRegex';
 
     return $config;
   }
@@ -91,8 +85,9 @@ class KeywordFilter extends TamperBase {
     $form[self::WORDS] = [
       '#type' => 'textarea',
       '#title' => $this->t('Words or phrases to filter on'),
-      '#default_value' => $this->getSetting(self::WORDS),
+      '#default_value' => implode("\n", $this->getWordList()),
       '#description' => $this->t('A list of words/phrases that need to appear in the text. Enter one value per line.'),
+      '#required' => TRUE,
     ];
 
     $form[self::WORD_BOUNDARIES] = [
@@ -129,81 +124,49 @@ class KeywordFilter extends TamperBase {
   /**
    * {@inheritdoc}
    */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    $word_list = $this->wordsToArray($form_state->getValue(self::WORDS));
+
+    // Check when the word boundaries setting is enabled that each word starts
+    // and ends with a letter.
+    if ($form_state->getValue(self::WORD_BOUNDARIES)) {
+      foreach ($word_list as $word) {
+        if (!preg_match('/^\w(.*\w)?$/u', $word)) {
+          $form_state->setErrorByName(self::WORDS, $this->t('Search text must begin and end with a letter, number, or underscore to use the %option option.', ['%option' => $this->t('Respect word boundaries')]));
+        }
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
     $this->setConfiguration([
-      self::WORDS => $form_state->getValue(self::WORDS),
+      self::WORD_LIST => $this->wordsToArray($form_state->getValue(self::WORDS)),
       self::WORD_BOUNDARIES => $form_state->getValue(self::WORD_BOUNDARIES),
       self::EXACT => $form_state->getValue(self::EXACT),
       self::CASE_SENSITIVE => $form_state->getValue(self::CASE_SENSITIVE),
       self::INVERT => $form_state->getValue(self::INVERT),
-      self::WORD_LIST => $form_state->getValue(self::WORD_LIST),
-      self::REGEX => $form_state->getValue(self::REGEX),
-      self::FUNCTION => $form_state->getValue(self::FUNCTION),
     ]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $is_multibyte = (Unicode::getStatus() == Unicode::STATUS_MULTIBYTE) ? TRUE : FALSE;
-
-    $words = str_replace("\r", '', $form_state->getValue(self::WORDS));
-    $word_list = explode("\n", $form_state->getValue(self::WORDS));
-    $word_list = array_map('trim', $word_list);
-    // Remove empty words from the list.
-    $word_list = array_filter($word_list);
-
-    $setting_regex = FALSE;
-    $setting_function = 'matchRegex';
-
-    $exact = $form_state->getValue(self::EXACT);
-    $word_boundaries = $form_state->getValue(self::WORD_BOUNDARIES);
-    $case_sensitive = $form_state->getValue(self::CASE_SENSITIVE);
-    if (!empty($exact) || $word_boundaries) {
-      foreach ($word_list as &$word) {
-        if (!empty($exact)) {
-          $word = '/^' . preg_quote($word, '/') . '$/u';
-        }
-        elseif ($word_boundaries) {
-          // Word boundaries can only match a word with letters at the end.
-          if (!preg_match('/^\w(.*\w)?$/u', $word)) {
-            $form_state->setErrorByName(self::WORDS, $this->t('Search text must begin and end with a letter, number, or underscore to use the %option option.', ['%option' => t('Respect word boundaries')]));
-          }
-          $word = '/\b' . preg_quote($word, '/') . '\b/u';
-        }
-        if (!$case_sensitive) {
-          $word .= 'i';
-        }
-      }
-      $setting_regex = TRUE;
-    }
-    elseif (!$word_boundaries && $case_sensitive) {
-      $setting_function = $is_multibyte ? 'mb_strpos' : 'strpos';
-    }
-    elseif (!$word_boundaries && !$case_sensitive) {
-      $setting_function = $is_multibyte ? 'mb_stripos' : 'stripos';
-    }
-
-    $form_state->setValue(self::WORDS, $words);
-    $form_state->setValue(self::WORD_LIST, $word_list);
-    $form_state->setValue(self::REGEX, $setting_regex);
-    $form_state->setValue(self::FUNCTION, $setting_function);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tamper($data, TamperableItemInterface $item = NULL) {
-    $match_func = $this->getSetting(self::FUNCTION);
+  public function tamper($data, ?TamperableItemInterface $item = NULL) {
+    $match_func = $this->getFunction();
 
     $match = FALSE;
-    $word_list = $this->getSetting(self::WORD_LIST);
+    $word_list = $this->getWordList();
 
     if (is_array($data)) {
+      // Set flag that the data is multivalued.
+      $this->multiple = is_array($data);
+
       foreach ($data as $value) {
-        if ($this->match($match_func, $value, $word_list)) {
+        if ($this->match($match_func, (string) $value, $word_list)) {
           $match = TRUE;
           break;
         }
@@ -211,31 +174,148 @@ class KeywordFilter extends TamperBase {
       reset($data);
     }
     else {
-      $match = $this->match($match_func, $data, $word_list);
+      $match = $this->match($match_func, (string) $data, $word_list);
     }
 
     if (!$match && empty($this->getSetting(self::INVERT))) {
-      return '';
+      throw new SkipTamperItemException('Item does not contain one of the configured keywords.');
     }
 
     if ($match && !empty($this->getSetting(self::INVERT))) {
-      return '';
+      throw new SkipTamperItemException('Item contains one of the configured keywords.');
     }
 
     return $data;
   }
 
   /**
-   * Determines whether we get a keyword filter match.
+   * {@inheritdoc}
    */
-  protected function match($match_func, $field, array $word_list) {
-    foreach ($word_list as $word) {
-      if ($match_func == "matchRegex") {
-        if ($this->$match_func($field, $word) !== FALSE) {
-          return TRUE;
-        }
+  public function multiple() {
+    return $this->multiple;
+  }
+
+  /**
+   * Returns the list of configured keywords to filter on.
+   *
+   * @return array
+   *   A list of keywords.
+   */
+  protected function getWordList(): array {
+    $word_list = $this->getSetting(self::WORD_LIST);
+    if (count($word_list) > 0) {
+      return $word_list;
+    }
+
+    // Get words from old setting for backwards compatibility.
+    return $this->wordsToArray($this->getSetting(self::WORDS));
+  }
+
+  /**
+   * Converts words in a string to an array.
+   *
+   * @param string $words
+   *   The inputted words, as a string.
+   *
+   * @return array
+   *   A list of words.
+   */
+  protected function wordsToArray(string $words): array {
+    if (strlen($words) < 1) {
+      return [];
+    }
+    $words = str_replace("\r", '', $words);
+    $word_list = explode("\n", $words);
+    $word_list = array_map('trim', $word_list);
+    // Remove empty words from the list.
+    $word_list = array_filter($word_list);
+
+    return $word_list;
+  }
+
+  /**
+   * Converts the word to a regular expression based on the settings.
+   *
+   * @param string $word
+   *   The word to create a regex for.
+   *
+   * @return string
+   *   The regular expression.
+   *
+   * @throws \RuntimeException
+   *   In case the word could not be converted to a regular expression.
+   */
+  protected function getRegex(string $word): string {
+    if ($this->getSetting(self::EXACT)) {
+      $regex = '/^' . preg_quote($word, '/') . '$/u';
+    }
+    elseif ($this->getSetting(self::WORD_BOUNDARIES)) {
+      // Word boundaries can only match a word with letters at the end.
+      if (!preg_match('/^\w(.*\w)?$/u', $word)) {
+        throw new \RuntimeException('Search text must begin and end with a letter, number, or underscore when word boundaries should be respected.');
       }
-      elseif ($match_func($field, $word) !== FALSE) {
+      $regex = '/\b' . preg_quote($word, '/') . '\b/u';
+    }
+    else {
+      // This case can only occur when code from outside this class calls
+      // this method.
+      $regex = '/' . preg_quote($word, '/') . '/u';
+    }
+    if (!$this->getSetting(self::CASE_SENSITIVE)) {
+      $regex .= 'i';
+    }
+
+    return $regex;
+  }
+
+  /**
+   * Checks if a regular expression is needed based on the settings.
+   *
+   * @return bool
+   *   True if a regular expression is needed. False otherwise.
+   */
+  protected function needsRegex(): bool {
+    return (bool) $this->getSetting(self::WORD_BOUNDARIES) || (bool) $this->getSetting(self::EXACT);
+  }
+
+  /**
+   * Checks which function should be used for matching.
+   *
+   * @return callable
+   *   A callable function.
+   */
+  protected function getFunction(): callable {
+    if ($this->needsRegex()) {
+      return [$this, 'matchRegex'];
+    }
+
+    $is_multibyte = (Unicode::getStatus() == Unicode::STATUS_MULTIBYTE) ? TRUE : FALSE;
+    if ($this->getSetting(self::CASE_SENSITIVE)) {
+      // The text to look for must match uppercase or lowercase characters.
+      return $is_multibyte ? 'mb_strpos' : 'strpos';
+    }
+
+    // The text search is case-insensitive.
+    return $is_multibyte ? 'mb_stripos' : 'stripos';
+  }
+
+  /**
+   * Determines whether we get a keyword filter match.
+   *
+   * @param callable $function
+   *   The function to call.
+   * @param string $field
+   *   The source field data.
+   * @param array $word_list
+   *   The list of words to filter on.
+   *
+   * @return bool
+   *   True if the source contains one of the configured keywords. False
+   *   otherwise.
+   */
+  protected function match(callable $function, string $field, array $word_list): bool {
+    foreach ($word_list as $word) {
+      if (call_user_func($function, $field, $word) !== FALSE) {
         return TRUE;
       }
     }
@@ -245,9 +325,17 @@ class KeywordFilter extends TamperBase {
 
   /**
    * Determines whether we get a keyword filter match using regex.
+   *
+   * @param string $field
+   *   The source field data.
+   * @param string $word
+   *   The word to filter on, passed as a regex pattern.
+   *
+   * @return bool
+   *   True if the source contains the provided word.
    */
-  protected function matchRegex($field, $word) {
-    return preg_match($word, $field) > 0;
+  protected function matchRegex(string $field, string $word): bool {
+    return preg_match($this->getRegex($word), $field) > 0;
   }
 
 }

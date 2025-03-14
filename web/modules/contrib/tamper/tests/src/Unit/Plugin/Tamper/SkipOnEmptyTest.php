@@ -55,4 +55,20 @@ class SkipOnEmptyTest extends TamperPluginTestBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->expectException(SkipTamperDataException::class);
+    $this->plugin->tamper(NULL);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->expectException(SkipTamperDataException::class);
+    $this->plugin->tamper(NULL);
+  }
+
 }

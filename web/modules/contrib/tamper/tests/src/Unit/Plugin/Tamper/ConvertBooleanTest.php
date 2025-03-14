@@ -106,4 +106,18 @@ class ConvertBooleanTest extends TamperPluginTestBase {
     $this->assertSame('other text', $plugin->tamper('a'));
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithNullValue() {
+    $this->assertSame('No match', $this->plugin->tamper(NULL));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testWithEmptyString() {
+    $this->assertSame('No match', $this->plugin->tamper(''));
+  }
+
 }

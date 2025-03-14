@@ -24,7 +24,7 @@ class HtmlEntityDecodeTest extends TamperPluginTestBase {
    * Test HTML entity decode.
    */
   public function testHtmlEntityDecode() {
-    $this->assertEquals('<html>asdfsadfasf<b>asfasf</b></html>', $this->plugin->tamper('&lt;html&gt;asdfsadfasf&lt;b&gt;asfasf&lt;/b&gt;&lt;/html&gt;'));
+    $this->assertEquals('<html>hello<b>world</b></html>', $this->plugin->tamper('&lt;html&gt;hello&lt;b&gt;world&lt;/b&gt;&lt;/html&gt;'));
   }
 
   /**
@@ -38,10 +38,6 @@ class HtmlEntityDecodeTest extends TamperPluginTestBase {
     $this->expectException(TamperException::class);
     $this->expectExceptionMessage('Input should be a string.');
     $this->plugin->tamper(['awesomes4uc3!']);
-
-    $this->expectException(TamperException::class);
-    $this->expectExceptionMessage('Input should be a string.');
-    $this->plugin->tamper(NULL);
   }
 
 }

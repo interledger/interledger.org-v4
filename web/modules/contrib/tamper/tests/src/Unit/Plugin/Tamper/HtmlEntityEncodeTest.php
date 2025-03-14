@@ -24,7 +24,7 @@ class HtmlEntityEncodeTest extends TamperPluginTestBase {
    * Test HTML entity encode.
    */
   public function testHtmlEntityEncode() {
-    $this->assertEquals('&lt;html&gt;asdfsadfasf&lt;b&gt;asfasf&lt;/b&gt;&lt;/html&gt;', $this->plugin->tamper('<html>asdfsadfasf<b>asfasf</b></html>'));
+    $this->assertEquals('&lt;html&gt;hello&lt;b&gt;world&lt;/b&gt;&lt;/html&gt;', $this->plugin->tamper('<html>hello<b>world</b></html>'));
   }
 
   /**

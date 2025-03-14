@@ -31,7 +31,7 @@ interface TamperInterface extends PluginInspectionInterface, PluginFormInterface
    * @throws \Drupal\tamper\Exception\SkipTamperItemException
    *   When the calling tamper process should be skipped for the given item.
    */
-  public function tamper($data, TamperableItemInterface $item = NULL);
+  public function tamper($data, ?TamperableItemInterface $item = NULL);
 
   /**
    * Indicates whether the returned value requires multiple handling.
