@@ -3,9 +3,9 @@
     <header data-gradient="{{ node.field_gradient_style.0.value|raw }}">
       {{ content.field_feature_image }}
       <h1 itemprop="headline">{{ node.title.0.value|raw }}</h1>
-      <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|format_date('custom', 'd F Y') }}</time>
+      <time itemprop="datePublished" datetime="{{ node.created.0.value|date('Y-m-d') }}">{{ node.created.0.value|format_date('custom', 'd M Y') }}</time>
       {% if node.field_byline.0.value %}
-      <address>Written by  {{ node.field_byline.0.value|raw }}</address>
+      <address>{{ 'Written by'|t }}  {{ node.field_byline.0.value|raw }}</address>
       {% endif %}
     </header>
   
@@ -13,7 +13,11 @@
     <hr />
     &nbsp;
     <p class="blog-footer">
-      If you want to stay updated with all open opportunities and news from the Interledger Foundation, you can subscribe to our <a href="/subscribe" data-umami-event="blog - newsletter">newsletter</a>. We also welcome you to join our <a href="https://communityinviter.com/apps/interledger/interledger-working-groups-slack" data-umami-event="blog - slack invite">community slack</a> or participate in the next <a href="https://docs.google.com/document/d/1T_Q_eRZtL8GluJR9rVADd7fvkB8mPluMk-d96LM4vlg/edit?usp=sharing" data-umami-event="blog - community call doc">community call</a>, which takes place each second Wednesday of the month.
+      {{ 'If you want to stay updated with all open opportunities and news from the Interledger Foundation, you can subscribe to our <a href=":subscribe" data-umami-event="blog - newsletter">newsletter</a>. We also welcome you to join our <a href=":slack" data-umami-event="blog - slack invite">community slack</a> or participate in the next <a href=":community_call" data-umami-event="blog - community call doc">community call</a>, which takes place each second Wednesday of the month.'|t({
+        ':subscribe': path('entity.node.canonical', {'node': 974}),
+        ':slack': 'https://communityinviter.com/apps/interledger/interledger-working-groups-slack',
+        ':community_call': 'https://docs.google.com/document/d/1T_Q_eRZtL8GluJR9rVADd7fvkB8mPluMk-d96LM4vlg/edit?usp=sharing'
+      }) }}
     </p>
     {{ content.field_article_profile }}
     <footer>

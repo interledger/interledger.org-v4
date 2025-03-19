@@ -14,17 +14,8 @@
   {% endif %}
   <p>{{ node.field_cta_text.0.value|raw }}</p>
   {% if content.field_cta_type.0|render == "Mailing list" %}
-  <!-- Begin Mailchimp Signup Form -->
-  <form action="https://interledger.us1.list-manage.com/subscribe/post?u=9ced7a326efbb158ae84d30cc&amp;id=7466ff6b0c&amp;f_id=0066e3e5f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self" novalidate="">
-    <div class="mc-field-group">
-      <label for="mce-EMAIL" class="visually-hidden">Email Address</label>
-      <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value="" placeholder="Email address">
-    </div>
-    <div aria-hidden="true" style="position: absolute; left: -5000px;">
-      <input type="text" name="b_9ced7a326efbb158ae84d30cc_7466ff6b0c" tabindex="-1" value="">
-    </div>
-    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
-  </form>
-  <!--End mc_embed_signup-->
+  <a class="button subscribe-btn" href={{ path('entity.node.canonical', {'node': 974}) }} data-umami-event="CTA Stripe link - Subscribe">
+      {{ 'Subscribe'|t }}
+    </a>
   {% endif %}
 </div>
