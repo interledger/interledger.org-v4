@@ -8,14 +8,14 @@
   <h2{{ title_attributes.setAttribute('id', heading_id) }}>{{ configuration.label }}</h2>
   {{ title_suffix }}
 
-  <a class="site-logo" href="/" data-umami-event="Site Nav - Logo">
+  <a class="site-logo" href={{ path('entity.node.canonical', {'node': 1}) }} data-umami-event="Site Nav - Logo">
     <img src="{{ logo_path }}" alt="Interledger Foundation" >
   </a>
   
   <div class="site-links-wrapper" data-nav-wrapper id="siteNavLinks">
     {{ content }}
     
-    <a class="switch-link" href="/summit" data-umami-event="Site Nav - Summit link">{{ 'Interledger Summit'|t }}</a>
+    <a class="switch-link" href={{ path('entity.node.canonical', {'node': 578}) }} data-umami-event="Site Nav - Summit link">{{ 'Interledger Summit'|t }}</a>
   </div>
   <button
     type="button"
