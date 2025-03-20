@@ -24,7 +24,7 @@
       <ul class="news-tags">
       {% for tag in node.field_tags %}
         <li>
-          <a href="/blog?field_tags_target_id={{ tag.entity.tid.value|raw }}">#{{ tag.entity.label|raw }}</a>
+          <a href="{{ path('view.articles.news_listing_page', {'field_tags_target_id': tag.entity.tid.value|raw}) }}">#{{ tag.entity.label|raw }}</a>
         </li>
       {% endfor %}
       </ul>
