@@ -9,15 +9,15 @@
   <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="talk__breadcrumbs">
     <li itemprop="itemListElement" itemscope
         itemtype="https://schema.org/ListItem">
-      <a itemprop="item" href="/summit">
-        <span itemprop="name">{{  node.field_summit_year.0.value }} Summit</span>
+      <a itemprop="item" href="{{ path('entity.node.canonical', {'node': 1281}) }}">
+        <span itemprop="name">{{  node.field_summit_year.0.value }} {{ 'Summit'|t }}</span>
       </a>
       <meta itemprop="position" content="1" />
     </li>
     <li itemprop="itemListElement" itemscope
         itemtype="https://schema.org/ListItem">
-      <a itemprop="item" href="/summit/{{ node.field_summit_year.0.value|raw }}/talks">
-        <span itemprop="name">Sessions</span>
+      <a itemprop="item" href="{{ path('view.summit_talks.2024_summit_talks_listing') }}">
+        <span itemprop="name">{{ 'Sessions'|t }}</span>
       </a>
       <meta itemprop="position" content="2" />
     </li>
@@ -26,7 +26,7 @@
 
   <header class="talk__header">
     <h1>{{ node.field_talk_title.0.value|raw }}</h1>
-    <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span></p>
+    <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('U')|format_date('custom', 'D j M Y, H:i') }}</time><span> - {{ duration }}{{ 'min'|t }}</span></p>
   </header>
   
   {% if content.field_talk_video[0]['#media'] is defined %}

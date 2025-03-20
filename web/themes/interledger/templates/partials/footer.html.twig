@@ -1,13 +1,13 @@
 <footer class="site-footer" role="contentinfo">
   <div class="connect-wrapper">
     <div class="mailing-list">
-      <h3>Join our mailing list</h3>
-      <a class="button subscribe-btn" href="/subscribe" data-umami-event="Footer link - Subscribe">
-        Subscribe
+      <h3>{{ 'Join our mailing list'|t }}</h3>
+      <a class="button subscribe-btn" href={{ path('entity.node.canonical', {'node': 974}) }} data-umami-event="Footer link - Subscribe">
+        {{ 'Subscribe'|t }}
       </a>
     </div>
     <div class="social-links">
-      <h3>Connect with us</h3>
+      <h3>{{ 'Connect with us'|t }}</h3>
       <ul>
         <li>
           <a href="https://www.youtube.com/@InterledgerFoundation" aria-label="Interledger's Youtube channel" data-umami-event="Footer - Youtube">
@@ -47,10 +47,10 @@
       </ul>
     </div>
   </div>
-  <p>&copy; 2020–{{ 'now' | date('Y') }}, Interledger Foundation. All rights reserved.</p>
+  <p>&copy; 2020–{{ 'now' | date('Y') }}, Interledger Foundation. {{ 'All rights reserved'|t }}.</p>
   <ul class="footer-links">
-    <li><a href="https://www.iubenda.com/terms-and-conditions/88624819">Terms & conditions</a></li>
-    <li><a href="https://www.iubenda.com/privacy-policy/88624819">Privacy policy</a></li>
-    <li><a href="/contact">Contact us</a></li>
+    <li><a href="https://www.iubenda.com/terms-and-conditions/88624819">{{ 'Terms & conditions'|t }}</a></li>
+    <li><a href="https://www.iubenda.com/privacy-policy/88624819">{{ 'Privacy policy'|t }}</a></li>
+    <li><a href={{ path('entity.node.canonical', {'node': 14}) }}>{{ 'Contact us'|t }}</a></li>
   </ul>
 </footer>

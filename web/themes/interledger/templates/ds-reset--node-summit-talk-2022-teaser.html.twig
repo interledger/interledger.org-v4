@@ -15,7 +15,7 @@
 <div class="talk__teaser">
   <h2><a href="{{ nodeLink }}">{{ node.title.0.value|raw }}</a></h2>
   <p>
-    <time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('D d M Y, G:i') }}</time><span> - {{ duration }}min</span>
+    <time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('U')|format_date('custom', 'D j M Y, H:i') }}</time><span> - {{ duration }}{{ 'min'|t }}</span>
     {{ videoIndicator|raw }}
   </p>
   <p>{{ talkDescription|length > 400 ? talkDescription|slice(0, 400)|raw ~ '…' : talkDescription|raw }}</p>
