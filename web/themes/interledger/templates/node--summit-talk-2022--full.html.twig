@@ -9,14 +9,14 @@
   <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="talk__breadcrumbs">
     <li itemprop="itemListElement" itemscope
         itemtype="https://schema.org/ListItem">
-      <a itemprop="item" href="/summit/{{ node.field_summit_year.0.value|raw }}">
+      <a itemprop="item" href="{{ path('entity.node.canonical', {'node': 623}) }}">
         <span itemprop="name">{{  node.field_summit_year.0.value }} {{ 'Summit'|t }}</span>
       </a>
       <meta itemprop="position" content="1" />
     </li>
     <li itemprop="itemListElement" itemscope
         itemtype="https://schema.org/ListItem">
-      <a itemprop="item" href="/summit/{{ node.field_summit_year.0.value|raw }}/talks">
+      <a itemprop="item" href="{{ path('view.summit_talks.2022_summit_talks_listing') }}">
         <span itemprop="name">{{ 'Talks'|t }}</span>
       </a>
       <meta itemprop="position" content="2" />
