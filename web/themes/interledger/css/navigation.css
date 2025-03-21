@@ -172,6 +172,7 @@
     grid-template-columns: auto 1fr 1fr;
     grid-template-areas: "logo links links";
     column-gap: var(--space-s);
+    flex: 1;
   }
 
   .site-logo {
@@ -227,8 +228,7 @@
     min-width: 100%;
     left: 0;
     top: calc(1.4em + var(--space-s) * 2);
-    box-shadow: 2px 3px 6px -3px hsla(0, 0%, 0%, 0.06),
-      -2px 3px 6px -3px hsla(0, 0%, 0%, 0.06);
+    box-shadow: 2px 3px 6px -3px hsla(0, 0%, 0%, 0.06), -2px 3px 6px -3px hsla(0, 0%, 0%, 0.06);
   }
 
   .site-nav__toggle {

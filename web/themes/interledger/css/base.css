@@ -35,14 +35,3 @@ main::before {
     content: initial;
   }
 }
-
-/* Site header styles */
-.site-header {
-  background-color: var(--color-header-bg);
-  padding: 0 var(--space-m);
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  border-block-start: 2px solid var(--color-nav-hover);
-  box-shadow: var(--box-shadow);
-}
