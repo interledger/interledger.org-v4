@@ -40,5 +40,17 @@
 }
 
 .language-switcher-language-url .links a {
-  padding: var(--space-s) var(--space-2xs);
+  margin: var(--space-3xs);
+  padding: var(--space-xs) var(--space-2xs);
+  text-underline-offset: 8px;
+  text-decoration: underline 1.5px transparent;
+}
+
+.language-switcher-language-url .links a.is-active {
+  text-decoration-color: currentColor;
+}
+
+.language-switcher-language-url .links a:hover {
+  background-color: var(--color-nav-hover);
+  border-radius: var(--border-radius);
 }
