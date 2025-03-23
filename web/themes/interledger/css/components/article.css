@@ -108,8 +108,13 @@
 .news-article h2,
 .news-article h3,
 .news-article figure,
-.news-article img :not(.news-feature-img img) {
+.news-article img:not(.news-feature-img img) {
   margin-block-end: var(--space-s);
+}
+
+.news-article img:not(.news-feature-img img) {
+  display: block;
+  margin-inline: auto;
 }
 
 .news-article li {
