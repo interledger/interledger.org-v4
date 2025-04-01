@@ -12,6 +12,7 @@
     {{ content.body }}
     <hr />
     &nbsp;
+    {# node 974 = /subscribe #}
     <p class="blog-footer">
       {{ 'If you want to stay updated with all open opportunities and news from the Interledger Foundation, you can subscribe to our <a href=":subscribe" data-umami-event="blog - newsletter">newsletter</a>. We also welcome you to join our <a href=":slack" data-umami-event="blog - slack invite">community slack</a> or participate in the next <a href=":community_call" data-umami-event="blog - community call doc">community call</a>, which takes place each second Wednesday of the month.'|t({
         ':subscribe': path('entity.node.canonical', {'node': 974}),

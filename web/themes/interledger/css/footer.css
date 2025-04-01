@@ -89,7 +89,7 @@
   text-decoration-style: solid;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 580px) {
   ul.footer-links {
     display: initial;
   }
@@ -99,7 +99,7 @@
   }
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 580px) {
   .footer-links li:not(:first-of-type)::before {
     content: "|";
     display: inline;

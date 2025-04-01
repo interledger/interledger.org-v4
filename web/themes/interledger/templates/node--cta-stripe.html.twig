@@ -14,6 +14,7 @@
   {% endif %}
   <p>{{ node.field_cta_text.0.value|raw }}</p>
   {% if content.field_cta_type.0|render == "Mailing list" %}
+  {# node 974 = /subscribe #}
   <a class="button subscribe-btn" href={{ path('entity.node.canonical', {'node': 974}) }} data-umami-event="CTA Stripe link - Subscribe">
       {{ 'Subscribe'|t }}
     </a>
