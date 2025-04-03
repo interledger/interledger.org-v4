@@ -1,7 +1,9 @@
 {% for item in items %}
   {% set talkDescription = item.content['#node'].field_talk_description[0].value %}
+  {% set talkTitle = item.content['#node'].title[0].value %}
+  {% set talkNode = item.content['#node'].nid[0].value %}
   <div class="speaker__talk">
-    <h2>{{ item.content }}</h2>
+    <h2><a href="{{ url('entity.node.canonical', {'node': talkNode}) }}">{{ talkTitle }}</a></h2>
     <p>{{ talkDescription|length > 400 ? talkDescription|slice(0, 400)|raw ~ '…' : talkDescription|raw }}</p>
 </div>
 {% endfor %}
