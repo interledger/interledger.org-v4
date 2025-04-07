@@ -8,14 +8,14 @@
   box-shadow: var(--box-shadow);
 }
 
-@media screen and (min-width: 1060px) {
+@media screen and (min-width: 1160px) {
   .region-header {
     display: flex;
     align-items: center;
   }
 }
 
-@media screen and (max-width: 1059px) {
+@media screen and (max-width: 1159px) {
   .language-switcher-language-url {
     position: absolute;
     top: 25px;

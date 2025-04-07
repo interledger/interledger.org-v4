@@ -1,6 +1,6 @@
 // Site navigation CSS classes
 const siteLinksWrapper = document.querySelector("[data-nav-wrapper]");
-const wideNavMinWidth = window.matchMedia("(min-width: 1060px)");
+const wideNavMinWidth = window.matchMedia("(min-width: 1160px)");
 handleNavDisplayStyles(wideNavMinWidth);
 wideNavMinWidth.addEventListener("change", handleNavDisplayStyles);
 
