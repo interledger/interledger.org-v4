@@ -156,6 +156,7 @@
   display: grid;
   gap: var(--space-s);
   min-height: 70rem;
+  grid-auto-rows: 1fr;
 }
 
 .report-cards-wrapper .card-content-wrapper {
@@ -165,23 +166,18 @@
 .report-cards-wrapper .card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100%;
 }
 
 .report-cards-wrapper .card a {
   padding: var(--space-xs);
-  width: 100%;
-  height: 100%;
 }
 
 .report-cards-wrapper .card__media {
   display: flex;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  aspect-ratio: unset;
 }
 
 .report-cards-wrapper .card__media img {
@@ -191,23 +187,20 @@
 }
 
 /* 2024 Annual report grid layout */
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 900px) {
   .report-cards-wrapper.report-2024 {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
   }
 
-  .report-cards-wrapper.report-2024 .card:nth-child(1),
-  .report-cards-wrapper.report-2024 .card:nth-child(3),
-  .report-cards-wrapper.report-2024 .card:nth-child(4),
-  .report-cards-wrapper.report-2024 .card:nth-child(6) {
+  .report-cards-wrapper.report-2024 .card:nth-child(3n+1),
+  .report-cards-wrapper.report-2024 .card:nth-child(3n+3) {
     margin-top: var(--space-m);
   }
 }
 
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 899px) {
   .report-cards-wrapper.report-2024 {
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 
   .report-cards-wrapper.report-2024 .card {
