@@ -71,12 +71,14 @@
 }
 
 .clickable-card:hover {
-  box-shadow: inset 0 0 10px var(--color-card-outline);
+  box-shadow: 0 0 10px var(--color-card-outline);
 }
 
 .clickable-card a {
   text-decoration: none;
   color: inherit;
+  height: 100%;
+  width: 100%;
 }
 
 .clickable-card:hover a {
@@ -147,4 +149,69 @@
 
 .podcast__footer {
   margin-block-start: var(--space-xs);
+}
+
+/* Annual report block styling */
+.report-cards-wrapper {
+  display: grid;
+  gap: var(--space-s);
+  min-height: 70rem;
+}
+
+.report-cards-wrapper .card-content-wrapper {
+  text-align: center;
+}
+
+.report-cards-wrapper .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.report-cards-wrapper .card a {
+  padding: var(--space-xs);
+  width: 100%;
+  height: 100%;
+}
+
+.report-cards-wrapper .card__media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.report-cards-wrapper .card__media img {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 2024 Annual report grid layout */
+@media screen and (min-width: 800px) {
+  .report-cards-wrapper.report-2024 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .report-cards-wrapper.report-2024 .card:nth-child(1),
+  .report-cards-wrapper.report-2024 .card:nth-child(3),
+  .report-cards-wrapper.report-2024 .card:nth-child(4),
+  .report-cards-wrapper.report-2024 .card:nth-child(6) {
+    margin-top: var(--space-m);
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .report-cards-wrapper.report-2024 {
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  .report-cards-wrapper.report-2024 .card {
+    max-width: 100%;
+    height: auto;
+  }
 }
