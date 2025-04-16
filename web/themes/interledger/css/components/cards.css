@@ -221,7 +221,8 @@
 
 .report-navigation-wrapper .card {
   width: 100%;
-  height: var(--space-2xl);
+  max-width: 100%;
+  height: var(--space-3xl);
   display: flex;
   align-items: stretch;
 }
