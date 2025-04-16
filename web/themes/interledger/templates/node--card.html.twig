@@ -46,9 +46,11 @@
       {% if node.field_card_blurb is not empty %}
       <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
       {% endif %}
+      {% if node.field_card_link is not empty %}
       <a class="card__link" href="{{ href }}">
         {{ node.field_card_link.title }}
       </a>
+      {% endif %}
     </div>
     {% endif %}
   </div>
