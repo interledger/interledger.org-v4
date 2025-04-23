@@ -7,6 +7,7 @@ section {
   margin-inline: auto;
 }
 
+/* Two column layout */
 .layout--twocol-section--50-50 {
   gap: var(--space-m);
   justify-content: center;
@@ -34,6 +35,13 @@ section {
 
 .layout--twocol-section--50-50 section {
   padding-inline: 0;
+}
+
+/* Four column layout */
+@media screen and (min-width: 421px) and (max-width: 640px) {
+  .layout--fourcol-section--25-25-25-25 > .layout__region {
+    flex: 1 1 50%;
+  }
 }
 
 /* Spacer block styles */
