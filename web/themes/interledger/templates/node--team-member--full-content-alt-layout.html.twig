@@ -1,0 +1,11 @@
+<section class="member node--{{ node.id }} content-wrapper">
+ <div class="member__info"> 
+    {{ content.field_photo }}
+    <h2>{{ node.field_name.0.value|raw }}</h2>
+    <p>{{ node.field_position.0.value|raw }}</p>
+    {{ content.field_social_media_links }}
+  </div>
+  <div class="member__profile">
+    {{ node.field_profile.0.value|raw }}
+  </div>
+</section>
