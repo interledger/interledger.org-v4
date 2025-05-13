@@ -60,7 +60,7 @@
   border-radius: var(--border-radius);
 }
 
-.hero--photography .hero__cta {
+.hero__cta {
   margin-block-start: var(--space-m);
 }
 
