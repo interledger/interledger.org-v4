@@ -63,8 +63,7 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
-            "drupal/core": "-p2",
-            "drupal/ds": "-p1"
+            "drupal/core": "-p2"
         },
         "patches": {
             "drupal/core": {
