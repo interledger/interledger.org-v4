@@ -7,11 +7,11 @@ This file lists the active maintainers. For a list of past maintainers, see:
 https://www.drupal.org/core/maintainers/past
 
 
-Core committers
----------------
+Drupal Core Leadership team
+---------------------------
 
-The Drupal core committers oversee the development of Drupal as a whole. The
-core committers for Drupal are (in alphabetical order):
+Consists of people with varied skills who make decisions about the general
+direction of the project. Members by role (in alphabetical order):
 
 Project Lead
 - Dries Buytaert 'dries' https://www.drupal.org/u/dries
@@ -46,11 +46,11 @@ Core JavaScript packages
 - Théodore Biadala 'nod_' https://www.drupal.org/u/nod_
 - Sally Young 'justafish' https://www.drupal.org/u/justafish
 
-Committer team facilitators
+Team facilitators
 - Pamela Barone 'pameeela' https://www.drupal.org/u/pameeela
 - Griffyn Heels 'griffynh' https://www.drupal.org/u/griffynh (provisional)
 
-Core initiative facilitators
+Initiative facilitators
 - Gábor Hojtsy 'Gábor Hojtsy' https://www.drupal.org/u/gábor-hojtsy
 
 Subsystem maintainers
@@ -315,7 +315,7 @@ Navigation
 - Pablo López 'plopesc' https://www.drupal.org/u/plopesc
 
 Node
-- ?
+- Adam Bramley 'acbramley' https://www.drupal.org/u/acbramley
 
 Node Access
 - Ken Rickard 'agentrickard' https://www.drupal.org/u/agentrickard
@@ -417,6 +417,7 @@ Theme API
   Single-Directory Components
   - Mateu Aguiló Bosch 'e0ipso' https://www.drupal.org/u/e0ipso
   - Pierre Dureau 'pdureau' https://www.drupal.org/u/pdureau
+  - Jean Valverde 'mogtofu33' https://www.drupal.org/u/mogtofu33
 
 Token
 - ?
@@ -533,12 +534,10 @@ get involved. They organize communications and logistics, and actively
 participate in mentoring.
 
 - Chris Darke 'chrisdarke' https://www.drupal.org/u/chrisdarke
-- Mauricio Dinarte 'dinarcon' https://www.drupal.org/u/dinarcon
 - Brian Gilbert 'realityloop' https://www.drupal.org/u/realityloop
 - Lucas Hedding 'heddn' https://www.drupal.org/u/heddn
-- AmyJune Hineline 'volkswagenchick' https://www.drupal.org/u/volkswagenchick
-- Tara King 'sparklingrobots' https://www.drupal.org/u/sparklingrobots
 - Rachel Lawson 'rachel_norfolk' https://www.drupal.org/u/rachel_norfolk
 - Elli Ludwigson 'ekl1773' https://www.drupal.org/u/ekl1773
 - Jess Myrbo 'xjm' https://www.drupal.org/u/xjm
 - Matthew Radcliffe 'mradcliffe' https://www.drupal.org/u/mradcliffe
+- James Shields 'lostcarpark' https://www.drupal.org/u/lostcarpark

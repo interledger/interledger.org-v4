@@ -12,7 +12,7 @@ use Drupal\Core\Url;
  * on the pipeline, no idea why. So this file is currently located in this
  * directory and only runs locally from time to time.
  *
- * @group ds
+ * @group ds_single
  */
 class FieldTemplateTest extends TestBase {
 
@@ -649,7 +649,6 @@ class FieldTemplateTest extends TestBase {
 
     $edit = [
       'fields[body][settings_edit_form][third_party_settings][ds][ft][id]' => 'expert',
-      'fields[body][settings_edit_form][third_party_settings][ds][ft][settings][fi]' => '1',
     ];
     $this->dsEditFormatterSettings($edit);
 
