@@ -1143,7 +1143,10 @@ function ds_field_formatter_settings_summary_alter(&$summary, $context) {
     if (!isset($functions[$field_function])) {
       $field_function = $default_field_function;
     }
-    $summary[] = 'Field template: ' . Html::escape($field_function);
+
+    if (!empty($field_function)) {
+      $summary[] = 'Field template: ' . Html::escape($field_function);
+    }
   }
 }
 
@@ -1201,7 +1204,7 @@ function template_preprocess_field__ds_field_expert(&$variables) {
     if (!empty($variables['settings'][$key . '-at'])) {
       $attributes = explode(' ', $variables['settings'][$key . '-at']);
       foreach ($attributes as $key => $attribute) {
-        if (strpos($attribute, '=') !== FALSE) {
+        if (str_contains($attribute, '=')) {
           $attribute_parts = explode('=', $attribute, 2);
           $var_attributes[$attribute_parts[0]] = trim($attribute_parts[1], '\"');
         }
