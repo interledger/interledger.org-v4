@@ -221,14 +221,14 @@
   }
 }
 
-/* Report navigation */
-.report-navigation-wrapper {
+/* Horizontal Navigation cards */
+.navigation-wrapper {
   display: grid;
   gap: var(--space-s);
   grid-auto-rows: 1fr;
 }
 
-.report-navigation-wrapper .card {
+.navigation-wrapper .card {
   width: 100%;
   max-width: 100%;
   height: var(--space-3xl);
@@ -236,36 +236,36 @@
   align-items: stretch;
 }
 
-.report-navigation-wrapper .card:hover {
+.navigation-wrapper .card:hover {
   box-shadow: var(--box-shadow);
 }
 
-.report-navigation-wrapper .card a {
+.navigation-wrapper .card a {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-right: 1em;
 }
 
-.report-navigation-wrapper a::after {
+.navigation-wrapper a::after {
   content: url('data:image/svg+xml,<svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 25"><path d="M38.658 24.7a1 1 0 0 1 .008-1.413L48.7 13.368H1a1 1 0 0 1-1-1 1 1 0 0 1 1-1h47.435l-9.768-9.659a1 1 0 0 1-.008-1.413 1 1 0 0 1 1.413-.009l11.631 11.5a1 1 0 0 1 .3.712.994.994 0 0 1-.3.71l-11.631 11.5a1 1 0 0 1-.7.289.994.994 0 0 1-.714-.298Z"></path></svg>');
   width: 1.5em;
   transition: transform 300ms ease-in-out;
   flex-shrink: 0;
 }
 
-.report-navigation-wrapper a:hover::after {
+.navigation-wrapper a:hover::after {
   transform: translateX(0.5em);
 }
 
-.report-navigation-wrapper .card__media {
+.navigation-wrapper .card__media {
   height: 100%;
   width: auto;
   flex-shrink: 0;
   aspect-ratio: 1/1;
 }
 
-.report-navigation-wrapper .card__media img {
+.navigation-wrapper .card__media img {
   height: 100%;
   width: auto;
   object-fit: cover;
@@ -274,35 +274,52 @@
   border-top-right-radius: 0;
 }
 
-.report-navigation-wrapper .card-content-wrapper {
+.navigation-wrapper .card-content-wrapper {
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
 }
 
-.report-navigation-wrapper .card__title {
+.navigation-wrapper .card__title {
   font-size: var(--step-0);
   color: inherit;
   font-weight: unset;
 }
 
-.report-navigation-wrapper .card:hover .card__title {
+.navigation-wrapper .card:hover .card__title {
   text-decoration: none;
 }
 
-.report-navigation-wrapper .card__desc {
+.navigation-wrapper .card__desc {
   display: none;
 }
 
-/* 2024 report navigation grid layout */
+/* Featured content navigation grid layout */
 @media screen and (min-width: 900px) {
-  .report-navigation-wrapper.report-2024 {
+  .navigation-wrapper.featured-content {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (max-width: 899px) {
-  .report-navigation-wrapper.report-2024 {
+  .navigation-wrapper.featured-content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.navigation-wrapper.featured-content {
+  margin-top: var(--space-s);
+}
+
+/* 2024 report navigation grid layout */
+@media screen and (min-width: 900px) {
+  .navigation-wrapper.report-2024 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .navigation-wrapper.report-2024 {
     grid-template-columns: repeat(1, 1fr);
   }
 }
@@ -343,52 +360,6 @@
   text-align: center;
   padding: var(--space-s);
 }
-
-/* 2024 Home page featured content grid layout */
-/* .featured-content .card-content-wrapper {
-  text-align: center;
-  padding: var(--space-2xs);
-}
-
-.featured-content .card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: var(--color-card-bg);
-}
-
-.featured-content .card a {
-  padding: var(--space-2xs);
-  width: 100%;
-  height: 100%;
-}
-
-.featured-content .card__media {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-width: 5em;
-}
-
-@media screen and (min-width: 800px) {
-  .featured-content {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
-}
-
-@media screen and (max-width: 799px) {
-  .featured-content {
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-
-  .featured-content .card {
-    max-width: 100%;
-    height: auto;
-  }
-} */
 
 /* Press logo carousel */
 .press-carousel {
