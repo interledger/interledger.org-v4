@@ -306,8 +306,8 @@
 }
 
 .homepage-cta-cards-wrapper .card {
-  width: 8em;
-  height: 8em;
+  width: 10em;
+  height: 10em;
   border: 1px solid var(--color-light-gray);
 }
 
@@ -320,7 +320,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: var(--space-2xs);
+  padding: var(--space-s);
+  padding-bottom: 0;
   aspect-ratio: unset;
 }
 
@@ -331,7 +332,7 @@
 
 .homepage-cta-cards-wrapper .card-content-wrapper {
   text-align: center;
-  padding: var(--space-2xs);
+  padding: var(--space-s);
 }
 
 /* 2024 Home page featured content grid layout */
@@ -386,3 +387,40 @@
     height: auto;
   }
 } */
+
+/* Press logo carousel */
+.press-carousel {
+  overflow: hidden;
+  width: unset;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  max-width: unset;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-s);
+}
+
+.press-logos {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  animation: scroll-left 18s linear infinite;
+}
+
+.press-logos .card {
+  padding: var(--space-s);
+}
+
+.press-logos .card--no-txt .card__media img {
+  width: auto;
+  height: 7em;
+}
+
+/* Animation keyframes */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
