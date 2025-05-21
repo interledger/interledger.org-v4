@@ -11,71 +11,47 @@
   {% endif %}
 {% endif %}
 
-{% set media = content.field_card_image[0]['#media'] ?? null %}
-{% if media is defined %}
-  {% set svgEntity = media.field_media_svg.entity ?? null %}
-  {% set imageEntity = media.field_media_image.entity ?? null %}
-  {% if svgEntity %}
-    {% set svgUrl = file_url(svgEntity.uri.value) %}
-    {% set svgAlt = media.field_media_svg.alt %}
-  {% endif %}
-  {% if imageEntity %}
-    {% set imageUrl = file_url(imageEntity.uri.value | image_style('original_webp')) %}
-    {% set imageAlt = media.field_media_image.alt %}
-  {% endif %}
-{% endif %}
-
 {% if isClickableCard %}
   <div class="clickable-card card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
     <a href="{{ href }}">
-      {% if svgUrl is defined or imageUrl is defined %}
-        <div class="card__media">
-          {% if svgUrl is defined %}
-            <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
-          {% elseif imageUrl is defined %}
-            <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
-          {% endif %}
+      {% if content.field_card_image[0]['#media'] is defined %}
+        <div class="card__media">  
+          {{ content.field_card_image }}
         </div>
       {% endif %}
-
       {% if renderCaption %}
-        <div class="card-content-wrapper">
-          {% if node.field_card_title is not empty %}
-            <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
-          {% endif %}
-          {% if node.field_card_blurb is not empty %}
-            <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}</p>
-          {% endif %}
-        </div>
+      <div class="card-content-wrapper">
+        {% if node.field_card_title is not empty %}
+        <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
+        {% endif %}
+        {% if node.field_card_blurb is not empty %}
+        <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
+        {% endif %}
+      </div>
       {% endif %}
     </a>
   </div>
 {% else %}
   <div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
-    {% if svgUrl is defined or imageUrl is defined %}
-      <div class="card__media">
-        {% if svgUrl is defined %}
-          <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
-        {% elseif imageUrl is defined %}
-          <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
-        {% endif %}
+    {% if content.field_card_image[0]['#media'] is defined %}
+      <div class="card__media">  
+        {{ content.field_card_image }}
       </div>
     {% endif %}
-
     {% if renderCaption %}
-      <div class="card-content-wrapper">
-        {% if node.field_card_title is not empty %}
-          <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
-        {% endif %}
-        {% if node.field_card_blurb is not empty %}
-          <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}</p>
-        {% endif %}
-        {% if node.field_card_link is not empty %}
-          <a class="card__link" href="{{ href }}">
-            {{ node.field_card_link.title }}
-          </a>
-        {% endif %}
-      </div>
+    <div class="card-content-wrapper">
+      {% if node.field_card_title is not empty %}
+      <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
+      {% endif %}
+      {% if node.field_card_blurb is not empty %}
+      <p class="card__desc">{{ node.field_card_blurb.0.value|raw }}<p>
+      {% endif %}
+      {% if node.field_card_link is not empty %}
+      <a class="card__link" href="{{ href }}">
+        {{ node.field_card_link.title }}
+      </a>
+      {% endif %}
+    </div>
     {% endif %}
   </div>
 {% endif %}
