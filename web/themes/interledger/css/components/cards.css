@@ -447,8 +447,14 @@
 
 .ilp-audience-wrapper .card {
   background-color: var(--color-card-bg);
+  border: 1px solid var(--color-light-gray);
+  align-content: center;
 }
 
-.ilp-audience-wrapper .card h3 {
-  color: var(--color-primary);
+.ilp-audience-wrapper .card .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  padding: var(--space-s);
+  text-align: center;
 }
