@@ -50,11 +50,11 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   protected $themeHandler;
 
   /**
-   * The admin toolbar tools configuration.
+   * The configuration factory service.
    *
-   * @var \Drupal\Core\Config\Config
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $config;
+  protected $configFactory;
 
   /**
    * The current user.
@@ -66,12 +66,12 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
+  final public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
     $this->routeProvider = $route_provider;
     $this->themeHandler = $theme_handler;
-    $this->config = $config_factory->get('admin_toolbar_tools.settings');
+    $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
   }
 
@@ -91,10 +91,17 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<mixed> $base_plugin_definition
+   *   The base plugin definition.
+   *
+   * @return array<mixed>
+   *   An array of menu links plugin definitions.
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $links = [];
-    $max_bundle_number = $this->config->get('max_bundle_number');
+    $admin_toolbar_tools_settings = $this->configFactory->get('admin_toolbar_tools.settings');
+    $max_bundle_number = $admin_toolbar_tools_settings->get('max_bundle_number');
     $entity_types = $this->entityTypeManager->getDefinitions();
     $content_entities = [];
     foreach ($entity_types as $key => $entity_type) {
@@ -112,11 +119,12 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       $content_entity = $entities['content_entity'];
       $content_entity_bundle_storage = $this->entityTypeManager->getStorage($content_entity_bundle);
       $bundles_ids = $content_entity_bundle_storage->getQuery()
-        ->accessCheck()
         ->sort('weight')
-        ->sort($this->entityTypeManager->getDefinition($content_entity_bundle)->getKey('label'))
+        ->sort($this->entityTypeManager->getDefinition($content_entity_bundle)->getKey('label') ?: '')
         ->pager($max_bundle_number)
+        ->accessCheck()
         ->execute();
+      /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface[] $bundles */
       $bundles = $this->entityTypeManager->getStorage($content_entity_bundle)->loadMultiple($bundles_ids);
       if (count($bundles) == $max_bundle_number && $this->routeExists('entity.' . $content_entity_bundle . '.collection')) {
         $links[$content_entity_bundle . '.collection'] = [
@@ -717,12 +725,29 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
     }
 
     if ($this->moduleHandler->moduleExists('project_browser')) {
-      $links['project_browser.browse'] = [
-        'title' => $this->t('Browse'),
-        'route_name' => 'project_browser.browse',
-        'parent' => 'system.modules_list',
-        'weight' => -1,
-      ] + $base_plugin_definition;
+      if ($this->routeExists('project_browser.browse')) {
+        $project_browser_admin_settings = $this->configFactory->get('project_browser.admin_settings');
+        // Get the enabled project browser sources.
+        $project_browser_enabled_sources = $project_browser_admin_settings->get('enabled_sources');
+        if (!empty($project_browser_enabled_sources)) {
+          // Build a menu link for each enabled project browser source.
+          foreach ($project_browser_enabled_sources as $key => $source_id) {
+            $links['project_browser.browse.' . $source_id] = [
+              'route_name' => 'project_browser.browse',
+              'parent' => 'system.modules_list',
+              // Menu items are ordered by the enabled sources.
+              'weight' => -10 + $key,
+              'route_parameters' => ['source' => $source_id],
+              'class' => 'Drupal\admin_toolbar_tools\Plugin\Menu\MenuLinkPlugin',
+              'metadata' => [
+                'plugin_manager' => 'Drupal\project_browser\Plugin\ProjectBrowserSourceManager',
+                'plugin_id' => $source_id,
+                'label_pattern' => $this->t('Browse @label'),
+              ],
+            ] + $base_plugin_definition;
+          }
+        }
+      }
     }
 
     return $links;
@@ -744,8 +769,9 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   /**
    * Lists all installed themes.
    *
-   * @return array
-   *   The list of installed themes.
+   * @return array<string, string>
+   *   The list of installed themes: an associative array of theme machine names
+   *   and their human-readable names.
    */
   public function installedThemes() {
     $themeHandler = $this->themeHandler;
