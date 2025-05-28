@@ -9,3 +9,9 @@ search:
     - core/drupal
     - core/once
     - core/drupal.autocomplete
+
+search.keyboard_shortcut:
+  js:
+    js/admin_toolbar_search.keyboard_shortcut.js: {}
+  dependencies:
+    - admin_toolbar_search/search

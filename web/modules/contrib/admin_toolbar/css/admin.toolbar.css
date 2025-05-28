@@ -82,6 +82,15 @@
   background-position: center right;
 }
 
+.toolbar-tray-horizontal
+  ul
+  li.menu-item--expanded
+  ul
+  li.menu-item--expanded
+  a.is-active {
+  background: unset;
+}
+
 .toolbar-tray-horizontal ul li.menu-item--expanded .menu-item.hover-intent ul {
   display: block;
   margin: -40px 0 0 197px;
