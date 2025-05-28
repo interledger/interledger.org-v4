@@ -113,9 +113,7 @@
 
 /* Art block styling */
 .art-wrapper {
-  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
-  gap: var(--space-s);
 }
 
 /* Hackathon block styling */
@@ -146,9 +144,7 @@
 
 /* Podcast block styling */
 .podcast-wrapper {
-  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-  gap: var(--space-s);
 }
 
 .podcast__heading {
@@ -162,8 +158,6 @@
 
 /* Annual report block styling */
 .report-cards-wrapper {
-  display: grid;
-  gap: var(--space-s);
   grid-auto-rows: 1fr;
 }
 
@@ -223,8 +217,6 @@
 
 /* Horizontal Navigation cards */
 .navigation-wrapper {
-  display: grid;
-  gap: var(--space-s);
   grid-auto-rows: 1fr;
 }
 
@@ -333,13 +325,14 @@
 
 .homepage-cta-cards-wrapper .card {
   width: 10em;
-  height: 10em;
+  height: 12em;
   border: 1px solid var(--color-light-gray);
 }
 
 .homepage-cta-cards-wrapper .card a {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 .homepage-cta-cards-wrapper .card__media {
@@ -348,17 +341,19 @@
   align-items: center;
   padding: var(--space-s);
   padding-bottom: 0;
+  padding-top: var(--space-m);
   aspect-ratio: unset;
 }
 
 .homepage-cta-cards-wrapper .card__media img {
-  width: 3em;
-  height: 3em;
+  width: 4em;
+  height: 4em;
 }
 
 .homepage-cta-cards-wrapper .card-content-wrapper {
   text-align: center;
   padding: var(--space-s);
+  padding-top: var(--space-2xs);
 }
 
 /* Press logo carousel */
@@ -419,6 +414,7 @@
 .ilp-audience-wrapper .card {
   background-color: var(--color-card-bg);
   border: 1px solid var(--color-light-gray);
+  border-top: 8px solid var(--color-primary);
   align-content: center;
 }
 
