@@ -5,4 +5,9 @@
 
 .error-block {
   margin: auto;
+  padding: var(--space-xs) var(--space-s);
+}
+
+[class*="page-4"] .cta--btn__link, .cta--btn{
+  padding-left: 0;
 }
