@@ -195,7 +195,8 @@
   }
 
   .site-nav__links .is-active {
-    text-decoration-color: currentColor;
+    text-decoration: underline currentColor 2px;
+    text-underline-offset: 8px;
   }
 
   .has-submenu {
