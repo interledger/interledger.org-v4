@@ -11,16 +11,17 @@
   <div class="error-block">
     <h1>{{ error_code }}</h1>
     <p>
-      {% block message %}
+      {%  if error_code == "404" %}
       {{ "Oh dear, we can't find the page you're looking for."|t }}
-      {% endblock %}
+      {% endif %}
+      {% if error_code == "403" %}
+      {{ "Unfortunately, you are not authorized to view this page. Try logging in first."|t }}
+      {% endif %}
     </p>
     <section class="cta--btn">
       <div class="content-wrapper">
-        <a class="cta--btn__link" href="/">
-          {%block button%}
-          {{ 'Let’s get you back home'|t }}
-          {% endblock %}
+        <a class="cta--btn__link" href="/" data-umami-event="4xx page link - Home">
+          {{ 'Back to Home'|t }}
         </a>
       </div>
     </section> 
