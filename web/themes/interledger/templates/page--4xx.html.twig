@@ -18,13 +18,9 @@
       {{ "Unfortunately, you are not authorized to view this page. Try logging in first."|t }}
       {% endif %}
     </p>
-    <section class="cta--btn">
-      <div class="content-wrapper">
-        <a class="cta--btn__link" href="/" data-umami-event="4xx page link - Home">
-          {{ 'Back to Home'|t }}
-        </a>
-      </div>
-    </section> 
+    <a class="cta--btn__link error__cta" href={{ path('entity.node.canonical', {'node': 1}) }} data-umami-event="4xx page link - Home">
+      {{ 'Return Home'|t }}
+    </a>
   </div>
 </main>
 
