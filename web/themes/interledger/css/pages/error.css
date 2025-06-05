@@ -5,4 +5,9 @@
 
 .error-block {
   margin: auto;
+  padding-inline: 5%; 
+}
+
+.error__cta {
+  margin-block-start: var(--space-m);
 }
