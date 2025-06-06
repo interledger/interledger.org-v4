@@ -98,6 +98,9 @@
 
 .talks-listing img {
   max-width: 8em;
+  max-height: 8em;
+  width:200px;
+  height: 200px;
   border-radius: 50%;
   border: 2px solid var(--color-primary-fallback);
   border: 2px solid var(--color-primary);
