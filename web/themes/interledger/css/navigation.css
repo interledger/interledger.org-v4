@@ -51,7 +51,7 @@
   display: inline-block;
   height: 0.75em;
   width: 0.75em;
-  margin-inline: var(--space-3xs);
+  margin-inline-start: var(--space-2xs);
 }
 
 @media screen and (max-width: 479px) {
