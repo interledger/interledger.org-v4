@@ -16,11 +16,25 @@
           'menu-item',
           item.is_expanded ? 'has-submenu',
           item.in_active_trail ? 'is-active',
-          'menu-item--level-' ~ (menu_level + 1)
+          'menu-item--level-' ~ (menu_level + 1), 
+          item.url.external ? 'external'
         ]
       %}
+      {%
+        set linkAttributes = { 
+          'data-link-label': 'Site Nav - ' ~ item.title 
+          }
+      %}
+      {% if item.url.external %}
+        {%
+          set linkAttributes = linkAttributes|merge({
+            'rel': 'noopener noreferrer',
+            'target': '_blank'
+          })
+        %}
+      {% endif %}
       <li{{ item.attributes.addClass(classes) }}>
-        {{ link(item.title, item.url, { 'data-link-label': 'Site Nav - ' ~ item.title }) }}
+        {{ link(item.title, item.url, linkAttributes) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
         {% endif %}
