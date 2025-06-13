@@ -17,7 +17,7 @@
     "require": {
         "composer/installers": "^2.3",
         "cweagans/composer-patches": "~1.0",
-        "drupal/admin_toolbar": "^3.6.0",
+        "drupal/admin_toolbar": "^3.6.1",
         "drupal/conditional_fields": "4.0.0-alpha6",
         "drupal/core-composer-scaffold": "^11.1",
         "drupal/core-project-message": "^11.1",
@@ -29,7 +29,7 @@
         "drupal/feeds_tamper": "^2.0@beta",
         "drupal/honeypot": "^2.2",
         "drupal/layout_builder_admin_theme": "^2.0",
-        "drupal/metatag": "^2.1",
+        "drupal/metatag": "^2.1.1",
         "drupal/paragraphs": "^1.19.0",
         "drupal/pathauto": "^1.12",
         "drupal/redirect": "^1.11",
@@ -38,7 +38,7 @@
         "drupal/svg_image_field": "^2.3",
         "drupal/tamper": "1.0.0-beta1",
         "drupal/token": "^1.13",
-        "drupal/twig_tweak": "^3.2",
+        "drupal/twig_tweak": "^3.4.1",
         "drupal/webform": "^6.2.9",
         "drupal/weight": "^3.6",
         "drush/drush": "^13.3.3"

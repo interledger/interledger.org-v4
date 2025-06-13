@@ -77,7 +77,7 @@ class AdminToolbarSettingsForm extends ConfigFormBase {
     // Add an introduction text to module's settings form.
     $form['settings_form_help_intro'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('The Admin Toolbar module provides a better user experience for the default Drupal Toolbar.<br/>It is a drop-down menu that allows quicker access to all the administration pages in a more efficient way, with fewer clicks and less scrolling.<br/><br/>The following settings mostly provide advanced configuration of the JavaScript behavior of the Toolbar: sticky and hoverIntent.'),
+      '#markup' => $this->t('The Admin Toolbar module provides a better user experience for the default Drupal Toolbar.<br>It is a drop-down menu that allows quicker access to all the administration pages in a more efficient way, with fewer clicks and less scrolling.<br><br>The following settings mostly provide advanced configuration of the JavaScript behavior of the Toolbar sticky and hoverIntent.'),
     ];
 
     // Add 'sticky behavior' wrapper as a 'fieldset' so it stays displayed.
@@ -88,7 +88,7 @@ class AdminToolbarSettingsForm extends ConfigFormBase {
     // Add 'sticky behavior' radio field with options.
     $form['sticky_options_wrapper']['sticky_behavior'] = [
       '#type' => 'radios',
-      '#prefix' => $this->t("By default, the Admin Toolbar sticky behavior is <em>enabled</em> so it stays at the top of the browser window when scrolling up or down.<br/>Select <em>Disabled</em> to disable Admin Toolbar's sticky behavior so it stays at the top of the page when scrolling up/down and does not follow the browser window."),
+      '#prefix' => $this->t("By default, the Admin Toolbar sticky behavior is <em>enabled</em> so it stays at the top of the browser window when scrolling up or down.<br>Select <em>Disabled</em> to disable Admin Toolbar's sticky behavior so it stays at the top of the page when scrolling up/down and does not follow the browser window."),
       '#options' => [
         'enabled' => $this->t('Enabled'),
         'hide_on_scroll_down' => $this->t('Disabled, show on scroll-up'),
@@ -101,7 +101,7 @@ class AdminToolbarSettingsForm extends ConfigFormBase {
     $form['sticky_options_wrapper']['enable_toggle_shortcut'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Hide or show the toolbar with shortcut (Alt + p)'),
-      '#description' => $this->t('If set, the toolbar will be hidden or visible when the user presses the keys: "Alt + p".<br/>Disable this setting if it conflicts with any existing keyboard configuration.'),
+      '#description' => $this->t('If set, the toolbar will be hidden or visible when the user presses the keys: "Alt + p".<br>Disable this setting if it conflicts with any existing keyboard configuration.'),
       '#default_value' => $config->get('enable_toggle_shortcut'),
     ];
 
@@ -122,7 +122,7 @@ class AdminToolbarSettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable hoverIntent'),
       '#prefix' => $this->t(
-        "Provides a smoother user experience, where only menu items which are paused over are expanded, to avoid accidental activations.<br/>Disable @hoverintent_source_link to use module's default basic JavaScript behavior.",
+        "Provides a smoother user experience, where only menu items which are paused over are expanded, to avoid accidental activations.<br>Disable @hoverintent_source_link to use module's default basic JavaScript behavior.",
         ['@hoverintent_source_link' => $hoverintent_source_link]
       ),
       '#default_value' => $config->get('hoverintent_behavior')['enabled'] ?? TRUE,
@@ -134,7 +134,7 @@ class AdminToolbarSettingsForm extends ConfigFormBase {
       '#type' => 'select',
       '#title' => $this->t('hoverIntent timeout (ms)'),
       '#field_suffix' => 'milliseconds',
-      '#description' => $this->t('Sets the hoverIntent trigger timeout (steps of 250).<br/>The higher the value, the longer the menu dropdown stays visible, after the mouse moves out (default: 500ms).'),
+      '#description' => $this->t('Sets the hoverIntent trigger timeout (steps of 250).<br>The higher the value, the longer the menu dropdown stays visible, after the mouse moves out (default: 500ms).'),
       '#options' => array_combine($timeout_range_values, $timeout_range_values),
       '#default_value' => $config->get('hoverintent_behavior')['timeout'],
       // Display the timeout field if hoverIntent is enabled.

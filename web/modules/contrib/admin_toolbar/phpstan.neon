@@ -20,8 +20,3 @@ parameters:
       message: '#Function admin_toolbar_[a-zA-Z0-9\\_]+\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type [a-zA-Z0-9\\_]+\.#'
       paths:
         - admin_toolbar_links_access_filter/admin_toolbar_links_access_filter.module
-    -
-      message: "#^Unable to resolve the template type Deprecated in call to method static method Drupal\\\\Component\\\\Utility\\\\DeprecationHelper\\:\\:backwardsCompatibleCall\\(\\)#"
-      # count: 1
-      paths:
-        - admin_toolbar_tools/src/Controller/ToolbarController.php

@@ -36,7 +36,7 @@ function admin_toolbar_toolbar_alter(&$items) {
   }
   // Add the hoverIntent behavior library if enabled.
   $hoverintent_behavior = $admin_toolbar_config->get('hoverintent_behavior');
-  if ($hoverintent_behavior['enabled'] === TRUE) {
+  if (!empty($hoverintent_behavior['enabled'])) {
     // Use the hoverIntent plugin library.
     $items['administration']['#attached']['library'][] = 'admin_toolbar/toolbar.tree.hoverintent';
     // Add the configured hoverIntent settings values to the JS of the toolbar.

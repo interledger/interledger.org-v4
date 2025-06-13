@@ -10,7 +10,7 @@ admin_toolbar.settings:
       label: 'Depth of displayed menu'
     sticky_behavior:
       type: string
-      label: 'Sticky toolbar behavior'
+      label: 'Toolbar sticky behavior'
       options:
         enabled: 'Enabled'
         disabled: 'Disabled'

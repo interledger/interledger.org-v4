@@ -53,7 +53,7 @@ class AdminToolbarSearchSettingsForm extends ConfigFormBase {
     $form['enable_keyboard_shortcut'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable keyboard shortcut (Alt + a)'),
-      '#description' => $this->t('If set, the search input will be focused when the user presses the keys: "Alt + a".<br/>Disable this setting if it conflicts with any existing keyboard configuration.'),
+      '#description' => $this->t('If set, the search input will be focused when the user presses the keys: "Alt + a".<br>Disable this setting if it conflicts with any existing keyboard configuration.'),
       '#default_value' => $admin_toolbar_search_settings->get('enable_keyboard_shortcut'),
     ];
     return parent::buildForm($form, $form_state);
