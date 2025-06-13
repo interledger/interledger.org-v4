@@ -2,7 +2,6 @@
 
 namespace Drupal\admin_toolbar_tools\Controller;
 
-use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -194,8 +193,13 @@ class ToolbarController extends ControllerBase {
     $this->jsCollectionOptimizer->deleteAll();
 
     // @todo Remove deprecated code when support for core:10.2 is dropped.
-    // @phpstan-ignore function.notFound
-    DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '10.2.0', fn() => $this->assetQueryString->reset(), fn() => _drupal_flush_css_js());
+    if (floatval(\Drupal::VERSION) < 10.2) {
+      // @phpstan-ignore function.notFound
+      _drupal_flush_css_js();
+    }
+    else {
+      $this->assetQueryString->reset();
+    }
     $this->messenger()->addMessage($this->t('CSS and JavaScript cache cleared.'));
     return new RedirectResponse($this->reloadPage());
   }
