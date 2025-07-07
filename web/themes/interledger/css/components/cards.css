@@ -425,3 +425,15 @@
   padding: var(--space-s);
   text-align: center;
 }
+
+.text-card {
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  max-width: 20em;
+  margin-inline: auto;
+}
+
+.text-card__media {
+  border-radius: var(--border-radius);
+  width: 100%;
+}

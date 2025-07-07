@@ -1,10 +1,10 @@
 <div class="text-card node--{{ node.id }}">
 {% if content.field_card_image[0]['#media'] is defined %}
-    <div class="card__media">  
+    <div class="text-card__media">  
     {{ content.field_card_image }}
     </div>
 {% endif %}
-    <div class="text-card-content-wrapper">
+    <div class="card-content-wrapper">
         {% if node.field_card_title is not empty %}
         <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
         {% endif %}
