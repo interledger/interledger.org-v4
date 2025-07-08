@@ -1,5 +1,5 @@
 global-styling:
-  version: 1.3.1
+  version: 1.4.0
   css:
     theme:
       css/fonts.css: {}
@@ -36,6 +36,7 @@ global-styling:
       css/components/team.css: {}
       css/components/testimonial.css: {}
       css/components/text-block.css: {}
+      css/components/text-cards.css: {}
       css/components/tile.css: {}
       css/components/summit-speaker.css: {}
       css/components/summit-talk.css: {}
