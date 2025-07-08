@@ -5,8 +5,8 @@
     </div>
 {% endif %}
     <div class="text-card-content-wrapper">
-        {% if node.field_card_title is not empty %}
-        <h3 class="card__title">{{ node.field_card_title.0.value|raw }}</h3>
+        {% if node.field_text_card_title is not empty %}
+        <h3 class="card__title">{{ node.field_text_card_title.0.value|raw }}</h3>
         {% endif %}
         {% if node.field_card_text is not empty %}
         {{ node.field_card_text.0.value|raw }}
