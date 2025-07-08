@@ -16,7 +16,7 @@
 /* Summit 2025 Track block styling */
 .summit-track-wrapper {
   display: grid;
-  gap: var(--space-s);
+  gap: var(--space-m);
   grid-template-columns: repeat(2, 1fr);
 }
 
