@@ -50,8 +50,8 @@
   </div>
   <p>&copy; 2020–{{ 'now' | date('Y') }}, Interledger Foundation. {{ 'All rights reserved'|t }}.</p>
   <ul class="footer-links">
-    <li><a href="https://www.iubenda.com/terms-and-conditions/88624819">{{ 'Terms & conditions'|t }}</a></li>
-    <li><a href="https://www.iubenda.com/privacy-policy/88624819">{{ 'Privacy policy'|t }}</a></li>
+    <li><a href={{ path('entity.node.canonical', {'node': 1385}) }}>{{ 'Terms of service'|t }}</a></li>
+    <li><a href={{ path('entity.node.canonical', {'node': 1387}) }}>{{ 'Privacy policy'|t }}</a></li>
     {# node 14 = /contact #}
     <li><a href={{ path('entity.node.canonical', {'node': 14}) }}>{{ 'Contact us'|t }}</a></li>
   </ul>
