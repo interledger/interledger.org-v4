@@ -425,3 +425,40 @@
   padding: var(--space-s);
   text-align: center;
 }
+
+/* Summit 2025 Track block styling */
+.summit-track-wrapper {
+  gap: var(--space-m);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media screen and (max-width: 899px) {
+  .summit-track-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.summit-track-wrapper .card:first-of-type {
+    border: 1px solid #A26CFD;
+}
+
+.summit-track-wrapper .card:nth-of-type(2) {
+    border: 1px solid #F7AA54;
+}
+
+.summit-track-wrapper .card:nth-of-type(3) {
+    border: 1px solid #5BC6B9;
+}
+
+.summit-track-wrapper .card:last-of-type {
+    border: 1px solid #FF81C5;
+}
+
+.summit-track-wrapper h3 {
+    font-size: var(--step-2);
+}
+
+.summit-track-wrapper .card-content-wrapper {
+    padding: var(--space-l);
+    background-color: transparent;
+}
