@@ -462,3 +462,29 @@
     padding: var(--space-l);
     background-color: transparent;
 }
+
+/* Hackathon 2025 block styling */
+.hack-success-wrapper {
+  gap: var(--space-m);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media screen and (max-width: 899px) {
+  .hack-success-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.hack-success-wrapper .card {
+  border: 1px solid var(--color-primary-fallback);
+  border: 1px solid var(--color-primary);
+}
+
+.hack-success-wrapper h3 {
+    font-size: var(--step-2);
+}
+
+.hack-success-wrapper .card-content-wrapper {
+    padding: var(--space-l);
+    background-color: transparent;
+}
