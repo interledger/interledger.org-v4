@@ -15,10 +15,16 @@ section {
   padding-inline: 5%;
 }
 
+@media screen and (min-width: 1210px) {
+  .layout--twocol-section--50-50 {
+    padding-inline: 0;
+    margin-inline: auto;
+  }
+}
+
 @media screen and (min-width: 840px) {
   .layout--twocol-section--50-50 {
     max-width: var(--max-content-width);
-    margin-inline: auto;
     flex-wrap: initial;
     gap: var(--space-m);
   }
