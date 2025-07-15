@@ -15,6 +15,7 @@
         set classes = [
           'menu-item',
           item.is_expanded ? 'has-submenu',
+          item.in_active_trail ? 'is-active',
           'menu-item--level-' ~ (menu_level + 1)
         ]
       %}
