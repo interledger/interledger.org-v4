@@ -23,7 +23,9 @@
 }
 
 .site-nav__links a {
-  text-decoration: underline 1.5px transparent;
+  text-decoration: underline;
+  text-decoration-color: transparent; 
+  text-decoration-thickness: 1.5px;
   padding: var(--space-s) var(--space-2xs);
 }
 
@@ -203,7 +205,9 @@
   }
 
   .site-nav__links .is-active {
-    text-decoration: underline currentColor 2px;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
     text-underline-offset: 8px;
   }
 
