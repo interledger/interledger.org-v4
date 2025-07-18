@@ -5,6 +5,9 @@
 {% macro menu_links(items, attributes, menu_level) %}
   {% import _self as menus %}
   {% if items %}
+    {% set current_path = path('<current>') %}
+    {% set blogMenuItems = ['Content Hub', 'Foundation Blog']%}
+    {% set blogPathStart = '/news' %}
     {% if menu_level == 0 %}
       <ul{{ attributes}} class="site-nav__links menu--level-{{ menu_level + 1 }}" id="siteNavMenu">
     {% else %}
@@ -16,6 +19,7 @@
           'menu-item',
           item.is_expanded ? 'has-submenu',
           item.in_active_trail ? 'is-active',
+          (item.title in blogMenuItems and current_path starts with blogPathStart) ? 'is-active',
           'menu-item--level-' ~ (menu_level + 1), 
           item.url.external ? 'external'
         ]
