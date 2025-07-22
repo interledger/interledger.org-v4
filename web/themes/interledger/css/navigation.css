@@ -25,9 +25,13 @@
 .site-nav__links a {
   text-decoration: underline;
   text-decoration-color: transparent; 
-  text-decoration-thickness: 1.5px;
+  text-decoration-thickness: 2px;
   padding: var(--space-s) var(--space-2xs);
 }
+
+.site-nav__links .is-active > a {
+  text-decoration-color: currentColor; 
+} 
 
 .site-nav__links a:hover {
   background-color: var(--color-nav-hover);
