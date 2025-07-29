@@ -5,7 +5,6 @@ handleNavDisplayStyles(wideNavMinWidth);
 wideNavMinWidth.addEventListener("change", handleNavDisplayStyles);
 
 const siteNavToggle = document.getElementById("siteNavToggle");
-const siteNavLinks = document.getElementById("siteNavLinks");
 const menuIcon = document.getElementById("menuIcon");
 
 if (document.contains(siteNavToggle)) {

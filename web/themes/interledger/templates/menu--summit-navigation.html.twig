@@ -20,11 +20,7 @@
         ]
       %}
       <li{{ item.attributes.addClass(classes) }}>
-        {{ link(item.title, item.url, { 
-            'data-link-label': 'Summit Nav - ' ~ item.title,  
-            'data-umami-event': 'Summit Nav - ' ~ item.title
-          }) 
-        }}
+        {{ link(item.title, item.url, { 'data-link-label': 'Summit Nav - ' ~ item.title }) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
         {% endif %}
