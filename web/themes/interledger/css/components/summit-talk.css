@@ -74,9 +74,8 @@
 
 .talks-listing li {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xs);
+  gap: var(--space-m);
+  align-items: start;
   margin-block-end: var(--space-m);
 }
 
@@ -107,17 +106,17 @@
   .talk__speakers {
     flex-wrap: wrap;
   }
+
+  .talks-listing li {
+    flex-direction: column; 
+    align-items: center; 
+    gap: var(--space-xs); 
+  }
 }
 
 @media screen and (min-width: 800px) {
   .talk__speakers {
     min-width: 7em;
     flex-direction: column;
-  }
-
-  .talks-listing li {
-    flex-direction: row;
-    align-items: start;
-    gap: var(--space-m);
   }
 }
