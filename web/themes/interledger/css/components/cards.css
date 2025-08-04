@@ -228,10 +228,6 @@
   align-items: stretch;
 }
 
-.navigation-wrapper .card:hover {
-  box-shadow: var(--box-shadow);
-}
-
 .navigation-wrapper .card a {
   display: flex;
   flex-direction: row;
@@ -316,7 +312,7 @@
   }
 }
 
-/* Home poage CTA block styling */
+/* Home page CTA block styling */
 .homepage-cta-cards-wrapper {
   display: flex;
   flex-wrap: wrap;
