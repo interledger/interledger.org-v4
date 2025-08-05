@@ -43,19 +43,20 @@ function interledger_preprocess_html(&$variables) {
  * See the menu--main.html.twig template for the list of variables.
  */
 function interledger_preprocess_menu__main(&$variables) {
-  $language_interface = \Drupal::languageManager()->getCurrentLanguage()->getName();
-  $needs_translation = strtolower($language_interface) === 'es';
-  $path_to_translate = '/developers';
-  $translation_path = 'developers/es';
+  $default_lang_code = strtolower(\Drupal::languageManager()->getDefaultLanguage()->getId());
+  $lang_code = strtolower(\Drupal::languageManager()->getCurrentLanguage()->getId());
+  $needs_translation = $lang_code !== $default_lang_code;
 
-  if ($variables['menu_name'] === 'main') {
+  if ($variables['menu_name'] === 'main' && $needs_translation) {
+    $path_to_translate = '/developers';
+    $translated_path = 'developers/' . $lang_code;
     foreach ($variables['items'] as $key => $item) {
       if (!empty($item['below']) && is_array($item["below"])) {
         foreach ($item['below'] as $skey => $submenu) {
           if (isset($submenu['url']) && is_object($submenu['url'])) {
-            $url_string = $submenu['url']->toString();
-            if (str_contains($url_string, $path_to_translate) && $needs_translation) {
-              $translationStr = substr_replace($url_string, $translation_path, 0, strlen($path_to_translate));
+            $url_string = strtolower($submenu['url']->toString());
+            if (str_starts_with($url_string, $path_to_translate)) {
+              $translationStr = substr_replace($url_string, $translated_path, 0, strlen($path_to_translate));
               $translationUrl = Url::fromUri('base:' . $translationStr);
               $variables['items'][$key]['below'][$skey]['url'] = $translationUrl;
             }
