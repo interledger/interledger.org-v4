@@ -24,6 +24,9 @@ class AdminToolbarSearchSettingsFormTest extends BrowserTestBase {
     'admin_toolbar_search',
     // Enable the block module to be able to test module's local tasks.
     'block',
+    // The admin toolbar tools module is required to check the display of the
+    // three menu local tasks (tabs) on the admin settings form page.
+    'admin_toolbar_tools',
   ];
 
   /**

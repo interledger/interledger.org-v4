@@ -38,7 +38,9 @@
 
         // Shortcut 'Alt + p' will toggle the display of the toolbar.
         document.addEventListener('keydown', (event) => {
-          if (event.altKey && event.key === 'p') {
+          if (event.altKey && (event.key === 'p' || event.keyCode === 80)) {
+            // Prevent transmitting keypress.
+            event.preventDefault();
             // Toggle the display of the toolbar.
             this.toggle();
           }
@@ -50,30 +52,38 @@
         const toolbarElement = document.getElementById(
           'toolbar-administration',
         );
-        // Create a toggle link to show the toolbar from the HTML string
-        // template and insert it after the toolbar element.
-        toolbarElement.insertAdjacentHTML(
-          'afterend',
-          Drupal.theme.adminToolbarToggleExpand(),
-        );
-        // Add a click event listener to the show toolbar link.
-        toolbarElement.nextElementSibling.addEventListener(
-          'click',
-          this.toggle,
-        );
-        // Create a toggle link to hide the toolbar from the HTML string
-        // template and insert the toggle link as the last toolbar tab item.
-        toolbarElement.querySelector('#toolbar-bar').insertAdjacentHTML(
-          // The toolbar tab item is inserted as the last item in the toolbar.
-          'beforeend',
-          Drupal.theme.adminToolbarToggleCollapse(),
-        );
-        // Add a click event listener to the collapse button.
-        toolbarElement
-          .querySelector(
+        if (toolbarElement) {
+          // Create a toggle link to show the toolbar from the HTML string
+          // template and insert it after the toolbar element.
+          toolbarElement.insertAdjacentHTML(
+            'afterend',
+            Drupal.theme.adminToolbarToggleExpand(),
+          );
+          // Add a click event listener to the show toolbar link.
+          toolbarElement.nextElementSibling.addEventListener(
+            'click',
+            this.toggle,
+          );
+
+          // Create a toggle link to hide the toolbar from the HTML string
+          // template and insert the toggle link as the last toolbar tab item.
+          const toolbarBar = toolbarElement.querySelector('#toolbar-bar');
+          if (toolbarBar) {
+            toolbarBar.insertAdjacentHTML(
+              // The toolbar tab item is inserted as the last item in the toolbar.
+              'beforeend',
+              Drupal.theme.adminToolbarToggleCollapse(),
+            );
+          }
+
+          // Add a click event listener to the collapse button.
+          const toolbarIconCollapse = toolbarElement.querySelector(
             '.toolbar-tab--collapse-trigger .toolbar-icon-collapse',
-          )
-          .addEventListener('click', this.toggle);
+          );
+          if (toolbarIconCollapse) {
+            toolbarIconCollapse.addEventListener('click', this.toggle);
+          }
+        }
       });
     },
     // Toggle the display of the toolbar from visible to hidden and vice versa.

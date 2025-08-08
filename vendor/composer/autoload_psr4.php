@@ -42,7 +42,6 @@ return array(
     'Symfony\\Component\\DependencyInjection\\' => array($vendorDir . '/symfony/dependency-injection'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'Symfony\\Bridge\\PsrHttpMessage\\' => array($vendorDir . '/symfony/psr-http-message-bridge'),
-    'SelfUpdate\\' => array($vendorDir . '/consolidation/self-update/src'),
     'Robo\\' => array($vendorDir . '/consolidation/robo/src'),
     'QueryPath\\' => array($vendorDir . '/gravitypdf/querypath/src'),
     'QueryPathTests\\' => array($vendorDir . '/gravitypdf/querypath/tests/QueryPath'),
