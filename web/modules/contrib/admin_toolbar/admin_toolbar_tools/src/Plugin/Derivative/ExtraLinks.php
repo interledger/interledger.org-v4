@@ -492,32 +492,42 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       ] + $base_plugin_definition;
     }
 
-    // If module Update Manager is enabled.
-    if ($this->moduleHandler->moduleExists('update')) {
-      if (version_compare(\Drupal::VERSION, '11.0.0', '<') && $this->routeExists('update.module_install')) {
-        $links['update.module_install'] = [
-          'title' => $this->t('Install new module'),
-          'route_name' => 'update.module_install',
+    // Core Update module: Add extra menu links for the update and
+    // install routes. Support for these routes is dropped for core versions
+    // above 11.2 (update) or 10.4 (install).
+    if ($this->moduleHandler->moduleExists('update') && version_compare(\Drupal::VERSION, '11.2.0', '<')) {
+      if ($this->routeExists('update.module_update')) {
+        $links['update.module_update'] = [
+          'title' => $this->t('Update'),
+          'route_name' => 'update.module_update',
           'parent' => 'system.modules_list',
         ] + $base_plugin_definition;
       }
-      $links['update.module_update'] = [
-        'title' => $this->t('Update'),
-        'route_name' => 'update.module_update',
-        'parent' => 'system.modules_list',
-      ] + $base_plugin_definition;
-      if (version_compare(\Drupal::VERSION, '11.0.0', '<') && $this->routeExists('update.theme_install')) {
-        $links['update.theme_install'] = [
-          'title' => $this->t('Install new theme'),
-          'route_name' => 'update.theme_install',
+      if ($this->routeExists('update.theme_update')) {
+        $links['update.theme_update'] = [
+          'title' => $this->t('Update'),
+          'route_name' => 'update.theme_update',
           'parent' => 'system.themes_page',
         ] + $base_plugin_definition;
       }
-      $links['update.theme_update'] = [
-        'title' => $this->t('Update'),
-        'route_name' => 'update.theme_update',
-        'parent' => 'system.themes_page',
-      ] + $base_plugin_definition;
+
+      // Support for 'install' routes is dropped for core versions above 10.4.
+      if (version_compare(\Drupal::VERSION, '10.4.0', '<')) {
+        if ($this->routeExists('update.module_install')) {
+          $links['update.module_install'] = [
+            'title' => $this->t('Install new module'),
+            'route_name' => 'update.module_install',
+            'parent' => 'system.modules_list',
+          ] + $base_plugin_definition;
+        }
+        if ($this->routeExists('update.theme_install')) {
+          $links['update.theme_install'] = [
+            'title' => $this->t('Install new theme'),
+            'route_name' => 'update.theme_install',
+            'parent' => 'system.themes_page',
+          ] + $base_plugin_definition;
+        }
+      }
     }
 
     // If module Devel is enabled.

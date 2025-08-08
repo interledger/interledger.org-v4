@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class AdminToolbarSearchController to the search functionality.
  *
- * @package Drupal\admin_toolbar_tools\Controller
+ * @package Drupal\admin_toolbar_search\Controller
  */
 class AdminToolbarSearchController extends ControllerBase {
 

@@ -98,6 +98,12 @@ class SearchLinks {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getLinks() {
+    // If the 'admin_toolbar_tools' module is disabled, the following code
+    // should not be executed.
+    if (!$this->moduleHandler->moduleExists('admin_toolbar_tools')) {
+      return [];
+    }
+
     $max_bundle_number = $this->config->get('max_bundle_number');
     $additional_keys = $this->cacheContextManager->convertTokensToKeys([
       'languages:' . LanguageInterface::TYPE_INTERFACE,

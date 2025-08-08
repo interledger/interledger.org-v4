@@ -25,7 +25,7 @@
       ).forEach(() => {
         // Shortcut 'Alt + a' will focus on the search form.
         document.addEventListener('keydown', (event) => {
-          if (event.altKey && event.key === 'a') {
+          if (event.altKey && (event.key === 'a' || event.keyCode === 65)) {
             const searchInputField = context.getElementById(
               'admin-toolbar-search-input',
             );
@@ -38,6 +38,8 @@
                 .click();
             }
             searchInputField.focus();
+            // Don't transmit the keystroke.
+            event.preventDefault();
           }
         });
       });
