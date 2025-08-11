@@ -1,5 +1,5 @@
 <?php
-
+use Drupal\node\Entity\Node; 
 /**
  * Implements hook_preprocess()
  * 
@@ -30,5 +30,25 @@ function interledger_preprocess_html(&$variables) {
   $statusCode = Drupal::request()->query->get('_exception_statuscode');
   if (isset($statusCode)) {
       $variables['attributes']['class'][] = 'page-' . $statusCode;
+  }
+}
+
+/**
+ * Prepares a translation disclaimer flag for block--interledger-content.
+ *
+ * Sets `translationDisclaimer` to TRUE if the current node lacks a translation
+ * in the active language.
+ */
+function interledger_preprocess_block__interledger_content(&$variables){
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $variables['showTranslationDisclaimer'] = false;
+
+  if ($node instanceof Node) {
+    $hasTranslation = $node->hasTranslation($current_language);
+    if ($current_language !== $default_language && !$hasTranslation) {
+      $variables['showTranslationDisclaimer'] = true;
+    }
   }
 }
