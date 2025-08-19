@@ -370,6 +370,10 @@
   animation: scroll-left 18s linear infinite;
 }
 
+.press-logos .duplicate-logos {
+  display: flex;
+}
+
 .press-logos .card {
   padding: var(--space-s);
 }
