@@ -30,6 +30,11 @@ main::before {
   content: "";
 }
 
+.translation-disclaimer {
+  padding: var(--space-xs) 5%;
+  font-style: italic;
+}
+
 @media screen and (max-width: 430px) {
   main::before {
     content: initial;
