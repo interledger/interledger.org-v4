@@ -18,7 +18,12 @@
 
 @media screen and (max-width: 529px) {
   .hero h2 {
-    hyphens: auto;
+    hyphens: manual; 
+    font-size: var(--step-4)
+  }
+
+  .hero h2 span {
+    font-size: var(--step-4) !important;
   }
 }
 
