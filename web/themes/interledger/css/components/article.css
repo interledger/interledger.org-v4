@@ -130,11 +130,11 @@
 
 .news-article iframe {
   aspect-ratio: 16 / 9;
-  width: 600px;
+  width: 100%; 
   height: auto;
-  margin-inline: auto;
   display: block;
   margin-block-end: var(--space-s);
+  border-radius: var(--border-radius);
 }
 
 @media screen and (min-width: 800px) {
