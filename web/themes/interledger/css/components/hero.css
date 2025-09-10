@@ -9,7 +9,7 @@
 }
 
 .hero h2 {
-  font-size: var(--step-6);
+  font-size: var(--step-5);
   max-width: 10em;
   line-height: 1.2;
   color: var(--color-hero-txt);
@@ -19,11 +19,6 @@
 @media screen and (max-width: 529px) {
   .hero h2 {
     hyphens: manual; 
-    font-size: var(--step-4)
-  }
-
-  .hero h2 span {
-    font-size: var(--step-4) !important;
   }
 }
 
