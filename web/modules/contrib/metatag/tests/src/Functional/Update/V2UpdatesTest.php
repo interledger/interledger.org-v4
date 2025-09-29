@@ -66,7 +66,7 @@ class V2UpdatesTest extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function doSelectionTest() {
+  protected function doSelectionTest(): void {
     parent::doSelectionTest();
 
     // Verify that the v2 post post-update script is present.
