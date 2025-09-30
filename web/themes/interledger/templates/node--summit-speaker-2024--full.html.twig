@@ -3,12 +3,14 @@
 
 <div class="speaker node--{{ node.id }}">
   <header class="speaker__header">
-    <div class="speaker__text">
-      <h1>{{ node.field_speaker_name.0.value|raw }}</h1>
-      <p>{{ node.field_speaker_tagline.0.value|raw }}</p>
-    </div>
-    <div class="speaker__img">
-      <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+    <div class="content-wrapper speaker-wrapper">
+      <div class="speaker__text">
+        <h1>{{ node.field_speaker_name.0.value|raw }}</h1>
+        <p>{{ node.field_speaker_tagline.0.value|raw }}</p>
+      </div>
+      <div class="speaker__img">
+        <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+      </div>
     </div>
   </header>
 
