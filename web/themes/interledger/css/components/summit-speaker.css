@@ -10,11 +10,9 @@
 
 .speaker__header {
   display: flex;
+  margin-block-end: var(--space-l);
   justify-content: center;
   align-items: end;
-  gap: var(--space-m);
-  padding-inline: 5%;
-  margin-block-end: var(--space-l);
 }
 
 .speaker__header::before {
@@ -26,6 +24,24 @@
   width: 100%;
   height: 100%;
   position: absolute;
+}
+
+.speaker-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-m);
+  justify-content: center;
+  align-items: center;
+  padding-inline: 5%;
+  width: 100%;
+}
+
+.speaker__text {
+  align-self: end;
+}
+
+.speaker__img {
+  justify-self: end;
 }
 
 .speaker__header p {
@@ -49,4 +65,14 @@
 
 .speaker__talk h2 {
   margin-block-end: var(--space-2xs);
+}
+
+@media screen and (max-width: 580px) {
+  .speaker-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .speaker__img {
+    margin-inline: auto;
+  }
 }
