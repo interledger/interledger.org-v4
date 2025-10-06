@@ -37,6 +37,10 @@
   font-size: var(--step--1);
 }
 
+.talk__header p:first-of-type {
+  margin-block-end: var(--space-2xs);
+}
+
 .talk__video {
   aspect-ratio: 16 / 9;
   margin-inline: auto;
@@ -98,7 +102,7 @@
   margin-block-end: var(--space-2xs);
 }
 
-.talk__teaser p span.session-languages {
+span.session-languages {
   display: inline-block;
   margin-right: 0.1rem;
   padding: 0 0.375rem;

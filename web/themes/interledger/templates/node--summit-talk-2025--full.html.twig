@@ -28,6 +28,11 @@
   <header class="talk__header">
     <h1>{{ node.field_talk_title.0.value|raw }}</h1>
     <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('U')|format_date('custom', 'D j M Y, H:i') }}</time><span> - {{ duration }}{{ 'min'|t }}</span></p>
+    <p>
+      {% for language in node.field_session_languages2 %}
+        <span class="session-languages">{{ language.value }}</span>
+      {% endfor %}
+    </p>
   </header>
   
   {% if content.field_talk_video[0]['#media'] is defined %}
