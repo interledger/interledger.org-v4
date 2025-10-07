@@ -429,12 +429,66 @@
 /* Summit 2025 Track block styling */
 .summit-track-wrapper {
   gap: var(--space-m);
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
 }
 
-@media screen and (max-width: 899px) {
-  .summit-track-wrapper {
-    grid-template-columns: repeat(1, 1fr);
+.summit-track-wrapper .card {
+  width: 100%;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 2rem;
+  gap: 2rem;
+  height: auto;
+}
+
+.summit-track-wrapper .card:nth-child(odd) .card-content-wrapper {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.summit-track-wrapper .card:nth-child(odd) .card__media {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.summit-track-wrapper .card .card-content-wrapper {
+  padding: 0px;
+}
+
+.summit-track-wrapper .card .card__media {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: unset;
+  border-radius: 0.5rem;
+}
+
+.summit-track-wrapper .card .card__media img {
+  border-radius: 0rem;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media screen and (max-width: 460px) {
+  .summit-track-wrapper .card {
+    grid-template-columns: 1fr;
+  }
+
+  .summit-track-wrapper .card .card-content-wrapper, .summit-track-wrapper .card:nth-child(odd) .card-content-wrapper {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  
+  .summit-track-wrapper .card .card__media, .summit-track-wrapper .card:nth-child(odd) .card__media {
+    grid-row: 2;
+    grid-column: 1;
   }
 }
 
