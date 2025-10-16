@@ -53,6 +53,8 @@
   background-size: cover;
   position: relative;
   background-position: center;
+  display: flex;
+  align-items: flex-end; /* Aligns content to bottom */
 }
 
 .hero--photography .content-wrapper {
@@ -175,3 +177,20 @@
     left: calc(-1 * var(--space-m));
   }
 }
+
+.hero--photography::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+  z-index: 1;
+}
+
+.hero--photography .content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
