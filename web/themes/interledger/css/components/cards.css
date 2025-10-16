@@ -207,6 +207,10 @@
     left: 0rem;
     top: 0.8em;
   }
+
+  .card__learn-more {
+    text-align: right;
+  }
 }
 
 /* Ideation block styling */
