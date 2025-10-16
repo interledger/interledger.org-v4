@@ -1,26 +1,33 @@
 <section>
-  <div class='content-wrapper event-card'>
+  <article class='content-wrapper event-card'>
     {% for item in content.field_event_item %}
-      {% if item['#paragraph'] %}
+      {% set paragraph = item['#paragraph'] ?? null %}
+      {% if paragraph %}
+        {% set subheading = paragraph.field_event_subheading.value ?? null %}
+        {% set text = paragraph.field_event_blurb.value ?? null %}
+        {% set link = paragraph.field_event_link.uri ?? null %}
+        {% set linkText = paragraph.field_event_link.title ?? null %}
+        {% set umami = paragraph.field_umami_event.value ?? null %}
+        
         <div class="event-item">
-          {% if item['#paragraph'].field_event_subheading.value  %}
-            <h3>{{ item['#paragraph'].field_event_subheading.value }}</h3>
+          {% if subheading  %}
+            <h3>{{ subheading }}</h3>
           {% endif %}
 
-          {% if item['#paragraph'].field_event_blurb.value %}
-            {{ item['#paragraph'].field_event_blurb.value | raw }}
+          {% if text %}
+            {{ text | raw }}
           {% endif %}
 
-          {% if item['#paragraph'].field_event_link.uri %}
+          {% if link %}
             <a class='cta--btn__link' 
-              href='{{item['#paragraph'].field_event_link.uri}}' 
-              data-umami-event='{{ item['#paragraph'].field_umami_event.values}}'
+              href='{{ link }}' 
+              data-umami-event='{{ umami }}'
             >
-              {{ item['#paragraph'].field_event_link.title ?: 'Reserve'}}
+              {{ linkText }}
             </a>
           {% endif %}
         </div>
       {% endif %}
     {% endfor %}
-  </div>
+  </article>
 </section>
