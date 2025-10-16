@@ -47,6 +47,21 @@
   margin-block-end: var(--space-xs);
 }
 
+.card__learn-more {
+  font-size: var(--step--1);
+  margin-top: var(--space-s);
+}
+
+.card__learn-more svg {
+  display: inline-block;
+  margin-left: var(--space-2xs);
+  vertical-align: middle;
+}
+
+.clickable-card:hover .card__learn-more {
+  text-decoration: underline;
+}
+
 .card__link {
   display: flex;
   align-items: center;
