@@ -144,13 +144,12 @@
   max-width: 100%;
   padding: var(--space-m);
   border: 1px solid var(--color-white);
-  border-radius: var(--border-radius);
+  border-radius: 16px;
 }
 
-
 .hackathon-wrapper .card h3 {
-  padding-left: var(--space-m);
   position: relative;
+  padding-left: 1.6rem;
 }
 
 .hackathon-wrapper .card h3::before {
@@ -159,12 +158,11 @@
   height: 0.8rem;
   background-color: var(--color-white);
   border-radius: 50%;
-  margin-top: 0.8rem;
-  flex-shrink: 0;
   position: absolute;
-  line-height: 1;
-  left: 0;
-  vertical-align: middle;
+  left: -0.4rem;
+  top: 0.7em;
+  transform: translateY(-50%);
+  /* Offsets by half the dot's height for perfect centering */
 }
 
 .hackathon-wrapper .card-content-wrapper {
@@ -197,6 +195,17 @@
   .hackathon-wrapper .card-content-wrapper {
     grid-template-columns: 1fr;
     gap: var(--space-s);
+  }
+
+  .hackathon-wrapper .card h3 {
+    padding-left: 1.3rem;
+  }
+
+  .hackathon-wrapper .card h3::before {
+    width: 0.6rem;
+    height: 0.6rem;
+    left: 0rem;
+    top: 0.8em;
   }
 }
 
