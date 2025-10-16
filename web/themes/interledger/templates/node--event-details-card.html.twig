@@ -1,0 +1,26 @@
+<section>
+  <div class='content-wrapper event-card'>
+    {% for item in content.field_event_item %}
+      {% if item['#paragraph'] %}
+        <div class="event-item">
+          {% if item['#paragraph'].field_event_subheading.value  %}
+            <h3>{{ item['#paragraph'].field_event_subheading.value }}</h3>
+          {% endif %}
+
+          {% if item['#paragraph'].field_event_blurb.value %}
+            {{ item['#paragraph'].field_event_blurb.value | raw }}
+          {% endif %}
+
+          {% if item['#paragraph'].field_event_link.uri %}
+            <a class='cta--btn__link' 
+              href='{{item['#paragraph'].field_event_link.uri}}' 
+              data-umami-event='{{ item['#paragraph'].field_umami_event.values}}'
+            >
+              {{ item['#paragraph'].field_event_link.title ?: 'Reserve'}}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

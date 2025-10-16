@@ -1,0 +1,75 @@
+/* Event Details Card content type styles */
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: var(--space-m);
+  margin-bottom: var(--space-3xl);
+  backdrop-filter: blur(24px);
+  background: linear-gradient(
+    to top,
+    rgba(164, 153, 215, 0.09) 0%,
+    rgba(255, 122, 127, 0.1) 50%,
+    rgba(255, 204, 170, 0.16) 100%
+  );
+  border-radius: 1rem;
+}
+
+.event-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.event-item h3 {
+  font-size: var(--step-2);
+  font-weight: 600;
+}
+
+.event-item::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: -1rem;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.event-item:last-of-type::after {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .event-card {
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  .event-item {
+    flex: 1;
+    align-items: start;
+    text-align: left;
+  }
+
+  .event-item::after {
+    width: 1px;
+    height: 100%;
+    bottom: 0;
+    right: -1.5rem;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
