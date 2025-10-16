@@ -1,5 +1,12 @@
 <section>
-  <article class='content-wrapper event-card'>
+  {% set hasBorder = content.field_event_card_border.0['#markup'] == 'On' %}
+  {% set classes = [
+      'content-wrapper',
+      'event-card',
+      hasBorder ? 'card-border'
+    ] 
+  %}
+  <article {{ attributes.addClass(classes) }}>
     {% for item in content.field_event_item %}
       {% set paragraph = item['#paragraph'] ?? null %}
       {% if paragraph %}
