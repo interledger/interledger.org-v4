@@ -6,9 +6,14 @@ on:
       - main
       - bosbaber/20251016-gcloud-run
 
+concurrency:
+  group: staging-deployment
+  cancel-in-progress: false
+
 jobs:
   rebuild-staging:
     runs-on: ubuntu-latest
+    environment: staging
     
     steps:
       - name: Checkout code
