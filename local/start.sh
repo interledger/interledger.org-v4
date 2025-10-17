@@ -35,8 +35,8 @@ echo "⏳ Waiting for database to be ready..."
 sleep 30
 
 echo "🔧 Setting up file permissions..."
-$DOCKER_COMPOSE_CMD exec drupal chown -R www-data:www-data /var/www/html/sites/default/files
-$DOCKER_COMPOSE_CMD exec drupal chmod -R 755 /var/www/html/sites/default/files
+$DOCKER_COMPOSE_CMD exec drupal chown -R www-data:www-data /var/www/html/web/sites/default/files 2>/dev/null || true
+$DOCKER_COMPOSE_CMD exec drupal chmod -R 755 /var/www/html/web/sites/default/files 2>/dev/null || true
 
 echo "🎉 Setup complete!"
 echo ""

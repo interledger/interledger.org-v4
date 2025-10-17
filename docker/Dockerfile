@@ -96,8 +96,7 @@ RUN echo '<VirtualHost *:80>\n\
 # Set the working directory to web root
 WORKDIR /var/www/html
 
-# Copy composer files and install dependencies
-COPY composer.json composer.lock ./
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create required directories for Drupal
@@ -106,14 +105,9 @@ RUN mkdir -p /var/www/html/web/sites/default/files \
     /var/www/html/web/sites/default/private \
     /tmp/drupal_cache
 
-# Install composer dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html /tmp/drupal_cache && \
-    chmod -R 775 /var/www/html/web/sites/default/files \
-    /var/www/html/web/sites/default/private \
-    /tmp/drupal_cache
+# Set proper permissions for cache directory
+RUN chown -R www-data:www-data /tmp/drupal_cache && \
+    chmod -R 775 /tmp/drupal_cache
 
 # Create entrypoint script to fix permissions at runtime
 RUN echo '#!/bin/bash\n\
