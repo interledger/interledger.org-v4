@@ -59,9 +59,10 @@
   vertical-align: middle;
 }
 
-.clickable-card:hover .card__learn-more {
-  text-decoration: underline;
+.clickable-card:hover .card__learn-more svg{
+  transform: rotate(-45deg);
 }
+
 
 .card__link {
   display: flex;
