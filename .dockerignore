@@ -27,7 +27,14 @@ Thumbs.db
 
 # Local development
 local/
-
+docker/
+!docker/Dockerfile
+!docker/entrypoint.sh
+!docker/apache-drupal.conf
+!docker/apache-drupal-prod.conf
+!docker/prod.settings.php
+!docker/staging.robot.txt
+!docker/htaccess.staging
 tmp/
 *.log
 
