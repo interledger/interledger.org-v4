@@ -96,9 +96,10 @@ $settings['file_public_path'] = 'sites/default/files';
 $settings['file_private_path'] = 'sites/default/private';
 
 // PHP storage directory (for compiled PHP code)
+// Use /tmp for PHP storage to avoid GCS latency - this needs to be fast local storage
 $settings['php_storage']['default'] = [
 'class' => 'Drupal\Component\PhpStorage\FileStorage',
-'directory' => 'sites/default/files/php',
+'directory' => '/tmp/drupal_php_storage',
 ];
 
 // Configuration sync directory
