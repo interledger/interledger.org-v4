@@ -81,3 +81,26 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 # Expose port 80
 EXPOSE 80
+
+FROM dev AS prod
+
+# Use production Apache configuration
+COPY docker/apache-drupal-prod.conf /etc/apache2/sites-available/000-default.conf
+
+# Enable required Apache modules for production
+RUN a2enmod expires deflate headers
+
+COPY web /var/www/html/web
+COPY docker/prod.settings.php /var/www/html/web/sites/default/settings.php
+
+# Copy and set up entrypoint script
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+
+FROM prod AS stage
+
+# Override the robots.txt for staging environment
+COPY docker/staging.robot.txt /var/www/html/web/robots.txt
+# Use staging .htaccess to prevent indexing
+COPY docker/htaccess.staging /var/www/html/web/.htaccess
