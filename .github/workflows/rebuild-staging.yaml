@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - bosbaber/20251016-gcloud-run
 
 concurrency:
   group: staging-deployment
