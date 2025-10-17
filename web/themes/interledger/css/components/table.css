@@ -46,7 +46,7 @@
         border: 2px solid var(--color-white);
         border-radius: 8px;
         overflow: hidden;
-        background: var(--color-black);
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .hackathon-table tr {
@@ -58,7 +58,6 @@
     }
 
     .hackathon-table tr[data-day-header] {
-        background-color: var(--color-black);
         padding: 12px;
         text-align: center;
         font-weight: bold;
@@ -69,7 +68,6 @@
         border: none;
         padding: 0;
         color: var(--color-white);
-        background-color: var(--color-black);
     }
 
     .hackathon-table td {
@@ -81,7 +79,6 @@
     }
 
     .hackathon-table td:first-child {
-        background-color: var(--color-black);
         font-weight: 600;
         color: var(--color-white);
         white-space: nowrap;
@@ -90,15 +87,15 @@
     }
 
     .hackathon-table td:nth-child(2) {
-        background-color: var(--color-black);
         font-weight: bold;
         color: var(--color-white);
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: 0px;
+        padding-bottom: 0px;
     }
 
     .hackathon-table td:nth-child(3) {
         color: var(--color-gray);
+        opacity: 0.8;
         padding-top: 8px;
         padding-bottom: 12px;
     }
