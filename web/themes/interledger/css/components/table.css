@@ -1,0 +1,106 @@
+
+.hackathon-table {
+    border-collapse: collapse;
+    width: calc(100% - 40px);
+    max-width: 1480px;
+    color: #fff;
+    margin: 100px 20px;
+  }
+
+  .hackathon-table th,
+  .hackathon-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  .hackathon-table th {
+    background-color: #f2f2f2;
+    color: #000;
+    border: 2px solid #000;
+  }
+
+  .hackathon-table td:first-child {
+    white-space: nowrap;
+  }
+
+  .hackathon-table ul {
+    margin: 0;
+    padding-left: 30px;
+  }
+
+  .hackathon-table li {
+    margin: 4px 0;
+  }
+
+  /* Responsive card layout for medium screens and below */
+  @media (max-width: 1024px) {
+    .hackathon-table thead {
+      display: none;
+    }
+
+    .hackathon-table,
+    .hackathon-table tbody {
+      display: block;
+    }
+
+    .hackathon-table tbody {
+      border: 2px solid #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+
+    .hackathon-table tr {
+      display: block;
+    }
+
+    .hackathon-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .hackathon-table tr[data-day-header] {
+      background-color: #1a1a1a;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hackathon-table tr[data-day-header] td {
+      border: none;
+      padding: 0;
+      color: #fff;
+      background-color: #1a1a1a;
+    }
+
+    .hackathon-table td {
+      display: block;
+      border: none;
+      padding: 12px 16px;
+      position: relative;
+      color: #fff;
+    }
+
+    .hackathon-table td:first-child {
+      background-color: #1a1a1a;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      padding-bottom: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hackathon-table td:nth-child(2) {
+      background-color: #1a1a1a;
+      font-weight: bold;
+      color: #fff;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    .hackathon-table td:nth-child(3) {
+      color: #aaa;
+      padding-top: 8px;
+      padding-bottom: 12px;
+    }
+  }
