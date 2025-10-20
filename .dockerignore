@@ -27,9 +27,18 @@ Thumbs.db
 
 # Local development
 local/
-docker/
+
 tmp/
 *.log
+
+docker/
+!docker/Dockerfile
+!docker/entrypoint.sh
+!docker/apache-drupal.dev.conf
+!docker/apache-drupal.prod.conf
+!docker/prod.settings.php
+!docker/staging.robot.txt
+!docker/htaccess.staging
 
 # Node modules (if any)
 node_modules/

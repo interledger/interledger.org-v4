@@ -1,5 +1,5 @@
 # Use the official PHP image
-FROM php:8.2-apache
+FROM php:8.2-apache AS dev
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -48,88 +48,33 @@ RUN { \
         echo 'opcache.fast_shutdown=1'; \
     } > /usr/local/etc/php/conf.d/drupal-recommended.ini
 
-# Configure Apache for Drupal - create the configuration inline
-RUN echo '<VirtualHost *:80>\n\
-    DocumentRoot /var/www/html/web\n\
-    ServerName localhost\n\
-    \n\
-    <Directory "/var/www/html/web">\n\
-        AllowOverride All\n\
-        Require all granted\n\
-        Options -Indexes +FollowSymLinks\n\
-        \n\
-        # Security headers\n\
-        Header always set X-Content-Type-Options nosniff\n\
-        Header always set X-Frame-Options SAMEORIGIN\n\
-        Header always set X-XSS-Protection "1; mode=block"\n\
-    </Directory>\n\
-    \n\
-    # Deny access to sensitive Drupal files (but allow index.php and other entry points)\n\
-    <FilesMatch "\\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\\.php)?|xtmpl|yml|yaml)$">\n\
-        Require all denied\n\
-    </FilesMatch>\n\
-    \n\
-    # Deny access to backup files\n\
-    <FilesMatch "\\.php(~|\\.sw[op]|\\.bak|\\.orig|\\.save)$">\n\
-        Require all denied\n\
-    </FilesMatch>\n\
-    \n\
-    # Deny access to composer files\n\
-    <FilesMatch "^composer\\.(json|lock)$">\n\
-        Require all denied\n\
-    </FilesMatch>\n\
-    \n\
-    # Deny access to hidden files\n\
-    <FilesMatch "^\\.">\n\
-        Require all denied\n\
-    </FilesMatch>\n\
-    \n\
-    # Deny access to .git directories\n\
-    <DirectoryMatch "/\\.git">\n\
-        Require all denied\n\
-    </DirectoryMatch>\n\
-    \n\
-    ErrorLog ${APACHE_LOG_DIR}/error.log\n\
-    CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
-</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+# Configure Apache for Drupal - copy configuration file
+COPY docker/apache-drupal.dev.conf /etc/apache2/sites-available/000-default.conf
 
 # Set the working directory to web root
 WORKDIR /var/www/html
 
-# Install Composer
+# Copy composer files and install dependencies
+COPY composer.json composer.lock ./
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create required directories for Drupal
-RUN mkdir -p /var/www/html/web/sites/default/files \
-    /var/www/html/web/sites/default/files/php \
-    /var/www/html/web/sites/default/private \
+RUN mkdir -p /var/drupal/files \
+    /var/drupal/private \
     /tmp/drupal_cache
 
-# Set proper permissions for cache directory
-RUN chown -R www-data:www-data /tmp/drupal_cache && \
-    chmod -R 775 /tmp/drupal_cache
+# Install composer dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Create entrypoint script to fix permissions at runtime
-RUN echo '#!/bin/bash\n\
-echo "Starting Drupal container..."\n\
-\n\
-# Wait a moment for mounts to be ready\n\
-sleep 2\n\
-\n\
-# Fix permissions on mounted volumes\n\
-echo "Setting up permissions..."\n\
-chown -R www-data:www-data /var/www/html/web/sites/default/files 2>/dev/null || true\n\
-chmod -R 775 /var/www/html/web/sites/default/files 2>/dev/null || true\n\
-\n\
-# Create PHP storage directory if it does not exist\n\
-mkdir -p /var/www/html/web/sites/default/files/php 2>/dev/null || true\n\
-chown -R www-data:www-data /var/www/html/web/sites/default/files/php 2>/dev/null || true\n\
-chmod -R 775 /var/www/html/web/sites/default/files/php 2>/dev/null || true\n\
-\n\
-echo "Starting Apache..."\n\
-# Start Apache\n\
-exec apache2-foreground\n\
-' > /entrypoint.sh && chmod +x /entrypoint.sh
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html /var/drupal /tmp/drupal_cache && \
+    chmod -R 775 /var/drupal/files \
+    /var/drupal/private \
+    /tmp/drupal_cache
+
+# Copy and set up entrypoint script
+COPY ./docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Use custom entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
