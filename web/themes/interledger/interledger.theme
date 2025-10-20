@@ -38,8 +38,9 @@ function interledger_preprocess_html(&$variables) {
 /**
  * Prepares a translation disclaimer flag for block--interledger-content.
  *
- * Sets `showTranslationDisclaimer` to TRUE if the current node lacks a translation
- * in the active language.
+ * Sets `showTranslationDisclaimer` to TRUE if:
+ * - The current node lacks a translation in the active language, OR
+ * - We're on a non-node page (views, listings, etc.) in a non-default language
  */
 function interledger_preprocess_block__interledger_content(&$variables) {
   $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
@@ -47,9 +48,16 @@ function interledger_preprocess_block__interledger_content(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $variables['showTranslationDisclaimer'] = false;
 
-  if ($node instanceof Node && $current_language !== $default_language) {
-    $hasTranslation = $node->hasTranslation($current_language);
-    if (!$hasTranslation) {
+  // Only check if we're not in the default language
+  if ($current_language !== $default_language) {
+    if ($node instanceof Node) {
+      // For node pages, check if translation exists
+      $hasTranslation = $node->hasTranslation($current_language);
+      if (!$hasTranslation) {
+        $variables['showTranslationDisclaimer'] = true;
+      }
+    } else {
+      // For non-node pages (views, listings, etc.), show disclaimer by default
       $variables['showTranslationDisclaimer'] = true;
     }
   }
