@@ -190,7 +190,8 @@
   .site-links-wrapper {
     grid-area: 1 / 1 / 2 / 4;
     display: grid;
-    grid-template-columns: minmax(10em, 1fr) 1fr 1fr;
+    /* the 123px below: ~ the width of the language switcher, so that menu is centered */
+    grid-template-columns: 10em 1fr calc(10em - 123px);
     grid-template-areas: ". menu site";
     gap: var(--space-s);
   }
