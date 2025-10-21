@@ -1,0 +1,54 @@
+# Git and version control
+.git
+.gitignore
+.gitmodules
+
+# Documentation
+README.md
+*.md
+CHANGELOG*
+LICENSE*
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development
+local/
+
+tmp/
+*.log
+
+docker/
+!docker/Dockerfile
+!docker/entrypoint.sh
+!docker/apache-drupal.dev.conf
+!docker/apache-drupal.prod.conf
+!docker/prod.settings.php
+!docker/staging.robot.txt
+!docker/htaccess.staging
+
+# Node modules (if any)
+node_modules/
+npm-debug.log*
+
+# Composer development dependencies
+vendor/phpunit/
+vendor/squizlabs/
+vendor/phpstan/
+
+# Database dumps
+*.sql
+*.sqlite

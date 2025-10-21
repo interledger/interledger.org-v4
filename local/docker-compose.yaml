@@ -1,0 +1,48 @@
+services:
+  drupal:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: interledger_drupal
+    ports:
+      - "${DRUPAL_PORT:-8080}:80"
+    volumes:
+      - ../web:/var/www/html/web:ro
+      - ./settings.php:/var/www/html/web/sites/default/settings.php:ro
+      - ./files:/var/drupal/files:rw
+      - ./private:/var/drupal/private:rw
+    depends_on:
+      - db
+    environment:
+      - DRUPAL_DB_HOST=${DRUPAL_DB_HOST:-db}
+      - DRUPAL_DB_NAME=${DRUPAL_DB_NAME:-drupal}
+      - DRUPAL_DB_USER=${DRUPAL_DB_USER:-drupal}
+      - DRUPAL_DB_PASSWORD=${DRUPAL_DB_PASSWORD:-drupal123}
+      - DRUPAL_HASH_SALT=${DRUPAL_HASH_SALT:-random_salt_value}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+    networks:
+      - drupal_network
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: interledger_mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-drupal}
+      MYSQL_USER: ${MYSQL_USER:-drupal}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-drupal123}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass123}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    networks:
+      - drupal_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  drupal_network:
+    driver: bridge
