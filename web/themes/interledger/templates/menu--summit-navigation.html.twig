@@ -6,7 +6,7 @@
   {% import _self as menus %}
   {% if items %}
     {% if menu_level == 0 %}
-      <ul{{ attributes}} class="site-nav__links menu--level-{{ menu_level + 1 }}" id="siteNavMenu">
+      <ul{{ attributes}} class="site-nav__links menu--level-{{ menu_level + 1 }} summit-menu" id="siteNavMenu">
     {% else %}
       <ul class="menu--level-{{ menu_level + 1 }}">
     {% endif %}

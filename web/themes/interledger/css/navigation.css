@@ -22,6 +22,27 @@
   flex: none;
 }
 
+.site-nav__links.main-menu .has-submenu > a::after {
+  content: url(../img/arrow-main-menu.svg);
+}
+
+.site-nav__links.summit-menu .has-submenu > a::after {
+  content: url(../img/arrow-summit-menu.svg);
+}
+
+.site-nav__links .has-submenu > a::after {
+  display: inline-block;
+  width: 9px;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.site-nav__links .has-submenu > a[aria-expanded="true"]::after,
+.site-nav__links .has-submenu > a:hover::after,
+.site-nav__links .has-submenu:has(a:hover) > a::after {
+  transform: translateY(30%) rotate(180deg);
+}
+
 .site-nav__links a {
   text-decoration: underline;
   text-decoration-color: transparent; 
