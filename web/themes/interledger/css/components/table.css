@@ -1,76 +1,89 @@
-.hackathon-table {
-    border-collapse: collapse;
+.table-wrapper table {
+    border-collapse: separate;
+    border-spacing: 0;
     width: calc(100% - 40px);
     max-width: 1480px;
     color: var(--color-white);
     margin: 100px 20px;
-}
-
-.hackathon-table th,
-.hackathon-table td {
     border: 1px solid var(--color-light-gray);
-    padding: 8px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.hackathon-table th {
+.table-wrapper table th,
+.table-wrapper table td {
+    padding: 8px;
+    border-right: 1px solid var(--color-light-gray);
+    border-bottom: 1px solid var(--color-light-gray);
+}
+
+.table-wrapper table th:last-child,
+.table-wrapper table td:last-child {
+    border-right: none;
+}
+
+.table-wrapper table tr:last-child td {
+    border-bottom: none;
+}
+
+.table-wrapper table th {
     background-color: var(--color-light-gray);
     color: var(--color-black);
-    border: 2px solid var(--color-black);
 }
 
-.hackathon-table td:first-child {
+.table-wrapper table td:first-child {
     white-space: nowrap;
 }
 
-.hackathon-table ul {
+.table-wrapper table ul {
     margin: 0;
     padding-left: 30px;
 }
 
-.hackathon-table li {
+.table-wrapper table li {
     margin: 4px 0;
 }
 
 /* Responsive card layout for medium screens and below */
 @media (max-width: 1024px) {
-    .hackathon-table thead {
+    .table-wrapper table thead {
         display: none;
     }
 
-    .hackathon-table,
-    .hackathon-table tbody {
+    .table-wrapper table,
+    .table-wrapper table tbody {
         display: block;
     }
 
-    .hackathon-table tbody {
+    .table-wrapper table tbody {
         border: 2px solid var(--color-white);
         border-radius: 8px;
         overflow: hidden;
         background: rgba(0, 0, 0, 0.5);
     }
 
-    .hackathon-table tr {
+    .table-wrapper table tr {
         display: block;
     }
 
-    .hackathon-table tr:last-child {
+    .table-wrapper table tr:last-child {
         border-bottom: none;
     }
 
-    .hackathon-table tr[data-day-header] {
+    .table-wrapper table tr[data-day-header] {
         padding: 12px;
         text-align: center;
         font-weight: bold;
         border-top: 1px solid var(--color-card-outline);
     }
 
-    .hackathon-table tr[data-day-header] td {
+    .table-wrapper table tr[data-day-header] td {
         border: none;
         padding: 0;
         color: var(--color-white);
     }
 
-    .hackathon-table td {
+    .table-wrapper table td {
         display: block;
         border: none;
         padding: 12px 16px;
@@ -78,7 +91,7 @@
         color: var(--color-white);
     }
 
-    .hackathon-table td:first-child {
+    .table-wrapper table td:first-child {
         font-weight: 600;
         color: var(--color-white);
         white-space: nowrap;
@@ -86,14 +99,14 @@
         border-top: 1px solid var(--color-card-outline);
     }
 
-    .hackathon-table td:nth-child(2) {
+    .table-wrapper table td:nth-child(2) {
         font-weight: bold;
         color: var(--color-white);
         padding-top: 0px;
         padding-bottom: 0px;
     }
 
-    .hackathon-table td:nth-child(3) {
+    .table-wrapper table td:nth-child(3) {
         color: var(--color-gray);
         opacity: 0.8;
         padding-top: 8px;
