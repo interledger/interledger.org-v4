@@ -1,120 +1,131 @@
+.table-wrapper {
+  padding-inline: 5%;
+}
+
 .table-wrapper table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: calc(100% - 40px);
-    max-width: 1480px;
-    color: var(--color-white);
-    margin: 100px 20px;
-    border: 1px solid var(--color-light-gray);
-    border-radius: 8px;
-    overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .table-wrapper table th,
 .table-wrapper table td {
-    padding: 8px;
-    border-right: 1px solid var(--color-light-gray);
-    border-bottom: 1px solid var(--color-light-gray);
+  padding: var(--space-2xs);
+  border-right: 1px solid var(--color-light-gray);
+  border-bottom: 1px solid var(--color-light-gray);
 }
 
 .table-wrapper table th:last-child,
 .table-wrapper table td:last-child {
-    border-right: none;
+  border-right: none;
 }
 
 .table-wrapper table tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .table-wrapper table th {
-    background-color: var(--color-light-gray);
-    color: var(--color-black);
+  background-color: var(--color-light-gray);
+  color: var(--color-black);
 }
 
 .table-wrapper table td:first-child {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .table-wrapper table ul {
-    margin: 0;
-    padding-left: 30px;
+  margin: 0;
+  padding-left: var(--space-m);
 }
 
 .table-wrapper table li {
-    margin: 4px 0;
+  margin: var(--space-3xs) 0;
 }
 
 .table-wrapper table tr[data-day-header] td {
-    padding-top: 10px;
-    padding-bottom: 10px;
+  padding-top: var(--space-2xs);
+  padding-bottom: var(--space-2xs);
 }
 
 /* Responsive card layout for medium screens and below */
 @media (max-width: 1024px) {
-    .table-wrapper table thead {
-        display: none;
-    }
+  .table-wrapper table thead {
+    display: none;
+  }
 
-    .table-wrapper table,
-    .table-wrapper table tbody {
-        display: block;
-    }
+  .table-wrapper table,
+  .table-wrapper table tbody {
+    display: block;
+  }
 
-    .table-wrapper table tbody {
-        border: 1px solid var(--color-white);
-        border-radius: 8px;
-        overflow: hidden;
-        background: rgba(0, 0, 0, 0.5);
-    }
+  .table-wrapper table tbody {
+    border: 1px solid var(--color-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+  }
 
-    .table-wrapper table tr {
-        display: block;
-    }
+  .table-wrapper table tr {
+    display: block;
+  }
 
-    .table-wrapper table tr:last-child {
-        border-bottom: none;
-    }
+  .table-wrapper table tr[data-day-header] {
+    padding: var(--space-2xs);
+    text-align: center;
+    font-weight: bold;
+    border-top: 1px solid var(--color-card-outline);
+  }
 
-    .table-wrapper table tr[data-day-header] {
-        padding: 12px;
-        text-align: center;
-        font-weight: bold;
-        border-top: 1px solid var(--color-card-outline);
-    }
+  .table-wrapper table tr[data-day-header] td {
+    padding: 0;
+    color: var(--color-white);
+  }
 
-    .table-wrapper table tr[data-day-header] td {
-        border: none;
-        padding: 0;
-        color: var(--color-white);
-    }
+  .table-wrapper table td {
+    display: block;
+    padding: var(--space-2xs) var(--space-xs);
+    position: relative;
+    color: var(--color-white);
+  }
+}
 
-    .table-wrapper table td {
-        display: block;
-        border: none;
-        padding: 12px 16px;
-        position: relative;
-        color: var(--color-white);
-    }
+/* Hackathon schedule styling */
+@media (max-width: 1024px) {
+  .table-wrapper .hackathon-table tr:last-child {
+    border-bottom: none;
+  }
 
-    .table-wrapper table td:first-child {
-        font-weight: 600;
-        color: var(--color-white);
-        white-space: nowrap;
-        padding-bottom: 8px;
-        border-top: 1px solid var(--color-card-outline);
-    }
+  .table-wrapper .hackathon-table tr[data-day-header] td {
+    border: none;
+  }
 
-    .table-wrapper table td:nth-child(2) {
-        font-weight: bold;
-        color: var(--color-white);
-        padding-top: 0px;
-        padding-bottom: 0px;
-    }
+  .table-wrapper .hackathon-table td {
+    border: none;
+  }
 
-    .table-wrapper table td:nth-child(3) {
-        color: var(--color-gray);
-        opacity: 0.8;
-        padding-top: 8px;
-        padding-bottom: 12px;
-    }
+  .table-wrapper .hackathon-table td:first-child {
+    font-weight: 600;
+    color: var(--color-white);
+    white-space: nowrap;
+    padding-bottom: var(--space-3xs);
+    border-top: 1px solid var(--color-card-outline);
+  }
+
+  .table-wrapper .hackathon-table td:nth-child(2) {
+    font-weight: bold;
+    color: var(--color-white);
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .table-wrapper .hackathon-table td:nth-child(3) {
+    color: var(--color-gray);
+    opacity: 0.8;
+    padding-top: var(--space-3xs);
+    padding-bottom: var(--space-2xs);
+  }
 }
