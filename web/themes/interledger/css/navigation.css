@@ -34,7 +34,10 @@
   display: inline-block;
   width: 9px;
   margin-left: 0.5rem;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.5s ease-in-out;
+  @media(prefers-reduced-motion) {
+    transition: transform 0s;
+  }
 }
 
 .site-nav__links .has-submenu > a[aria-expanded="true"]::after,
