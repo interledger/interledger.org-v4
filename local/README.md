@@ -1,68 +1,62 @@
-# Interledger.org Docker Development Environment
+# Interledger.org Local Development
 
-This Docker setup provides a complete local development environment for the Interledger.org Drupal website.
+Docker-based local development environment for the Interledger.org Drupal website.
 
 ## Prerequisites
 
-- Docker and Docker Compose installed
-- At least 4GB of available RAM
-- Make installed on your system
+- Docker and Docker Compose
+- Make
+- Minimum 4GB available RAM
 
-## Setup
+## Quick Start
 
-1. Place your database dump file as `local/local-backupdb.sql`
-2. Ensure Drupal files are in `local/files/`
-3. Place private files in `local/private/` if needed
+1. Place database dump as `local/local-backupdb.sql`
+2. Start environment: `make up`
+3. Restore database: `make restore-database`
 
-## Usage
-
-Start the environment:
-```bash
-make up
-```
-
-Restore database from backup:
-```bash
-make restore-database
-```
-
-View logs:
-```bash
-make logs
-```
-
-Stop the environment:
-```bash
-make down
-```
-
-Rebuild everything:
-```bash
-make rebuild
-```
-
-Clean up all containers, volumes, and images:
-```bash
-make clean
-```
-
-Show all available commands:
+For all available commands:
 ```bash
 make help
 ```
 
 ## Architecture
 
-The setup uses two main principles:
+- `web/` folder mounted read-only for immediate code changes
+- Files stored in `local/files/` and `local/private/`
+- Composer dependencies built into container image
+- No rebuilds needed for PHP/theme changes
 
-- The `web` folder is mounted read-only to preserve file permissions for development
-- Files and private directories are mounted to `/var/drupal/` to avoid folder conflicts
-- Composer dependencies are built into the container image
-- Code changes in `web/` reflect immediately without rebuilds
+## Access Points
 
-## Access
+- **Website**: http://localhost:8080
+- **Database**: localhost:3306
+  - User: `drupal`
+  - Password: `drupal123`
+  - Database: `drupal`
 
-- Website: http://localhost:8080
-- Database: localhost:3306 (user: drupal, password: drupal123, database: drupal)
+## Common Tasks
 
+### Clear Drupal cache
+```bash
+make drush cr
+```
 
+### Run any Drush command
+```bash
+make drush status
+make drush user:login
+```
+
+### View logs
+```bash
+make logs
+```
+
+### Rebuild after Composer changes
+```bash
+make rebuild
+```
+
+## Database Access
+
+The database is accessible on `127.0.0.1` using the port specified in the `.env` file (default: 3306). The `.env` file is created automatically when running `make up`.

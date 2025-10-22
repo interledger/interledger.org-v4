@@ -30,6 +30,12 @@ help:
 	@echo "  help               Show this help (default)."
 
 up:
+	@if [ ! -f .env ]; then \
+		echo ".env file not found. Creating from sample.env..."; \
+		cp sample.env .env; \
+		echo ".env file created with default values."; \
+	fi
+
 	@echo "Starting docker compose..."
 	$(COMPOSE) up -d
 	@echo "Started. Use '$(COMPOSE) ps' to view containers."
