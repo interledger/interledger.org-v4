@@ -1,9 +1,5 @@
 global-styling:
-<<<<<<< HEAD
   version: 1.5.4
-=======
-  version: 1.5.2
->>>>>>> df55f6e88 (fix: removed mergin below event cards (#127))
   css:
     theme:
       css/fonts.css: {}
