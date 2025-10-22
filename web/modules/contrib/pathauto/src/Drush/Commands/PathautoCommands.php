@@ -1,49 +1,37 @@
 <?php
 
-namespace Drupal\pathauto\Commands;
+declare(strict_types=1);
+
+namespace Drupal\pathauto\Drush\Commands;
 
 use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\pathauto\AliasStorageHelperInterface;
 use Drupal\pathauto\AliasTypeBatchUpdateInterface;
 use Drupal\pathauto\AliasTypeManager;
 use Drupal\pathauto\Form\PathautoBulkUpdateForm;
 use Drupal\pathauto\PathautoGeneratorInterface;
+use Drush\Attributes as CLI;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
+use Drush\Utils\StringUtils;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Drush commands allowing to perform Pathauto tasks from the command line.
  */
-class PathautoCommands extends DrushCommands {
+final class PathautoCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * The argument option for generating URL aliases of all possible types.
    */
   const TYPE_ALL = 'all';
-
-  /**
-   * The configuration object factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * The alias type manager.
-   *
-   * @var \Drupal\pathauto\AliasTypeManager
-   */
-  protected $aliasTypeManager;
-
-  /**
-   * The alias storage helper.
-   *
-   * @var \Drupal\pathauto\AliasStorageHelperInterface
-   */
-  protected $aliasStorageHelper;
 
   /**
    * Constructs a new PathautoCommands object.
@@ -55,38 +43,25 @@ class PathautoCommands extends DrushCommands {
    * @param \Drupal\pathauto\AliasStorageHelperInterface $aliasStorageHelper
    *   The alias storage helper.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, AliasTypeManager $aliasTypeManager, AliasStorageHelperInterface $aliasStorageHelper) {
-    $this->configFactory = $configFactory;
-    $this->aliasTypeManager = $aliasTypeManager;
-    $this->aliasStorageHelper = $aliasStorageHelper;
+  public function __construct(
+    protected ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'plugin.manager.alias_type')]
+    protected AliasTypeManager $aliasTypeManager,
+    protected AliasStorageHelperInterface $aliasStorageHelper)
+  {
+    parent::__construct();
   }
 
   /**
    * (Re)generate URL aliases.
-   *
-   * @command pathauto:aliases-generate
-   *
-   * @param string $action
-   *   The action to take. Possible actions are "create" (generate aliases for
-   *   un-aliased paths only), "update" (update aliases for paths that have an
-   *   existing alias) or "all" (generate aliases for all paths).
-   * @param array $types
-   *   Comma-separated list of aliase typess to generate. Pass "all" to generate
-   *   aliases for all types.
-   *
-   * @throws \Exception
-   *
-   * @usage drush pathauto:aliases-generate all all
-   *   Generate all URL aliases.
-   * @usage drush pathauto:aliases-generate create canonical_entities:node
-   *   Generate URL aliases for un-aliased node paths only.
-   * @usage drush pathauto:aliases-generate
-   *   When the arguments are omitted they can be chosen from an interactive
-   *   menu.
-   *
-   * @aliases pag
    */
-  public function generateAliases($action = NULL, array $types = NULL) {
+  #[CLI\Command(name: 'pathauto:aliases-generate', aliases: ['pag'])]
+  #[CLI\Argument(name: 'action', description: 'The action to take. Possible actions are <info>create</info> (generate aliases for un-aliased paths only), <info>update</info> (update aliases for paths that have an existing alias) or <info>all</info> (generate aliases for all paths).')]
+  #[CLI\Argument(name: 'types', description: 'Comma-separated list of aliase typess to generate. Pass <info>all</info> to generate aliases for all types.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-generate create all', description: 'Generate all URL aliases.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-generate create canonical_entities:node', description: 'Generate URL aliases for un-aliased node paths only.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-generate', description: 'When the arguments are omitted they can be chosen from an interactive menu.')]
+  public function generateAliases($action = NULL, ?array $types = NULL) {
     $batch = [
       'title' => dt('Bulk updating URL aliases'),
       'operations' => [
@@ -106,33 +81,15 @@ class PathautoCommands extends DrushCommands {
 
   /**
    * Delete URL aliases
-   *
-   * @command pathauto:aliases-delete
-   *
-   * @param array $types
-   *   Comma-separated list of alias types to delete. Pass "all" to delete
-   *   aliases for all types.
-   *
-   * @option purge
-   *   Deletes all URL aliases, including manually created ones.
-   *
-   * @throws \Exception
-   *
-   * @usage drush pathauto:aliases-delete canonical_entities:node
-   *   Delete all automatically generated URL aliases for node entities,
-   *   preserving manually created aliases.
-   * @usage drush pathauto:aliases-delete all
-   *   Delete all automatically generated URL aliases, preserving manually
-   *   created ones.
-   * @usage drush pathauto:aliases-delete all --purge
-   *   Delete all URL aliases, including manually created ones.
-   * @usage drush pathauto:aliases-delete
-   *   When the alias types are omitted they can be chosen from an interactive
-   *   menu.
-   *
-   * @aliases pad
    */
-  public function deleteAliases(array $types = NULL, $options = ['purge' => FALSE]) {
+  #[CLI\Command(name: 'pathauto:aliases-delete', aliases: ['pad'])]
+  #[CLI\Argument(name: 'types', description: 'Comma-separated list of alias types to delete. Pass "all" to delete aliases for all types.')]
+  #[CLI\Option(name: 'purge', description: 'Deletes all URL aliases, including manually created ones.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-delete canonical_entities:node', description: 'Delete all automatically generated URL aliases for node entities, preserving manually created aliases.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-delete all', description: 'Delete all automatically generated URL aliases, preserving manually created ones.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-delete all --purge', description: 'Delete all URL aliases, including manually created ones.')]
+  #[CLI\Usage(name: 'drush pathauto:aliases-delete', description: 'When the alias types are omitted they can be chosen from an interactive menu.')]
+  public function deleteAliases(?array $types = NULL, $options = ['purge' => FALSE]) {
     $delete_all = count($types) === count($this->getAliasTypes());
 
     // Keeping custom aliases forces us to go the slow way to correctly check
@@ -168,38 +125,37 @@ class PathautoCommands extends DrushCommands {
   }
 
   /**
-   * @hook interact pathauto:aliases-generate
+   * Set action argument interactively when not provided.
    *
    * @throws \Drush\Exceptions\UserAbortException
    *   Thrown when the user cancels the operation during CLI interaction.
    */
+  #[CLI\Hook(type: HookManager::INTERACT, target: 'pathauto:aliases-generate')]
   public function interactGenerateAliases(Input $input, Output $output) {
     if (!$input->getArgument('action')) {
-      $action = $this->io()->choice(dt('Choose the action to perform.'), $this->getAllowedGenerateActions());
+      $action = $this->io()->select(dt('Choose the action to perform.'), $this->getAllowedGenerateActions());
       $input->setArgument('action', $action);
     }
   }
 
-  /**
-   * @hook interact
-   */
+  #[CLI\Hook(type: HookManager::INTERACT)]
   public function interactAliasTypes(Input $input, Output $output) {
     if (!$input->getArgument('types')) {
       $available_types = $this->getAliasTypes();
-      $question = new ChoiceQuestion(dt('Choose the alias type(s). Separate multiple choices with commas, e.g. "1,2,4", or choose "0" for all types.'), array_merge([static::TYPE_ALL], $available_types), NULL);
-      $question->setMultiselect(TRUE);
-      $types = $this->io()->askQuestion($question);
+      array_unshift($available_types, static::TYPE_ALL);
+      $types = $this->io()->multiselect(dt('Choose the alias type(s)'), $available_types, [static::TYPE_ALL]);
 
-      $input->setArgument('types', implode(',', $types));
+      $input->setArgument('types', $types);
     }
   }
 
   /**
-   * @hook validate pathauto:aliases-generate
+   * Validate 'action' argument.
    *
    * @throws \InvalidArgumentException
    *   Thrown when one of the passed arguments is invalid
    */
+  #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, target: 'pathauto:aliases-generate')]
   public function validateGenerateAliases(CommandData $commandData) {
     $input = $commandData->input();
     $action = $input->getArgument('action');
@@ -214,18 +170,19 @@ class PathautoCommands extends DrushCommands {
   }
 
   /**
-   * @hook validate
+   * Validate 'types' argument
    *
    * @throws \InvalidArgumentException
    *   Thrown when one of the passed arguments is invalid
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    *   Thrown when an alias type can not be instantiated.
    */
+  #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR)]
   public function validateAliaseTypes(CommandData $commandData) {
     $input = $commandData->input();
 
     // Convert the comma-separated list of types to an array with no duplicates.
-    $types = explode(',', $input->getArgument('types') ?? '');
+    $types = StringUtils::csvToArray($input->getArgument('types'));
     $types = array_map('trim', $types);
     sort($types);
     $types = array_unique($types);
@@ -258,7 +215,7 @@ class PathautoCommands extends DrushCommands {
    *   An associative array of allowed option descriptions, keyed by option
    *   name.
    */
-  protected function getAllowedGenerateActions() {
+  protected function getAllowedGenerateActions(): array {
     $actions = [
       PathautoBulkUpdateForm::ACTION_CREATE => dt('Generate a URL alias for un-aliased paths only.'),
     ];
@@ -283,7 +240,7 @@ class PathautoCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    *   Thrown when an alias type can not be instantiated.
    */
-  public function getAliasTypes() {
+  public function getAliasTypes(): array {
     $types = [];
 
     foreach ($this->aliasTypeManager->getVisibleDefinitions() as $id => $definition) {
