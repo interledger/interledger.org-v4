@@ -145,7 +145,7 @@
 
 @media screen and (min-width: 800px) {
   .hero {
-    min-height: 70vh;
+    min-height: calc(100vh - 70px)
   }
 
   .hero--photography {
