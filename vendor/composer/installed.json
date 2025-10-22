@@ -1367,17 +1367,17 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.5.3",
-            "version_normalized": "10.5.3.0",
+            "version": "10.5.4",
+            "version_normalized": "10.5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "acfb3b6eab3c3b1480e353d2e2e508bc6ae703c9"
+                "reference": "5e7b1bd42bb628e52f8c83b3e4d2d59e6bc9f0f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/acfb3b6eab3c3b1480e353d2e2e508bc6ae703c9",
-                "reference": "acfb3b6eab3c3b1480e353d2e2e508bc6ae703c9",
+                "url": "https://api.github.com/repos/drupal/core/zipball/5e7b1bd42bb628e52f8c83b3e4d2d59e6bc9f0f8",
+                "reference": "5e7b1bd42bb628e52f8c83b3e4d2d59e6bc9f0f8",
                 "shasum": ""
             },
             "require": {
@@ -1458,7 +1458,7 @@
             "suggest": {
                 "ext-zip": "Needed to extend the plugin.manager.archiver service capability with the handling of files in the ZIP format."
             },
-            "time": "2025-09-04T09:07:02+00:00",
+            "time": "2025-10-02T07:32:02+00:00",
             "type": "drupal-core",
             "extra": {
                 "drupal-scaffold": {
@@ -1532,14 +1532,14 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/10.5.3"
+                "source": "https://github.com/drupal/core/tree/10.5.4"
             },
             "install-path": "../../web/core"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "11.2.4",
-            "version_normalized": "11.2.4.0",
+            "version": "11.2.5",
+            "version_normalized": "11.2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -1585,14 +1585,14 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.2.4"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/11.2.5"
             },
             "install-path": "../drupal/core-composer-scaffold"
         },
         {
             "name": "drupal/core-project-message",
-            "version": "11.2.4",
-            "version_normalized": "11.2.4.0",
+            "version": "11.2.5",
+            "version_normalized": "11.2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-project-message.git",
@@ -1629,23 +1629,23 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-project-message/tree/11.2.4"
+                "source": "https://github.com/drupal/core-project-message/tree/11.2.5"
             },
             "install-path": "../drupal/core-project-message"
         },
         {
             "name": "drupal/core-recommended",
-            "version": "10.5.3",
-            "version_normalized": "10.5.3.0",
+            "version": "10.5.4",
+            "version_normalized": "10.5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "f0463740dbeaaa3b6bb44064055ad5deef004048"
+                "reference": "57f81cecfe0ff1cbc0ea2e567c3c5079ce31cb28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/f0463740dbeaaa3b6bb44064055ad5deef004048",
-                "reference": "f0463740dbeaaa3b6bb44064055ad5deef004048",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/57f81cecfe0ff1cbc0ea2e567c3c5079ce31cb28",
+                "reference": "57f81cecfe0ff1cbc0ea2e567c3c5079ce31cb28",
                 "shasum": ""
             },
             "require": {
@@ -1654,7 +1654,7 @@
                 "doctrine/annotations": "~1.14.4",
                 "doctrine/deprecations": "~1.1.5",
                 "doctrine/lexer": "~2.1.1",
-                "drupal/core": "10.5.3",
+                "drupal/core": "10.5.4",
                 "egulias/email-validator": "~4.0.4",
                 "guzzlehttp/guzzle": "~7.9.3",
                 "guzzlehttp/promises": "~2.2.0",
@@ -1708,7 +1708,7 @@
             "conflict": {
                 "webflo/drupal-core-strict": "*"
             },
-            "time": "2025-09-04T09:07:02+00:00",
+            "time": "2025-10-02T07:32:02+00:00",
             "type": "metapackage",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1716,7 +1716,7 @@
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/10.5.3"
+                "source": "https://github.com/drupal/core-recommended/tree/10.5.4"
             },
             "install-path": null
         },
@@ -4084,35 +4084,35 @@
         },
         {
             "name": "laminas/laminas-escaper",
-            "version": "2.17.0",
-            "version_normalized": "2.17.0.0",
+            "version": "2.18.0",
+            "version_normalized": "2.18.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-escaper.git",
-                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba"
+                "reference": "06f211dfffff18d91844c1f55250d5d13c007e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/df1ef9503299a8e3920079a16263b578eaf7c3ba",
-                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba",
+                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/06f211dfffff18d91844c1f55250d5d13c007e18",
+                "reference": "06f211dfffff18d91844c1f55250d5d13c007e18",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-mbstring": "*",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
             },
             "conflict": {
                 "zendframework/zend-escaper": "*"
             },
             "require-dev": {
-                "infection/infection": "^0.29.8",
-                "laminas/laminas-coding-standard": "~3.0.1",
-                "phpunit/phpunit": "^10.5.45",
-                "psalm/plugin-phpunit": "^0.19.2",
-                "vimeo/psalm": "^6.6.2"
+                "infection/infection": "^0.31.0",
+                "laminas/laminas-coding-standard": "~3.1.0",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
             },
-            "time": "2025-05-06T19:29:36+00:00",
+            "time": "2025-10-14T18:31:13+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4232,33 +4232,33 @@
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.20.0",
-            "version_normalized": "3.20.0.0",
+            "version": "3.21.0",
+            "version_normalized": "3.21.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "8974a1213be42c3e2f70b2c27b17f910291ab2f4"
+                "reference": "b1c81514cfe158aadf724c42b34d3d0a8164c096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/8974a1213be42c3e2f70b2c27b17f910291ab2f4",
-                "reference": "8974a1213be42c3e2f70b2c27b17f910291ab2f4",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/b1c81514cfe158aadf724c42b34d3d0a8164c096",
+                "reference": "b1c81514cfe158aadf724c42b34d3d0a8164c096",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
             },
             "conflict": {
                 "zendframework/zend-stdlib": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "^3.0",
-                "phpbench/phpbench": "^1.3.1",
-                "phpunit/phpunit": "^10.5.38",
-                "psalm/plugin-phpunit": "^0.19.0",
-                "vimeo/psalm": "^5.26.1"
+                "laminas/laminas-coding-standard": "^3.1.0",
+                "phpbench/phpbench": "^1.4.1",
+                "phpunit/phpunit": "^11.5.42",
+                "psalm/plugin-phpunit": "^0.19.5",
+                "vimeo/psalm": "^6.13.1"
             },
-            "time": "2024-10-29T13:46:07+00:00",
+            "time": "2025-10-11T18:13:12+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4511,17 +4511,17 @@
         },
         {
             "name": "mck89/peast",
-            "version": "v1.17.2",
-            "version_normalized": "1.17.2.0",
+            "version": "v1.17.4",
+            "version_normalized": "1.17.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mck89/peast.git",
-                "reference": "465810689c477fbba17f4f949b75e4d0bdab13ea"
+                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mck89/peast/zipball/465810689c477fbba17f4f949b75e4d0bdab13ea",
-                "reference": "465810689c477fbba17f4f949b75e4d0bdab13ea",
+                "url": "https://api.github.com/repos/mck89/peast/zipball/c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
+                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
                 "shasum": ""
             },
             "require": {
@@ -4531,11 +4531,11 @@
             "require-dev": {
                 "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
             },
-            "time": "2025-07-01T09:30:45+00:00",
+            "time": "2025-10-10T12:53:17+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17.2-dev"
+                    "dev-master": "1.17.4-dev"
                 }
             },
             "installation-source": "dist",
@@ -4557,7 +4557,7 @@
             "description": "Peast is PHP library that generates AST for JavaScript code",
             "support": {
                 "issues": "https://github.com/mck89/peast/issues",
-                "source": "https://github.com/mck89/peast/tree/v1.17.2"
+                "source": "https://github.com/mck89/peast/tree/v1.17.4"
             },
             "install-path": "../mck89/peast"
         },
