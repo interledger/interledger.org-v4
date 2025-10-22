@@ -53,8 +53,11 @@
   background-size: cover;
   position: relative;
   background-position: center;
+}
+
+section.hero.text-alignment-bottom {
   display: flex;
-  align-items: flex-end; /* Aligns content to bottom */
+  align-items: flex-end; 
 }
 
 .hero--photography .content-wrapper {
