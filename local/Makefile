@@ -11,6 +11,8 @@ DB_USER := drupal
 DB_PASSWORD := drupal123
 DB_ROOT_PASSWORD := rootpass123
 SQL_DUMP := local-backupdb.sql
+DRUPAL_SERVICE := drupal
+DRUPAL_WORKDIR := /var/www/html
 
 .PHONY: help up down rebuild restore-database logs clean
 
@@ -24,6 +26,7 @@ help:
 	@echo "  restore-database   Restore the DB from local/$(SQL_DUMP) into $(DB_CONTAINER_NAME)."
 	@echo "  logs               Show last 1000 log entries from all services."
 	@echo "  clean              Remove all containers, volumes, and images (complete cleanup)."
+	@echo "  drush <cmd>        Execute drush command inside Drupal container (e.g., make drush cr)."
 	@echo "  help               Show this help (default)."
 
 up:
@@ -91,6 +94,22 @@ clean:
 	docker image rm local-drupal 2>/dev/null || echo "Image local-drupal not found or already removed"
 	docker image rm mysql:8.0 2>/dev/null || echo "Image mysql:8.0 not found or already removed"
 	@echo "Clean complete. All project containers, volumes, and images have been removed."
+
+drush:
+	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+		echo "Usage: make drush <command>"; \
+		echo "Examples:"; \
+		echo "  make drush cr"; \
+		echo "  make drush status"; \
+		echo "  make drush user:login"; \
+		exit 1; \
+	fi
+	@echo "Executing drush $(filter-out $@,$(MAKECMDGOALS)) in $(DRUPAL_SERVICE) container..."
+	$(COMPOSE) exec -w $(DRUPAL_WORKDIR) $(DRUPAL_SERVICE) vendor/bin/drush $(filter-out $@,$(MAKECMDGOALS))
+
+# Prevent make from treating drush arguments as targets
+%:
+	@:
 
 # Default target
 .DEFAULT_GOAL := help
