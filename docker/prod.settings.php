@@ -92,8 +92,9 @@ if (getenv('DRUPAL_DB_HOST')) {
 }
   
 // File system paths
-$settings['file_public_path'] = 'sites/default/files';
-$settings['file_private_path'] = 'sites/default/private';
+$settings['file_public_path'] = '/var/drupal/files';
+$settings['file_public_base_url'] = '/sites/default/files';
+$settings['file_private_path'] = '/var/drupal/private';
 
 // PHP storage directory (for compiled PHP code)
 // Use /tmp for PHP storage to avoid GCS latency - this needs to be fast local storage
@@ -103,7 +104,7 @@ $settings['php_storage']['default'] = [
 ];
 
 // Configuration sync directory
-$settings['config_sync_directory'] = 'sites/default/files/config';
+$settings['config_sync_directory'] = '/var/drupal/files/config';
 
 // Enable CSS and JS aggregation for production
 $config['system.performance']['css']['preprocess'] = TRUE;
