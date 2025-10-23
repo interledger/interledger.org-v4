@@ -68,7 +68,7 @@ if (getenv('DRUPAL_DB_HOST')) {
   // PHP storage directory (for compiled PHP code)
   $settings['php_storage']['default'] = [
     'class' => 'Drupal\Component\PhpStorage\FileStorage',
-    'directory' => '/var/drupal/files/php',
+    'directory' => '/tmp/drupal-php',
   ];
   
   // Configuration sync directory
