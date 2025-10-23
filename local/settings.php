@@ -61,7 +61,7 @@ if (getenv('DRUPAL_DB_HOST')) {
   // Note that we are not mounting files and private under the normal web root. This is so that
   // we can safely mount these RW folders from the host without exposing them to the web server directly.
   // We use an Apache alias to serve files from /var/drupal/files at /sites/default/files URL path
-  $settings['file_public_path'] = 'sites/default/files';
+  $settings['file_public_path'] = '/var/drupal/files';
   $settings['file_private_path'] = '/var/drupal/private';
   
   // PHP storage directory (for compiled PHP code)
