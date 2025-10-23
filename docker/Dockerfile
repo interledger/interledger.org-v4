@@ -85,11 +85,15 @@ EXPOSE 80
 FROM dev AS prod
 
 # Use production Apache configuration
-COPY docker/apache-drupal-prod.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/apache-drupal.prod.conf /etc/apache2/sites-available/000-default.conf
 
 # Enable required Apache modules for production
 RUN a2enmod expires deflate headers
 
+# Clean the web root directory first to avoid conflicts, but preserve vendor
+RUN find /var/www/html -mindepth 1 -maxdepth 1 ! -name 'vendor' -exec rm -rf {} +
+
+# Copy web files to the correct location
 COPY web /var/www/html/web
 COPY docker/prod.settings.php /var/www/html/web/sites/default/settings.php
 
@@ -99,6 +103,9 @@ RUN chmod +x /entrypoint.sh
 
 
 FROM prod AS stage
+
+# Use staging-specific Apache configuration
+COPY docker/apache-drupal.staging.conf /etc/apache2/sites-available/000-default.conf
 
 # Override the robots.txt for staging environment
 COPY docker/staging.robot.txt /var/www/html/web/robots.txt
