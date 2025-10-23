@@ -43,6 +43,7 @@ docker/
 !docker/entrypoint.sh
 !docker/apache-drupal.dev.conf
 !docker/apache-drupal.prod.conf
+!docker/apache-drupal.staging.conf
 !docker/prod.settings.php
 !docker/staging.robot.txt
 !docker/htaccess.staging
