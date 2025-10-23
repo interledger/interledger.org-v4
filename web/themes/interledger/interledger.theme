@@ -54,21 +54,3 @@ function interledger_preprocess_block__interledger_content(&$variables) {
     }
   }
 }
-
-/**
- * Implements hook_preprocess_HOOK() for nodes.
- *
- * Adds custom CSS classes based on content type and field values.
- * For hero_banner nodes, adds text alignment classes based on field_text_alignment.
- */
-function interledger_preprocess_node(&$variables) {
-  $node = $variables['node'];
-  if ($node->getType() == 'hero_banner') {
-    // Check if the alignment field exists and has a value
-    if ($node->hasField('field_text_alignment') && !$node->get('field_text_alignment')->isEmpty()) {
-      $alignment = $node->get('field_text_alignment')->value;
-      $variables['attributes']['class'][] = 'text-alignment-' . $alignment;
-    }
-  }
-}
-
