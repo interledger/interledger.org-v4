@@ -18,10 +18,6 @@
   --table-fg-sm: var(--color-white);
 }
 
-.table-wrapper {
-  padding-inline: 5%;
-}
-
 .table-wrapper table {
   border-collapse: separate;
   border-spacing: 0;
