@@ -55,6 +55,11 @@
   background-position: center;
 }
 
+section.hero.text-alignment-bottom {
+  display: flex;
+  align-items: flex-end; 
+}
+
 .hero--photography .content-wrapper {
   padding: var(--space-m);
   border-radius: var(--border-radius);
@@ -143,7 +148,7 @@
 
 @media screen and (min-width: 800px) {
   .hero {
-    min-height: 70vh;
+    min-height: calc(100vh - 70px)
   }
 
   .hero--photography {

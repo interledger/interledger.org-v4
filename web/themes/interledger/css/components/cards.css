@@ -37,6 +37,7 @@
   border-end-start-radius: var(--border-radius);
   border-end-end-radius: var(--border-radius);
   background-color: var(--color-card-bg);
+  font-weight: 300;
 }
 
 .card__title {
@@ -46,6 +47,22 @@
 .card__desc {
   margin-block-end: var(--space-xs);
 }
+
+.card__learn-more {
+  font-size: var(--step--1);
+  margin-top: var(--space-s);
+}
+
+.card__learn-more svg {
+  display: inline-block;
+  margin-left: var(--space-2xs);
+  vertical-align: middle;
+}
+
+.clickable-card:hover .card__learn-more svg{
+  transform: rotate(-45deg);
+}
+
 
 .card__link {
   display: flex;
@@ -118,7 +135,83 @@
 
 /* Hackathon block styling */
 .hackathon-wrapper {
-  grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.hackathon-wrapper .card {
+  width: 100%;
+  max-width: 100%;
+  padding: var(--space-m);
+  border: 1px solid var(--color-white);
+  border-radius: 16px;
+}
+
+.hackathon-wrapper .card h3 {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.hackathon-wrapper .card h3::before {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: var(--color-white);
+  border-radius: 50%;
+  position: absolute;
+  left: -0.4rem;
+  top: 0.7em;
+  transform: translateY(-50%);
+  /* Offsets by half the dot's height for perfect centering */
+}
+
+.hackathon-wrapper .card-content-wrapper {
+  background-color: transparent;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-l);
+  width: 100%;
+}
+
+.hackathon-wrapper .card__title {
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: var(--line-height-heading);
+  color: var(--color-white);
+}
+
+.hackathon-wrapper .card__desc-wrapper {
+  font-size: var(--step--1);
+  color: var(--color-light-gray);
+}
+
+
+.hackathon-wrapper .card__desc {
+  line-height: 1.6;
+}
+
+@media screen and (max-width: 768px) {
+  .hackathon-wrapper .card-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+  }
+
+  .hackathon-wrapper .card h3 {
+    padding-left: 1.3rem;
+  }
+
+  .hackathon-wrapper .card h3::before {
+    width: 0.6rem;
+    height: 0.6rem;
+    left: 0rem;
+    top: 0.8em;
+  }
+
+  .card__learn-more {
+    text-align: right;
+  }
 }
 
 /* Ideation block styling */
@@ -129,7 +222,7 @@
   justify-content: space-between;
 }
 
-.ideation-wrapper > * {
+.ideation-wrapper>* {
   flex: 1 1 12em;
   max-width: 100%;
 }
@@ -388,6 +481,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -481,40 +575,42 @@
     grid-template-columns: 1fr;
   }
 
-  .summit-track-wrapper .card .card-content-wrapper, .summit-track-wrapper .card:nth-child(odd) .card-content-wrapper {
+  .summit-track-wrapper .card .card-content-wrapper,
+  .summit-track-wrapper .card:nth-child(odd) .card-content-wrapper {
     grid-row: 1;
     grid-column: 1;
   }
-  
-  .summit-track-wrapper .card .card__media, .summit-track-wrapper .card:nth-child(odd) .card__media {
+
+  .summit-track-wrapper .card .card__media,
+  .summit-track-wrapper .card:nth-child(odd) .card__media {
     grid-row: 2;
     grid-column: 1;
   }
 }
 
 .summit-track-wrapper .card:first-of-type {
-    border: 1px solid #A26CFD;
+  border: 1px solid #A26CFD;
 }
 
 .summit-track-wrapper .card:nth-of-type(2) {
-    border: 1px solid #F7AA54;
+  border: 1px solid #F7AA54;
 }
 
 .summit-track-wrapper .card:nth-of-type(3) {
-    border: 1px solid #5BC6B9;
+  border: 1px solid #5BC6B9;
 }
 
 .summit-track-wrapper .card:last-of-type {
-    border: 1px solid #FF81C5;
+  border: 1px solid #FF81C5;
 }
 
 .summit-track-wrapper h3 {
-    font-size: var(--step-2);
+  font-size: var(--step-2);
 }
 
 .summit-track-wrapper .card-content-wrapper {
-    padding: var(--space-l);
-    background-color: transparent;
+  padding: var(--space-l);
+  background-color: transparent;
 }
 
 /* Hackathon 2025 block styling */
@@ -535,10 +631,10 @@
 }
 
 .hack-success-wrapper h3 {
-    font-size: var(--step-2);
+  font-size: var(--step-2);
 }
 
 .hack-success-wrapper .card-content-wrapper {
-    padding: var(--space-l);
-    background-color: transparent;
+  padding: var(--space-l);
+  background-color: transparent;
 }

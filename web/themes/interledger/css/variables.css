@@ -126,7 +126,7 @@
   --color-admin-txt: var(--color-white);
   --color-admin-bg: var(--color-black);
   --color-header-bg: var(--color-black);
-  --color-card-bg: var(--color-black);
+  --color-card-bg: rgba(0, 0, 0, 0.5);
   --color-card-outline: rgba(255, 255, 255, 0.3);
   --color-frost: rgba(255, 255, 255, 0.5);
 }
