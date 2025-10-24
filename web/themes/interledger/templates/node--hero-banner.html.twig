@@ -20,14 +20,25 @@
   {% set posterUrl = file_url(content.field_hero_video_poster[0]['#media'].field_media_image.entity.uri.value | image_style('original_webp')) %}
 {% endif %}
 
-{# Get the alignment class from preprocess #}
-{% set alignmentClass = '' %}
-{% if node.field_text_alignment is not empty %}
-  {% set alignmentClass = 'text-alignment-' ~ node.field_text_alignment.0.value %}
-{% endif %}
+{# ids of pages whose hero banners we want to style differently #}
+{%
+  set summit_ids = [1547, 1282, 1324]
+%}
+{%
+  set classes = [
+    'hero',
+    'node--' ~ node.id ,
+    node.field_hero_type.0.value|raw == 'Illustration' ? 'hero--illustration', 
+    (node.field_hero_type.0.value|raw == 'Photography' and imageBgUrl|default(null)) or 
+    (node.field_hero_type.0.value|raw == 'Photography' and svgBgUrl|default(null)) ? 'hero--photography', 
+    node.field_hero_type.0.value|raw == 'Video' ? 'hero--video', 
+    node.field_vertical_text_alignment.0.value ? 'text-alignment-' ~ node.field_vertical_text_alignment.0.value, 
+    node.id in summit_ids ? 'summit-banners'
+  ]|filter(v => v is not empty)
+%}
 
 {% if node.field_hero_type.0.value|raw == "Illustration" %}
-<section class="hero node--{{ node.id }} hero--illustration {{ alignmentClass }}" style="--gradient-start: {{ gradientStart }};--gradient-end: {{ gradientEnd }}">
+<section class="{{ classes|join(' ') }}" style="--gradient-start: {{ gradientStart }};--gradient-end: {{ gradientEnd }}">
   <div class="content-wrapper">
     <div>
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
@@ -55,7 +66,7 @@
 </section>
 {% elseif node.field_hero_type.0.value|raw == "Photography" %}
   {% if svgBgUrl|default(null) %}
-  <section class="hero node--{{ node.id }} hero--photography {{ alignmentClass }}" style="--bg-image: url('{{ svgBgUrl }}');--bg-pos:{{ heroBgPos }}">
+  <section class="{{ classes|join(' ') }}" style="--bg-image: url('{{ svgBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
       {% if node.field_hero_blurb is not empty %}
@@ -78,7 +89,7 @@
     {% endif %}
   </section>
   {% elseif imageBgUrl|default(null) %}
-  <section class="hero node--{{ node.id }} hero--photography {{ alignmentClass }}" style="--bg-image: url('{{ imageBgUrl }}');--bg-pos:{{ heroBgPos }}">
+  <section class="{{ classes|join(' ') }}" style="--bg-image: url('{{ imageBgUrl }}');--bg-pos:{{ heroBgPos }}">
     <div class="content-wrapper">
       <h2 style="--color-hero-txt: {{ heroTxtColour }}">{{ node.field_hero_text.0.value|raw }}</h2>
       {% if node.field_hero_blurb is not empty %}
@@ -102,7 +113,7 @@
   </section>
   {% endif %}
 {% elseif node.field_hero_type.0.value|raw == "Video" %}
-  <section class="hero node--{{ node.id }} hero--video {{ alignmentClass }}">
+  <section class="{{ classes|join(' ') }}">
     <div class="background-wrapper">
       <video autoplay muted playsinline loop>
         <source src="{{ videoBgUrl }}" type="video/mp4" poster="{{ posterUrl }}">
