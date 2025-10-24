@@ -638,3 +638,64 @@
   padding: var(--space-l);
   background-color: transparent;
 }
+
+/* Hackathon prize cards */
+.hackathon-prize-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.hackathon-prize-cards-wrapper .card {
+  text-align: center;
+  padding: 30px 20px;
+  box-shadow: none;
+}
+
+.hackathon-prize-cards-wrapper .card__media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: unset;
+}
+
+.hackathon-prize-cards-wrapper .card__media img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.hackathon-prize-cards-wrapper .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:none;
+}
+
+.hackathon-prize-cards-wrapper .card__title {
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Mobile responsive - wraps to 1 column */
+@media (max-width: 980px) {
+  .hackathon-prize-cards-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .hackathon-prize-cards-wrapper .card--has-txt {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .hackathon-prize-cards-wrapper .card__media img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hackathon-prize-cards-wrapper .card__title {
+    font-size: var(--step-0);
+  }
+}
