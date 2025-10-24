@@ -33,6 +33,14 @@ mkdir -p /var/drupal/files/config 2>/dev/null || true
 chown -R www-data:www-data /var/drupal/files/config 2>/dev/null || true
 chmod -R 775 /var/drupal/files/config 2>/dev/null || true
 
+# Create symlink from sites/default/files to /var/drupal/files if it doesn't exist
+if [ ! -L /var/www/html/web/sites/default/files ]; then
+    echo "Creating symlink from /var/www/html/web/sites/default/files to /var/drupal/files..."
+    rm -rf /var/www/html/web/sites/default/files 2>/dev/null || true
+    ln -sf /var/drupal/files /var/www/html/web/sites/default/files
+    echo "Symlink created successfully"
+fi
+
 echo "Starting Apache..."
 # Start Apache
 exec apache2-foreground
