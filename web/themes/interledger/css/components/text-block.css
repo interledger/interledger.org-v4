@@ -32,6 +32,10 @@
   height: 100%;
 }
 
+.text__body {
+  flex: 50%;
+}
+
 .text__body iframe {
   width: 100%;
   height: auto;
@@ -70,10 +74,6 @@
   .text__media {
     flex: calc(50% - var(--space-m));
     text-align: center;
-  }
-
-  .text__body {
-    flex: 50%;
   }
 
   .text__body p {
