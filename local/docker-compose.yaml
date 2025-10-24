@@ -9,6 +9,7 @@ services:
     volumes:
       - ../web:/var/www/html/web:ro
       - ./settings.php:/var/www/html/web/sites/default/settings.php:ro
+      - ./files:/var/www/html/web/sites/default/files:rw
       - ./files:/var/drupal/files:rw
       - ./private:/var/drupal/private:rw
     depends_on:
