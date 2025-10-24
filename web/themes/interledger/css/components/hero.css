@@ -55,6 +55,21 @@
   background-position: center;
 }
 
+.summit-banners {
+  position: relative;
+}
+
+.summit-banners::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+.summit-banners .content-wrapper {
+  z-index: 1;
+}
+
 section.hero.text-alignment-bottom {
   display: flex;
   align-items: flex-end; 
