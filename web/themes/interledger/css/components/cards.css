@@ -644,6 +644,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-m);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(to right, transparent, white, transparent) 1;
 }
 
 .hackathon-prize-cards-wrapper .card {
@@ -683,6 +685,8 @@
   .hackathon-prize-cards-wrapper {
     grid-template-columns: 1fr;
     gap: 1.875rem;
+    border-bottom: 0;
+    border-image: none;
   }
 
   .hackathon-prize-cards-wrapper .card--has-txt {
