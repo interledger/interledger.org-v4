@@ -643,12 +643,12 @@
 .hackathon-prize-cards-wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: var(--space-m);
 }
 
 .hackathon-prize-cards-wrapper .card {
   text-align: center;
-  padding: 30px 20px;
+  padding: 1.875rem 1.25rem;
   box-shadow: none;
 }
 
@@ -660,8 +660,8 @@
 }
 
 .hackathon-prize-cards-wrapper .card__media img {
-  width: 120px;
-  height: 120px;
+  width: 7.5rem;
+  height: 7.5rem;
   object-fit: contain;
 }
 
@@ -682,7 +682,7 @@
 @media (max-width: 980px) {
   .hackathon-prize-cards-wrapper {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 1.875rem;
   }
 
   .hackathon-prize-cards-wrapper .card--has-txt {
@@ -691,8 +691,8 @@
   }
 
   .hackathon-prize-cards-wrapper .card__media img {
-    width: 100px;
-    height: 100px;
+    width: 6.25rem;
+    height: 6.25rem;
   }
 
   .hackathon-prize-cards-wrapper .card__title {
