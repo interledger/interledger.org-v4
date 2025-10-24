@@ -21,13 +21,13 @@
 }
 
 /* hackathon partner prize tiles */
-.node--1551 .tile__number,
-.node--1552 .tile__number {
+.node--1556 .tile__number,
+.node--1557 .tile__number {
   font-size: var(--step-1);
   font-weight: 600;
 }
 
-.node--1551 .tile__description,
-.node--1552 .tile__description {
+.node--1556 .tile__description,
+.node--1557 .tile__description {
   font-size: var(--step--1);
 }
