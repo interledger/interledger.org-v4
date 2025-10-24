@@ -19,3 +19,15 @@
   /* Technology page 2-col */
   align-items: start;
 }
+
+/* hackathon partner prize tiles */
+.node--1551 .tile__number,
+.node--1552 .tile__number {
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+.node--1551 .tile__description,
+.node--1552 .tile__description {
+  font-size: var(--step--1);
+}
