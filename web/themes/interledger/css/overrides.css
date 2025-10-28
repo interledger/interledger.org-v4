@@ -31,3 +31,58 @@
 .node--1557 .tile__description {
   font-size: var(--step--1);
 }
+
+
+/* FinnoSummit card */
+.node--1574 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-m);
+  max-width: var(--max-content-width);
+  margin-inline: 5%;
+  padding: var(--space-l);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.node--1574::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)) top / 100% 1.5px no-repeat,
+    linear-gradient(to right,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)) bottom / 100% 1.5px no-repeat;
+}
+
+.node--1574>* {
+  background-color: transparent;
+  padding: 0;
+}
+
+.node--1574 .card__media {
+  text-align: center;
+  aspect-ratio: unset;
+}
+
+@media screen and (min-width: 900px) {
+  .node--1574 {
+    flex-direction: row-reverse;
+  }
+}
+
+@media screen and (min-width: 1220px) {
+  .node--1574 {
+    margin-inline: auto;
+  }
+}
