@@ -32,6 +32,14 @@
     align-items: center;
     flex-direction: column;
   }
+
+  .profiles-listing .member__info {
+    text-align: center;
+  }
+
+  .member__socials {
+    justify-content: center;
+  }
 }
 
 .member img {
@@ -77,6 +85,7 @@
   list-style: none;
   padding: 0;
 }
+
 
 .member__info img {
   max-width: 8em;
