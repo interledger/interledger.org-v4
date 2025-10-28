@@ -9,6 +9,65 @@
   box-shadow: var(--box-shadow);
 }
 
+.card.gradient-border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-m);
+  max-width: var(--max-content-width);
+  margin-inline: 5%;
+  padding: var(--space-l);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.card.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0)
+      )
+      top / 100% 1.5px no-repeat,
+    linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0)
+      )
+      bottom / 100% 1.5px no-repeat;
+}
+
+.card.gradient-border > * {
+  background-color: transparent;
+  padding: 0;
+}
+
+.card.gradient-border .card__media {
+  text-align: center;
+  aspect-ratio: unset;
+}
+
+@media screen and (min-width: 900px) {
+  .card.gradient-border {
+    flex-direction: row-reverse;
+  }
+}
+
+@media screen and (min-width: 1220px) {
+  .card.gradient-border {
+    margin-inline: auto;
+  }
+} 
+
 .card__media {
   border-radius: var(--border-radius);
   width: 100%;
