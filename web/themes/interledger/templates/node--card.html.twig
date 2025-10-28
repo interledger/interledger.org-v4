@@ -11,7 +11,6 @@
     {% set href = path(node.field_card_link.0.url.routeName, node.field_card_link.0.url.routeParameters) %}
   {% endif %}
 {% endif %}
-{% set hasGradientBorder= node.field_card_gradient_border.0.value %}
 
 {% if isClickableCard %}
   <div class="clickable-card card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
@@ -44,7 +43,7 @@
     </a>
   </div>
 {% else %}
-  <div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }} {{ (hasGradientBorder) ? 'gradient-border' : null }}">
+  <div class="card node--{{ node.id }} {{ (renderCaption) ? 'card--has-txt' : 'card--no-txt' }}">
     {% if content.field_card_image[0]['#media'] is defined %}
       <div class="card__media">  
         {{ content.field_card_image }}
