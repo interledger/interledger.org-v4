@@ -34,7 +34,7 @@
 
 
 /* FinnoSummit card */
-.node--1552 {
+.node--1574 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,7 +50,7 @@
   position: relative;
 }
 
-.node--1552::before {
+.node--1574::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -65,24 +65,24 @@
       rgba(255, 255, 255, 0)) bottom / 100% 1.5px no-repeat;
 }
 
-.node--1552>* {
+.node--1574>* {
   background-color: transparent;
   padding: 0;
 }
 
-.node--1552 .card__media {
+.node--1574 .card__media {
   text-align: center;
   aspect-ratio: unset;
 }
 
 @media screen and (min-width: 900px) {
-  .node--1552 {
+  .node--1574 {
     flex-direction: row-reverse;
   }
 }
 
 @media screen and (min-width: 1220px) {
-  .node--1552 {
+  .node--1574 {
     margin-inline: auto;
   }
 }
