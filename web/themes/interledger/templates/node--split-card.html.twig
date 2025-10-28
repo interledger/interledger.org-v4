@@ -1,0 +1,36 @@
+{% set title = node.field_split_card_title.0.value ?? null %}
+{% set media = content.field_split_card_image['#items'].entity %}
+{% if media and media.field_media_image.entity %}
+	{% set imageUrl = file_url(media.field_media_image.entity.uri.value) %}
+	{% set imageAlt = media.field_media_image.alt %}
+{% endif %}
+{% set text = node.field_split_card_blurb.value ?? null %}
+{% if node.field_split_card_link is not empty %}
+	{% if node.field_split_card_link.0.url.external %}
+		{% set href = node.field_split_card_link.uri %}
+	{% elseif node.field_split_card_link.0.uri == "route:<nolink>" %}
+		{% set href = 'javascript:void(0)' %}
+	{% else %}
+		{% set href = path(node.field_split_card_link.0.url.routeName, node.field_split_card_link.0.url.routeParameters) %}
+	{% endif %}
+{% endif %}
+{% set linkText = node.field_split_card_link.title ?? null %}
+{% set umamiEvent = node.field_split_card_umami.0.value ?? null %}
+
+<section>
+	<article class="content-wrapper split-card">
+		<h2>{{title}}</h2>
+		<div class="split-card__content">
+			<div class="split-card__image">
+				<img src="{{ imageUrl }}" alt="{{ imageAlt }}" loading="lazy"/>
+			</div>
+			<div class="split-card__text">
+				{{ text | raw }}
+				{% if href %}
+					<a class="split-card__link" href={{href}} data-umami-event="{{umamiEvent}}">{{linkText}}
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	</article>
+</section>

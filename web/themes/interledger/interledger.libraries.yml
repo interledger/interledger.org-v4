@@ -1,5 +1,5 @@
 global-styling:
-  version: 1.6.0
+  version: 1.6.1
   css:
     theme:
       css/fonts.css: {}
@@ -34,6 +34,7 @@ global-styling:
       css/components/hero.css: {}
       css/components/highlight-text.css: {}
       css/components/podcast.css: {}
+      css/components/split-card.css: {}
       css/components/team.css: {}
       css/components/testimonial.css: {}
       css/components/text-block.css: {}
