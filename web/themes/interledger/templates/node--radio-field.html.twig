@@ -1,0 +1,8 @@
+<input
+    type="radio" 
+    id="{{ node.field_input_id[0].value|e('html_attr') }}" 
+    name="{{ node.field_input_name[0].value|e('html_attr') }}" 
+    value="{{ node.field_input_value[0].value|default('')|e('html_attr') }}">
+<label for="{{ node.field_input_id[0].value|e('html_attr') }}">
+    {{ node.field_input_value[0].value|e }}
+</label>

@@ -6,6 +6,17 @@
             tabindex="{{ node.field_input_tabindex[0].value|e('html_attr') }}" 
             value="">
     </div>
+{% elseif node.field_input_type is defined and node.field_input_type[0].value == 'radio' %}
+    <div class="{{ node.field_input_class[0].value|e('html_attr') }} radio-fields"><p>{{ node.field_input_value[0].value|default('')|e('html_attr') }}</p>
+        <ul>
+            {% for radio_field in content.field_radio_option %}
+                {% if radio_field['#entity'] is defined %}
+                    {% set radio = radio_field['#entity'] %}
+                    <li>{{ drupal_entity('node', radio.id(), 'full') }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 {% else %}
     <div class="form__input">
         {% set input_type = node.field_input_type[0].value|default('text') %}
@@ -26,3 +37,4 @@
             data-umami-event="{{ node.field_umami_event.0.value|raw }}">
     </div>
 {% endif %}
+
