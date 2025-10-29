@@ -2,6 +2,8 @@
 {% set endDate = node.field_talk_end.0.value|raw %}
 {% set difference = endDate|date('U') - startDate|date('U') %}
 {% set duration = (difference / 60) %}
+{% set talk_title = title %}
+{% set talk_description = description %}
 
 <div class="talk node--{{ node.id }} content-wrapper">
 
@@ -26,7 +28,7 @@
   {% endif %}
 
   <header class="talk__header">
-    <h1>{{ node.field_talk_title.0.value|raw }}</h1>
+    <h1>{{ talk_title|raw }}</h1>
     <p><time datetime="{{ startDate }}">{{ node.field_talk_start.0.value|date('U')|format_date('custom', 'D j M Y, H:i') }}</time><span> - {{ duration }}{{ 'min'|t }}</span></p>
     <p>
       {% for language in node.field_session_languages %}
@@ -44,7 +46,7 @@
   <div class="talk__info">
     {% if node.field_talk_description.0.value is defined %}
     <div class="talk__description">
-      {{ node.field_talk_description.0.value|nl2br }}
+      {{ talk_description |nl2br }}
     </div>
     {% endif %}
 
