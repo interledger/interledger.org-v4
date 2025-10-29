@@ -75,7 +75,19 @@ function interledger_preprocess_node__summit_speaker_2025__full(&$variables)
     $node->get('field_speaker_bio')->value;
 }
 
+/**
+ * Helper function for Summit Talk nodes.
+ */
+function interledger_get_summit_talk_field(\Drupal\node\NodeInterface $node, $spanish_field, $default_field)
+{
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
+  if ($current_language != $default_language && !$node->get($spanish_field)->isEmpty()) {
+    return $node->get($spanish_field)->value;
+  }
+  return $node->get($default_field)->value;
+}
 /**
  * Preprocesses the Summit Talk 2025 full node
  *
@@ -87,17 +99,10 @@ function interledger_preprocess_node__summit_speaker_2025__full(&$variables)
  */
 function interledger_preprocess_node__summit_talk_2025__full(&$variables)
 {
-  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
-  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  $variables['description'] = ($current_language != $default_language && !$node->get('field_descripcion')->isEmpty()) ?
-    $node->get('field_descripcion')->value :
-    $node->get('field_talk_description')->value;
-
-  $variables['title'] = ($current_language != $default_language && !$node->get('field_titulo_de_la_sesion')->isEmpty()) ?
-    $node->get('field_titulo_de_la_sesion')->value :
-    $node->get('field_talk_title')->value;
+  $variables['description'] = interledger_get_summit_talk_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_talk_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
 }
 
 /**
@@ -111,15 +116,8 @@ function interledger_preprocess_node__summit_talk_2025__full(&$variables)
  */
 function interledger_preprocess_node__summit_talk_2025__teaser(&$variables)
 {
-  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
-  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $node = $variables['node'];
 
-  $variables['description'] = ($current_language != $default_language && !$node->get('field_descripcion')->isEmpty()) ?
-    $node->get('field_descripcion')->value :
-    $node->get('field_talk_description')->value;
-
-  $variables['title'] = ($current_language != $default_language && !$node->get('field_titulo_de_la_sesion')->isEmpty()) ?
-    $node->get('field_titulo_de_la_sesion')->value :
-    $node->get('field_talk_title')->value;
+  $variables['description'] = interledger_get_summit_talk_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_talk_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
 }
