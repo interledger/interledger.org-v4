@@ -1,0 +1,36 @@
+name: Rebuild Staging
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: staging-deployment
+  cancel-in-progress: false
+
+jobs:
+  rebuild-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GSA }}
+          service_account: interledger-org-websites@interledger-websites.iam.gserviceaccount.com
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+      
+      - name: Configure Docker to use gcloud as a credential helper
+        run: gcloud auth configure-docker us-east1-docker.pkg.dev
+      
+      - name: Build and deploy to staging
+        run: |
+          cd ci
+          make stage

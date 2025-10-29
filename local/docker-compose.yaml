@@ -3,6 +3,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      target: dev
     container_name: interledger_drupal
     ports:
       - "${DRUPAL_PORT:-8080}:80"

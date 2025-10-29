@@ -11,6 +11,16 @@ echo "ENVIRONMENT: $ENVIRONMENT"
 echo "DRUPAL_HASH_SALT: $DRUPAL_HASH_SALT"
 echo "==============================="
 
+# Debug file structure
+echo "=== File Structure Debug ==="
+echo "Contents of /var/www/html:"
+ls -la /var/www/html/ || echo "Directory not found"
+echo "Contents of /var/www/html/web:"
+ls -la /var/www/html/web/ || echo "Directory not found"
+echo "Apache config:"
+cat /etc/apache2/sites-available/000-default.conf | head -10
+echo "========================="
+
 # Wait a moment for mounts to be ready
 sleep 2
 
