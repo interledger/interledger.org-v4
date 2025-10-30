@@ -1,6 +1,7 @@
 {% for item in items %}
-  {% set talkDescription = item.content['#node'].field_talk_description[0].value %}
-  {% set talkTitle = item.content['#node'].title[0].value %}
+  {# description[index] and title[index] are from preprocess function#}
+  {% set talkDescription = description[loop.index] %}
+  {% set talkTitle = title[loop.index] %}
   {% set talkNode = item.content['#node'].nid[0].value %}
   <div class="speaker__talk">
     <h2><a href="{{ url('entity.node.canonical', {'node': talkNode}) }}">{{ talkTitle }}</a></h2>

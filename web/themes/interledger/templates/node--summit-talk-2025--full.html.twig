@@ -2,6 +2,7 @@
 {% set endDate = node.field_talk_end.0.value|raw %}
 {% set difference = endDate|date('U') - startDate|date('U') %}
 {% set duration = (difference / 60) %}
+{# description and title are from preprocess function #}
 {% set talk_title = title %}
 {% set talk_description = description %}
 
