@@ -92,7 +92,7 @@ function interledger_preprocess_node__summit_speaker_2025__full(&$variables)
  *
  * Uses the Spanish title & description (`field_titulo_de_la_sesion` & `field_descripcion`) when viewing
  * the page in Spanish; otherwise, or if unavailable, falls back to the default
- * (English) title & description (`field_talk_title` & `field_talk_title`).
+ * (English) title & description (`field_talk_title` & `field_talk_description`).
  */
 function interledger_preprocess_node__summit_talk_2025__full(&$variables)
 {
