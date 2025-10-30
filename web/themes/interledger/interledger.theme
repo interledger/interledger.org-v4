@@ -56,9 +56,9 @@ function interledger_preprocess_block__interledger_content(&$variables) {
 }
 
 /**
- * Helper function for Summit Talk and Speaker nodes.
+ * Helper function for Summit Talk and Summit Speaker nodes.
  */
-function interledger_get_summit_talk_field(\Drupal\node\NodeInterface $node, $spanish_field, $default_field)
+function interledger_get_summit_entity_field(\Drupal\node\NodeInterface $node, $spanish_field, $default_field)
 {
   $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
   $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -82,7 +82,7 @@ function interledger_preprocess_node__summit_speaker_2025__full(&$variables)
 {
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  $variables['bio'] = interledger_get_summit_talk_field($node, 'field_speaker_biografia', 'field_speaker_bio');
+  $variables['bio'] = interledger_get_summit_entity_field($node, 'field_speaker_biografia', 'field_speaker_bio');
 }
 
 /**
@@ -98,8 +98,8 @@ function interledger_preprocess_node__summit_talk_2025__full(&$variables)
 {
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  $variables['description'] = interledger_get_summit_talk_field($node, 'field_descripcion', 'field_talk_description');
-  $variables['title'] = interledger_get_summit_talk_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+  $variables['description'] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
 }
 
 /**
@@ -115,8 +115,8 @@ function interledger_preprocess_node__summit_talk_2025__teaser(&$variables)
 {
   $node = $variables['node'];
 
-  $variables['description'] = interledger_get_summit_talk_field($node, 'field_descripcion', 'field_talk_description');
-  $variables['title'] = interledger_get_summit_talk_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+  $variables['description'] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
 }
 
 /**
@@ -137,7 +137,7 @@ function interledger_preprocess_field__node__field_speaker_talk_entities(&$varia
     $node = $item['content']['#node'];
     $template_index = $index + 1;
 
-    $variables['description'][$template_index] = interledger_get_summit_talk_field($node, 'field_descripcion', 'field_talk_description');
-    $variables['title'][$template_index] = interledger_get_summit_talk_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+    $variables['description'][$template_index] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+    $variables['title'][$template_index] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
   }
 }
