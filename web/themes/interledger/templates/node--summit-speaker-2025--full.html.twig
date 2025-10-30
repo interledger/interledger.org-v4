@@ -1,5 +1,7 @@
 {% set imageUrl = file_url(node.field_speaker_image.0.value|raw) %}
 {% set imageAlt = node.field_speaker_name.0.value|raw %}
+{# speaker_bio variable from preprocess function #}
+{% set speaker_bio = bio %}
 
 <div class="speaker node--{{ node.id }}">
   <header class="speaker__header">
@@ -15,7 +17,7 @@
   </header>
 
   <div class="speaker__info content-wrapper">
-    <p>{{ node.field_speaker_bio.0.value|raw }}</p>
+    <p>{{ speaker_bio|raw }}</p>
 
     <div class="speaker__talks">
       {{ content.field_speaker_talk_entities }}

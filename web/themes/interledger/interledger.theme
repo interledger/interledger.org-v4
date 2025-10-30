@@ -54,3 +54,90 @@ function interledger_preprocess_block__interledger_content(&$variables) {
     }
   }
 }
+
+/**
+ * Helper function for Summit Talk and Summit Speaker nodes.
+ */
+function interledger_get_summit_entity_field(\Drupal\node\NodeInterface $node, $spanish_field, $default_field)
+{
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  if ($current_language != $default_language && !$node->get($spanish_field)->isEmpty()) {
+    return $node->get($spanish_field)->value;
+  }
+  return $node->get($default_field)->value;
+}
+
+/**
+ * Preprocesses the Summit Speaker 2025 full node
+ *
+ * Sets the speaker bio based on the page language.
+ *
+ * Uses the Spanish bio (`field_speaker_biografia`) when viewing the page
+ * in Spanish; otherwise, or if unavailable, falls back to the default
+ * (English) bio (`field_speaker_bio`).
+ */
+function interledger_preprocess_node__summit_speaker_2025__full(&$variables)
+{
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  $variables['bio'] = interledger_get_summit_entity_field($node, 'field_speaker_biografia', 'field_speaker_bio');
+}
+
+/**
+ * Preprocesses the Summit Talk 2025 full node
+ *
+ * Sets the Talk title and talk description based on the page language.
+ *
+ * Uses the Spanish title & description (`field_titulo_de_la_sesion` & `field_descripcion`) when viewing
+ * the page in Spanish; otherwise, or if unavailable, falls back to the default
+ * (English) title & description (`field_talk_title` & `field_talk_description`).
+ */
+function interledger_preprocess_node__summit_talk_2025__full(&$variables)
+{
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  $variables['description'] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+}
+
+/**
+ * Preprocesses the Summit Talk 2025 teasers displayed in summit/2025/talks view
+ *
+ * Sets the Talk title and talk description based on the view language.
+ *
+ * Uses the Spanish title & description (`field_titulo_de_la_sesion` & `field_descripcion`) when viewing
+ * the page in Spanish; otherwise, or if unavailable, falls back to the default
+ * (English) title & description (`field_talk_title` & `field_talk_description`).
+ */
+function interledger_preprocess_node__summit_talk_2025__teaser(&$variables)
+{
+  $node = $variables['node'];
+
+  $variables['description'] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+  $variables['title'] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+}
+
+/**
+ * Preprocesses the `field--node-speaker-talk-entities` field 
+ * displayed on /summit/2025/speaker/[speaker-name] page
+ *
+ * Prepares data for Summit Talk teasers based on the view language nodes
+ * Uses the Spanish title & description (`field_titulo_de_la_sesion` & 
+ * `field_descripcion`) when viewing the page in Spanish; otherwise, 
+ * or if unavailable, falls back to the default (English) title &
+ * description (`field_talk_title` & `field_talk_description`).
+ **/
+function interledger_preprocess_field__node__field_speaker_talk_entities(&$variables)
+{
+  $items = $variables['items'];
+
+  foreach ($items as $index => $item) {
+    $node = $item['content']['#node'];
+    $template_index = $index + 1;
+
+    $variables['description'][$template_index] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
+    $variables['title'][$template_index] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+  }
+}
