@@ -37,30 +37,95 @@ function interledger_preprocess_html(&$variables) {
 
 /**
  * Prepares a translation disclaimer flag for block--interledger-content.
- *
- * Sets `showTranslationDisclaimer` to TRUE if:
- * - The current node lacks a translation in the active language, OR
- * - We're on a non-node page (views, listings, etc.) in a non-default language
  */
 function interledger_preprocess_block__interledger_content(&$variables) {
   $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
   $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $variables['showTranslationDisclaimer'] = false;
+  
+  if ($current_language === $default_language) {
+    $variables['showTranslationDisclaimer'] = false;
+    return;
+  }
 
-  // Only check if we're not in the default language
-  if ($current_language !== $default_language) {
-    if ($node instanceof Node) {
-      // For node pages, check if translation exists
-      $hasTranslation = $node->hasTranslation($current_language);
-      if (!$hasTranslation) {
-        $variables['showTranslationDisclaimer'] = true;
+  $node = \Drupal::routeMatch()->getParameter('node');
+  
+  if ($node instanceof Node) {
+    $variables['showTranslationDisclaimer'] = !$node->hasTranslation($current_language);
+    return;
+  }
+
+  // Check if we're on a view page
+  $route_match = \Drupal::routeMatch();
+  $view_id = $route_match->getParameter('view_id');
+  $display_id = $route_match->getParameter('display_id');
+  
+  if ($view_id && $display_id) {
+    $variables['showTranslationDisclaimer'] = _interledger_check_view_for_untranslated_content($view_id, $display_id, $current_language);
+  } else {
+    $variables['showTranslationDisclaimer'] = _interledger_has_untranslated_content($variables['content'], $current_language);
+  }
+}
+
+/**
+ * Checks a view for untranslated nodes.
+ */
+function _interledger_check_view_for_untranslated_content($view_id, $display_id, $current_language) {
+  $current_view = views_get_current_view();
+  if ($current_view && $current_view->storage->id() === $view_id && $current_view->current_display === $display_id && !empty($current_view->result)) {
+    $view = $current_view;
+  } else {
+    $view = \Drupal\views\Views::getView($view_id);
+    if (!$view) {
+      return false;
+    }
+    $view->setDisplay($display_id);
+    $view->preExecute();
+    $view->execute();
+  }
+
+  foreach ($view->result as $row) {
+    if (isset($row->_entity) && $row->_entity instanceof Node) {
+      $node = $row->_entity;
+      if (!$node->hasTranslation($current_language)) {
+        return true;
       }
-    } else {
-      // For non-node pages (views, listings, etc.), show disclaimer by default
-      $variables['showTranslationDisclaimer'] = true;
     }
   }
+
+  return false;
+}
+
+/**
+ * Checks rendered content for untranslated nodes.
+ */
+function _interledger_has_untranslated_content($content, $current_language) {
+  if (!is_array($content)) {
+    return false;
+  }
+
+  foreach ($content as $key => $item) {
+    if (is_string($key) && strpos($key, '#') === 0) {
+      continue;
+    }
+
+    if (is_array($item)) {
+      if (isset($item['#node']) && $item['#node'] instanceof Node) {
+        if (!$item['#node']->hasTranslation($current_language)) {
+          return true;
+        }
+      }
+      elseif (isset($item['#entity']) && $item['#entity'] instanceof Node) {
+        if (!$item['#entity']->hasTranslation($current_language)) {
+          return true;
+        }
+      }
+      elseif (_interledger_has_untranslated_content($item, $current_language)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -149,3 +214,4 @@ function interledger_preprocess_field__node__field_speaker_talk_entities(&$varia
     $variables['title'][$template_index] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
   }
 }
+
