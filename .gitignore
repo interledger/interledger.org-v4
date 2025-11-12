@@ -55,3 +55,11 @@ Network Trash Folder
 Temporary Items
 .apdisk
 tmp
+
+# E2E (Playwright) local dependencies
+/e2e/node_modules
+
+# E2E (Playwright) outputs
+/e2e/playwright-report
+/e2e/test-results
+/e2e/blob-report
