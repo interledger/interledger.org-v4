@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "./web/core/.eslintrc.json"
+  ],
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "globals": {
+    "Drupal": true,
+    "drupalSettings": true,
+    "drupalTranslations": true,
+    "jQuery": true,
+    "umami": true
+  }
+}
+

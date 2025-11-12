@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+vendor/
+web/core/
+web/modules/contrib/
+web/themes/contrib/
+web/profiles/contrib/
+
+# Build outputs
+web/sites/**/files/
+web/sites/**/libraries/
+**/js_test_files/
+
+# E2E tests
+e2e/
+
+# Other
+*.min.js
+*.bundle.js
+
