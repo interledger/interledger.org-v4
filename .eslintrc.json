@@ -17,6 +17,10 @@
     "drupalTranslations": true,
     "jQuery": true,
     "umami": true
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-use-before-define": ["error", { "functions": false, "classes": true, "variables": true }]
   }
 }
 
