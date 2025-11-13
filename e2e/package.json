@@ -1,0 +1,25 @@
+{
+  "name": "interledger-org-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Playwright end-to-end tests for interledger.org Drupal site",
+  "scripts": {
+    "test": "playwright test",
+    "test:local": "BASE_URL=http://localhost:8080 playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "PWDEBUG=1 playwright test",
+    "show-report": "playwright show-report",
+    "install:browsers": "playwright install --with-deps",
+    "codegen": "playwright codegen ${BASE_URL:-http://localhost:8080}",
+    "local:up": "make -C ../local up",
+    "local:down": "make -C ../local down"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@axe-core/playwright": "^4.9.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+
