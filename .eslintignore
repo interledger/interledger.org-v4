@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+vendor/
+web/core/
+web/modules/contrib/
+web/themes/contrib/
+web/profiles/contrib/
+
+# Build outputs
+web/sites/**/files/
+web/sites/**/libraries/
+**/js_test_files/
+
+# E2E tests
+e2e/
+
+# Generated files
+local/files/
+local/private/
+
+# Docker/Infrastructure files
+local/docker-compose.yaml
+docker/
+
+# Drupal default config files
+web/sites/default/default.services.yml
+
+# Theme config files (YAML with single quotes - valid Drupal style)
+web/themes/**/*.yml
+web/themes/**/*.yaml
+
+# Other
+*.min.js
+*.bundle.js
+
