@@ -19,9 +19,9 @@
     {% endif %}
 
     {% if svgUrl|default(null) %}
-      <img src="{{ svgUrl }}" alt="{{ svgAlt|e('html_attr') }}" class="form__image">
+      <img src="{{ svgUrl }}" alt="{{ svgAlt|e('html_attr') }}" class="form__image" loading="lazy">
     {% elseif imageUrl|default(null) %}
-      <img src="{{ imageUrl }}" alt="{{ imageAlt|e('html_attr') }}" class="form__image">
+      <img src="{{ imageUrl }}" alt="{{ imageAlt|e('html_attr') }}" class="form__image" loading="lazy">
     {% endif %}
   </div>
 </section>

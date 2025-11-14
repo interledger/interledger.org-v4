@@ -5,7 +5,7 @@
 
 <div class="ambassador node--{{ node.id }} content-wrapper">
   <div class="ambassador__info">
-    <img class="ambassador__img" src="{{ imageUrl }}" alt="{{ imageAlt }}">
+    <img class="ambassador__img" src="{{ imageUrl }}" alt="{{ imageAlt }}" loading="lazy">
     {% if (node.field_ambassador_grant_report.0.value) or (node.field_ambassador_linkedin.0.value) %}
     <div class="ambassador__links">
       {% if node.field_ambassador_grant_report.0.value %}
