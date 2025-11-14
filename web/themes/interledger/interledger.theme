@@ -24,14 +24,280 @@ function interledger_preprocess(&$variables) {
 }
 
 /**
+ * Implements hook_metatags_attachments_alter().
+ *
+ * Automatically adds Open Graph and Twitter Card images for articles
+ * and improves meta descriptions.
+ */
+function interledger_metatags_attachments_alter(array &$metatag_attachments) {
+  $route_match = \Drupal::routeMatch();
+  $node = $route_match->getParameter('node');
+
+  if (!$node || !($node instanceof \Drupal\node\Entity\Node)) {
+    return;
+  }
+
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+
+  // Handle articles - add OG and Twitter Card images
+  if ($node->bundle() === 'article') {
+    // Get featured image
+    $image_url = NULL;
+    if (!$node->get('field_feature_image')->isEmpty()) {
+      $media = $node->get('field_feature_image')->entity;
+      if ($media && !$media->get('field_media_image')->isEmpty()) {
+        $image_file = $media->get('field_media_image')->entity;
+        if ($image_file) {
+          $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('original_webp');
+          $image_url = $image_style->buildUrl($image_file->getFileUri());
+          $image_url = $request->getSchemeAndHttpHost() . $image_url;
+        }
+      }
+    }
+
+    // Add Open Graph image if available
+    if ($image_url && !empty($metatag_attachments['#attached']['html_head'])) {
+      $og_image_exists = FALSE;
+      foreach ($metatag_attachments['#attached']['html_head'] as $attachment) {
+        if (!empty($attachment[1]) && $attachment[1] === 'og_image') {
+          $og_image_exists = TRUE;
+          break;
+        }
+      }
+
+      if (!$og_image_exists) {
+        $metatag_attachments['#attached']['html_head'][] = [
+          [
+            '#tag' => 'meta',
+            '#attributes' => [
+              'property' => 'og:image',
+              'content' => $image_url,
+            ],
+          ],
+          'og_image',
+        ];
+      }
+    }
+
+    // Add Twitter Card image if available
+    if ($image_url && !empty($metatag_attachments['#attached']['html_head'])) {
+      $twitter_image_exists = FALSE;
+      foreach ($metatag_attachments['#attached']['html_head'] as $attachment) {
+        if (!empty($attachment[1]) && ($attachment[1] === 'twitter_cards_image' || $attachment[1] === 'twitter:image')) {
+          $twitter_image_exists = TRUE;
+          break;
+        }
+      }
+
+      if (!$twitter_image_exists) {
+        $metatag_attachments['#attached']['html_head'][] = [
+          [
+            '#tag' => 'meta',
+            '#attributes' => [
+              'name' => 'twitter:image',
+              'content' => $image_url,
+            ],
+          ],
+          'twitter_cards_image',
+        ];
+      }
+    }
+
+    // Improve meta description if missing or too short
+    if (!empty($metatag_attachments['#attached']['html_head'])) {
+      foreach ($metatag_attachments['#attached']['html_head'] as $key => $attachment) {
+        if (!empty($attachment[1]) && ($attachment[1] === 'description' || $attachment[1] === 'og_description')) {
+          $current_description = $attachment[0]['#attributes']['content'] ?? '';
+          
+          // If description is missing or too short, generate from body
+          if (empty($current_description) || mb_strlen($current_description) < 50) {
+            if (!$node->get('body')->isEmpty()) {
+              $body_text = strip_tags($node->get('body')->value);
+              $description = mb_substr($body_text, 0, 155);
+              if (mb_strlen($body_text) > 155) {
+                $description .= '...';
+              }
+              
+              if ($attachment[1] === 'description') {
+                $metatag_attachments['#attached']['html_head'][$key][0]['#attributes']['content'] = $description;
+              } elseif ($attachment[1] === 'og_description') {
+                $metatag_attachments['#attached']['html_head'][$key][0]['#attributes']['content'] = $description;
+              }
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for html
  * 
- * Add CSS classes to body element
+ * Add CSS classes to body element and JSON-LD structured data for SEO
  */
 function interledger_preprocess_html(&$variables) {
   $statusCode = Drupal::request()->query->get('_exception_statuscode');
   if (isset($statusCode)) {
     $variables['attributes']['class'][] = 'page-' . $statusCode;
+  }
+
+  // Add JSON-LD structured data for SEO
+  $site_config = \Drupal::config('system.site');
+  $site_name = $site_config->get('name');
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $front_url = $base_url . '/';
+
+  // Get logo URL safely
+  $logo_url = theme_get_setting('logo.url');
+  if ($logo_url) {
+    $logo_url = $base_url . $logo_url;
+  }
+
+  // Organization schema (appears on all pages)
+  $organization_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Organization',
+    'name' => $site_name,
+    'url' => $front_url,
+    'sameAs' => [
+      'https://www.youtube.com/@InterledgerFoundation',
+      'https://interledger.social/about',
+      'https://x.com/interledger',
+      'https://github.com/interledger',
+      'https://www.instagram.com/interledgerfoundation/',
+      'https://www.linkedin.com/company/interledger-foundation/',
+    ],
+  ];
+
+  // Add logo if available
+  if ($logo_url) {
+    $organization_schema['logo'] = $logo_url;
+  }
+
+  // WebSite schema with search action
+  $website_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'name' => $site_name,
+    'url' => $front_url,
+    'potentialAction' => [
+      '@type' => 'SearchAction',
+      'target' => [
+        '@type' => 'EntryPoint',
+        'urlTemplate' => $front_url . 'search?q={search_term_string}',
+      ],
+      'query-input' => 'required name=search_term_string',
+    ],
+  ];
+
+  // Attach JSON-LD to page
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/ld+json',
+      ],
+      '#value' => json_encode($organization_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+    ],
+    'interledger_organization_schema',
+  ];
+
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/ld+json',
+      ],
+      '#value' => json_encode($website_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+    ],
+    'interledger_website_schema',
+  ];
+
+  // Add sitemap reference if available
+  // Check if sitemap.xml exists (common Drupal sitemap locations)
+  $sitemap_paths = ['/sitemap.xml', '/sitemap_index.xml'];
+  foreach ($sitemap_paths as $sitemap_path) {
+    $sitemap_url = $base_url . $sitemap_path;
+    // Add link tag for sitemap (helps search engines discover it)
+    $variables['#attached']['html_head_link'][] = [
+      [
+        'rel' => 'sitemap',
+        'type' => 'application/xml',
+        'href' => $sitemap_url,
+      ],
+    ];
+    // Only add one sitemap reference
+    break;
+  }
+
+  // Add performance optimization: resource hints for external domains
+  // Preconnect to analytics domain for faster script loading
+  $variables['#attached']['html_head_link'][] = [
+    [
+      'rel' => 'preconnect',
+      'href' => 'https://ilf-site-analytics.netlify.app',
+      'crossorigin' => 'anonymous',
+    ],
+  ];
+
+  // DNS-prefetch for external social media domains (non-critical)
+  $external_domains = [
+    'https://www.youtube.com',
+    'https://interledger.social',
+    'https://x.com',
+    'https://github.com',
+    'https://www.instagram.com',
+    'https://www.linkedin.com',
+    'https://communityinviter.com',
+  ];
+
+  foreach ($external_domains as $domain) {
+    $variables['#attached']['html_head_link'][] = [
+      [
+        'rel' => 'dns-prefetch',
+        'href' => $domain,
+      ],
+    ];
+  }
+
+  // Preload critical fonts for better performance
+  $theme_path = \Drupal::service('extension.list.theme')->getPath('interledger');
+  $font_base_path = $base_url . '/' . $theme_path . '/fonts/';
+
+  // Preload most commonly used fonts (regular and bold)
+  $critical_fonts = [
+    [
+      'href' => $font_base_path . 'titilliumweb-regular.woff2',
+      'as' => 'font',
+      'type' => 'font/woff2',
+      'crossorigin' => 'anonymous',
+    ],
+    [
+      'href' => $font_base_path . 'titilliumweb-bold.woff2',
+      'as' => 'font',
+      'type' => 'font/woff2',
+      'crossorigin' => 'anonymous',
+    ],
+  ];
+
+  foreach ($critical_fonts as $font) {
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'link',
+        '#attributes' => [
+          'rel' => 'preload',
+          'href' => $font['href'],
+          'as' => $font['as'],
+          'type' => $font['type'],
+          'crossorigin' => $font['crossorigin'],
+        ],
+      ],
+      'interledger_font_preload_' . basename($font['href'], '.woff2'),
+    ];
   }
 }
 
@@ -139,5 +405,528 @@ function interledger_preprocess_field__node__field_speaker_talk_entities(&$varia
 
     $variables['description'][$template_index] = interledger_get_summit_entity_field($node, 'field_descripcion', 'field_talk_description');
     $variables['title'][$template_index] = interledger_get_summit_entity_field($node, 'field_titulo_de_la_sesion', 'field_talk_title');
+  }
+}
+
+/**
+ * Preprocesses article nodes for SEO.
+ *
+ * Adds JSON-LD Article schema to blog posts.
+ */
+function interledger_preprocess_node__article__full(&$variables) {
+  $node = $variables['node'];
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+  // Get featured image if available
+  $image_url = NULL;
+  if (!$node->get('field_feature_image')->isEmpty()) {
+    $media = $node->get('field_feature_image')->entity;
+    if ($media && !$media->get('field_media_image')->isEmpty()) {
+      $image_file = $media->get('field_media_image')->entity;
+      if ($image_file) {
+        $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('original_webp');
+        $image_url = $image_style->buildUrl($image_file->getFileUri());
+        $image_url = $request->getSchemeAndHttpHost() . $image_url;
+      }
+    }
+  }
+
+  // Build Article schema
+  $article_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'NewsArticle',
+    'headline' => $node->getTitle(),
+    'datePublished' => date('c', $node->getCreatedTime()),
+    'dateModified' => date('c', $node->getChangedTime()),
+    'url' => $node_url,
+    'mainEntityOfPage' => [
+      '@type' => 'WebPage',
+      '@id' => $node_url,
+    ],
+  ];
+
+  // Add author if byline exists
+  if (!$node->get('field_byline')->isEmpty()) {
+    $article_schema['author'] = [
+      '@type' => 'Person',
+      'name' => $node->get('field_byline')->value,
+    ];
+  }
+
+  // Add organization as publisher
+  $site_config = \Drupal::config('system.site');
+  $publisher_logo = theme_get_setting('logo.url');
+  $article_schema['publisher'] = [
+    '@type' => 'Organization',
+    'name' => $site_config->get('name'),
+  ];
+  
+  // Add logo if available
+  if ($publisher_logo) {
+    $article_schema['publisher']['logo'] = [
+      '@type' => 'ImageObject',
+      'url' => $base_url . $publisher_logo,
+    ];
+  }
+
+  // Add image if available
+  if ($image_url) {
+    $article_schema['image'] = [
+      '@type' => 'ImageObject',
+      'url' => $image_url,
+    ];
+  }
+
+  // Add description from body if available
+  if (!$node->get('body')->isEmpty()) {
+    $body_text = strip_tags($node->get('body')->value);
+    $article_schema['description'] = mb_substr($body_text, 0, 200) . '...';
+  }
+
+  // Attach JSON-LD to page
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/ld+json',
+      ],
+      '#value' => json_encode($article_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+    ],
+    'interledger_article_schema_' . $node->id(),
+  ];
+}
+
+/**
+ * Preprocesses FAQ nodes for SEO.
+ *
+ * Adds JSON-LD FAQPage schema to FAQ pages.
+ */
+function interledger_preprocess_node__faqs__full(&$variables) {
+  $node = $variables['node'];
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+  // Collect FAQ questions and answers from paragraphs
+  // Try common field names for FAQ paragraphs
+  $faq_field_names = ['field_faqs', 'field_faq', 'field_paragraphs'];
+  $faq_items = [];
+  
+  foreach ($faq_field_names as $field_name) {
+    if ($node->hasField($field_name) && !$node->get($field_name)->isEmpty()) {
+      foreach ($node->get($field_name) as $paragraph_item) {
+        $paragraph = $paragraph_item->entity;
+        if ($paragraph && $paragraph->bundle() === 'faq') {
+          $question = '';
+          $answer = '';
+
+          // Get question - try common field names
+          $question_fields = ['field_faq_question', 'field_question'];
+          foreach ($question_fields as $q_field) {
+            if ($paragraph->hasField($q_field) && !$paragraph->get($q_field)->isEmpty()) {
+              $question = strip_tags($paragraph->get($q_field)->value);
+              break;
+            }
+          }
+
+          // Get answer - try common field names
+          $answer_fields = ['field_faq_answer', 'field_answer'];
+          foreach ($answer_fields as $a_field) {
+            if ($paragraph->hasField($a_field) && !$paragraph->get($a_field)->isEmpty()) {
+              $answer = strip_tags($paragraph->get($a_field)->value);
+              break;
+            }
+          }
+
+          if ($question && $answer) {
+            $faq_items[] = [
+              '@type' => 'Question',
+              'name' => $question,
+              'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => $answer,
+              ],
+            ];
+          }
+        }
+      }
+      // Found the field, no need to check others
+      break;
+    }
+  }
+
+  // Build FAQPage schema if we have FAQ items
+  if (!empty($faq_items)) {
+    $faq_schema = [
+      '@context' => 'https://schema.org',
+      '@type' => 'FAQPage',
+      'mainEntity' => $faq_items,
+    ];
+
+    // Attach JSON-LD to page
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#attributes' => [
+          'type' => 'application/ld+json',
+        ],
+        '#value' => json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+      ],
+      'interledger_faq_schema_' . $node->id(),
+    ];
+  }
+}
+
+/**
+ * Preprocesses summit talk nodes for SEO.
+ *
+ * Adds JSON-LD VideoObject and Event schemas to summit talks.
+ */
+function interledger_preprocess_node__summit_talk_2025__full(&$variables) {
+  interledger_add_summit_talk_schemas($variables);
+}
+
+function interledger_preprocess_node__summit_talk_2024__full(&$variables) {
+  interledger_add_summit_talk_schemas($variables);
+}
+
+function interledger_preprocess_node__summit_talk_2022__full(&$variables) {
+  interledger_add_summit_talk_schemas($variables);
+}
+
+function interledger_preprocess_node__summit_talk__full(&$variables) {
+  interledger_add_summit_talk_schemas($variables);
+}
+
+/**
+ * Helper function to add VideoObject and Event schemas for summit talks.
+ */
+function interledger_add_summit_talk_schemas(&$variables) {
+  $node = $variables['node'];
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+  // Add breadcrumb JSON-LD schema
+  interledger_add_breadcrumb_schema($variables, $node);
+
+  // Get talk details
+  $start_date = $node->get('field_talk_start')->value ?? NULL;
+  $end_date = $node->get('field_talk_end')->value ?? NULL;
+  $talk_title = $node->get('field_talk_title')->value ?? $node->getTitle();
+  $talk_description = $node->get('field_talk_description')->value ?? '';
+
+  // Get video URL if available
+  $video_url = NULL;
+  if (!$node->get('field_talk_video')->isEmpty()) {
+    $media = $node->get('field_talk_video')->entity;
+    if ($media && !$media->get('field_media_video_file')->isEmpty()) {
+      $video_file = $media->get('field_media_video_file')->entity;
+      if ($video_file) {
+        $video_url = file_create_url($video_file->getFileUri());
+        $video_url = $request->getSchemeAndHttpHost() . parse_url($video_url, PHP_URL_PATH);
+      }
+    }
+  }
+
+  // Build Event schema
+  $event_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Event',
+    'name' => $talk_title,
+    'description' => strip_tags($talk_description),
+    'url' => $node_url,
+  ];
+
+  if ($start_date) {
+    $event_schema['startDate'] = date('c', strtotime($start_date));
+  }
+  if ($end_date) {
+    $event_schema['endDate'] = date('c', strtotime($end_date));
+  }
+
+  // Add organization as organizer
+  $site_config = \Drupal::config('system.site');
+  $event_schema['organizer'] = [
+    '@type' => 'Organization',
+    'name' => $site_config->get('name'),
+  ];
+
+  // Add speakers as performers
+  $performers = [];
+  if (!$node->get('field_talk_speaker_entities')->isEmpty()) {
+    foreach ($node->get('field_talk_speaker_entities') as $speaker_ref) {
+      $speaker = $speaker_ref->entity;
+      if ($speaker) {
+        $speaker_name = $speaker->get('field_speaker_name')->value ?? '';
+        if ($speaker_name) {
+          $performers[] = [
+            '@type' => 'Person',
+            'name' => $speaker_name,
+          ];
+        }
+      }
+    }
+  }
+  if (!empty($performers)) {
+    $event_schema['performer'] = $performers;
+  }
+
+  // Attach Event schema
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/ld+json',
+      ],
+      '#value' => json_encode($event_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+    ],
+    'interledger_event_schema_' . $node->id(),
+  ];
+
+  // Build VideoObject schema if video exists
+  if ($video_url) {
+    $video_schema = [
+      '@context' => 'https://schema.org',
+      '@type' => 'VideoObject',
+      'name' => $talk_title,
+      'description' => strip_tags($talk_description),
+      'contentUrl' => $video_url,
+      'uploadDate' => $start_date ? date('c', strtotime($start_date)) : date('c', $node->getCreatedTime()),
+    ];
+
+    // Add duration if available
+    if ($start_date && $end_date) {
+      $duration_seconds = strtotime($end_date) - strtotime($start_date);
+      $video_schema['duration'] = 'PT' . $duration_seconds . 'S';
+    }
+
+    // Add publisher
+    $publisher_logo = theme_get_setting('logo.url');
+    $video_schema['publisher'] = [
+      '@type' => 'Organization',
+      'name' => $site_config->get('name'),
+    ];
+    if ($publisher_logo) {
+      $video_schema['publisher']['logo'] = [
+        '@type' => 'ImageObject',
+        'url' => $base_url . $publisher_logo,
+      ];
+    }
+
+    // Attach VideoObject schema
+    $variables['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#attributes' => [
+          'type' => 'application/ld+json',
+        ],
+        '#value' => json_encode($video_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+      ],
+      'interledger_video_schema_' . $node->id(),
+    ];
+  }
+}
+
+/**
+ * Preprocesses summit speaker nodes for SEO.
+ *
+ * Adds JSON-LD Person schema to speaker pages.
+ */
+function interledger_preprocess_node__summit_speaker_2025__full(&$variables) {
+  interledger_add_speaker_person_schema($variables);
+}
+
+function interledger_preprocess_node__summit_speaker_2024__full(&$variables) {
+  interledger_add_speaker_person_schema($variables);
+}
+
+function interledger_preprocess_node__summit_speaker_2022__full(&$variables) {
+  interledger_add_speaker_person_schema($variables);
+}
+
+function interledger_preprocess_node__summit_speaker__full(&$variables) {
+  interledger_add_speaker_person_schema($variables);
+}
+
+/**
+ * Helper function to add Person schema for speakers.
+ */
+function interledger_add_speaker_person_schema(&$variables) {
+  $node = $variables['node'];
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+  $speaker_name = $node->get('field_speaker_name')->value ?? '';
+  $speaker_tagline = $node->get('field_speaker_tagline')->value ?? '';
+  $speaker_bio = $node->get('field_speaker_bio')->value ?? '';
+
+  if (!$speaker_name) {
+    return;
+  }
+
+  // Get speaker image
+  $image_url = NULL;
+  if (!$node->get('field_speaker_image')->isEmpty()) {
+    $image_file = $node->get('field_speaker_image')->entity;
+    if ($image_file) {
+      $image_url = file_create_url($image_file->getFileUri());
+      $image_url = $request->getSchemeAndHttpHost() . parse_url($image_url, PHP_URL_PATH);
+    }
+  }
+
+  // Build Person schema
+  $person_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Person',
+    'name' => $speaker_name,
+    'url' => $node_url,
+  ];
+
+  if ($speaker_tagline) {
+    $person_schema['jobTitle'] = $speaker_tagline;
+  }
+
+  if ($speaker_bio) {
+    $person_schema['description'] = strip_tags($speaker_bio);
+  }
+
+  if ($image_url) {
+    $person_schema['image'] = $image_url;
+  }
+
+  // Add organization affiliation
+  $site_config = \Drupal::config('system.site');
+  $person_schema['affiliation'] = [
+    '@type' => 'Organization',
+    'name' => $site_config->get('name'),
+  ];
+
+  // Attach Person schema
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/ld+json',
+      ],
+      '#value' => json_encode($person_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+    ],
+    'interledger_person_schema_' . $node->id(),
+  ];
+}
+
+/**
+ * Helper function to add BreadcrumbList JSON-LD schema.
+ *
+ * Extracts breadcrumb data from node fields and creates JSON-LD schema.
+ */
+function interledger_add_breadcrumb_schema(&$variables, $node) {
+  $request = \Drupal::request();
+  $base_url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+  $breadcrumb_items = [];
+
+  // Build breadcrumbs for summit talks
+  if ($node->hasField('field_summit_year') && !$node->get('field_summit_year')->isEmpty()) {
+    $summit_year = $node->get('field_summit_year')->value;
+    $position = 1;
+
+    // Home page (implicit)
+    $breadcrumb_items[] = [
+      '@type' => 'ListItem',
+      'position' => $position++,
+      'name' => 'Home',
+      'item' => $base_url . '/',
+    ];
+
+    // Summit page - try to find the summit node ID
+    // Common summit node IDs based on templates: 578 (general), 1281 (2024), 623 (2022), 278 (2023)
+    $summit_node_id = NULL;
+    if (strpos($node->bundle(), '2025') !== FALSE) {
+      $summit_node_id = 578; // General summit page
+    } elseif (strpos($node->bundle(), '2024') !== FALSE) {
+      $summit_node_id = 1281;
+    } elseif (strpos($node->bundle(), '2022') !== FALSE) {
+      $summit_node_id = 623;
+    } else {
+      $summit_node_id = 578; // Default to general
+    }
+
+    if ($summit_node_id) {
+      try {
+        $summit_node = \Drupal\node\Entity\Node::load($summit_node_id);
+        if ($summit_node) {
+          $summit_url = $summit_node->toUrl('canonical', ['absolute' => TRUE])->toString();
+          $breadcrumb_items[] = [
+            '@type' => 'ListItem',
+            'position' => $position++,
+            'name' => $summit_year . ' Summit',
+            'item' => $summit_url,
+          ];
+        }
+      } catch (\Exception $e) {
+        // Node doesn't exist, skip
+      }
+    }
+
+    // Talks/Sessions listing page - determine view path based on year
+    $sessions_view_name = 'view.summit_talks.summit_talks_listing'; // Default
+    if (strpos($node->bundle(), '2025') !== FALSE) {
+      $sessions_view_name = 'view.summit_talks.2025_summit_talks_listing';
+    } elseif (strpos($node->bundle(), '2024') !== FALSE) {
+      $sessions_view_name = 'view.summit_talks.2024_summit_talks_listing';
+    } elseif (strpos($node->bundle(), '2022') !== FALSE) {
+      $sessions_view_name = 'view.summit_talks.2022_summit_talks_listing';
+    }
+
+    try {
+      $sessions_url = \Drupal\Core\Url::fromRoute($sessions_view_name)->setAbsolute()->toString();
+      $breadcrumb_items[] = [
+        '@type' => 'ListItem',
+        'position' => $position++,
+        'name' => 'Sessions',
+        'item' => $sessions_url,
+      ];
+    } catch (\Exception $e) {
+      // View doesn't exist, use generic path
+      $breadcrumb_items[] = [
+        '@type' => 'ListItem',
+        'position' => $position++,
+        'name' => 'Sessions',
+        'item' => $base_url . '/summit/talks',
+      ];
+    }
+
+    // Current page
+    $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $breadcrumb_items[] = [
+      '@type' => 'ListItem',
+      'position' => $position,
+      'name' => $node->getTitle(),
+      'item' => $node_url,
+    ];
+
+    // Build BreadcrumbList schema
+    if (count($breadcrumb_items) > 1) {
+      $breadcrumb_schema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => $breadcrumb_items,
+      ];
+
+      // Attach BreadcrumbList schema
+      $variables['#attached']['html_head'][] = [
+        [
+          '#tag' => 'script',
+          '#attributes' => [
+            'type' => 'application/ld+json',
+          ],
+          '#value' => json_encode($breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
+        ],
+        'interledger_breadcrumb_schema_' . $node->id(),
+      ];
+    }
   }
 }
