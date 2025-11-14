@@ -12,7 +12,7 @@
   {% set videoIndicator = '<span class="talk__recording">(recording available)</span>' %}
 {% endif %}
   
-<img src="{{ imageUrl }}" alt="{{ imageAlt }}" height="200" width="200">
+<img src="{{ imageUrl }}" alt="{{ imageAlt }}" height="200" width="200" loading="lazy">
 <div class="talk__teaser">
   <h2><a href="{{ nodeLink }}">{{ talk_title |raw }}</a></h2>
   <p>

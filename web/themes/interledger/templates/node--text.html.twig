@@ -14,11 +14,11 @@
     {% if content.field_text_block_media[0]['#media'] is defined %}
       {% if svgUrl|default(null) %}
       <div class="text__img">
-        <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
+        <img src="{{ svgUrl }}" alt="{{ svgAlt }}" loading="lazy">
       </div>
       {% elseif imageUrl|default(null) %}
       <div class="text__img">
-        <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+        <img src="{{ imageUrl }}" alt="{{ imageAlt }}" loading="lazy">
       </div>
       {% else %}
       {{ content.field_text_block_media }}

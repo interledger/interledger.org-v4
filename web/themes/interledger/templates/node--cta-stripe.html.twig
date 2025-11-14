@@ -8,9 +8,9 @@
 
 <div class="cta--{{ content.field_cta_type.0|render|lower|replace({' ':'-'}) }} node--{{ node.id }} content-wrapper">
   {% if svgUrl|default(null) %}
-  <img src="{{ svgUrl }}" alt="{{ svgAlt }}">
+  <img src="{{ svgUrl }}" alt="{{ svgAlt }}" loading="lazy">
   {% elseif imageUrl|default(null) %}
-  <img src="{{ imageUrl }}" alt="{{ imageAlt }}">
+  <img src="{{ imageUrl }}" alt="{{ imageAlt }}" loading="lazy">
   {% endif %}
   <p>{{ node.field_cta_text.0.value|raw }}</p>
   {% if content.field_cta_type.0|render == "Mailing list" %}

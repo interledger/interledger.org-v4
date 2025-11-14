@@ -4,7 +4,7 @@
 {% if node.field_tile_type.0.value|raw == "feature" %}
 <div class="tile tile--feature node--{{ node.id }}">
   {% if svgUrl|default(null) %}
-    <img class="tile__icon" src="{{ svgUrl }}" alt="{{ svgAlt }}">
+    <img class="tile__icon" src="{{ svgUrl }}" alt="{{ svgAlt }}" loading="lazy">
   {% endif %}
   <p class="tile__feature">{{ node.field_key_feature.0.value|raw }}</p>
   <p class="tile__description">{{ node.field_tile_description.0.value|raw }}</p>
