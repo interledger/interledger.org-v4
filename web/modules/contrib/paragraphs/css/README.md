@@ -12,10 +12,9 @@ have two options:
    Gulp/SASS process and do changes in appropriate SASS files and then recompile
    it to CSS.
 
-
 ## Preparing your development environment for Gulp/SASS toolchain
 
-If you want to do __step 2.__ but do not have needed Gulp/SASS experience do not
+If you want to do **step 2.** but do not have needed Gulp/SASS experience do not
 worry, the process is not that difficult and is explained in next steps:
 
 - First thing you need to have is nodejs server on your machine. Please check
@@ -45,7 +44,6 @@ command you already compiled paragraphs SASS files to CSS.
 For a closer look at our Gulp configuration and tasks check
 paragraphs/css/gulpfile.js.
 
-
 ## Doing changes in CSS over SASS
 
 Now you are ready to do the necessary changes to paragraphs CSS. First locate the
@@ -53,9 +51,8 @@ CSS selector rule you want to change in CSS and then locate this rule in the
 appropriate SASS file. Do the change in the SASS file, save it and just execute
 again `$ npx gulp` from your console.
 
-When you are satisfied with the result in CSS files, create a Drupal paragraphs 
+When you are satisfied with the result in CSS files, create a Drupal paragraphs
 issue and a patch in standard way.
-
 
 ## Making sure that your changes are aligned with CSS code standards
 
@@ -71,10 +68,9 @@ But in some cases warnings can not be avoided, in that case please use turning
 rules off from SASS like explained in https://github.com/stylelint/stylelint/blob/master/docs/user-guide/configuration.md#turning-rules-off-from-within-your-css. Note that you can use also `//`
 comment syntax instead of `/* ... */`
 
-You can also just run gulp sass lint task: 
+You can also just run gulp sass lint task:
 
 `$ npx gulp sass:lint`
-
 
 ## Resources
 

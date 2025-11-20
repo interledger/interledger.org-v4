@@ -7,5 +7,3 @@
 To quickly fix PHPCS issues:
 
     ./scripts/clean-code.sh
-    
-

@@ -1,5 +1,4 @@
-Steps for testing Drush 8.x and 9.x commands
---------------------------------------------
+## Steps for testing Drush 8.x and 9.x commands
 
 # Drush 8.x and below
 

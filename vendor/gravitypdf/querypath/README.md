@@ -2,15 +2,16 @@
 
 QueryPath is a jQuery-like library for working with XML and HTML(5) documents in PHP. It is stable software, [with the original library garnering 4M+ downloads](https://packagist.org/packages/querypath/querypath) since first published in 2009.
 
-**This is a fork of a fork. The [original library](https://github.com/technosophos/querypath), and [subsequent fork](https://github.com/arthurkushman/querypath), are no longer being maintained. The aim of `gravitypdf/querypath` is to ensure the library remains compatible with the latest version of PHP, and bug free. 🧑‍💻There is still a lot of legacy code to clean up + modernize, and any assistance given is appreciated.** 
+**This is a fork of a fork. The [original library](https://github.com/technosophos/querypath), and [subsequent fork](https://github.com/arthurkushman/querypath), are no longer being maintained. The aim of `gravitypdf/querypath` is to ensure the library remains compatible with the latest version of PHP, and bug free. 🧑‍💻There is still a lot of legacy code to clean up + modernize, and any assistance given is appreciated.**
 
 > If you are viewing this file on QueryPath GitHub repository homepage or on Packagist, please note that the default repository branch is `main` which can differ from the last stable release.
 
 [![Latest Stable Version](http://poser.pugx.org/gravitypdf/querypath/v)](https://packagist.org/packages/gravitypdf/querypath) [![License](http://poser.pugx.org/gravitypdf/querypath/license)](https://packagist.org/packages/gravitypdf/querypath) [![codecov](https://codecov.io/gh/GravityPDF/querypath/branch/main/graph/badge.svg?token=Dsul7f36K4)](https://codecov.io/gh/GravityPDF/querypath) [![PHP Version Require](http://poser.pugx.org/gravitypdf/querypath/require/php)](https://packagist.org/packages/gravitypdf/querypath)
 
 ## Installation
-``` 
-composer require gravitypdf/querypath 
+
+```
+composer require gravitypdf/querypath
 ```
 
 ## Basic Usage
@@ -131,5 +132,5 @@ Before submitting issues and pull requests please read [CONTRIBUTING.md](https:/
 
 If opening a Pull Request ensure the linter and PHPUnit tests pass (and write a new test for the bug you are fixing):
 
-* Lint: `composer run lint`
-* PHPUnit: `vendor/bin/phpunit`
+- Lint: `composer run lint`
+- PHPUnit: `vendor/bin/phpunit`

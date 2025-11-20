@@ -1,6 +1,7 @@
 # Site aliases
 
 ### Basic usage
+
 In its most basic form, the Drush site alias feature provides a way
 for teams to share short names that refer to the live and staging sites
 (usually remote) for a given Drupal site.
@@ -31,11 +32,13 @@ may be used on the command line to select a different target environment
 to operate on by prepending an `@` character, e.g. `@live` or `@stage`.
 
 Following these steps, a cache:rebuild on the live environment would be:
+
 ```bash
   $ drush @live cache:rebuild
 ```
 
 All of the available aliases for a site's environments may be listed via:
+
 ```bash
   $ drush site:alias @self
 ```
@@ -48,9 +51,9 @@ The elements of a site alias are:
   operations, such as whether or not rsync parameters are for local or
   remote machines, and so on.
 - **user**: The username to log in as when using ssh or docker. If each user
-   has to use own username, you can create an environment variable which holds
-   the value, and reference via ${env.PROJECT_SSH_USER} (for example). Or you may
-   omit the `user` item and specify a user in the `~/.ssh/config` file.
+  has to use own username, you can create an environment variable which holds
+  the value, and reference via ${env.PROJECT_SSH_USER} (for example). Or you may
+  omit the `user` item and specify a user in the `~/.ssh/config` file.
 - **root**: The Drupal root; must not be specified as a relative path.
 - **uri**: The value of --uri should always be the same as
   when the site is being accessed from a web browser (e.g. http://example.com)
@@ -59,6 +62,7 @@ Drush typically uses ssh to run commands on remote systems; all team members sho
 install ssh keys on the target servers (e.g. via `ssh-add`).
 
 ### Advanced usage
+
 It is also possible to create site alias files that reference other
 sites on the same local system. Site alias files for other local sites
 are usually stored in the directory `~/.drush/sites`; however, Drush does
@@ -71,7 +75,7 @@ in your `~/.drush/drush.yml` configuration file:
 drush:
   paths:
     alias-path:
-      - '${env.HOME}/.drush/sites'
+      - "${env.HOME}/.drush/sites"
       - /etc/drush/sites
 ```
 
@@ -91,13 +95,17 @@ defines the name of the environment.
 
 With these definitions in place, it is possible to run commands targeting
 the dev environment of the target site via:
+
 ```bash
   $ drush @example.dev status
 ```
+
 This command is equivalent to the longer form:
+
 ```bash
   $ drush --root=/path/to/drupal --uri=http://example.com status
 ```
+
 See [Additional Site Alias Options](#additional-site-alias-options) for more information.
 
 ### Altering aliases:
@@ -124,32 +132,32 @@ local or remote Drupal installations; however, an alias
 is really nothing more than a collection of options.
 
 - **docker**: When specified, Drush executes via `docker-compose` exec rather than `ssh`.
-    - **service**: the name of the container to run on.
-    - **exec**:
-        - **options**: Options for the exec subcommand.
+  - **service**: the name of the container to run on.
+  - **exec**:
+    - **options**: Options for the exec subcommand.
 - **kubectl** When specified, Drush executes via `kubectl` exec rather than `ssh`.
-    - **namespace** The namespace to execute the command in.
-    - **resource** The k8s object to execute the command on.
-    - **container** The container in the resource to execute the command on.
-- **os**: The operating system of the remote server.  Valid values
+  - **namespace** The namespace to execute the command in.
+  - **resource** The k8s object to execute the command on.
+  - **container** The container in the resource to execute the command on.
+- **os**: The operating system of the remote server. Valid values
   are _Windows_ and _Linux_. Set this value for all remote
   aliases where the remote's OS differs from the local. This is especially relevant
   for the [sql:sync](commands/sql_sync.md) command.
 - **ssh**: Contains settings used to control how ssh commands are generated
   when running remote commands.
-    - **options**: Contains additional commandline options for the `ssh` command
-  itself, e.g. `-p 100`
-    - **tty**: Usually, Drush will decide whether or not to create a tty (via
-  the `ssh --t` option) based on whether the local Drush command is running
-  interactively or not. To force Drush to always or never create a tty,
-  set the `ssh.tty` option to _true_ or _false_, respectively.
+  - **options**: Contains additional commandline options for the `ssh` command
+    itself, e.g. `-p 100`
+  - **tty**: Usually, Drush will decide whether or not to create a tty (via
+    the `ssh --t` option) based on whether the local Drush command is running
+    interactively or not. To force Drush to always or never create a tty,
+    set the `ssh.tty` option to _true_ or _false_, respectively.
 - **paths**: An array of aliases for common rsync targets. Relative aliases are always taken from the Drupal root.
-    - **files**: Path to _files_ directory. This will be looked up if not specified.
-    - **drush-script**: Path to the remote Drush command.
-- **command**: These options will only be set if the alias is used with the specified command.  In the advanced example below, the option `--no-dump` will be selected whenever the `@stage` alias is used in any of the following ways:
-    - `drush @stage sql-sync @self @live`
-    - `drush sql-sync @stage @live`
-    - `drush sql-sync @live @stage`
+  - **files**: Path to _files_ directory. This will be looked up if not specified.
+  - **drush-script**: Path to the remote Drush command.
+- **command**: These options will only be set if the alias is used with the specified command. In the advanced example below, the option `--no-dump` will be selected whenever the `@stage` alias is used in any of the following ways:
+  - `drush @stage sql-sync @self @live`
+  - `drush sql-sync @stage @live`
+  - `drush sql-sync @live @stage`
 - **env-vars**: An array of key / value pairs that will be set as environment variables.
 
 Complex example:
@@ -162,9 +170,9 @@ live:
   root: /other/path/to/drupal
   uri: http://example.com
   ssh:
-    options: '-p 100'
+    options: "-p 100"
   paths:
-    drush-script: '/path/to/drush'
+    drush-script: "/path/to/drush"
   env-vars:
     PATH: /bin:/usr/bin:/home/www-admin/.composer/vendor/bin
     DRUPAL_ENV: live
@@ -172,7 +180,7 @@ live:
     site:
       install:
         options:
-          admin-password: 'secret-secret'
+          admin-password: "secret-secret"
 ```
 
 ### Site Alias Files for Service Providers
@@ -187,14 +195,16 @@ file:
 drush:
   paths:
     alias-path:
-      - '${env.HOME}/.drush/sites/provider-name'
+      - "${env.HOME}/.drush/sites/provider-name"
 ```
 
 Site aliases stored in this directory may then be referenced by its
 full alias name, including its location, e.g.:
+
 ```bash
   $ drush @provider-name.example.dev
 ```
+
 Such alias files may still be referenced by their shorter name, e.g.
 `@example.dev`. Note that it is necessary to individually list every
 location where site alias files may be stored; Drush never does recursive
@@ -202,9 +212,11 @@ location where site alias files may be stored; Drush never does recursive
 
 The `site:alias` command may also be used to list all of the sites and
 environments in a given location, e.g.:
+
 ```bash
   $ drush site:alias @provider-name
 ```
+
 Add the option `--format=list` to show only the names of each site and
 environment without also showing the values in each alias record.
 
@@ -224,7 +236,7 @@ Example wildcard record:
 
 ```yml
 # File: remote-example.site.yml
-'*':
+"*":
   host: ${env-name}.server.domain.com
   user: www-admin
   root: /path/to/${env-name}
@@ -240,7 +252,7 @@ See [SiteAliasAlterCommands](https://www.drush.org/latest/examples/SiteAliasAlte
 ### Docker Compose
 
 The example below shows drush calling into a Docker hosted site. See the https://github.com/consolidation/site-alias and https://github.com/consolidation/site-process projects for more developer
-information about transports. 
+information about transports.
 
 An example appears below. Edit to suit:
 
@@ -275,26 +287,26 @@ dev:
 
 Drush provides transport for running drush commands on your Kubernetes cluster via [kubectl](https://kubernetes.io/docs/reference/kubectl/). See an example and options below.
 
- ```yml
- prod: 
-   kubectl:
-     namespace: 'my-drupal-namespace'
-     resource: 'pods/my-drupal-pod' 
-     container: 'drupal'
- ```
+```yml
+prod:
+  kubectl:
+    namespace: "my-drupal-namespace"
+    resource: "pods/my-drupal-pod"
+    container: "drupal"
+```
 
 #### Key options
 
-  * **namespace:** The namespace where your Drupal deployment resides.
-  * **resource:**  Kubernetes resource type (usually 'pods').
-  * **container:** The specific container within the pod where Drupal runs.
-  * **kubeconfig:** The kubeconfig file to use for authentication.
-  * **entrypoint:** The command to use as the container entrypoint.
+- **namespace:** The namespace where your Drupal deployment resides.
+- **resource:** Kubernetes resource type (usually 'pods').
+- **container:** The specific container within the pod where Drupal runs.
+- **kubeconfig:** The kubeconfig file to use for authentication.
+- **entrypoint:** The command to use as the container entrypoint.
 
 Drush will attempt to use the status of the connection to determine if it is tty/interactive, but in some complex cases that status may not be available. These options can be used to force those flags:
 
-  * **tty:** Set to `true` to force a tty connection using the `kubectl --tty` flag.
-  * **interactive:** Set to `true` to force an interactive connection using the `kubectl --stdin` flag.
+- **tty:** Set to `true` to force a tty connection using the `kubectl --tty` flag.
+- **interactive:** Set to `true` to force an interactive connection using the `kubectl --stdin` flag.
 
 ### Example of rsync with exclude-paths
 
@@ -315,6 +327,5 @@ dev:
       rsync:
         options:
           mode: rlptz
-          exclude-paths: 'css:imagecache:ctools:js:tmp:php:styles'
+          exclude-paths: "css:imagecache:ctools:js:tmp:php:styles"
 ```
-

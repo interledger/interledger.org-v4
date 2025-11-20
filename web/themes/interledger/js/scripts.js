@@ -1,17 +1,14 @@
-// Site navigation CSS classes
-const siteLinksWrapper = document.querySelector("[data-nav-wrapper]");
-const wideNavMinWidth = window.matchMedia("(min-width: 1160px)");
-handleNavDisplayStyles(wideNavMinWidth);
-wideNavMinWidth.addEventListener("change", handleNavDisplayStyles);
-
-const siteNavToggle = document.getElementById("siteNavToggle");
-const menuIcon = document.getElementById("menuIcon");
-
-if (document.contains(siteNavToggle)) {
-  siteNavToggle.addEventListener("click", handleMobileNavToggle, false);
+// Function declarations
+function flashPrevention(element) {
+  element.setAttribute("style", "display:none");
+  setTimeout(() => {
+    element.removeAttribute("style");
+  }, 10);
 }
 
-function handleMobileNavToggle(event) {
+function handleMobileNavToggle() {
+  const siteLinksWrapper = document.querySelector("[data-nav-wrapper]");
+  const menuIcon = document.getElementById("menuIcon");
   siteLinksWrapper.classList.toggle("offscreen");
   if (siteLinksWrapper.getAttribute("class").includes("offscreen")) {
     menuIcon.classList.remove("open");
@@ -21,6 +18,7 @@ function handleMobileNavToggle(event) {
 }
 
 function handleNavDisplayStyles(event) {
+  const siteLinksWrapper = document.querySelector("[data-nav-wrapper]");
   if (event.matches) {
     siteLinksWrapper.classList.remove("offscreen");
   } else {
@@ -31,11 +29,31 @@ function handleNavDisplayStyles(event) {
   }
 }
 
-function flashPrevention(element) {
-  element.setAttribute("style", "display:none");
-  setTimeout(() => {
-    element.removeAttribute("style");
-  }, 10);
+function resetSubMenus(subLinks) {
+  subLinks.forEach((subLink) => {
+    subLink.setAttribute("aria-expanded", "false");
+  });
+}
+
+function isClickOutside(event, nodeList) {
+  let clickedInsideTarget = false;
+  Array.from(nodeList).forEach((element) => {
+    if (element.contains(event.target)) {
+      clickedInsideTarget = true;
+    }
+  });
+  return !clickedInsideTarget;
+}
+
+// Site navigation CSS classes
+const wideNavMinWidth = window.matchMedia("(min-width: 1160px)");
+handleNavDisplayStyles(wideNavMinWidth);
+wideNavMinWidth.addEventListener("change", handleNavDisplayStyles);
+
+const siteNavToggle = document.getElementById("siteNavToggle");
+
+if (document.contains(siteNavToggle)) {
+  siteNavToggle.addEventListener("click", handleMobileNavToggle, false);
 }
 
 // Site sub-navigation toggle
@@ -46,13 +64,12 @@ if (document.contains(siteNav)) {
 
   subLinks.forEach((subLink) => {
     subLink.setAttribute("aria-expanded", false);
-    subLink.addEventListener("click", function (event) {
+    subLink.addEventListener("click", (event) => {
       const clickedSubLink = event.target;
+      // eslint-disable-next-line no-undef
       umami.track(clickedSubLink.dataset.linkLabel);
       const allSubLinks = Array.from(subLinks);
-      const notClickedLinks = allSubLinks.filter(function (otherLink) {
-        return otherLink !== clickedSubLink;
-      });
+      const notClickedLinks = allSubLinks.filter((otherLink) => otherLink !== clickedSubLink);
       notClickedLinks.forEach((link) => {
         link.setAttribute("aria-expanded", false);
       });
@@ -66,33 +83,17 @@ if (document.contains(siteNav)) {
     });
   });
 
-  siteNav.addEventListener("keydown", function (event) {
+  siteNav.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      resetSubMenus();
+      resetSubMenus(subLinks);
     }
   });
 
-  document.addEventListener("click", function (event) {
+  document.addEventListener("click", (event) => {
     if (isClickOutside(event, subLinks)) {
-      resetSubMenus();
+      resetSubMenus(subLinks);
     }
   });
-
-  function resetSubMenus() {
-    subLinks.forEach((subLink) => {
-      subLink.setAttribute("aria-expanded", "false");
-    });
-  }
-}
-
-function isClickOutside(event, nodeList) {
-  let clickedInsideTarget = false;
-  Array.from(nodeList).forEach(function (element) {
-    if (element.contains(event.target)) {
-      clickedInsideTarget = true;
-    }
-  });
-  return !clickedInsideTarget;
 }
 
 // Hero video controls
@@ -100,8 +101,7 @@ const videoToggle = document.getElementById("hero__video-toggle");
 
 if (document.contains(videoToggle)) {
   const heroVideo = document.querySelector(".hero video");
-  videoToggle.addEventListener("click", function () {
-    console.log(this.className);
+  videoToggle.addEventListener("click", function handleVideoToggle() {
     if (videoToggle.className === "is-playing") {
       heroVideo.pause();
       this.classList.toggle("is-playing");
@@ -120,7 +120,7 @@ if (document.contains(faq)) {
   buttons.forEach((button) => {
     button.setAttribute("aria-expanded", false);
 
-    button.addEventListener("click", function () {
+    button.addEventListener("click", function handleFaqToggle() {
       if (this.getAttribute("aria-expanded") === "true") {
         this.setAttribute("aria-expanded", "false");
       } else {

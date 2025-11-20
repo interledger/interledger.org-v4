@@ -29,7 +29,6 @@ Example composer.json:
     }
   }
 }
-
 ```
 
 ## Using an external patch file
@@ -49,7 +48,6 @@ Instead of a patches key in your root composer.json, use a patches-file key.
     "patches-file": "local/path/to/your/composer.patches.json"
   }
 }
-
 ```
 
 Then your `composer.patches.json` should look like this:
@@ -71,10 +69,10 @@ If your project doesn't supply any patches of its own, but you still want to acc
 ```json
 {
   "require": {
-      "cweagans/composer-patches": "^1.5.0"
+    "cweagans/composer-patches": "^1.5.0"
   },
   "extra": {
-      "enable-patching": true
+    "enable-patching": true
   }
 }
 ```
@@ -151,6 +149,7 @@ However, it's always advised to setup HTTPS to prevent MITM code injection.
 Because patching occurs _after_ Composer calculates dependencies and installs packages, changes to an underlying dependency's `composer.json` file introduced in a patch will have _no effect_ on installed packages.
 
 If you need to modify a dependency's `composer.json` or its underlying dependencies, you cannot use this plugin. Instead, you must do one of the following:
+
 - Work to get the underlying issue resolved in the upstream package.
 - Fork the package and [specify your fork as the package repository](https://getcomposer.org/doc/05-repositories.md#vcs) in your root `composer.json`
 - Specify compatible package version requirements in your root `composer.json`
@@ -172,6 +171,7 @@ When a patch is applied, the plugin writes a report-file `PATCHES.txt` to a patc
 which contains a list of applied patches.
 
 If you want to avoid this behavior, add a specific key to the `extra` section:
+
 ```json
 "extra": {
     "composer-patches-skip-reporting": true

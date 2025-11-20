@@ -1,16 +1,20 @@
 # Cheat sheet
 
 ## Drupal View
+
 ```twig
 {{ drupal_view('who_s_new', 'block_1') }}
 ```
+
 ```twig
 {# Specify additional parameters which map to contextual filters you have configured in your view. #}
 {{ drupal_view('who_s_new', 'block_1', arg_1, arg_2, arg_3) }}
 ```
 
 ## Drupal View Result
+
 Checks results for a given view. Note that the results themselves are not printable.
+
 ```twig
 {% if drupal_view_result('cart')|length == 0 %}
   {{ 'Your cart is empty.'|t }}
@@ -18,11 +22,14 @@ Checks results for a given view. Note that the results themselves are not printa
 ```
 
 ## Drupal Block
+
 In order to figure out the plugin IDs list them using block plugin manager.
 With Drush, it can be done like follows:
+
 ```shell
 drush ev "print_r(array_keys(\Drupal::service('plugin.manager.block')->getDefinitions()));"
 ```
+
 ```twig
 {# Print block using default configuration. #}
 {{ drupal_block('system_branding_block') }}
@@ -40,6 +47,7 @@ drush ev "print_r(array_keys(\Drupal::service('plugin.manager.block')->getDefini
 See [rendering blocks with Twig Tweak](blocks.md#block-plugin) for details.
 
 ## Drupal Region
+
 ```twig
 {# Print 'sidebar_first' region of the default site theme. #}
 {{ drupal_region('sidebar_first') }}
@@ -49,6 +57,7 @@ See [rendering blocks with Twig Tweak](blocks.md#block-plugin) for details.
 ```
 
 ## Drupal Entity
+
 ```twig
 {# Print a content block which ID is 1. #}
 {{ drupal_entity('block_content', 1) }}
@@ -62,6 +71,7 @@ See [rendering blocks with Twig Tweak](blocks.md#block-plugin) for details.
 ```
 
 ## Drupal Entity Form
+
 ```twig
 {# Print edit form for node 1. #}
 {{ drupal_entity_form('node', 1) }}
@@ -74,7 +84,9 @@ See [rendering blocks with Twig Tweak](blocks.md#block-plugin) for details.
 ```
 
 ## Drupal Field
+
 Note that drupal_field() does not work for view modes powered by Layout Builder.
+
 ```twig
 {# Render field_image from node 1 in view_mode "full" (default). #}
 {{ drupal_field('field_image', 'node', 1) }}
@@ -94,6 +106,7 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Menu
+
 ```twig
 {# Print the top level of 'main' menu. #}
 {{ drupal_menu('main') }}
@@ -103,11 +116,13 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Form
+
 ```twig
 {{ drupal_form('Drupal\\search\\Form\\SearchBlockForm') }}
 ```
 
 ## Drupal Image
+
 ```twig
 {# Render image specified by file ID. #}
 {{ drupal_image(123) }}
@@ -130,16 +145,19 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Token
+
 ```twig
 {{ drupal_token('site:name') }}
 ```
 
 ## Drupal Config
+
 ```twig
 {{ drupal_config('system.site', 'name') }}
 ```
 
 ## Drupal Dump
+
 ```twig
 {# Basic usage. #}
 {{ drupal_dump(var) }}
@@ -152,12 +170,14 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Title
+
 ```twig
 {# The title is cached per URL. #}
 {{ drupal_title() }}
 ```
 
 ## Drupal URL
+
 ```twig
 {# The function accepts a valid internal path, such as "/node/1", "/taxonomy/term/1", a query string like "?query," or a fragment like "#anchor". #}
 
@@ -169,6 +189,7 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Link
+
 ```twig
 {# It supports the same options as drupal_url(), plus attributes. #}
 {{ drupal_link('View'|t, 'node/1', {attributes: {target: '_blank'}}) }}
@@ -178,22 +199,26 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Drupal Messages
+
 ```twig
 {{ drupal_messages() }}
 ```
 
 ## Drupal Breadcrumb
+
 ```twig
 {{ drupal_breadcrumb() }}
 ```
 
 ## Drupal Breakpoint
+
 ```twig
 {# Make Xdebug break on the specific line in the compiled Twig template. #}
 {{ drupal_breakpoint() }}
 ```
 
 ## Contextual Links
+
 ```twig
 {# Basic usage. #}
 <div class="contextual-region">
@@ -208,6 +233,7 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Token Replace
+
 ```twig
 {# Basic usage. #}
 {{ '<h1>[site:name]</h1><div>[site:slogan]</div>'|token_replace }}
@@ -220,13 +246,16 @@ Note that drupal_field() does not work for view modes powered by Layout Builder.
 ```
 
 ## Preg Replace
+
 ```twig
 {{ 'Drupal - community plumbing!'|preg_replace('/(Drupal)/', '<b>$1</b>') }}
 ```
+
 For simple string interpolation consider using built-in `replace` or `format`
 Twig filters.
 
 ## Image Style
+
 ```twig
 {# Basic usage #}
 {{ 'public://images/ocean.jpg'|image_style('thumbnail') }}
@@ -237,26 +266,32 @@ Twig filters.
   {{ image_uri|image_style('thumbnail') }}
 {% endif %}
 ```
+
 `image_style` will trigger an error on invalid or empty URIs, to avoid broken
 images when used in an `<img/>` tag.
 
 ## Transliterate
+
 ```twig
 {{ 'Привет!'|transliterate }}
 ```
 
 ## Check Markup
+
 ```twig
 {{ '<b>bold</b> <strong>strong</strong>'|check_markup('restricted_html') }}
 ```
 
 ## Format size
+
 Generates a string representation for the given byte count.
+
 ```twig
 {{ 12345|format_size }}
 ```
 
 ## Truncate
+
 ```twig
 {# Truncates a UTF-8-encoded string safely to 10 characters. #}
 {{ 'Some long text'|truncate(10) }}
@@ -266,6 +301,7 @@ Generates a string representation for the given byte count.
 ```
 
 ## View
+
 ```twig
 {# Do not put this into node.html.twig template to avoid recursion. #}
 {{ node|view }}
@@ -278,7 +314,9 @@ Generates a string representation for the given byte count.
 ```
 
 ## With
+
 This is an opposite of core `without` filter and adds properties instead of removing it.
+
 ```twig
 {# Set top-level value. #}
 {{ content.field_image|with('#title', 'Photo'|t) }}
@@ -288,7 +326,9 @@ This is an opposite of core `without` filter and adds properties instead of remo
 ```
 
 ## Data URI
+
 The filter generates a URL using the data scheme as defined in [RFC 2397](https://datatracker.ietf.org/doc/html/rfc2397)
+
 ```twig
 {# Inline image. #}
 <img src="{{ '<svg xmlns="http://www.w3.org/2000/svg"><rect width="100" height="50" fill="lime"/></svg>'|data_uri('image/svg+xml') }}" alt="{{ 'Rectangle'|t }}"/>
@@ -297,6 +337,7 @@ The filter generates a URL using the data scheme as defined in [RFC 2397](https:
 ```
 
 ## Children
+
 ```twig
 <ul>
   {% for tag in content.field_tags|children %}
@@ -306,9 +347,11 @@ The filter generates a URL using the data scheme as defined in [RFC 2397](https:
 ```
 
 ## File URI
+
 When field item list is passed, the URI will be extracted from the first item.
 In order to get URI of specific item specify its delta explicitly using array
 notation.
+
 ```twig
 {{ node.field_image|file_uri }}
 {{ node.field_image[0]|file_uri }}
@@ -316,17 +359,21 @@ notation.
 
 Media fields are fully supported including OEmbed resources, in which case
 it will return the URL to the resource, similar to the `file_url` filter.
+
 ```twig
 {{ node.field_media|file_uri }}
 ```
 
 ## File URL
+
 For string arguments it works similar to core `file_url()` Twig function.
+
 ```twig
 {{ 'public://sea.jpg'|file_url }}
 ```
 
 In order to generate absolute URL set "relative" parameter to `false`.
+
 ```twig
 {{ 'public://sea.jpg'|file_url(false) }}
 ```
@@ -334,25 +381,30 @@ In order to generate absolute URL set "relative" parameter to `false`.
 When field item list is passed, the URL will be extracted from the first item.
 In order to get URL of specific item specify its delta explicitly using array
 notation.
+
 ```twig
 {{ node.field_image|file_url }}
 {{ node.field_image[0]|file_url }}
 ```
 
 Media fields are fully supported including OEmbed resources.
+
 ```twig
 {{ node.field_media|file_url }}
 ```
 
 It is also possible to extract file URL directly from an entity.
+
 ```twig
 {{ image|file_url }}
 {{ media|file_url }}
 ```
 
 ## Entity URL
+
 Gets the URL object for the entity.
 See \Drupal\Core\Entity\EntityInterface::toUrl()
+
 ```twig
 {# Creates canonical URL for the node. #}
 {{ node|entity_url }}
@@ -362,8 +414,10 @@ See \Drupal\Core\Entity\EntityInterface::toUrl()
 ```
 
 ## Entity Link
+
 Generates the HTML for a link to this entity.
 See \Drupal\Core\Entity\EntityInterface::toLink()
+
 ```twig
 {# Creates a link to the node using the node's label. #}
 {{ node|entity_link }}
@@ -373,31 +427,39 @@ See \Drupal\Core\Entity\EntityInterface::toLink()
 ```
 
 ## Entity translation
+
 That is typically needed when printing data from referenced entities.
+
 ```twig
 {{ media|translation.title|view }}
 ```
 
 ## Cache metadata
+
 When using raw values from entities or render arrays it is essential to
 ensure that cache metadata are bubbled up.
+
 ```twig
 <img src="{{ node.field_media|file_url }}" alt="Logo"/>
 {{ content.field_media|cache_metadata }}
 ```
 
 ## PHP
+
 PHP filter is disabled by default. You can enable it in `settings.php` file as
 follows:
+
 ```php
 $settings['twig_tweak_enable_php_filter'] = TRUE;
 ```
+
 ```twig
 {{ 'return date('Y');'|php }}
 ```
 
 Using PHP filter is discouraged as it may cause security implications. In fact,
 it is very rarely needed. The above code can be replaced with the following.
+
 ```twig
 {{ 'now'|date('Y') }}
 ```

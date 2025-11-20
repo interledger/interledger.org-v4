@@ -1,5 +1,4 @@
-The Drupal Project Message Plugin
-=================================
+# The Drupal Project Message Plugin
 
 Thanks for using this Drupal component.
 
@@ -12,8 +11,7 @@ https://www.drupal.org/project/drupal/git-instructions
 You can browse the full Drupal repo here:
 https://git.drupalcode.org/project/drupal
 
-What does it do?
-----------------
+## What does it do?
 
 This Composer plugin displays a configurable message after Composer installation
 processes have finished.
@@ -21,12 +19,12 @@ processes have finished.
 This is ideal for a 'next steps' type prompt to help get the user oriented.
 
 Currently only two Composer events are supported:
+
 - post-create-project-cmd, when a `composer create-project` command has
   finished.
 - post-install-cmd, when a `composer install` command has finished.
 
-How do I set it up?
--------------------
+## How do I set it up?
 
 Require this Composer plugin in your project template composer.json file:
 
@@ -37,6 +35,7 @@ Require this Composer plugin in your project template composer.json file:
 ### Configuration
 
 There are three ways to configure this plugin to output information:
+
 - Using a text file.
 - Using composer.json schema keys.
 - Embedding the information in the extra section of the composer.json file.

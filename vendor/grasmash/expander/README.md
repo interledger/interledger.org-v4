@@ -80,7 +80,7 @@ putenv("test=gomjabbar");
 $expanded = $expander->expandArrayProperties($array, $reference_properties);
 
 print_r($expanded);
-````
+```
 
 Resultant array:
 

@@ -11,7 +11,6 @@ networks.
 
 For additional information, see the [online documentation](https://www.drupal.org/docs/contributed-modules/metatag).
 
-
 ## Features
 
 The primary features include:
@@ -59,7 +58,6 @@ The primary features include:
   - `Metatag: Google Custom Search Engine (CSE)`: Provides some custom meta tags
     specific to Google Custom Search Appliance.
 
-
 ## Requirements
 
 This version requires Drupal 9.4 or newer and is compatible with Drupal 10. That
@@ -72,7 +70,6 @@ This module requires the following modules:
 
 - [Token](https://www.drupal.org/project/token): Provides a popup browser to
   see the available tokens for use in meta tag fields.
-
 
 ## Recommended / related modules
 
@@ -99,13 +96,11 @@ functionality:
   the settings will have that maximum length enforced; this may be disabled in
   the settings if it proves to be problematic.
 
-
 ## Installation
 
 This module suite is installed like any other contributed module. For further
 information, see [Installing Drupal
 Modules](https://drupal.org/docs/extending-drupal/installing-drupal-modules).
-
 
 ## Configuration / standard usage scenario
 
@@ -141,7 +136,6 @@ Modules](https://drupal.org/docs/extending-drupal/installing-drupal-modules).
 
 Please note: no meta tags will be output while the site is in maintenance mode.
 
-
 ## Simplifying the content administration experience
 
 This module and its submodules gives a site's content team the ability to add
@@ -155,14 +149,12 @@ Metatag field entirely, then use tokens for those fields in the defaults
 (`/admin/config/search/metatag`). These fields can be used in the entity's
 display, or just left hidden.
 
-
 ### Alternative option to simplify the content administration experience
 
 On the settings page (`/admin/config/search/metatag/settings`) are options to
 control which meta tag groups are available for each entity bundle. This allows
 e.g. the Favicon meta tags to be available for global configurations but to hide
 them on entity forms.
-
 
 ## Advanced usage
 
@@ -192,7 +184,6 @@ Option 1:
       ->create($values);
     $node->save();
 
-
 Option 2:
 
     $node = Node::create([
@@ -209,11 +200,9 @@ Option 2:
     ]));
     $node->save();
 
-
 In both examples, the custom meta tag values will still be merged with the
 values defined via the global defaults prior to being output - it is not
 necessary to copy each value to the new record.
-
 
 ### Obtain meta tags for an entity
 
@@ -255,7 +244,6 @@ This will return an array with the following structure:
       ],
     ]
 
-
 The meta tags are keyed off the meta tag plugin's ID, e.g. "generator". Each
 meta tag is then provided as arguments suitable for use in a render array with
 the type "html_tag". Extracting the value of the meta tag will depend upon the
@@ -269,13 +257,11 @@ an entity, i.e. global defaults are not included.
 
 This returns output in the same format as the function above.
 
-
 ## Migration / upgrade from Drupal 6 or 7
 
 An upgrade path from Nodewords on Drupal 6 or Metatag on Drupal 7 is provided.
 
 Two migration processes are supported, Guided migration or Custom migration:
-
 
 ### Guided migration
 
@@ -291,7 +277,6 @@ entity in `metatag_migrate_prepare_row()`, and then the data is remapped in
 either `\Drupal\metatag\Plugin\migrate\process\d6\NodewordsEntities` or
 `\Drupal\metatag\Plugin\migrate\process\d7\MetatagEntities` depending upon
 what the source is.
-
 
 ### Custom migration
 
@@ -332,7 +317,6 @@ See also:
 - `\Drupal\metatag\Plugin\migrate\process\d6\NodewordsEntities`
 - `\Drupal\metatag\Plugin\migrate\process\d7\MetatagEntities`
 
-
 ## Troubleshooting / known issues
 
 ### Uninstalling Metatag
@@ -360,16 +344,13 @@ the page check, to see if the html.html.twig instead contains this:
 
 To fix this, simply change that line back to `{{ page }}` and it should work.
 
-
 ## Contributing
 
 The `composer.json` file should be kept normalized using
 `ergebnis/composer-normalize`:
 
-* `composer require --dev ergebnis/composer-normalize`
-* `composer normalize modules/contrib/metatag/composer.json`
-
-
+- `composer require --dev ergebnis/composer-normalize`
+- `composer normalize modules/contrib/metatag/composer.json`
 
 ## Maintainers / credits / contact
 

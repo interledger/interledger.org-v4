@@ -1,5 +1,4 @@
-Development Cheatsheet
-----------------------
+## Development Cheatsheet
 
 ### GitFlow
 

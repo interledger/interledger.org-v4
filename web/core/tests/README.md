@@ -6,9 +6,11 @@
 
 You need the Drupal core development dependencies installed, in order to run
 any tests. You can install them using Composer by running
+
 ```
 composer install
 ```
+
 in the Drupal root directory. These dependencies should not be installed on a
 production site.
 
@@ -25,22 +27,23 @@ directory may be managed by Composer or Git). You can use the -c option on the
 command line to tell PHPUnit where this file is (use the full path).
 
 Settings to change in this file:
-* SIMPLETEST_BASE_URL: The URL of your site
-* SIMPLETEST_DB: The URL of your Drupal database
-* The bootstrap attribute of the top-level phpunit tag, to take into account
+
+- SIMPLETEST_BASE_URL: The URL of your site
+- SIMPLETEST_DB: The URL of your Drupal database
+- The bootstrap attribute of the top-level phpunit tag, to take into account
   the location of the file
-* BROWSERTEST_OUTPUT_DIRECTORY: Set to sites/simpletest/browser_output;
+- BROWSERTEST_OUTPUT_DIRECTORY: Set to sites/simpletest/browser_output;
   you will also want to uncomment the printerClass attribute of the
   top-level phpunit tag.
 
 ### Additional setup for JavaScript tests
 
-To run JavaScript tests  based on the
+To run JavaScript tests based on the
 \Drupal\FunctionalJavascriptTests\WebDriverTestBase base class, you will need
 to install the following additional software:
 
-* Google Chrome or Chromium browser
-* chromedriver (tested with version 2.45) -- see
+- Google Chrome or Chromium browser
+- chromedriver (tested with version 2.45) -- see
   https://sites.google.com/chromium.org/driver/
 
 ## Running tests
@@ -50,6 +53,7 @@ vendor directory (which may be outside the Drupal root).
 
 Here are commands to run one test class, list groups, and run all the tests in
 a particular group:
+
 ```
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml path/to/your/class/file.php
 ./vendor/bin/phpunit --list-groups
@@ -58,6 +62,7 @@ a particular group:
 
 Drupal core currently has a number of different types of tests that can be run
 using PHPUnit:
+
 - unit
 - kernel
 - functional
@@ -66,16 +71,20 @@ using PHPUnit:
 
 These are organized into PHPUnit test suites. You can run one test suite or many
 in combination by using `--testsuite` on the command line:
+
 ```
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --testsuite unit
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --testsuite functional,functional-javascript
 ```
+
 These can be combined with groups and filters:
+
 ```
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --testsuite build --group Composer
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --testsuite build --exclude-group Build
 ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --testsuite unit --filter ClassTest::testMethod
 ```
+
 More information on running tests can be found at
 https://www.drupal.org/docs/8/phpunit/running-phpunit-tests
 
@@ -85,49 +94,51 @@ You can run JavaScript tests that are based on the
 \Drupal\FunctionalJavascriptTests\WebDriverTestBase base class in the same way
 as other PHPUnit tests, except that before you start, you will need to start
 chromedriver using port 4444, and keep it running:
+
 ```
 /path/to/chromedriver --port=4444
 ```
 
 ## Running Nightwatch tests
 
-* Ensure your vendor directory is populated
+- Ensure your vendor directory is populated
   (e.g. by running `composer install`)
-* Install [Node.js](https://nodejs.org/en/download/) and
+- Install [Node.js](https://nodejs.org/en/download/) and
   [yarn](https://yarnpkg.com/en/docs/install). The versions required are
   specified inside core/package.json in the `engines` field. You can use
   [nvm](https://github.com/nvm-sh/nvm) and [yvm](https://github.com/tophat/yvm)
   to manage your local versions of these.
-* Install
+- Install
   [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
-* Inside the `core` folder, run `yarn install`
-* Configure the nightwatch settings by copying `.env.example` to `.env` and
+- Inside the `core` folder, run `yarn install`
+- Configure the nightwatch settings by copying `.env.example` to `.env` and
   editing as necessary.
-* Ensure you have a web server running (as instructed in `.env`)
-* Again inside the `core` folder, run `yarn test:nightwatch --env local` to run
+- Ensure you have a web server running (as instructed in `.env`)
+- Again inside the `core` folder, run `yarn test:nightwatch --env local` to run
   the tests.
   By default this will output reports to `core/reports`
-* Nightwatch will run tests for core, as well as contrib and custom modules and
+- Nightwatch will run tests for core, as well as contrib and custom modules and
   themes. It will search for tests located under folders with the pattern
   `**/tests/**/Nightwatch/(Tests|Commands|Assertions)`
-* To run only core tests, run `yarn test:nightwatch --tag core`
-* To skip running core tests, run `yarn test:nightwatch --skiptags core`
-* To run a single test, run e.g.
+- To run only core tests, run `yarn test:nightwatch --tag core`
+- To skip running core tests, run `yarn test:nightwatch --skiptags core`
+- To run a single test, run e.g.
   `yarn test:nightwatch tests/Drupal/Nightwatch/Tests/loginTest.js`
-* To run a11y tests for both the admin and default themes.
+- To run a11y tests for both the admin and default themes.
   `yarn test:nightwatch --tag a11y`
-* To run a11y tests for the admin theme only.
+- To run a11y tests for the admin theme only.
   `yarn test:nightwatch --tag a11y:admin`
-* To run a11y tests for the default theme only.
+- To run a11y tests for the default theme only.
   `yarn test:nightwatch --tag a11y:default`
-* To run an a11y test for a custom theme used as the default theme.
+- To run an a11y test for a custom theme used as the default theme.
   `yarn test:nightwatch --tag a11y:default --defaultTheme olivero`
-* To run an a11y test for a custom admin theme.
+- To run an a11y test for a custom admin theme.
   `yarn test:nightwatch --tag a11y:admin --adminTheme claro`
 
 Nightwatch tests, as well as custom commands, assertions and pages, can be
 placed in any folder with the pattern
 `**/tests/**/Nightwatch/(Tests|Commands|Assertions|Pages)`. For example:
+
 ```
 tests/Nightwatch/Tests
 src/tests/Nightwatch/Tests
@@ -156,15 +167,18 @@ from `docroot/core/package.json` into `docroot/package.json`.
 If you run into file permission problems while running tests, you may need to
 invoke the phpunit executable with a user in the same group as the web server
 user, or with access to files owned by the web server user. For example:
+
 ```
 sudo -u www-data ./vendor/bin/phpunit -c /path/to/your/phpunit.xml --group Groupname
 ```
 
 If you have permission problems accessing files after running tests, try
 putting
+
 ```
 $settings['file_chmod_directory'] = 02775;
 ```
+
 in your settings.php or local.settings.php file.
 
 You may need to use absolute paths in your phpunit.xml file, and/or in your

@@ -33,8 +33,7 @@ before writing a single line of code.
 ## Changelog
 
 Drupal keeps detailed [change records][changelog]. You can search Drupal's
-changes for a record of every notable breaking change and new feature since
-2011.
+changes for a record of every notable breaking change and new feature since 2011.
 
 ## Security
 

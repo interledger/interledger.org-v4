@@ -1,4 +1,5 @@
 # Entity Block module
+
 Display entities (via view modes) using fieldable blocks.
 
 Entity block module lets you create blocks that can reference an entity.
@@ -9,7 +10,6 @@ For a full description of the module, visit the
 
 Submit bug reports and feature suggestions, or track changes in the
 [issue queue](https://drupal.org/project/issues/entity_block).
-
 
 ## Table of contents
 

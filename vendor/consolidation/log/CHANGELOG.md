@@ -54,7 +54,7 @@
 
 - Test Symfony version 2, 3 and 4 with different versions of php. (#5)
 
-### 1.0.4: 2017-11-18 
+### 1.0.4: 2017-11-18
 
 - Support for Symfony 4 by Tobias Nyholm (#4)
 
@@ -63,7 +63,7 @@
 - Split up the log() method a bit.
 - Run code sniffer prior to running tests to ensure PSR-2 compliance.
 
-### 1.0.2: 2016-03-22 
+### 1.0.2: 2016-03-22
 
 - Remove unused components accidentally left in composer.json.
 

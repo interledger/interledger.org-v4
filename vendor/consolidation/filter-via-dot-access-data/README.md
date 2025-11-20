@@ -13,15 +13,18 @@ This project provides a simple logic expression evaluator which can be used in c
 
 ### API
 
-To use this filter in your annotated-commands-aware application (see [g1a/starter](https://github.com/g1a/starter)), ensure that the filter hooks are registered with 
+To use this filter in your annotated-commands-aware application (see [g1a/starter](https://github.com/g1a/starter)), ensure that the filter hooks are registered with
+
 ```
-$commandClasses = [ 
+$commandClasses = [
     \Consolidation\Filter\Hooks\FilterHooks::class,   // Filter hooks
     \MyApp\Commands\MyCommands::class,                // Commandfiles for your application
 ];
 $runner = new \Robo\Runner($commandClasses);
 ```
+
 Then, any command that returns RowsOfFields data (see [consolidation/output-formatters](https://github.com/consolidation/output-formatters)) or an array may utilize the output filter feature simply by annotating its command method with `@filter-output`.
+
 ```
     /**
      * Convert a command from one format to another, potentially with filtering.
@@ -35,18 +38,25 @@ Then, any command that returns RowsOfFields data (see [consolidation/output-form
         return $this->doSomething($parameters);
     }
 ```
+
 Annotating a command in this way will automaitically attach a `--filter[=FILTER]` option to the command. The output of the command may then be filtered by providing a simple expression:
+
 ```
 $ mycmd example p1 p2 --filter='color=red'
 ```
+
 A `contains` comparison may be done via the `*=` operator:
+
 ```
 $ mycmd example p1 p2 --filter='color*=red'
 ```
+
 And, finally, regex compares are also available via `~=`:
+
 ```
 $ mycmd example p1 p2 --filter='color~=#^red.*#'
 ```
+
 The filter decides whether to include or exclude each **top-level element** based on the result of evaluating the provided expression on each element.
 
 - Nested data elements may be tested, e.g. via `attributes.color=red`
@@ -76,14 +86,13 @@ composer phar:install-tools
 
 The test suite may be run locally by way of some simple composer scripts:
 
-| Test             | Command
-| ---------------- | ---
-| Run all tests    | `composer test`
-| PHPUnit tests    | `composer unit`
-| PHP linter       | `composer lint`
-| Code style       | `composer cs`     
-| Fix style errors | `composer cbf`
-
+| Test             | Command         |
+| ---------------- | --------------- |
+| Run all tests    | `composer test` |
+| PHPUnit tests    | `composer unit` |
+| PHP linter       | `composer lint` |
+| Code style       | `composer cs`   |
+| Fix style errors | `composer cbf`  |
 
 ## Deployment
 
@@ -102,7 +111,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* [Greg Anderson](https://github.com/greg-1-anderson)
+- [Greg Anderson](https://github.com/greg-1-anderson)
 
 See also the list of [contributors](https://github.com/consolidation/filter-via-dot-access-data/contributors) who participated in this project.
 

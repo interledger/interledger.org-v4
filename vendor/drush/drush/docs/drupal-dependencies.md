@@ -1,11 +1,10 @@
-Inspecting Drupal dependencies
-==============================
+# Inspecting Drupal dependencies
+
 :octicons-tag-24: 13.4+
 
 These commands allow a developer or site builder to inspect the Drupal dependencies. It's similar with Composer's `why` command but acts in the Drupal realm, by showing dependencies between modules or config entities.
 
-Find module dependants
-----------------------
+## Find module dependants
 
 Drupal modules are able to define other modules as dependencies, using the module's [metadata info.yml file](https://www.drupal.org/docs/develop/creating-modules/let-drupal-know-about-your-module-with-an-infoyml-file). To get all modules that depend on a given module type:
 
@@ -25,8 +24,7 @@ Config entities are able to declare [dependencies on modules](https://www.drupal
 
 Dependents are also rendered as a tree, showing a nested structure. The `--format` option can be used in the same way, to get a machine-readable structure.
 
-Find config entity dependants
------------------------------
+## Find config entity dependants
 
 Config entities are able also to declare [dependencies on other config entities](https://www.drupal.org/docs/drupal-apis/configuration-api/configuration-entity-dependencies). With `why:config` Drush command we can determine the config entities depending on a specific entity:
 

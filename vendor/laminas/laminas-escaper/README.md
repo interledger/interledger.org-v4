@@ -38,6 +38,6 @@ Browse the documentation online at https://docs.laminas.dev/laminas-escaper/
 
 ## Support
 
-* [Issues](https://github.com/laminas/laminas-escaper/issues/)
-* [Chat](https://laminas.dev/chat/)
-* [Forum](https://discourse.laminas.dev/)
+- [Issues](https://github.com/laminas/laminas-escaper/issues/)
+- [Chat](https://laminas.dev/chat/)
+- [Forum](https://discourse.laminas.dev/)

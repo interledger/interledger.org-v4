@@ -1,9 +1,8 @@
-Development Commit Messages
----------------------------
+## Development Commit Messages
 
 Webform uses Drupal's standard commit message format but also prepends the
 type and scope to each commit message to make it easier to find the type and
-scope  of a commit as well know if the commit contains a minor, major,
+scope of a commit as well know if the commit contains a minor, major,
 or b/c breaking change.
 
 ```
@@ -22,7 +21,6 @@ Can be one of the following:
 - test (when adding missing tests)
 - chore (maintain)
 
-
 **Scope**
 
 The scope is the entity or plugin that the commit affects.
@@ -34,13 +32,11 @@ or plugin name ("element", "handler", "exporter").
 Scope can also be used to denote "MAJOR", "B/C BREAKING",
 "B/C BREAKING POSSIBLE" changes which will be uppercased.
 
-
 **Example**
 
 ```
 refactor(b/c breaking): Issue #3105878 by jrockowitz: Move all webform element properties to static definitions and allow them to be altered and cached
 ```
-
 
 **References**
 

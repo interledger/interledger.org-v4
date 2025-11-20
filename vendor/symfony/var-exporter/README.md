@@ -1,5 +1,4 @@
-VarExporter Component
-=====================
+# VarExporter Component
 
 The VarExporter component provides various tools to deal with the internal state
 of objects:
@@ -13,10 +12,9 @@ of objects:
 - `Hydrator::hydrate()` can set the properties of an existing object;
 - `Lazy*Trait` can make a class behave as a lazy-loading ghost or virtual proxy.
 
-VarExporter::export()
----------------------
+## VarExporter::export()
 
-The reason to use `VarExporter::export()` *vs* `serialize()` or
+The reason to use `VarExporter::export()` _vs_ `serialize()` or
 [igbinary](https://github.com/igbinary/igbinary) is performance: thanks to
 OPcache, the resulting code is significantly faster and more memory efficient
 than using `unserialize()` or `igbinary_unserialize()`.
@@ -25,18 +23,17 @@ Unlike `var_export()`, this works on any serializable PHP value.
 
 It also provides a few improvements over `var_export()`/`serialize()`:
 
- * the output is PSR-2 compatible;
- * the output can be re-indented without messing up with `\r` or `\n` in the data;
- * missing classes throw a `ClassNotFoundException` instead of being unserialized
-   to `PHP_Incomplete_Class` objects;
- * references involving `SplObjectStorage`, `ArrayObject` or `ArrayIterator`
-   instances are preserved;
- * `Reflection*`, `IteratorIterator` and `RecursiveIteratorIterator` classes
-   throw an exception when being serialized (their unserialized version is broken
-   anyway, see https://bugs.php.net/76737).
+- the output is PSR-2 compatible;
+- the output can be re-indented without messing up with `\r` or `\n` in the data;
+- missing classes throw a `ClassNotFoundException` instead of being unserialized
+  to `PHP_Incomplete_Class` objects;
+- references involving `SplObjectStorage`, `ArrayObject` or `ArrayIterator`
+  instances are preserved;
+- `Reflection*`, `IteratorIterator` and `RecursiveIteratorIterator` classes
+  throw an exception when being serialized (their unserialized version is broken
+  anyway, see https://bugs.php.net/76737).
 
-Instantiator and Hydrator
--------------------------
+## Instantiator and Hydrator
 
 `Instantiator::instantiate($class)` creates an object of the given class without
 calling its constructor nor any other methods.
@@ -57,8 +54,7 @@ Hydrator::hydrate($object, [], [
 ]);
 ```
 
-`Lazy*Trait`
-------------
+## `Lazy*Trait`
 
 The component provides two lazy-loading patterns: ghost objects and virtual
 proxies (see https://martinfowler.com/eaaCatalog/lazyLoad.html for reference).
@@ -127,11 +123,10 @@ $foo = FooLazyProxy::createLazyProxy(initializer: function (): Foo {
 // be called only when and if a *method* is called.
 ```
 
-Resources
----------
+## Resources
 
- * [Documentation](https://symfony.com/doc/current/components/var_exporter.html)
- * [Contributing](https://symfony.com/doc/current/contributing/index.html)
- * [Report issues](https://github.com/symfony/symfony/issues) and
-   [send Pull Requests](https://github.com/symfony/symfony/pulls)
-   in the [main Symfony repository](https://github.com/symfony/symfony)
+- [Documentation](https://symfony.com/doc/current/components/var_exporter.html)
+- [Contributing](https://symfony.com/doc/current/contributing/index.html)
+- [Report issues](https://github.com/symfony/symfony/issues) and
+  [send Pull Requests](https://github.com/symfony/symfony/pulls)
+  in the [main Symfony repository](https://github.com/symfony/symfony)

@@ -8,7 +8,6 @@ For a full description of the module, visit the
 Submit bug reports and feature suggestions, or track changes in the
 [issue queue](https://www.drupal.org/project/issues/tamper).
 
-
 ## Table of contents
 
 - Requirements
@@ -16,11 +15,9 @@ Submit bug reports and feature suggestions, or track changes in the
 - Configuration
 - Maintainers
 
-
 ## Requirements
 
 This module requires no modules outside of Drupal core.
-
 
 ## Installation
 
@@ -28,11 +25,9 @@ Install as you would normally install a contributed Drupal module. For further
 information, see
 [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
 
-
 ## Configuration
 
 This module does not have any configuration.
-
 
 ## Maintainers
 

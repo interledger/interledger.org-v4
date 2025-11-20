@@ -1,4 +1,4 @@
-All files within this directory where copied from the  Doctrine project: <http://www.doctrine-project.org>
+All files within this directory where copied from the Doctrine project: <http://www.doctrine-project.org>
 They were copied from version 1.2.7.
 
 Original copyright:

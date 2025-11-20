@@ -1,5 +1,4 @@
-Development Notes
------------------
+## Development Notes
 
 Below are useful commands that make it a little easier for
 me to maintain the Webform module.
@@ -19,7 +18,7 @@ git push -u origin [issue-number]-[issue-description]
 git diff 6.x > [project_name]-[issue-description]-[issue-number]-[comment-number]-[drupal-version].patch
 ```
 
-**Ignoring *.patch, *.diff, and .gitignore files**
+**Ignoring _.patch, _.diff, and .gitignore files**
 
 ```bash
 cat >> .gitignore <<'EOF'
@@ -28,6 +27,7 @@ cat >> .gitignore <<'EOF'
 *.diff
 EOF
 ```
+
 **[Apply patch](https://www.drupal.org/node/1399218)**
 
 ```bash
@@ -56,6 +56,7 @@ git merge --squash [issue-number]-[issue-description]
 git commit -m 'Issue #[issue-number]: [issue-description]'
 git push
 ```
+
 **Exporting a branch**
 
 ```bash
@@ -273,18 +274,18 @@ drush -y pm-enable\
 **Setup**
 
 - Drupal
-    - Install Drupal locally.
-    - Remove all blocks in first sidebar.
-      http://localhost/d8_dev/admin/structure/block
+  - Install Drupal locally.
+  - Remove all blocks in first sidebar.
+    http://localhost/d8_dev/admin/structure/block
 - Desktop
-    - Switch to laptop.
-    - Turn 'Hiding on' in the Dock System Preferences.
-    - Set screen display to 'Large Text'
+  - Switch to laptop.
+  - Turn 'Hiding on' in the Dock System Preferences.
+  - Set screen display to 'Large Text'
 - Chrome
-    - Hide Bookmarks.
-    - Hide Extra Icons.
-    - Always Show Toolbar in Full Screen.
-    - Delete all webform.* keys from local storage.
+  - Hide Bookmarks.
+  - Hide Extra Icons.
+  - Always Show Toolbar in Full Screen.
+  - Delete all webform.\* keys from local storage.
 
 **Generate list of screencasts**
 

@@ -14,13 +14,17 @@ This project provides the implementation for Drush site aliases. It is used in D
 ### Alias naming conventions
 
 Site alias names always begin with a `@`, and typically are divided in three parts: the alias file location (optional), the site name, and the environment name, each separated by a dot. None of these names may contain a dot. An example alias that referenced the `dev` environment of the site `example` in the `myisp` directory might therefore look something like:
+
 ```
 @myisp.example.dev
-``` 
+```
+
 The location name is optional. If specified, it will only consider alias files located in directories with the same name as the provided location name. The remainder of the path is immaterial; only the directory that is the immediate parent of the site alias file is relevant. The location name may be omitted, e.g.:
+
 ```
 @example.dev
 ```
+
 If the location is not specified, then the alias manaager will consider all locations for an applicable site alias file. Note that by default, deep searching is disabled; unless deep searching is enabled, the location name must refer to a directory that is explicitly listed as a location to place site alias files (e.g. in the application's configuration file).
 
 It is also possible to use single-word aliases. These can sometimes be ambiguous; the site alias manager will resolve single-word aliases as follows:
@@ -48,12 +52,15 @@ Aliases are typically stored in Yaml files, although other formats may also be u
 ### Alias file contents
 
 The canonical site alias will contain information about how to locate the site on the local file system, and how the site is addressed on the network (when accessed via a web browser).
+
 ```
 dev:
   root: /path/to/site
   uri: https://example.com
 ```
+
 A more complex alias might also contain information about the server that the site is running on (when accessed via ssh for deployment and maintenance).
+
 ```
 dev:
   root: /path/to/site
@@ -65,6 +72,7 @@ dev:
 ### Wildcard environments
 
 It is also possible to define "wildcard" environments that will match any provided environment name. This is only possible to do in instances where the contents of the wildcard aliases are all the same, except for places where the environment name appears. To substitute the name of the environment into a wildcard domain, use the variable replacement string `${env-name}`. For example, a wildcard alias that will match any multisite in a Drupal site might look something like the following example:
+
 ```
 '*':
   root: /wild/path/to/wild
@@ -80,10 +88,13 @@ As previously mentioned, an alias in the form of `@<env>` is interpreted as `@se
 Site specifications are specially-crafted commandline arguments that can serve as replacements for simple site aliases. Site specifications are particularly useful for scripts that may wish to operate on a remote site without generating a temporary alias file.
 
 The basic form for a site specification is:
+
 ```
 user.name@example.com/path#uri
 ```
+
 This is equivalent to the following alias record:
+
 ```
 env:
   user: user.name
@@ -100,13 +111,13 @@ To get started contributing to this project, simply clone it locally and then ru
 
 The test suite may be run locally by way of some simple composer scripts:
 
-| Test             | Command
-| ---------------- | ---
-| Run all tests    | `composer test`
-| PHPUnit tests    | `composer unit`
-| PHP linter       | `composer lint`
-| Code style       | `composer cs`     
-| Fix style errors | `composer cbf`
+| Test             | Command         |
+| ---------------- | --------------- |
+| Run all tests    | `composer test` |
+| PHPUnit tests    | `composer unit` |
+| PHP linter       | `composer lint` |
+| Code style       | `composer cs`   |
+| Fix style errors | `composer cbf`  |
 
 ### Development Commandline Tool
 
@@ -115,10 +126,11 @@ this tool serves is to provide a way to do ad-hoc experimentation and testing
 for this library.
 
 Example:
+
 ```
 $ ./alias-tool site:list tests/fixtures/sitealiases/sites/
 
- ! [NOTE] Add search location: tests/fixtures/sitealiases/sites/                                    
+ ! [NOTE] Add search location: tests/fixtures/sitealiases/sites/
 
 '@single.alternate':
   foo: bar
@@ -137,13 +149,14 @@ $ ./alias-tool site:list tests/fixtures/sitealiases/sites/
 
 $ ./alias-tool site:get tests/fixtures/sitealiases/sites/ @single.dev
 
- ! [NOTE] Add search location: tests/fixtures/sitealiases/sites/                                    
+ ! [NOTE] Add search location: tests/fixtures/sitealiases/sites/
 
- ! [NOTE] Alias parameter: '@single.dev'                                                            
+ ! [NOTE] Alias parameter: '@single.dev'
 
 foo: bar
 root: /path/to/single
 ```
+
 See `./alias-tool help` and `./alias-tool list` for more information.
 
 ## Release Procedure
@@ -167,8 +180,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Greg Anderson**
-* **Moshe Weitzman**
+- **Greg Anderson**
+- **Moshe Weitzman**
 
 See also the list of [contributors](https://github.com/consolidation/site-alias/contributors) who participated in this project. Thanks also to all of the [drush contributors](https://github.com/drush-ops/drush/contributors) who contributed directly or indirectly to site aliases.
 

@@ -22,7 +22,7 @@ We accept contributions via Pull Requests on [GitHub](https://github.com/thephpl
 
 ## Running Tests
 
-``` bash
+```bash
 $ composer test
 ```
 
