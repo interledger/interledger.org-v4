@@ -30,7 +30,8 @@
       "!**/web/themes/contrib",
       "!**/web/profiles/contrib",
       "!**/*.min.js",
-      "!**/*.bundle.js"
+      "!**/*.bundle.js",
+      "!pnpm-lock.yaml"
     ]
   }
 }
