@@ -1,7 +1,6 @@
 ---
 name: Documentation request
-about:
-  If you know what the documentation change should be, please consider submitting
+about: If you know what the documentation change should be, please consider submitting
   a pull request instead.
 ---
 
