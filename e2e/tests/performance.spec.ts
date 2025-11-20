@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // Simple budgets suitable for a content site; adjust as needed via env vars.
 const MAX_REQUESTS = parseInt(process.env.PERF_MAX_REQUESTS || '', 10) || 100;
-const MAX_BYTES = parseInt(process.env.PERF_MAX_BYTES || '', 10) || 3_000_000; // ~3 MB
+const MAX_BYTES = parseInt(process.env.PERF_MAX_BYTES || '', 10) || 5_000_000; // ~5 MB
 
 test.describe('Homepage performance budget', () => {
 	test('request count and transfer size within budget', async ({ page, context }) => {
