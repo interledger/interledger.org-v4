@@ -5,9 +5,7 @@
   "private": true,
   "scripts": {
     "format": "biome check --write . && biome format --write . && prettier --write '**/*.{md,mdx}' && eslint . --fix",
-    "lint": "biome check . && prettier --check '**/*.{md,mdx}' && eslint .",
-    "lint:js": "eslint web/themes/**/*.js web/modules/custom/**/*.js",
-    "lint:js:fix": "eslint web/themes/**/*.js web/modules/custom/**/*.js --fix"
+    "lint": "biome check . && prettier --check '**/*.{md,mdx}' && eslint ."
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.6",
