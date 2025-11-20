@@ -4,7 +4,16 @@ This is a Drupal powered CMS that manages all the content for the Interledger Fo
 
 ## Local development
 
-Please refer to the instructions here: https://github.com/interledger/interledger.org-v4/wiki/Setting-up-on-your-local-machine
+Please refer to the instructions here: <https://github.com/interledger/interledger.org-v4/wiki/Setting-up-on-your-local-machine>
+
+### Code Formatting
+
+This project uses [Biome](https://biomejs.dev/), [Prettier](https://prettier.io/), and [ESLint](https://eslint.org/) for code formatting and linting. Before submitting a pull request, please ensure your code passes linting:
+
+1. **Fix issues**: Run `pnpm run format` to automatically fix linting and formatting issues
+2. **Check before pushing**: Run `pnpm run lint` to verify everything passes (CI will also run this)
+
+The project uses Biome for JavaScript/TypeScript formatting and linting, Prettier for Markdown files, and ESLint for additional JavaScript linting rules.
 
 ## Staging environment
 
