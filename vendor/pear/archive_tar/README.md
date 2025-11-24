@@ -1,5 +1,4 @@
-Archive_Tar
-==========
+# Archive_Tar
 
 ![.github/workflows/build.yml](https://github.com/pear/Archive_Tar/workflows/.github/workflows/build.yml/badge.svg)
 
@@ -15,13 +14,11 @@ Please report all new issues via the PEAR bug tracker.
 
 Pull requests are welcome!
 
-
-Testing, building
------------------
+## Testing, building
 
 To test, run either
 $ phpunit tests/
-  or
+or
 $ pear run-tests -r
 
 To build, simply

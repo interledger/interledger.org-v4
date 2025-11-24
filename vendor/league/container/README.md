@@ -21,7 +21,7 @@ This package is compliant with [PSR-1], [PSR-2], [PSR-12], [PSR-4], [PSR-11] and
 
 Via Composer
 
-``` bash
+```bash
 composer require league/container
 ```
 
@@ -29,14 +29,14 @@ composer require league/container
 
 The following versions of PHP are supported by this version.
 
-* PHP 7.2
-* PHP 7.3
-* PHP 7.4
-* PHP 8.0
-* PHP 8.1
-* PHP 8.2
-* PHP 8.3
-* PHP 8.4
+- PHP 7.2
+- PHP 7.3
+- PHP 7.4
+- PHP 8.0
+- PHP 8.1
+- PHP 8.2
+- PHP 8.3
+- PHP 8.4
 
 ## Documentation
 
@@ -47,7 +47,8 @@ Contribute to this documentation in the [docs/](https://github.com/thephpleague/
 ## Testing
 
 Testing includes PHPUnit and PHPStan (Level 7).
-``` bash
+
+```bash
 $ composer test
 ```
 

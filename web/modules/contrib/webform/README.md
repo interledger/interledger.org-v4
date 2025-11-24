@@ -8,7 +8,6 @@
 - Upgrading
 - Maintainers
 
-
 ## INTRODUCTION
 
 The Webform module is a form builder and submission manager for Drupal 8/9.
@@ -40,14 +39,13 @@ Demo:
 
 This module requires no modules outside of Drupal core.
 
-
 ## INSTALLATION
 
 The installation of this module is like other Drupal modules.
 
 1. If your site is [managed via Composer](https://www.drupal.org/node/2718229),
    use Composer to download the webform module running
-   ```composer require "drupal/webform"```. Otherwise copy/upload the webform
+   `composer require "drupal/webform"`. Otherwise copy/upload the webform
    module to the modules directory of your Drupal installation.
 
 2. Enable the 'Webform' module and desired sub-modules in 'Extend'.
@@ -55,12 +53,10 @@ The installation of this module is like other Drupal modules.
 
 3. Set up user permissions. (`/admin/people/permissions#module-webform`)
 
-
 ## RECOMMENDED MODULES
 
 - Third party libraries (`/admin/help/webform`)
 - Add-on contrib modules (`/admin/structure/webform/addons`)
-
 
 ## CONFIGURATION
 
@@ -74,7 +70,6 @@ The installation of this module is like other Drupal modules.
   - **Block** by placing a Webform block on your
     site. (`/admin/structure/block`)
 
-
 ## UPGRADING
 
 - All existing configuration and submission data was maintained and updated
@@ -86,7 +81,6 @@ The installation of this module is like other Drupal modules.
   you _should_ be okay. If you extended webforms with plugins, altered
   hooks, and overrode templates, you will need to read each release's
   notes and assume that _things have changed_.
-
 
 ## MAINTAINERS
 

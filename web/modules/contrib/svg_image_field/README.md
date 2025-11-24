@@ -2,12 +2,12 @@
 
 ## CONTENTS OF THIS FILE
 
-  * Introduction
-  * Requirements
-  * Installation
-  * Configuration
-  * Author
-  * Similar projects and how they are different
+- Introduction
+- Requirements
+- Installation
+- Configuration
+- Author
+- Similar projects and how they are different
 
 ## INTRODUCTION
 
@@ -34,7 +34,7 @@ Basic Field Configuration
 
 1. Add "Vector image" field to your content type or taxonomy vocabulary.
 2. Go to the 'Manage display' => formatter settings and set image dimensions
- if you want and enable or disable attributes.
+   if you want and enable or disable attributes.
 
 Media Entity Configuration (Requires Drupal >=8.7)
 
@@ -49,18 +49,19 @@ and Acquia Site Studio components (if the requirements are installed).
 5. In the field mappings map Name to Name (the only option in the dropdown).
 6. Click save. Then proceed to 'Manage form display' and 'Manage display' to
    configure the Default and Media Library view modes at:
-
-   * /admin/structure/media/manage/svg/form-display
-   * /admin/structure/media/manage/svg/display
+   - /admin/structure/media/manage/svg/form-display
+   - /admin/structure/media/manage/svg/display
 
    You'll most likely want to just enable the "SVG" field, and disable the
    rest of the fields. Optionally, you may wish to choose the "inline SVG"
    option for the default display.
+
 7. Add a Media reference (Entity reference) field to your node type(s) and
    configure it to allow the SVG bundle type.
 
    Optionally, you may enable other bundle types as well such as the standard
    Image media type if you want to allow both images and SVGs in the same slot.
+
 8. Go create a node, and click the "Add media" link. Notice that the Media
    Library loads with a vertical tab for each kind of media type bundle you
    enabled in step 7 on your node configuration screen.
@@ -72,16 +73,17 @@ and Acquia Site Studio components (if the requirements are installed).
 ## SIMILAR PROJECTS AND HOW THEY ARE DIFFERENT
 
 Limitations of module svg_formatter
+
 - There is no way to set custom alt on image because it uses file field.
- File field does not support alt on db level.
-- User must add svg extension at file field  settings and
-select field formatter its not intuitive for user.
+  File field does not support alt on db level.
+- User must add svg extension at file field settings and
+  select field formatter its not intuitive for user.
 - If user uploads non svg file it will break output.
 - if user uploads png and selects inline output at formatter settings it will
- break output
+  break output
 - It not have preview image on file upload.
 - There is less ways what we can do with this all without breaking
-existing installations
+  existing installations
 
 Module svg_image_field does not have this weakness.
 You simply click add field, set field type to "Vector image" and its done.
@@ -93,9 +95,10 @@ with svg_image_field:
 See [CONTRIBUTING](./CONTRIBUTING.md).
 
 ## MAINTAINERS
+
 [//]: # cSpell:disable
 [//]: # Do not add maintainers to cspell-project-words file
 
-* Martin Anderson-Clutz (mandclu) - https://www.drupal.org/u/mandclu
-* James Wilson (jwilson3) - https://www.drupal.org/u/jwilson3
-* Anton (shmel210) - https://www.drupal.org/u/shmel210
+- Martin Anderson-Clutz (mandclu) - https://www.drupal.org/u/mandclu
+- James Wilson (jwilson3) - https://www.drupal.org/u/jwilson3
+- Anton (shmel210) - https://www.drupal.org/u/shmel210

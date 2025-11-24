@@ -15,10 +15,11 @@ Creating a new Drush command is easy. Follow the steps below.
 6. Write PHPUnit tests based on [Drush Test Traits](https://github.com/drush-ops/drush/blob/13.x/docs/contribute/unish.md#drush-test-traits).
 
 ## Attributes or Annotations
+
 The following are both valid ways to declare a command:
 
 === "PHP8 Attributes"
-    
+
     ```php
     use Drush\Attributes as CLI;
 
@@ -37,7 +38,7 @@ The following are both valid ways to declare a command:
     ```
 
 === "Annotations"
-    
+
     ```php
     /**
      * @command xkcd:fetch
@@ -59,6 +60,7 @@ The following are both valid ways to declare a command:
 - [See Attributes provided by Drush core](https://www.drush.org/api/Drush/Attributes.html). Custom code can supply additional Attribute classes, which may then be added to any command. For example see [InteractConfigName](https://github.com/drush-ops/drush/blob/13.x/src/Attributes/InteractConfigName.php) which is used by [ConfigCommands](https://github.com/drush-ops/drush/blob/8b77c9abe6639de42a198c7e69565f09dcf5f22d/src/Commands/config/ConfigCommands.php#L98).
 
 ## Altering Command Info
+
 Drush command info (annotations/attributes) can be altered from other modules. This is done by creating and registering _command info alterers_. Alterers are classes that are able to intercept and manipulate an existing command annotation.
 
 In the module that wants to alter a command info, add a class that:
@@ -80,8 +82,8 @@ See [GreetCommands](https://github.com/drush-ops/drush/blob/13.x/sut/modules/uni
 
 Such commands are auto-discovered by their class PSR4 namespace and class/file name suffix. Drush will auto-discover commands if:
 
-* The commands class is PSR4 auto-loadable.
-* The commands class namespace, relative to base namespace, is `Drush\Commands`. For instance, if a Drush command provider third party library maps this PSR4 autoload entry:
+- The commands class is PSR4 auto-loadable.
+- The commands class namespace, relative to base namespace, is `Drush\Commands`. For instance, if a Drush command provider third party library maps this PSR4 autoload entry:
   ```json
   "autoload": {
     "psr-4": {
@@ -90,14 +92,16 @@ Such commands are auto-discovered by their class PSR4 namespace and class/file n
   }
   ```
   then the Drush global commands class namespace should be `My\Custom\Library\Drush\Commands` and the class file should be located under the `src/Drush/Commands` directory.
-* The class and file name ends with `*Commands`, e.g. `FooCommands`.
+- The class and file name ends with `*Commands`, e.g. `FooCommands`.
 
 Auto-discovered commandfiles should declare their Drush version compatibility via a `conflict` directive. For example, a Composer-managed site-wide command that works with both Drush 11 and Drush 12 might contain something similar to the following in its composer.json file:
+
 ```json
     "conflict": {
         "drush/drush": "<11.0",
     }
 ```
+
 Using `require` in place of `conflict` is not recommended.
 
 !!! warning "Symlinked packages"
@@ -105,23 +109,24 @@ Using `require` in place of `conflict` is not recommended.
     While it is good practice to make your custom commands into a Composer package, please beware that symlinked packages (by using the composer repository type [Path](https://getcomposer.org/doc/05-repositories.md#path)) will **not** be discovered by Drush. When in development, it is recommended to [specify your package's](https://github.com/drush-ops/drush/blob/13.x/examples/example.drush.yml#L52-L67) path in your `drush.yml` to have quick access to your commands.
 
 ## Site-wide Commands
+
 Commandfiles that are installed in a Drupal site and are not bundled inside a Drupal module are called _site-wide_ commandfiles. Site-wide commands may either be added directly to the Drupal site's repository (e.g. for site-specific policy files), or via `composer require`. See the [examples/Commands](https://github.com/drush-ops/drush/tree/13.x/examples/Commands) folder for examples. In general, it's preferable to use modules to carry your Drush commands.
 
 Here are some examples of valid commandfile names and namespaces:
 
 1. Simple
-     - Filename: $PROJECT_ROOT/drush/Commands/ExampleCommands.php
-     - Namespace: Drush\Commands
+   - Filename: $PROJECT_ROOT/drush/Commands/ExampleCommands.php
+   - Namespace: Drush\Commands
 1. Nested in a subdirectory committed to the site's repository
-     - Filename: $PROJECT_ROOT/drush/Commands/example/ExampleCommands.php
-     - Namespace: Drush\Commands\example
+   - Filename: $PROJECT_ROOT/drush/Commands/example/ExampleCommands.php
+   - Namespace: Drush\Commands\example
 1. Nested in a subdirectory installed via a Composer package
-    - Filename: $PROJECT_ROOT/drush/Commands/contrib/dev_modules/ExampleCommands.php
-    - Namespace: Drush\Commands\dev_modules
+   - Filename: $PROJECT_ROOT/drush/Commands/contrib/dev_modules/ExampleCommands.php
+   - Namespace: Drush\Commands\dev_modules
 
 Note: Make sure you do _not_ include `src` in the path to your command. Your command may not be discovered and have additional problems.
 
-If a commandfile is added via a Composer package, then it may declare any dependencies that it may need in its composer.json file. Site-wide commandfiles that are committed directly to a site's repository only have access to the dependencies already available in the site. 
+If a commandfile is added via a Composer package, then it may declare any dependencies that it may need in its composer.json file. Site-wide commandfiles that are committed directly to a site's repository only have access to the dependencies already available in the site.
 
 A site-wide commandfile should have tests that run with each (major) version of Drush that is supported. You may model your test suite after the [example drush extension](https://github.com/drush-ops/example-drush-extension) project.
 
@@ -139,8 +144,9 @@ For example:
 drush:
   paths:
     include:
-      - '${env.home}/.drush/commands'
-```      
+      - "${env.home}/.drush/commands"
+```
+
 With this configuration in place, global commands may be placed as described in the Site-Wide Drush Commands section above. Global commandfiles may not declare any dependencies of their own; they may only use those dependencies already available via the autoloader.
 
 !!! tip
@@ -152,8 +158,7 @@ With this configuration in place, global commands may be placed as described in 
             1.  A Folder listed in the 'include' option. Include may be provided via [config](#global-drush-commands) or via CLI.
             1.  ../drush, /drush or /sites/all/drush. These paths are relative to Drupal root.
 
-Xdebug
-------------
+## Xdebug
 
 Drush disables Xdebug by default. This improves performance substantially, because developers are often debugging something other than Drush and they still need to clear caches, import config, etc. There are two equivalent ways to override Drush's disabling of Xdebug:
 

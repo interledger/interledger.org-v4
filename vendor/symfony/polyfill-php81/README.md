@@ -1,5 +1,4 @@
-Symfony Polyfill / Php81
-========================
+# Symfony Polyfill / Php81
 
 This component provides features added to PHP 8.1 core:
 
@@ -12,7 +11,6 @@ This component provides features added to PHP 8.1 core:
 More information can be found in the
 [main Polyfill README](https://github.com/symfony/polyfill/blob/main/README.md).
 
-License
-=======
+# License
 
 This library is released under the [MIT license](LICENSE).

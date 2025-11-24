@@ -14,7 +14,7 @@ This module requires no modules outside of Drupal core.
 ## Installation
 
 - Install as you would normally install a contributed Drupal module. For further
-information, see [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
+  information, see [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
 
 ## Links
 

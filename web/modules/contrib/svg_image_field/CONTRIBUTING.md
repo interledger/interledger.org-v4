@@ -1,5 +1,4 @@
-CONTRIBUTING
-------------
+## CONTRIBUTING
 
 You may setup your local environment with [Ddev]. This project leverages the
 [Ddev Drupal Contrib] plugin.
@@ -43,9 +42,7 @@ You may setup your local environment with [Ddev]. This project leverages the
 
 8.  Push work to Merge Requests (MRs) opened via this project's [issue queue].
 
-
-CHANGING DRUPAL CORE VERSION
-----------------------------
+## CHANGING DRUPAL CORE VERSION
 
 Ddev Drupal Contrib installs a recent stable version of Drupal core via the `DRUPAL_CORE`
 environment variable. Review .ddev/config.yaml to find the current default version.
@@ -54,11 +51,10 @@ Override the current default version of Drupal core by creating .ddev/config.loc
 
 ```yaml
 web_environment:
-    - DRUPAL_CORE=^9
+  - DRUPAL_CORE=^9
 ```
 
-UPDATING DEPENDENCIES
----------------------
+## UPDATING DEPENDENCIES
 
 This project depends on 3rd party PHP libraries. It also specifies suggested "dev dependencies"
 for contribution on local development environments. Occasionally, Ddev and Ddev Drupal Contrib
@@ -79,8 +75,7 @@ must be updated as well.
 
         ddev composer outdated --direct
 
-3.  Test clean install, commit, and push.
-
+4.  Test clean install, commit, and push.
 
 [Ddev]: https://www.ddev.com/
 [Ddev Drupal Contrib]: https://github.com/ddev/ddev-drupal-contrib

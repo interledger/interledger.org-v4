@@ -7,16 +7,16 @@ Apply transformations to structured data to write output in different formats.
 [![codecov](https://codecov.io/gh/consolidation/output-formatters/branch/main/graph/badge.svg?token=CAaB7ofhxx)](https://codecov.io/gh/consolidation/output-formatters)
 [![license](https://poser.pugx.org/consolidation/output-formatters/license)](https://packagist.org/packages/consolidation/output-formatters)
 
-
 ## Motivation
 
-Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces.  A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array).  The structured data is then formatted by a formatter, and the result is printed.
+Formatters are used to allow simple commandline tool commands to be implemented in a manner that is completely independent from the Symfony Console output interfaces. A command receives its input via its method parameters, and returns its result as structured data (e.g. a php standard object or array). The structured data is then formatted by a formatter, and the result is printed.
 
 This process is managed by the [Consolidation/AnnotatedCommand](https://github.com/consolidation/annotated-command) project.
 
 ## Library Usage
 
-This is a library intended to be used in some other project.  Require from your composer.json file:
+This is a library intended to be used in some other project. Require from your composer.json file:
+
 ```
     "require": {
         "consolidation/output-formatters": "^4"
@@ -26,6 +26,7 @@ This is a library intended to be used in some other project.  Require from your 
 ## Example Formatter
 
 Simple formatters are very easy to write.
+
 ```php
 class YamlFormatter implements FormatterInterface
 {
@@ -36,6 +37,7 @@ class YamlFormatter implements FormatterInterface
     }
 }
 ```
+
 The formatter is passed the set of `$options` that the user provided on the command line. These may optionally be examined to alter the behavior of the formatter, if needed.
 
 Formatters may also implement different interfaces to alter the behavior of the rendering engine.
@@ -48,6 +50,7 @@ Formatters may also implement different interfaces to alter the behavior of the 
 ## Configuring Formats for a Command
 
 Commands declare what type of data they return using a `@return` annotation, as usual:
+
 ```php
     /**
      * Demonstrate formatters.  Default format is 'table'.
@@ -75,6 +78,7 @@ Commands declare what type of data they return using a `@return` annotation, as 
         return new RowsOfFields($outputData);
     }
 ```
+
 The output-formatters library determines which output formats are applicable to the command by querying all available formats, and selecting any that are able to process the data type that is returned. Thus, if a new format is added to a program, it will automatically be available via any command that it works with. It is not necessary to hand-select the available formats on every command individually.
 
 ### Structured Data
@@ -89,25 +93,26 @@ Most formatters will operate on any array or ArrayObject data. Some formatters r
 - `DOMDocument`: The standard PHP DOM document class may be used by functions that need to be able to presicely specify the exact attributes and children when the XML output format is used.
 - `ListDataFromKeys`: This data structure is deprecated. Use `UnstructuredListData` instead.
 
-Commands that need to produce XML output should return a DOMDocument as its return type. The formatter manager will do its best to convert from an array to a DOMDocument, or from a DOMDocument to an array, as needed. It is important to note that a DOMDocument does not have a 1-to-1 mapping with a PHP array.  DOM elements contain both attributes and elements; a simple string property 'foo' may be represented either as <element foo="value"/> or <element><foo>value</foo></element>. Also, there may be multiple XML elements with the same name, whereas php associative arrays must always have unique keys. When converting from an array to a DOM document, the XML formatter will default to representing the string properties of an array as attributes of the element. Sets of elements with the same name may be used only if they are wrapped in a containing parent element--e.g. <element><foos><foo>one</foo><foo>two</foo></foos></element>. The XMLSchema class may be used to provide control over whether a property is rendered as an attribute or an element; however, in instances where the schema of the XML output is important, it is best for a function to return its result as a DOMDocument rather than an array.
+Commands that need to produce XML output should return a DOMDocument as its return type. The formatter manager will do its best to convert from an array to a DOMDocument, or from a DOMDocument to an array, as needed. It is important to note that a DOMDocument does not have a 1-to-1 mapping with a PHP array. DOM elements contain both attributes and elements; a simple string property 'foo' may be represented either as <element foo="value"/> or <element><foo>value</foo></element>. Also, there may be multiple XML elements with the same name, whereas php associative arrays must always have unique keys. When converting from an array to a DOM document, the XML formatter will default to representing the string properties of an array as attributes of the element. Sets of elements with the same name may be used only if they are wrapped in a containing parent element--e.g. <element><foos><foo>one</foo><foo>two</foo></foos></element>. The XMLSchema class may be used to provide control over whether a property is rendered as an attribute or an element; however, in instances where the schema of the XML output is important, it is best for a function to return its result as a DOMDocument rather than an array.
 
-A function may also define its own structured data type to return, usually by extending one of the types mentioned above.  If a custom structured data class implements an appropriate interface, then it can provide its own conversion function to one of the other data types:
+A function may also define its own structured data type to return, usually by extending one of the types mentioned above. If a custom structured data class implements an appropriate interface, then it can provide its own conversion function to one of the other data types:
 
 - `DomDataInterface`: The data object may produce a DOMDocument via its `getDomData()` method, which will be called in any instance where a DOM document is needed--typically with the xml formatter.
 - `ListDataInterface`: Any structured data object that implements this interface may use the `getListData()` method to produce the data set that will be used with the list formatter.
 - `TableDataInterface`: Any structured data object that implements this interface may use the `getTableData()` method to produce the data set that will be used with the table formatter.
-- `RenderCellInterface`: Structured data can also provide fine-grain control over how each cell in a table is rendered by implementing the RenderCellInterface.  See the section below for information on how this is done.
+- `RenderCellInterface`: Structured data can also provide fine-grain control over how each cell in a table is rendered by implementing the RenderCellInterface. See the section below for information on how this is done.
 - `RestructureInterface`: The restructure interface can be implemented by a structured data object to restructure the data in response to options provided by the user. For example, the RowsOfFields and PropertyList data types use this interface to select and reorder the fields that were selected to appear in the output. Custom data types usually will not need to implement this interface, as they can inherit this behavior by extending RowsOfFields or PropertyList.
 
 Additionally, structured data may be simplified to arrays via an array simplification object. To provide an array simplifier, implement `SimplifyToArrayInterface`, and register the simplifier via `FormatterManager::addSimplifier()`.
 
 ### Fields
 
-Some commands produce output that contain *fields*. A field may be either the key in a key/value pair, or it may be the label used in tabular output and so on.
+Some commands produce output that contain _fields_. A field may be either the key in a key/value pair, or it may be the label used in tabular output and so on.
 
 #### Declaring Default Fields
 
 If a command declares a very large number of fields, it is possible to display only a subset of the available options by way of the `@default-fields` annotation. The following example comes from Drush:
+
 ```php
     /**
      * @command cache:get
@@ -128,6 +133,7 @@ If a command declares a very large number of fields, it is possible to display o
         return new PropertyList($result);
     }
 ```
+
 All of the available fields will be listed in the `help` output for the command, and may be selected by listing the desired fields explicitly via the `--fields` option.
 
 To include all avalable fields, use `--fields=*`.
@@ -139,30 +145,35 @@ Note that using the `@default-fields` annotation will reduce the number of field
 Commands that return table structured data with fields can be filtered and/or re-ordered by using the `--fields` option. These structured data types can also be formatted into a more generic type such as yaml or json, even after being filtered. This capabilities are not available if the data is returned in a bare php array. One of `RowsOfFields`, `PropertyList` or `UnstructuredListData` (or similar) must be used.
 
 When the `--fields` option is provided, the user may stipulate the exact fields to list on each row, and what order they should appear in. For example, if a command usually produces output using the `RowsOfFields` data type, as shown below:
+
 ```
 $ ./app try:formatters
- ------ ------ ------- 
-  I      II     III    
- ------ ------ ------- 
-  One    Two    Three  
-  Eins   Zwei   Drei   
-  Ichi   Ni     San    
-  Uno    Dos    Tres   
- ------ ------ ------- 
+ ------ ------ -------
+  I      II     III
+ ------ ------ -------
+  One    Two    Three
+  Eins   Zwei   Drei
+  Ichi   Ni     San
+  Uno    Dos    Tres
+ ------ ------ -------
 ```
+
 Then the third and first fields may be selected as follows:
+
 ```
  $ ./app try:formatters --fields=III,I
- ------- ------ 
-  III     I     
- ------- ------ 
-  Three   One   
-  Drei    Eins  
-  San     Ichi  
-  Tres    Uno   
- ------- ------ 
+ ------- ------
+  III     I
+ ------- ------
+  Three   One
+  Drei    Eins
+  San     Ichi
+  Tres    Uno
+ ------- ------
 ```
+
 To select a single column and strip away all formatting, use the `--field` option:
+
 ```
 $ ./app try:formatters --field=II
 Two
@@ -170,11 +181,13 @@ Zwei
 Ni
 Dos
 ```
+
 Commands that produce deeply-nested data structures using the `UnstructuredData` and `UnstructuredListData` data type may also be manipulated using the `--fields` and `--field` options. It is possible to address items deep in the heirarchy using dot notation.
 
 The `UnstructuredData` type represents a single nested array with no requirements for uniform structure. The `UnstructuredListData` type is similar; it represents a list of `UnstructuredData` types. It is not required for the different elements in the list to have all of the same fields or structure, although it is expected that there will be a certain degree of similarity.
 
 In the example below, a command returns a list of stores of different kinds. Each store has common top-level elements such as `name`, `products` and `sale-items`. Each store might have different sorts of products with different attributes:
+
 ```
 $ ./app try:nested
 bills-hardware:
@@ -200,7 +213,9 @@ alberts-supermarket:
   sale-items:
     watermellons: '4.50'
 ```
+
 Just as is the case with tabular output, it is possible to select only a certain set of fields to display with each output item:
+
 ```
 $ ./app try:nested --fields=sale-items
 bills-hardware:
@@ -210,7 +225,9 @@ alberts-supermarket:
   sale-items:
     watermellons: '4.50'
 ```
+
 With unstructured data, it is also possible to remap the name of the field to something else:
+
 ```
 $ ./robo try:nested --fields='sale-items as items'
 bills-hardware:
@@ -220,7 +237,9 @@ alberts-supermarket:
   items:
     watermellons: '4.50'
 ```
+
 The field name `.` is special, though: it indicates that the named element should be omitted, and its value or children should be applied directly to the result row:
+
 ```
 $ ./app try:nested --fields='sale-items as .'
 bills-hardware:
@@ -228,7 +247,9 @@ bills-hardware:
 alberts-supermarket:
   watermellons: '4.50'
 ```
+
 Finally, it is also possible to reach down into nested data structures and pull out information about an element or elements identified using "dot" notation:
+
 ```
 $ ./app try:nested --fields=products.fruits.strawberries
 bills-hardware: {  }
@@ -237,6 +258,7 @@ alberts-supermarket:
     price: '2'
     units: lbs
 ```
+
 Commands that use `RowsOfFields` or `PropertyList` return type will be automatically converted to `UnstructuredListData` or `UnstructuredData`, respectively, whenever any field remapping is done. This will only work for data types such as `yaml` or `json` that can render unstructured data types. It is not possible to render unstructured data in a table, even if the resulting data happens to be uniform.
 
 ### Filtering Specific Rows
@@ -245,7 +267,8 @@ A command may allow the user to filter specific rows of data using simple boolea
 
 ## Rendering Table Cells
 
-By default, both the RowsOfFields and PropertyList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or PropertyList, as desired, and implement RenderCellInterface.  The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
+By default, both the RowsOfFields and PropertyList data types presume that the contents of each cell is a simple string. To render more complicated cell contents, create a custom structured data class by extending either RowsOfFields or PropertyList, as desired, and implement RenderCellInterface. The `renderCell()` method of your class will then be called for each cell, and you may act on it as appropriate.
+
 ```php
 public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
 {
@@ -261,9 +284,11 @@ public function renderCell($key, $cellData, FormatterOptions $options, $rowData)
     return $cellData;
 }
 ```
+
 Note that if your data structure is printed with a formatter other than one such as the table formatter, it will still be reordered per the selected fields, but cell rendering will **not** be done.
 
 The RowsOfFields and PropertyList data types also allow objects that implement RenderCellInterface, as well as anonymous functions to be added directly to the data structure object itself. If this is done, then the renderer will be called for each cell in the table. An example of an attached renderer implemented as an anonymous function is shown below.
+
 ```php
     return (new RowsOfFields($data))->addRendererFunction(
         function ($key, $cellData, FormatterOptions $options, $rowData) {
@@ -274,7 +299,9 @@ The RowsOfFields and PropertyList data types also allow objects that implement R
         }
     );
 ```
+
 This project also provides a built-in cell renderer, NumericCellRenderer, that adds commas at the thousands place and right-justifies columns identified as numeric. An example of a numeric renderer attached to two columns of a data set is shown below.
+
 ```php
 use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 ...
@@ -285,9 +312,10 @@ use Consolidation\OutputFormatters\StructuredData\NumericCellRenderer;
 
 ## API Usage
 
-It is recommended to use [Consolidation/AnnotatedCommand](https://github.com/consolidation/annotated-command) to manage commands and formatters.  See the [AnnotatedCommand API Usage](https://github.com/consolidation/annotated-command#api-usage) for details.
+It is recommended to use [Consolidation/AnnotatedCommand](https://github.com/consolidation/annotated-command) to manage commands and formatters. See the [AnnotatedCommand API Usage](https://github.com/consolidation/annotated-command#api-usage) for details.
 
 The FormatterManager may also be used directly, if desired:
+
 ```php
 /**
  * @param OutputInterface $output Output stream to write to
@@ -297,15 +325,17 @@ The FormatterManager may also be used directly, if desired:
  */
 function doFormat(
     OutputInterface $output,
-    string $format, 
+    string $format,
     array $data,
-    FormatterOptions $options) 
+    FormatterOptions $options)
 {
     $formatterManager = new FormatterManager();
     $formatterManager->write(output, $format, $data, $options);
 }
 ```
+
 The FormatterOptions class is used to hold the configuration for the command output--things such as the default field list for tabular output, and so on--and also the current user-selected options to use during rendering, which may be provided using a Symfony InputInterface object:
+
 ```
 public function execute(InputInterface $input, OutputInterface $output)
 {
@@ -319,9 +349,9 @@ public function execute(InputInterface $input, OutputInterface $output)
     return $this->doFormat($output, $options->getFormat(), $data, $options);
 }
 ```
+
 ## Comparison to Existing Solutions
 
 Formatters have been in use in Drush since version 5. Drush allows formatters to be defined using simple classes, some of which may be configured using metadata. Furthermore, nested formatters are also allowed; for example, a list formatter may be given another formatter to use to format each of its rows. Nested formatters also require nested metadata, causing the code that constructed formatters to become very complicated and unweildy.
 
 Consolidation/OutputFormatters maintains the simplicity of use provided by Drush formatters, but abandons nested metadata configuration in favor of using code in the formatter to configure itself, in order to keep the code simpler.
-

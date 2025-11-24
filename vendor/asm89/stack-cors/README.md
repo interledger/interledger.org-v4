@@ -20,15 +20,15 @@ This package can be used as a library or as [stack middleware].
 
 ### Options
 
-| Option                 | Description                                                | Default value |
-|------------------------|------------------------------------------------------------|---------------|
-| `allowedMethods`         | Matches the request method.                                | `[]`          |
-| `allowedOrigins`         | Matches the request origin.                                | `[]`          |
-| `allowedOriginsPatterns` | Matches the request origin with `preg_match`.              | `[]`          |
-| `allowedHeaders`         | Sets the Access-Control-Allow-Headers response header.     | `[]`          |
-| `exposedHeaders`         | Sets the Access-Control-Expose-Headers response header.    | `false`       |
-| `maxAge`                 | Sets the Access-Control-Max-Age response header.<br/>Set to `null` to omit the header/use browser default.           | `0`       |
-| `supportsCredentials`    | Sets the Access-Control-Allow-Credentials header.          | `false`       |
+| Option                   | Description                                                                                                | Default value |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------- | ------------- |
+| `allowedMethods`         | Matches the request method.                                                                                | `[]`          |
+| `allowedOrigins`         | Matches the request origin.                                                                                | `[]`          |
+| `allowedOriginsPatterns` | Matches the request origin with `preg_match`.                                                              | `[]`          |
+| `allowedHeaders`         | Sets the Access-Control-Allow-Headers response header.                                                     | `[]`          |
+| `exposedHeaders`         | Sets the Access-Control-Expose-Headers response header.                                                    | `false`       |
+| `maxAge`                 | Sets the Access-Control-Max-Age response header.<br/>Set to `null` to omit the header/use browser default. | `0`           |
+| `supportsCredentials`    | Sets the Access-Control-Allow-Credentials header.                                                          | `false`       |
 
 The _allowedMethods_ and _allowedHeaders_ options are case-insensitive.
 

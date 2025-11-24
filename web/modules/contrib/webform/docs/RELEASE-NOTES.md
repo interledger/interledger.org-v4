@@ -1,16 +1,16 @@
-Steps for creating a new release
---------------------------------
-
-  1. Review code
-  2. Deprecated code
-  3. Review accessibility
-  4. Run tests
-  5. Generate release notes
-  6. Tag and create a new release
-  7. Tag and create a hotfix release
+## Steps for creating a new release
 
 1. Review code
---------------
+2. Deprecated code
+3. Review accessibility
+4. Run tests
+5. Generate release notes
+6. Tag and create a new release
+7. Tag and create a hotfix release
+
+8. Review code
+
+---
 
     # Remove files that should never be reviewed.
     cd modules/sandbox/webform
@@ -77,7 +77,8 @@ Steps for creating a new release
     find . -type f -print0 | xargs -0 chmod 0644
 
 2. Deprecated code
-------------------
+
+---
 
 [drupal-check](https://mglaman.dev/blog/tighten-your-drupal-code-using-phpstan) - RECOMMENDED
 
@@ -112,7 +113,8 @@ Run Drupal Rector
     ./vendor/bin/rector process web/modules/sandbox/webform
 
 3. Review accessibility
------------------------
+
+---
 
 [Pa11y](http://pa11y.org/)
 
@@ -152,9 +154,9 @@ Pa11y is your automated accessibility testing pal.
     wkhtmltopdf --dpi 384 ../html/example_accessibility_wizard.html example_accessibility_wizard.pdf
     wkhtmltopdf --dpi 384 ../html/example_accessibility_labels.html example_accessibility_labels.pdf
 
-
 4. Run tests
-------------
+
+---
 
 [SimpleTest](https://www.drupal.org/node/645286)
 
@@ -169,49 +171,55 @@ Pa11y is your automated accessibility testing pal.
 [PHPUnit](https://www.drupal.org/node/2116263)
 
 Notes
+
 - Links to PHP Unit HTML responses are not being printed by PHPStorm
 
 References
+
 - [Issue #2870145: Set printerClass in phpunit.xml.dist](https://www.drupal.org/node/2870145)
 - [Lesson 10.2 - Unit testing](https://docs.acquia.com/article/lesson-102-unit-testing)
 
+  # Export database and base URL.
 
-    # Export database and base URL.
-    export SIMPLETEST_DB=mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform;
-    export SIMPLETEST_BASE_URL='http://localhost/wf';
+  export SIMPLETEST_DB=mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform;
+  export SIMPLETEST_BASE_URL='http://localhost/wf';
 
-    # Execute all Webform PHPUnit tests.
-    cd ~/Sites/drupal_webform/web/core
-    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" --group webform
+  # Execute all Webform PHPUnit tests.
 
-    # Execute individual PHPUnit tests.
-    cd ~/Sites/drupal_webform/web/core
+  cd ~/Sites/drupal_webform/web/core
+  php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" --group webform
 
-    # Functional test.
-    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Functional/WebformExampleFunctionalTest.php
+  # Execute individual PHPUnit tests.
 
-    # Kernal test.
-    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Kernal/Utility/WebformDialogHelperTest.php
+  cd ~/Sites/drupal_webform/web/core
 
-    # Unit test.
-    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Unit/Utility/WebformYamlTest.php
+  # Functional test.
 
-    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Unit/Access/WebformAccessCheckTest
+  php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Functional/WebformExampleFunctionalTest.php
 
+  # Kernal test.
+
+  php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Kernal/Utility/WebformDialogHelperTest.php
+
+  # Unit test.
+
+  php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Unit/Utility/WebformYamlTest.php
+
+  php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Unit/Access/WebformAccessCheckTest
 
 5. Generate release notes
--------------------------
+
+---
 
 [Git Release Notes for Drush](https://www.drupal.org/project/grn)
 [Generate release notes](https://drupal-mrn.dev/)
 
-
     drush release-notes --nouser 6.2.x 6.2.x
     drush release-notes --nouser 6.1.x 6.2.x
 
-
 6. Tag and create a new release
--------------------------------
+
+---
 
 [Tag a release](https://www.drupal.org/node/1066342)
 
@@ -221,12 +229,11 @@ References
     git push --tags
     git push origin tag 6.2.x-VERSION
 
-
 [Create new release](https://www.drupal.org/node/add/project-release/2640714)
 
-
 7. Tag and create a hotfix release
-----------------------------------
+
+---
 
     # Creete hotfix branch
     git checkout 6.2.LATEST-VERSION

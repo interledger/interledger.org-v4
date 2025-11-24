@@ -1,6 +1,7 @@
 # Starterkit Theme
 
 ## How to use Starterkit
+
 The Starterkit theme is not directly used by Drupal, nor is it used as a base theme.
 **Starterkit is for generating new themes** that include
 reasonably un-opinionated templates and styles that eliminate much of the

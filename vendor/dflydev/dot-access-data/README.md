@@ -1,5 +1,4 @@
-Dot Access Data
-===============
+# Dot Access Data
 
 [![Latest Version](https://img.shields.io/packagist/v/dflydev/dot-access-data.svg?style=flat-square)](https://packagist.org/packages/dflydev/dot-access-data)
 [![Total Downloads](https://img.shields.io/packagist/dt/dflydev/dot-access-data.svg?style=flat-square)](https://packagist.org/packages/dflydev/dot-access-data)
@@ -10,17 +9,13 @@ Dot Access Data
 
 Given a deep data structure, access data by dot notation.
 
+## Requirements
 
-Requirements
-------------
-
- * PHP (7.1+)
+- PHP (7.1+)
 
 > For PHP (5.3+) please refer to version `1.0`.
 
-
-Usage
------
+## Usage
 
 Abstract example:
 
@@ -144,15 +139,12 @@ echo $data->get('a/b/c'); // "d"
 $data->get('a/b/c') === $data->get('a.b.c'); // true
 ```
 
-License
--------
+## License
 
 This library is licensed under the MIT License - see the LICENSE file
 for details.
 
-
-Community
----------
+## Community
 
 If you have questions or want to help out, join us in the
 [#dflydev](irc://irc.freenode.net/#dflydev) channel on irc.freenode.net.

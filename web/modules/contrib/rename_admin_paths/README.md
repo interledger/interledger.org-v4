@@ -11,7 +11,6 @@ to have the user registration form at `/user/register`.
 - To submit bug reports and feature suggestions, or to track changes:
   [issue queue](https://www.drupal.org/project/issues/rename_admin_paths).
 
-
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
@@ -21,11 +20,9 @@ to have the user registration form at `/user/register`.
 - [Troubleshooting](#troubleshooting)
 - [Maintainers](#maintainers)
 
-
 ## Requirements
 
 This module requires no modules outside of Drupal core.
-
 
 ## Installation
 
@@ -34,7 +31,6 @@ This module requires no modules outside of Drupal core.
   [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-modules)
   for further information.
 
-
 ## Configuration
 
 1. Navigate to `Administration > Extend` and enable the module.
@@ -42,7 +38,6 @@ This module requires no modules outside of Drupal core.
    to configure.
 3. There are options to rename the "admin" and "user" paths values.
 4. Save configuration.
-
 
 ## Troubleshooting
 
@@ -61,7 +56,6 @@ Use drush: `drush cget rename_admin_paths.settings`
 
 Or check the database: In the `config` table, check the value for column
 `config` row `rename_admin_paths.settings`.
-
 
 ## Maintainers
 

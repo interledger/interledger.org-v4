@@ -1,43 +1,37 @@
-CONTENTS OF THIS FILE
----------------------
+## CONTENTS OF THIS FILE
 
- * Introduction
- * Recommended modules
- * Installation
- * Configuration
- * Troubleshooting
- * Maintainers
+- Introduction
+- Recommended modules
+- Installation
+- Configuration
+- Troubleshooting
+- Maintainers
 
-INTRODUCTION
-------------
+## INTRODUCTION
 
- Provides common and reusable token UI elements and missing core tokens.
+Provides common and reusable token UI elements and missing core tokens.
 
- * For a full description of the module, visit the project page:
-   https://drupal.org/project/token
+- For a full description of the module, visit the project page:
+  https://drupal.org/project/token
 
- * To submit bug reports and feature suggestions, or to track changes:
-   https://drupal.org/project/issues/token
+- To submit bug reports and feature suggestions, or to track changes:
+  https://drupal.org/project/issues/token
 
-RECOMMENDED MODULES
--------------------
+## RECOMMENDED MODULES
 
- * No extra module is required.
+- No extra module is required.
 
-INSTALLATION
-------------
+## INSTALLATION
 
- * Install as usual, see
-   https://www.drupal.org/docs/8/extending-drupal-8/installing-contributed-modules-find-import-enable-configure-drupal-8 for further
-   information.
+- Install as usual, see
+  https://www.drupal.org/docs/8/extending-drupal-8/installing-contributed-modules-find-import-enable-configure-drupal-8 for further
+  information.
 
-CONFIGURATION
--------------
+## CONFIGURATION
 
- * No configuration is needed.
+- No configuration is needed.
 
-TROUBLESHOOTING
----------------
+## TROUBLESHOOTING
 
- * Token module doesn't provide any visible functions to the user on its own, it
-   just provides token handling services for other modules.
+- Token module doesn't provide any visible functions to the user on its own, it
+  just provides token handling services for other modules.

@@ -61,6 +61,7 @@ This may be useful for logging or providing feedback to the user on why an SVG w
 You can minify the XML output by calling `$sanitizer->minify(true);`.
 
 ## Demo
+
 There is a demo available at: [http://svg.enshrined.co.uk/](http://svg.enshrined.co.uk/)
 
 ## WordPress

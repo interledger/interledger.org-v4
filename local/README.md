@@ -15,6 +15,7 @@ Docker-based local development environment for the Interledger.org Drupal websit
 3. Restore database: `make restore-database`
 
 For all available commands:
+
 ```bash
 make help
 ```
@@ -37,22 +38,26 @@ make help
 ## Common Tasks
 
 ### Clear Drupal cache
+
 ```bash
 make drush cr
 ```
 
 ### Run any Drush command
+
 ```bash
 make drush status
 make drush user:login
 ```
 
 ### View logs
+
 ```bash
 make logs
 ```
 
 ### Rebuild after Composer changes
+
 ```bash
 make rebuild
 ```

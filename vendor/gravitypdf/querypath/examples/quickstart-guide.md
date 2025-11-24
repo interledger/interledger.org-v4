@@ -38,7 +38,7 @@ print QueryPath::withHTML('http://technosophos.com', 'title')->text();
 ?>
 ```
 
-Notice, though, that the `qp()` and `htmlqp` functions *will not work* with this method. Why? Because PHP's autoloader does not know about functions. It operates on classes only. So you can use QueryPath's Object-Oriented API (`QueryPath::with()`, `QueryPath::withHTML()`, `QueryPath::withXML()`), but not the `qp()` and `qphtml()` functions. If you want to use those, too, simply include `qp.php`:
+Notice, though, that the `qp()` and `htmlqp` functions _will not work_ with this method. Why? Because PHP's autoloader does not know about functions. It operates on classes only. So you can use QueryPath's Object-Oriented API (`QueryPath::with()`, `QueryPath::withHTML()`, `QueryPath::withXML()`), but not the `qp()` and `qphtml()` functions. If you want to use those, too, simply include `qp.php`:
 
 ```{php}
 <?php
@@ -91,12 +91,12 @@ When QueryPath was first introduced, it did not distinguish between XML and HTML
 
 So there are now separate parser functions for HTML and XML -- as well as a generic parser function that inspects the document and attempts to determine whether it is XML or HTML:
 
-* `QueryPath::withXML()`: This *only* handles XML documents. If you give it an HTML document, it will attempt to force XML parsing on that document.
-* `htmlqp()`, `QueryPath::withHTML()`: This will force QueryPath to use the HTML parser. it will also make a number of adjustments to QueryPath to accommodate common HTML breakages.
-* `qp()`, `QueryPath::with()`: This will attempt to guess whether the document is XML or HTML. In general, it favors XML slightly. Guessing may be done by… 
-	- File extension
-	- XML declaration
-	- The suggestions made by any options passed into the document
+- `QueryPath::withXML()`: This _only_ handles XML documents. If you give it an HTML document, it will attempt to force XML parsing on that document.
+- `htmlqp()`, `QueryPath::withHTML()`: This will force QueryPath to use the HTML parser. it will also make a number of adjustments to QueryPath to accommodate common HTML breakages.
+- `qp()`, `QueryPath::with()`: This will attempt to guess whether the document is XML or HTML. In general, it favors XML slightly. Guessing may be done by…
+  - File extension
+  - XML declaration
+  - The suggestions made by any options passed into the document
 
 ###… And Character Encoding
 
@@ -104,10 +104,7 @@ XML suggests that all documents be encoded as UTF-8. Most HTML documents are enc
 
 To work around all of these issues, QueryPath attempts to convert documents automatically. It does this using PHP's internal character detection libraries. But sometimes it guesses wrong. You can adjust this feature manually by passing in language settings in the `$options` array. See the documentation on `qp()` for details.
 
-
 ## Where to go from here
 
-* [QueryPath.org](http://querypath.org) has pointers to other resources.
-* [The API docs](http://api.querypath.org) have detailed explanations of every single part of QueryPath.
-
-	
+- [QueryPath.org](http://querypath.org) has pointers to other resources.
+- [The API docs](http://api.querypath.org) have detailed explanations of every single part of QueryPath.

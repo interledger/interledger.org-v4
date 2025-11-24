@@ -1,5 +1,4 @@
-PSR Log
-=======
+# PSR Log
 
 This repository holds all interfaces/classes/traits related to
 [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md).
@@ -7,15 +6,13 @@ This repository holds all interfaces/classes/traits related to
 Note that this is not a logger of its own. It is merely an interface that
 describes a logger. See the specification for more details.
 
-Installation
-------------
+## Installation
 
 ```bash
 composer require psr/log
 ```
 
-Usage
------
+## Usage
 
 If you need a logger, you can use the interface like this:
 
@@ -38,7 +35,7 @@ class Foo
         if ($this->logger) {
             $this->logger->info('Doing work');
         }
-           
+
         try {
             $this->doSomethingElse();
         } catch (Exception $exception) {

@@ -7,13 +7,17 @@ Thank you for your interest in contributing to SiteProcess! Here are some of the
 This project adheres to the [PSR-2 Coding Style Guide](http://www.php-fig.org/psr/psr-2/) for PHP code. An `.editorconfig` file is included with the repository to help you get up and running quickly. Most modern editors support this standard, but if yours does not or you would like to configure your editor manually, follow the guidelines in the document linked above.
 
 You can run the PHP Codesniffer on your work using a convenient command provided as a composer script:
+
 ```
 composer cs
 ```
+
 The above will run the PHP Codesniffer on the project sources. To automatically clean up code style violations, run:
+
 ```
 composer cbf
 ```
+
 Please ensure all contributions are compliant _before_ submitting a pull request.
 
 ## Code of Conduct
@@ -32,21 +36,21 @@ orientation.
 Examples of behavior that contributes to creating a positive environment
 include:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+- Using welcoming and inclusive language
+- Being respectful of differing viewpoints and experiences
+- Gracefully accepting constructive criticism
+- Focusing on what is best for the community
+- Showing empathy towards other community members
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
+- The use of sexualized language or imagery and unwelcome sexual attention or
+  advances
+- Trolling, insulting/derogatory comments, and personal or political attacks
+- Public or private harassment
+- Publishing others' private information, such as a physical or electronic
   address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
+- Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
 ### Our Responsibilities

@@ -9,7 +9,6 @@ For a full description of the module, visit :
 Submit bug reports and feature suggestions, or track changes visit :
 [Issue Queue](https://www.drupal.org/project/issues/weight).
 
-
 ## Table of contents
 
 - Requirements
@@ -18,18 +17,15 @@ Submit bug reports and feature suggestions, or track changes visit :
 - How to use (example)
 - Maintainers
 
-
 ## Requirements
 
 This module requires no modules outside of Drupal core.
-
 
 ## Installation
 
 Install as you would normally install a contributed Drupal module. For further
 information, see
 [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
-
 
 ## Configuration
 
@@ -54,7 +50,6 @@ you can add the "weight" field in a content type:
 - Now you can add a node using this content type:
 - Go to "Content" » "Add content" » <CONTENT-TYPE>
 - Now you can see the "weight" and the range to select
-
 
 ## Maintainers
 

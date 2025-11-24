@@ -1,5 +1,4 @@
-Features
---------
+## Features
 
 <table class="views-view-grid" width="100%">
 <tr>
@@ -15,7 +14,7 @@ type of data, which can be submitted to any application or system.
 Every single behavior and aspect of your forms and its inputs are customizable.
 Whether you need a multi-page form containing a multi-column input layout with
 conditional logic or a simple contact form that pushes data to a SalesForce/CRM,
- it is all possible using the Webform module for Drupal 8.
+it is all possible using the Webform module for Drupal 8.
 
 Drupal and the Webform module strives to be fully accessible to all users and
 site builders. Assistive technologies, including screen readers and
@@ -203,7 +202,6 @@ Confirmation types include:
   </tr>
 </table>
 
-
 ### Emails / Handlers
 
 Allows additional actions and behaviors to be processed when a webform or
@@ -219,6 +217,7 @@ Email support features include:
 - Customizable display formats for individual form elements
 
 Remote post features include:
+
 - Posting selected elements to a remote server
 - Adding custom parameters to remote post requests
 
@@ -242,7 +241,7 @@ Remote post features include:
 ### CSS/JS assets
 
 The CSS/JS assets page allows site builders to attach custom CSS and JavaScript
-to a webform.  Custom CSS can be used to make simple layout or design tweaks
+to a webform. Custom CSS can be used to make simple layout or design tweaks
 to a form. Custom JavaScript allows additional conditional logic and
 behaviors to be added to a form.
 
@@ -432,7 +431,7 @@ Results management features include:
 - Downloading results as a CSV to Google Sheets or MS Excel
 - Saving of download preferences per form
 - [Drupal Views](https://www.drupal.org/docs/8/core/modules/views) integration
-for advanced reporting.
+  for advanced reporting.
 
 ## Access controls
 
@@ -525,7 +524,6 @@ Starter templates include:
   </tr>
 </table>
 
-
 Administrators can define reusable global options for select menus, checkboxes,
 and radio buttons. The Webform module includes default options for states,
 countries, demographics, likert answers, and more.
@@ -535,10 +533,9 @@ Reusable options include:
 - **Geographic**: Languages, country, and states
 - **Date and time**: Days, months, and time zones
 - **Demographic**: Education, employment status, ethnicity, Industry,
-languages, marital status, relationship, size, and job titles
+  languages, marital status, relationship, size, and job titles
 - **Likert**: Agreement, comparison, importance, quality, satisfaction,
-ten scale, and would you
-
+  ten scale, and would you
 
 ## Internationalization
 

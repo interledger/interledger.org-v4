@@ -1,9 +1,10 @@
-Drush Configuration
-===================
+# Drush Configuration
+
 Drush configuration is useful to cut down on typing out lengthy and repetitive command line
 options, and to avoid mistakes.
 
 #### Directories and Discovery
+
 `drush.yml` files are discovered as below, in order of precedence:
 
 1.  Drupal site folder (e.g. `sites/{example.com}/drush.yml`).
@@ -13,7 +14,7 @@ options, and to avoid mistakes.
 5.  System-wide configuration folder (e.g. `/etc/drush/drush.yml` or `C:\ProgramData\Drush\drush.yml`).
 
 If a configuration file is found in any of the above locations, it will be
-loaded and merged with other configuration files in the search list. Run `drush status --fields=drush-conf` 
+loaded and merged with other configuration files in the search list. Run `drush status --fields=drush-conf`
 to see all discovered config files.
 
 #### Environment variables
@@ -26,14 +27,15 @@ correspond to config keys. For example, to populate the `options.uri` config ite
 create an environment variable `DRUSH_OPTIONS_URI=http://example.com`. This instructs Drush to use your domain name instead of `http://default`. As you can see, variable names should be uppercased, prefixed with `DRUSH_`, and periods replaced with underscores.
 
 !!! note
-    For `uri` you need to use a global config location, not a site-specific one, since it's used by Drupal to select which multi-site gets bootstrapped. Thats why the `DRUSH_OPTIONS_URI` approach is recommended.
+For `uri` you need to use a global config location, not a site-specific one, since it's used by Drupal to select which multi-site gets bootstrapped. Thats why the `DRUSH_OPTIONS_URI` approach is recommended.
 
 !!! tip
-    To handle multiple Drupal installations on the same server, https://direnv.net/ can help, by varying your environment variables, depending on the directory you are in, when you issue a command line request. Use this to define a site URI for each code base.
+To handle multiple Drupal installations on the same server, https://direnv.net/ can help, by varying your environment variables, depending on the directory you are in, when you issue a command line request. Use this to define a site URI for each code base.
 
 ### Config examples
 
 #### Specify config files to load
+
 ```yml
 drush:
   paths:
@@ -46,8 +48,9 @@ drush:
 - View discovered config paths: `drush status --fields=drush-conf --format=yaml`
 
 #### Specify folders to search for Drush command files.
+
 These locations are always merged with include paths defined on the command line or
-in other configuration files.  On the command line, paths may be separated
+in other configuration files. On the command line, paths may be separated
 by a colon `:` on Unix-based systems or a semi-colon `;` on Windows,
 or multiple `--include` options may be provided. Drush 8 and earlier did
 a deep search in `~/.drush` and `/usr/share/drush/commands` when loading
@@ -56,32 +59,37 @@ command files, so we mimic that here as an example.
 ```yml
 drush:
   include:
-    - '${env.HOME}/.drush/commands'
+    - "${env.HOME}/.drush/commands"
     - /usr/share/drush/commands
 ```
 
 - View all loaded commands: `drush list`
 
-#### Specify the folders to search for Drush alias files (*.site.yml). 
+#### Specify the folders to search for Drush alias files (\*.site.yml).
+
 These locations are always merged with alias paths defined on the command line
- or in other configuration files.  On the command line, paths may be
- separated by a colon `:` on Unix-based systems or a semi-colon `;` on
- Windows, or multiple `--alias-path` options may be provided. Note that
- Drush 8 and earlier did a deep search in `~/.drush` and `/etc/drush` when
- loading alias files.
-```yml 
+or in other configuration files. On the command line, paths may be
+separated by a colon `:` on Unix-based systems or a semi-colon `;` on
+Windows, or multiple `--alias-path` options may be provided. Note that
+Drush 8 and earlier did a deep search in `~/.drush` and `/etc/drush` when
+loading alias files.
+
+```yml
 drush:
   paths:
     alias-path:
-      - '${env.HOME}/.drush/sites'
+      - "${env.HOME}/.drush/sites"
       - /etc/drush/sites
 ```
+
 - View all loaded site aliases: `drush site:alias`
 
 #### Backup directory
+
 Specify a folder where Drush should store backup files, including
 temporary sql dump files created during [sql:sync](https://www.drush.org/latest/commands/sql_sync/). If unspecified,
 defaults to `$HOME/drush-backups`.
+
 ```yml
 drush:
   paths:
@@ -89,19 +97,21 @@ drush:
 ```
 
 #### Global options
+
 ```yml
 options:
   # Specify the base_url that should be used when generating links.
-  uri: 'http://example.com/subdir'
-  
+  uri: "http://example.com/subdir"
+
   # Load Drush config from a non-standard location
-  config: '/home/USER/workspace/drupal'
-  
+  config: "/home/USER/workspace/drupal"
+
   # Enable verbose mode.
   verbose: true
 ```
 
 #### Command-specific options
+
 ```yml
 command:
   sql:
@@ -117,7 +127,7 @@ command:
     script:
       options:
         # Additional folders to search for scripts.
-        script-path: 'sites/all/scripts:profiles/myprofile/scripts'
+        script-path: "sites/all/scripts:profiles/myprofile/scripts"
   core:
     rsync:
       options:
@@ -128,11 +138,12 @@ command:
     install:
       options:
         # Set a predetermined username and password when using site:install.
-        account-name: 'alice'
-        account-pass: 'secret'
+        account-name: "alice"
+        account-pass: "secret"
 ```
 
 #### Non-options
+
 ```yml
 sql:
   # An explicit list of tables which should be included in sql-dump and sql-sync.
@@ -148,11 +159,11 @@ sql:
   structure-tables:
     common:
       - cache
-      - 'cache_*'
+      - "cache_*"
       - history
-      - 'search_*'
-      - 'sessions'
-      - 'watchdog'
+      - "search_*"
+      - "sessions"
+      - "watchdog"
   # List of tables to be omitted entirely from SQL dumps made by the 'sql-dump'
   # and 'sql-sync' commands when the "--skip-tables-key=common" option is
   # provided on the command line.  This is useful if your database contains
@@ -160,15 +171,15 @@ sql:
   # example.  You may add new tables to the existing array or add a new element.
   skip-tables:
     common:
-      - 'migration_*'
+      - "migration_*"
 
 ssh:
   # Specify options to pass to ssh.  The default is to prohibit
   # password authentication, and is included here, so you may add additional
   # parameters without losing the default configuration.
-  options: '-o PasswordAuthentication=no'
+  options: "-o PasswordAuthentication=no"
   # This string is valid for Bash shell. Override in case you need something different. See https://github.com/drush-ops/drush/issues/3816.
-  pipefail: 'set -o pipefail; '
+  pipefail: "set -o pipefail; "
 
 notify:
   # Notify when command takes more than 30 seconds.
@@ -187,9 +198,10 @@ xh:
 ```
 
 ### Misc
+
 - If you are authoring a commandfile and wish to access the user's configuration, see [Command Authoring](commands.md).
 - [Setting boolean options broke with Symfony 3](https://github.com/drush-ops/drush/issues/2956). This will be fixed
-  in a future release.  
+  in a future release.
 - Version-specific configuration. Limit the version of Drush that will load a configuration file by placing
-the Drush major version number in the filename, e.g. `drush10.yml`.
+  the Drush major version number in the filename, e.g. `drush10.yml`.
 - The Drush configuration system has been factored out of Drush and shared with the world at [https://github.com/consolidation/config](https://github.com/consolidation/config). Feel free to use it for your projects. Lots more usage information is there.

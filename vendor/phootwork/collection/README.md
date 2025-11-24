@@ -34,16 +34,19 @@ This package is a part of the Phootwork library. In order to run the test suite,
 ```
 git clone https://github.com/phootwork/phootwork
 ```
+
 Then install the dependencies via composer:
 
 ```
 composer install
 ```
-Now, run the *collection* test suite:
+
+Now, run the _collection_ test suite:
 
 ```
 vendor/bin/phpunit --testsuite collection
 ```
+
 If you want to run the whole library tests, simply run:
 
 ```

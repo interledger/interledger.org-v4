@@ -6,7 +6,7 @@ the [Symfony console component](http://symfony.com/doc/current/components/consol
 ### Commands:
 
 | Command      | Description                                         |
-|--------------| ----------------------------------------------------|
+| ------------ | --------------------------------------------------- |
 | get:value    | Get a value for a specific key in a YAML file.      |
 | get:type     | Get the data type of a value in a YAML file.        |
 | lint         | Validates that a given YAML file has valid syntax.  |

@@ -15,7 +15,7 @@ having to maintain dozens of twig files.
    template (e.g. "Two column stacked") and click "Apply"
 5. Start managing the display by dragging fields to regions
 6. Click "Save"
-[Read more](https://drupal.org/node/1795282)
+   [Read more](https://drupal.org/node/1795282)
 
 ## Adding custom layouts.
 

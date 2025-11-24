@@ -12,22 +12,22 @@
 [![codecov](https://codecov.io/gh/consolidation/robo/branch/main/graph/badge.svg?token=CAaB7ofhxx)](https://codecov.io/gh/consolidation/robo)
 [![license](https://poser.pugx.org/consolidation/robo/license)](https://packagist.org/packages/consolidation/robo)
 
-* writing cross-platform scripts
-* processing assets (less, sass, minification)
-* running tests
-* executing daemons (and workers)
-* watching filesystem changes
-* deployment with sftp/ssh/docker
+- writing cross-platform scripts
+- processing assets (less, sass, minification)
+- running tests
+- executing daemons (and workers)
+- watching filesystem changes
+- deployment with sftp/ssh/docker
 
 ## Branches
 
-| Branch | Support Level | Symfony | League Container | psr/log | PHP Versions |
-| ------ | ------------- | ------- | ---------------- | ------------ | ------------ |
-| [5.x](https://github.com/consolidation/robo/tree/5.x) | Stable             | 6 - 7 | 3 | 2 - 3 | 8.2 - 8.3 |
-| [4.x](https://github.com/consolidation/robo/tree/4.x) | Stable             | 6     | 3 | 2 - 3 | 8.0 - 8.3 |
-| [3.x](https://github.com/consolidation/robo/tree/3.x) | Not supported      | 4 - 6 | 3 | 1 - 2 | 7.1 - 8.1 |
-| [2.x](https://github.com/consolidation/robo/tree/2.x) | Not supported      | 4 - 5 | 2 | 1 - 2 | 7.1 - 7.4 |
-| [1.x](https://github.com/consolidation/robo/tree/1.x) | Not supported      | 2 - 4 | 2 | 1 - 2 | 5.5 - 7.4 |
+| Branch                                                | Support Level | Symfony | League Container | psr/log | PHP Versions |
+| ----------------------------------------------------- | ------------- | ------- | ---------------- | ------- | ------------ |
+| [5.x](https://github.com/consolidation/robo/tree/5.x) | Stable        | 6 - 7   | 3                | 2 - 3   | 8.2 - 8.3    |
+| [4.x](https://github.com/consolidation/robo/tree/4.x) | Stable        | 6       | 3                | 2 - 3   | 8.0 - 8.3    |
+| [3.x](https://github.com/consolidation/robo/tree/3.x) | Not supported | 4 - 6   | 3                | 1 - 2   | 7.1 - 8.1    |
+| [2.x](https://github.com/consolidation/robo/tree/2.x) | Not supported | 4 - 5   | 2                | 1 - 2   | 7.1 - 7.4    |
+| [1.x](https://github.com/consolidation/robo/tree/1.x) | Not supported | 2 - 4   | 2                | 1 - 2   | 5.5 - 7.4    |
 
 All versions are roughly compatible; the breaking changes introduced at each major version are fairly minor, and typically only affect classes that are not used by most clients.
 
@@ -50,6 +50,7 @@ chmod +x robo.phar && sudo mv robo.phar /usr/bin/robo
 ```
 
 OSX 10.11+
+
 ```
 chmod +x robo.phar && sudo mv robo.phar /usr/local/bin/robo
 ```
@@ -58,8 +59,8 @@ Now you can use it simply via `robo`.
 
 ### Composer
 
-* Run `composer require consolidation/robo:^4`
-* Use `vendor/bin/robo` to execute Robo tasks.
+- Run `composer require consolidation/robo:^4`
+- Use `vendor/bin/robo` to execute Robo tasks.
 
 ## Usage
 
@@ -69,7 +70,7 @@ All protected methods in traits that start with `task` prefix are tasks and can 
 ## Examples
 
 The best way to learn Robo by example is to take a look into [its own RoboFile](https://github.com/consolidation/Robo/blob/2.x/RoboFile.php)
- or [RoboFile of Codeception project](https://github.com/Codeception/Codeception/blob/2.4/RoboFile.php). There are also some basic example commands in `examples/RoboFile.php`.
+or [RoboFile of Codeception project](https://github.com/Codeception/Codeception/blob/2.4/RoboFile.php). There are also some basic example commands in `examples/RoboFile.php`.
 
 Here are some snippets from them:
 
@@ -77,8 +78,7 @@ Here are some snippets from them:
 
 Run acceptance test with local server and selenium server started.
 
-
-``` php
+```php
 <?php
 
 use Robo\Symfony\ConsoleIO;
@@ -117,7 +117,7 @@ robo test:acceptance "C:\Downloads\selenium.jar"
 
 Using `watch` task so you can use it for running tests or building assets.
 
-``` php
+```php
 <?php
 class RoboFile extends \Robo\Tasks {
 
@@ -135,7 +135,7 @@ class RoboFile extends \Robo\Tasks {
 
 Cleaning logs and cache
 
-``` php
+```php
 <?php
 class RoboFile extends \Robo\Tasks
 {
@@ -160,11 +160,11 @@ Can be executed by running:
 robo clean
 ```
 
-----
+---
 
 Creating Phar archive
 
-``` php
+```php
 function buildPhar(collectionBuilder $io)
 {
     $files = Finder::create()->ignoreVCS(true)->files()->name('*.php')->in(__DIR__);

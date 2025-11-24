@@ -1,5 +1,4 @@
-Site Alias Manager
-==================
+# Site Alias Manager
 
 The [Site Alias Manager (SAM)](https://github.com/consolidation/site-alias/blob/4.0.1/src/SiteAliasManager.php) service is used to retrieve information about one or all of the site aliases for the current installation.
 

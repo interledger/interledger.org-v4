@@ -1,5 +1,4 @@
-Webform Bootstrap
------------------
+## Webform Bootstrap
 
 ### About this Module
 
@@ -46,11 +45,11 @@ btn-lg
 
 ### Known Issues
 
-- ```\#description_display: tooltip``` uses Bootstrap tooltip instead of jQuery UI tooltip.
+- `\#description_display: tooltip` uses Bootstrap tooltip instead of jQuery UI tooltip.
 
 - Color element is not laying out correctly.
 
-- Drupal button--* classes need to be converted Bootstrap btn-* classes.
+- Drupal button--_ classes need to be converted Bootstrap btn-_ classes.
 
 - Bootstrap converts a.btn to button.btn and loses ajax callbacks.
 

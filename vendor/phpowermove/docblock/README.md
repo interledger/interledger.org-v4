@@ -10,7 +10,7 @@
 
 PHP Docblock parser and generator. An API to read and write Docblocks.
 
-> __WARNING__: starting from version 4.0 the library has moved to [phpowermove organization](https://github.com/phpowermove) and the namespace is `phpowermove\docblock`.
+> **WARNING**: starting from version 4.0 the library has moved to [phpowermove organization](https://github.com/phpowermove) and the namespace is `phpowermove\docblock`.
 
 ## Installation
 
