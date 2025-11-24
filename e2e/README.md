@@ -7,6 +7,9 @@ End-to-end tests for the Interledger.org Drupal site using Playwright.
 - Node.js 18+ (20+ recommended)
 - Browsers for Playwright (`npm run install:browsers`)
 - The target site running locally or accessible via URL
+having the website running means:
+- files/ folder from production website in /web/sites/default/files
+- mysql production database correctly imported locally
 
 ## Quick start (local)
 
