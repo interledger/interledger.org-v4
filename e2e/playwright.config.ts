@@ -38,9 +38,6 @@ export default defineConfig({
 			use: { ...devices['Desktop Safari'] }
 		}
 	]
-	// If you later want the tests to start the local stack automatically,
-	// consider wiring a webServer here (e.g., make -C local up) and a custom
-	// timeout/wait condition. For now we expect the target site to be running.
 });
 
 
