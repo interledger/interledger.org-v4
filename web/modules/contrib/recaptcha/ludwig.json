@@ -1,0 +1,8 @@
+{
+  "require": {
+    "google/recaptcha": {
+      "version": "v1.2.4",
+      "url": "https://github.com/google/recaptcha/archive/1.2.4.zip"
+    }
+  }
+}

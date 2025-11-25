@@ -43,6 +43,7 @@ return array(
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'Symfony\\Bridge\\PsrHttpMessage\\' => array($vendorDir . '/symfony/psr-http-message-bridge'),
     'Robo\\' => array($vendorDir . '/consolidation/robo/src'),
+    'ReCaptcha\\' => array($vendorDir . '/google/recaptcha/src/ReCaptcha'),
     'QueryPath\\' => array($vendorDir . '/gravitypdf/querypath/src'),
     'QueryPathTests\\' => array($vendorDir . '/gravitypdf/querypath/tests/QueryPath'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
