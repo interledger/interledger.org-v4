@@ -6,7 +6,7 @@
 }
 
 [class*="page-node-type-summit"] main::before {
-  filter: blur(150px) opacity(0.4);
+  filter: blur(180px) opacity(0.25);
 }
 
 [class*="page-node-type-summit"] .site-footer svg path,

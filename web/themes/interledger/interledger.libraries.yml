@@ -1,5 +1,5 @@
 global-styling:
-  version: 1.7.1
+  version: 1.7.2
   css:
     theme:
       css/fonts.css: {}
