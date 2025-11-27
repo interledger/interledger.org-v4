@@ -33,4 +33,4 @@ jobs:
       - name: Build and deploy to staging
         run: |
           cd ci
-          make stage
+          make deploy ENV=staging RUN=gh-${{ github.run_id }}
