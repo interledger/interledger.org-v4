@@ -30,7 +30,6 @@ endif
 	cd .. && docker build --target $(TARGETENV) -t us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN) -f docker/Dockerfile .
 	docker push us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN)
 	gcloud run deploy $(SERVICE_NAME) --image=us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN) --region=us-east1 --platform=managed
-	
 
 backup:
 	@echo "Backing up $(ENV) database and files for run $(RUN)..."
