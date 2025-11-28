@@ -16,6 +16,10 @@ on:
         required: false
         type: string
 
+concurrency:
+  group: archiving-process-limiter
+  cancel-in-progress: false
+
 jobs:
   backup:
     runs-on: ubuntu-latest
