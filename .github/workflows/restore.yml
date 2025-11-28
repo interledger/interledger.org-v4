@@ -23,6 +23,10 @@ on:
         required: true
         type: string
 
+concurrency:
+  group: archiving-process-limiter
+  cancel-in-progress: false
+
 jobs:
   restore:
     runs-on: ubuntu-latest
