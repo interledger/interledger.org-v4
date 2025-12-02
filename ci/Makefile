@@ -4,7 +4,7 @@ info:
 	@echo "Makefile for CI/CD tasks for interledger.org website"
 	@echo ""
 	@echo "Available tasks:"
-	@echo "  deploy ENV=<environment> RUN=<run-identifier>       Build and deploy the staging version of the site to Cloud Run"
+	@echo "  deploy ENV=<environment> RUN=<run-identifier>       Deploy php files to the specified environment (staging or production)"
 	@echo "  backup ENV=<environment> RUN=<run-identifier>       Backup the staging database and files"
 	@echo "  restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>    Restore the staging database and files from a specific backup"
 	@echo "  list-backups ENV=<environment>                      List available backups for the specified environment"
@@ -18,18 +18,25 @@ ifndef RUN
 	$(eval RUN=$(shell hostname)-$(shell date +%Y%m%d))
 endif
 	@echo "Deploying to $(ENV) environment with run identifier: $(RUN)"
+	$(eval TARGETHOST=34.23.109.31)	
 ifeq ($(ENV),staging)
-	$(eval TARGETENV=stage)
-	$(eval SERVICE_NAME=interledger-org-staging)
+	$(eval TARGETFOLDER=/var/www/staging)
+	$(eval TARGETENV=staging)
 else ifeq ($(ENV),production)
-	$(eval TARGETENV=prod)
-	$(eval SERVICE_NAME=interledger-org)
+	$(eval TARGETFOLDER=/var/www/production)
+	$(eval TARGETENV=production)
 else
 	$(error Error: ENV variable must be either 'staging' or 'production')
 endif
-	cd .. && docker build --target $(TARGETENV) -t us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN) -f docker/Dockerfile .
-	docker push us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN)
-	gcloud run deploy $(SERVICE_NAME) --image=us-east1-docker.pkg.dev/interledger-websites/interledger-org/website:$(ENV)-$(RUN) --region=us-east1 --platform=managed
+	@echo "Syncing files to $(TARGETHOST):$(TARGETFOLDER)..."
+	rsync -avz --exclude=backupmanager --exclude='local' --exclude='web/sites/default/files' --exclude='vendor' --exclude='docker' --exclude='tmp' --exclude='e2e' --exclude='ci/' --exclude='.git/' --exclude='README.md' ../ $(TARGETHOST):$(TARGETFOLDER)/
+	rsync ../ci/deploy/$(ENV)/settings.php $(TARGETHOST):$(TARGETFOLDER)/web/sites/default/settings.php
+	rsync ../ci/deploy/$(ENV)/htaccess $(TARGETHOST):$(TARGETFOLDER)/web/.htaccess
+	rsync ../ci/deploy/$(ENV)/robots.txt $(TARGETHOST):$(TARGETFOLDER)/web/robots.txt
+	@echo "Running cleanup script on $(TARGETHOST)..."
+	scp ../ci/deploy/$(ENV)/cleanup.sh $(TARGETHOST):$(TARGETFOLDER)/cleanup.sh
+	ssh $(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"
+	@echo "Deployment to $(ENV) environment completed."
 
 backup:
 	@echo "Backing up $(ENV) database and files for run $(RUN)..."

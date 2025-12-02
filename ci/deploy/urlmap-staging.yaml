@@ -1,0 +1,19 @@
+defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/staging-website-backend
+hostRules:
+- hosts:
+  - staging.interledger.org
+  pathMatcher: staging-matcher
+- hosts:
+  - uwa.interledger.org
+  pathMatcher: umami-matcher
+name: interledger-org
+pathMatchers:
+- defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/staging-website-backend
+  name: staging-matcher
+  routeRules:
+  - matchRules:
+    - prefixMatch: /developers
+    priority: 1
+    service: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/nginx-rewrite-backend
+- defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/umami-analytics-backend
+  name: umami-matcher
