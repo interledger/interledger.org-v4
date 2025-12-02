@@ -18,6 +18,7 @@ ifndef RUN
 	$(eval RUN=$(shell hostname)-$(shell date +%Y%m%d))
 endif
 	@echo "Deploying to $(ENV) environment with run identifier: $(RUN)"
+	$(eval TARGETUSER=deployer)	
 	$(eval TARGETHOST=34.23.109.31)	
 ifeq ($(ENV),staging)
 	$(eval TARGETFOLDER=/var/www/staging)
@@ -28,14 +29,14 @@ else ifeq ($(ENV),production)
 else
 	$(error Error: ENV variable must be either 'staging' or 'production')
 endif
-	@echo "Syncing files to $(TARGETHOST):$(TARGETFOLDER)..."
-	rsync -avz --exclude=backupmanager --exclude='local' --exclude='web/sites/default/files' --exclude='vendor' --exclude='docker' --exclude='tmp' --exclude='e2e' --exclude='ci/' --exclude='.git/' --exclude='README.md' ../ $(TARGETHOST):$(TARGETFOLDER)/
-	rsync ../ci/deploy/$(ENV)/settings.php $(TARGETHOST):$(TARGETFOLDER)/web/sites/default/settings.php
-	rsync ../ci/deploy/$(ENV)/htaccess $(TARGETHOST):$(TARGETFOLDER)/web/.htaccess
-	rsync ../ci/deploy/$(ENV)/robots.txt $(TARGETHOST):$(TARGETFOLDER)/web/robots.txt
-	@echo "Running cleanup script on $(TARGETHOST)..."
-	scp ../ci/deploy/$(ENV)/cleanup.sh $(TARGETHOST):$(TARGETFOLDER)/cleanup.sh
-	ssh $(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"
+	@echo "Syncing files to $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)..."
+	rsync -avz --exclude=backupmanager --exclude='local' --exclude='web/sites/default/files' --exclude='vendor' --exclude='docker' --exclude='tmp' --exclude='e2e' --exclude='ci/' --exclude='.git/' --exclude='README.md' ../ $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/
+	rsync ../ci/deploy/$(ENV)/settings.php $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/sites/default/settings.php
+	rsync ../ci/deploy/$(ENV)/htaccess $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/.htaccess
+	rsync ../ci/deploy/$(ENV)/robots.txt $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/robots.txt
+	@echo "Running cleanup script on $(TARGETUSER)@$(TARGETHOST)..."
+	scp ../ci/deploy/$(ENV)/cleanup.sh $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/cleanup.sh
+	ssh $(TARGETUSER)@$(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"
 	@echo "Deployment to $(ENV) environment completed."
 
 backup:
