@@ -435,11 +435,11 @@ func (b *BackendGcp) ImportDatabase(databaseName string, sqlFilePath string) err
 	}
 
 	// Clean up temporary SQL file from GCS
-	// Info("Cleaning up temporary SQL file from GCS")
-	// if err := obj.Delete(ctx); err != nil {
-	// 	Warn("Failed to delete temporary SQL file from GCS: %v", err)
-	// 	// Don't fail the operation if cleanup fails
-	// }
+	Info("Cleaning up temporary SQL file from GCS")
+	if err := obj.Delete(ctx); err != nil {
+		Warn("Failed to delete temporary SQL file from GCS: %v", err)
+		// Don't fail the operation if cleanup fails
+	}
 
 	return nil
 }
