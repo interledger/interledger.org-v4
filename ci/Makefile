@@ -1,13 +1,33 @@
-.PHONY: info deploy backup restore list-backups deploy-staging deploy-production backup-production copy-production-to-staging promote-staging-to-production
+.PHONY: info deploy backup restore list-backups deploy-staging deploy-production backup-production copy-production-to-staging promote-staging-to-production check-env-file
 
 info:
 	@echo "Makefile for CI/CD tasks for interledger.org website"
 	@echo ""
 	@echo "Available tasks:"
 	@echo "  deploy ENV=<environment> RUN=<run-identifier>       Deploy php files to the specified environment (staging or production)"
-	@echo "  backup ENV=<environment> RUN=<run-identifier>       Backup the staging database and files"
-	@echo "  restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>    Restore the staging database and files from a specific backup"
+	@echo "  backup ENV=<environment> RUN=<run-identifier>       Backup the specified environment database and files"
+	@echo "  restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>    Restore a backup to the specified target environment"
 	@echo "  list-backups ENV=<environment>                      List available backups for the specified environment"
+
+check-env-file:
+	@if [ ! -f "backupmanager/cli/.env" ]; then \
+		echo "Error: .env file not found at ci/backupmanager/cli/.env"; \
+		echo ""; \
+		echo "Please create one based on the sample.env file:"; \
+		echo "  cp ci/backupmanager/cli/sample.env ci/backupmanager/cli/.env"; \
+		echo ""; \
+		echo "Then edit ci/backupmanager/cli/.env with your actual configuration values."; \
+		echo ""; \
+		echo "Required variables:"; \
+		echo "  - GCP_PROJECT_ID"; \
+		echo "  - BACKUP_BUCKET"; \
+		echo "  - DB_NAME_STAGING, DB_NAME_PRODUCTION"; \
+		echo "  - CLOUDSQL_INSTANCE_STAGING, CLOUDSQL_INSTANCE_PRODUCTION"; \
+		echo "  - TARGET_HOST_STAGING, TARGET_HOST_PRODUCTION"; \
+		echo "  - TARGET_USER_STAGING, TARGET_USER_PRODUCTION"; \
+		echo "  - TARGET_PATH_STAGING, TARGET_PATH_PRODUCTION"; \
+		exit 1; \
+	fi
 
 
 deploy:
@@ -39,14 +59,57 @@ endif
 	ssh $(TARGETUSER)@$(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"
 	@echo "Deployment to $(ENV) environment completed."
 
-backup:
-	@echo "Backing up $(ENV) database and files for run $(RUN)..."
-	@echo "TODO"
+backup: check-env-file
+ifndef ENV
+	$(error Error: ENV variable is not set. Usage: make backup ENV=<environment> RUN=<run-identifier>)
+endif
+ifndef RUN
+	$(eval RUN=$(shell hostname)-$(shell date +%Y%m%d-%H%M%S))
+endif
+ifeq ($(ENV),staging)
+else ifeq ($(ENV),production)
+else
+	$(error Error: ENV variable must be either 'staging' or 'production')
+endif
+	@echo "Backing up $(ENV) environment with run identifier: $(RUN)..."
+	@echo "This assumes you are authenticated with GCP (run 'gcloud auth login' if needed)"
+	@cd backupmanager && go run cli/main.go backup -env $(ENV) -run-id $(RUN)
+	@echo "Backup completed successfully!"
 
-restore:
-	@echo "Restoring $(TARGETENV) database and files from backup of run $(FROM-RUN)..."
-	@echo "TODO"
+restore: check-env-file
+ifndef ENV
+	$(error Error: ENV variable is not set. Usage: make restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>)
+endif
+ifndef FROM-RUN
+	$(error Error: FROM-RUN variable is not set. Usage: make restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>)
+endif
+ifndef TARGETENV
+	$(error Error: TARGETENV variable is not set. Usage: make restore ENV=<environment> FROM-RUN=<run-identifier> TARGETENV=<target-environment>)
+endif
+ifeq ($(ENV),staging)
+else ifeq ($(ENV),production)
+else
+	$(error Error: ENV variable must be either 'staging' or 'production')
+endif
+ifeq ($(TARGETENV),staging)
+else ifeq ($(TARGETENV),production)
+else
+	$(error Error: TARGETENV variable must be either 'staging' or 'production')
+endif
+	@echo "Restoring backup from $(ENV) environment (run ID: $(FROM-RUN)) to $(TARGETENV) environment..."
+	@echo "This assumes you are authenticated with GCP (run 'gcloud auth login' if needed)"
+	@cd backupmanager && go run cli/main.go restore -env $(ENV) -run-id $(FROM-RUN) -dest-env $(TARGETENV)
+	@echo "Restore completed successfully!"
 
-list-backups:
-	@echo "Listing available backups for $(ENV)..."
-	@echo "TODO"
+list-backups: check-env-file
+ifndef ENV
+	$(error Error: ENV variable is not set. Usage: make list-backups ENV=<environment>)
+endif
+ifeq ($(ENV),staging)
+else ifeq ($(ENV),production)
+else
+	$(error Error: ENV variable must be either 'staging' or 'production')
+endif
+	@echo "Listing available backups for $(ENV) environment..."
+	@echo "This assumes you are authenticated with GCP (run 'gcloud auth login' if needed)"
+	@. backupmanager/cli/.env && gsutil ls -lh gs://$$BACKUP_BUCKET/backups/$(ENV)/ | grep -E "backup_.*\.tar\.gz$$" || echo "No backups found for $(ENV)"

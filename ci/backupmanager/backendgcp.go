@@ -1,6 +1,7 @@
 package backupmanager
 
 import (
+	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
@@ -293,6 +294,65 @@ func (b *BackendGcp) ImportDatabase(databaseName string, sqlFilePath string) err
 	}
 	defer client.Close()
 
+	// Read the SQL file - it's actually gzipped from Cloud SQL export
+	// We need to decompress it first to read and modify the content
+	Info("Reading and decompressing SQL file")
+	sqlFile, err := os.Open(sqlFilePath)
+	if err != nil {
+		Error("Failed to open SQL file: %v", err)
+		return fmt.Errorf("failed to open SQL file: %v", err)
+	}
+	defer sqlFile.Close()
+
+	// Check if file is gzipped by reading magic bytes
+	gzipReader, err := gzip.NewReader(sqlFile)
+	var sqlContent []byte
+	if err == nil {
+		// File is gzipped, decompress it
+		Info("SQL file is gzipped, decompressing...")
+		sqlContent, err = io.ReadAll(gzipReader)
+		gzipReader.Close()
+		if err != nil {
+			Error("Failed to decompress SQL file: %v", err)
+			return fmt.Errorf("failed to decompress SQL file: %v", err)
+		}
+	} else {
+		// File is not gzipped, read it directly
+		Info("SQL file is not compressed, reading directly...")
+		sqlFile.Seek(0, 0) // Reset file pointer
+		sqlContent, err = io.ReadAll(sqlFile)
+		if err != nil {
+			Error("Failed to read SQL file: %v", err)
+			return fmt.Errorf("failed to read SQL file: %v", err)
+		}
+	}
+
+	// Find the source database name by checking all other environments
+	var sourceDBName string
+	for _, envConfig := range b.EnvironmentConfigs {
+		if envConfig.DBName != config.DBName {
+			// Check if this database name appears in the SQL content
+			if strings.Contains(string(sqlContent), envConfig.DBName) {
+				sourceDBName = envConfig.DBName
+				break
+			}
+		}
+	}
+
+	if sourceDBName != "" && sourceDBName != config.DBName {
+		Info("Replacing database name '%s' with '%s' in SQL dump", sourceDBName, config.DBName)
+		modifiedContent := strings.ReplaceAll(string(sqlContent), sourceDBName, config.DBName)
+
+		// Write modified content to a temporary file
+		modifiedSQLPath := sqlFilePath + ".modified"
+		if err := os.WriteFile(modifiedSQLPath, []byte(modifiedContent), 0644); err != nil {
+			Error("Failed to write modified SQL file: %v", err)
+			return fmt.Errorf("failed to write modified SQL file: %v", err)
+		}
+		defer os.Remove(modifiedSQLPath)
+		sqlFilePath = modifiedSQLPath
+	}
+
 	// Upload SQL file to temporary location in backup bucket
 	sqlFileName := filepath.Base(sqlFilePath)
 	tempGcsPath := fmt.Sprintf("temp-imports/%s", sqlFileName)
@@ -303,19 +363,19 @@ func (b *BackendGcp) ImportDatabase(databaseName string, sqlFilePath string) err
 	obj := bucket.Object(tempGcsPath)
 	writer := obj.NewWriter(ctx)
 
-	sqlFile, err := os.Open(sqlFilePath)
+	sqlFileForUpload, err := os.Open(sqlFilePath)
 	if err != nil {
 		Error("Failed to open SQL file: %v", err)
 		return fmt.Errorf("failed to open SQL file: %v", err)
 	}
 
-	if _, err := io.Copy(writer, sqlFile); err != nil {
-		sqlFile.Close()
+	if _, err := io.Copy(writer, sqlFileForUpload); err != nil {
+		sqlFileForUpload.Close()
 		writer.Close()
 		Error("Failed to upload SQL file to GCS: %v", err)
 		return fmt.Errorf("failed to upload SQL file to GCS: %v", err)
 	}
-	sqlFile.Close()
+	sqlFileForUpload.Close()
 
 	if err := writer.Close(); err != nil {
 		Error("Failed to finalize SQL file upload: %v", err)
@@ -375,11 +435,11 @@ func (b *BackendGcp) ImportDatabase(databaseName string, sqlFilePath string) err
 	}
 
 	// Clean up temporary SQL file from GCS
-	Info("Cleaning up temporary SQL file from GCS")
-	if err := obj.Delete(ctx); err != nil {
-		Warn("Failed to delete temporary SQL file from GCS: %v", err)
-		// Don't fail the operation if cleanup fails
-	}
+	// Info("Cleaning up temporary SQL file from GCS")
+	// if err := obj.Delete(ctx); err != nil {
+	// 	Warn("Failed to delete temporary SQL file from GCS: %v", err)
+	// 	// Don't fail the operation if cleanup fails
+	// }
 
 	return nil
 }

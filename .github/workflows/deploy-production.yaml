@@ -1,0 +1,81 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DEPLOY" to confirm production deployment'
+        required: true
+        type: string
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  validate-confirmation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate confirmation
+        run: |
+          if [ "${{ inputs.confirm }}" != "DEPLOY" ]; then
+            echo "❌ Deployment cancelled. You must type 'DEPLOY' to confirm."
+            exit 1
+          fi
+          echo "✅ Confirmation validated"
+
+  deploy-production:
+    needs: validate-confirmation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYER_KEY }}" > ~/.ssh/deployer
+          chmod 600 ~/.ssh/deployer
+          ssh-keyscan -H 34.23.109.31 >> ~/.ssh/known_hosts
+      
+      - name: Configure SSH to use deployer key
+        run: |
+          cat >> ~/.ssh/config << EOF
+          Host 34.23.109.31
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          EOF
+          chmod 600 ~/.ssh/config
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GSA }}
+          service_account: interledger-org-websites@interledger-websites.iam.gserviceaccount.com
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+      
+      - name: Deploy to production
+        run: |
+          cd ci
+          make deploy ENV=production RUN=gh-${{ github.run_id }}
+      
+      - name: Deployment Summary
+        if: success()
+        run: |
+          echo "### ✅ Production Deployment Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** gh-${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 Visit: https://interledger.org" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Failure Summary
+        if: failure()
+        run: |
+          echo "### ❌ Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY
