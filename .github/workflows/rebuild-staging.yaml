@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - stephan/intorg-200
-
 concurrency:
   group: staging-deployment
   cancel-in-progress: false
