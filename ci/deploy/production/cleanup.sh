@@ -8,14 +8,7 @@ if [ -f "settings.php.new" ]; then
 	sudo mv settings.php.new web/sites/default/settings.php
 	echo "Installed settings.php"
 fi
-if [ -f ".htaccess.new" ]; then
-	sudo mv .htaccess.new web/.htaccess
-	echo "Installed .htaccess"
-fi
-if [ -f "robots.txt.new" ]; then
-	sudo mv robots.txt.new web/robots.txt
-	echo "Installed robots.txt"
-fi
+# Production uses default .htaccess and robots.txt from web folder
 
 # Ensure deployer owns vendor directory for composer install
 sudo chown -R deployer:www-data vendor 2>/dev/null || true
