@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 concurrency:
   group: staging-deployment
   cancel-in-progress: false
@@ -17,6 +16,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYER_KEY }}" > ~/.ssh/deployer
+          chmod 600 ~/.ssh/deployer
+          ssh-keyscan -H 34.23.109.31 >> ~/.ssh/known_hosts
+      
+      - name: Configure SSH to use deployer key
+        run: |
+          cat >> ~/.ssh/config << EOF
+          Host 34.23.109.31
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          EOF
+          chmod 600 ~/.ssh/config
       
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
