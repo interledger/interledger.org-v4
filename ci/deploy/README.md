@@ -77,17 +77,29 @@ Client (Browser)
     ↓
     ├─ interledger.org
     │   ├─ /developers → nginx-rewrite-backend (Cloud Run + CDN)
-    │   └─ /* → production-website-backend (GCE VM)
+    │   └─ /* → drupal-sites-backend (GCE VM)
     ├─ staging.interledger.org
     │   ├─ /developers → nginx-rewrite-backend (Cloud Run + CDN)
-    │   └─ /* → staging-website-backend (GCE VM)
+    │   └─ /* → drupal-sites-backend (GCE VM)
     ├─ uwa.interledger.org → umami-analytics-backend (Cloud Run)
 
     ↓
-[4] Backend Service
+[4] Backend Services
     ↓
-[5] Instance Group (GCE VM) / Cloud Run NEG
+    ├─ drupal-sites-backend → staging-interledger-ig (unmanaged instance group)
+    │                          └─ interledger-org-drupal VM (Apache vhosts)
+    │                             ├─ /var/www/production (interledger.org)
+    │                             └─ /var/www/staging (staging.interledger.org)
+    ├─ nginx-rewrite-backend → Cloud Run NEG
+    └─ umami-analytics-backend → Cloud Run NEG
 ```
+
+**Key architectural decisions:**
+
+- **Single Backend for Both Environments**: Both production and staging use `drupal-sites-backend` because a VM instance can only belong to one load-balanced instance group
+- **Apache Virtual Hosts**: The VM's Apache configuration differentiates between production and staging based on the `Host` header
+- **Shared Infrastructure**: The same VM, Cloud SQL instance, and load balancer serve both environments
+- **Path-Based Routing**: The `/developers` path is routed to a separate Cloud Run service for both environments
 
 ### SSL Certificates
 
@@ -178,38 +190,35 @@ gcloud compute operations list \
 
 ### Update URL Map
 
-The URL Map defines all routing rules. To modify:
+The URL Map defines all routing rules. The current configuration is stored in `ci/deploy/urlmap.yaml`.
 
-#### Export Current Configuration
+#### Make Changes to URL Map
 
-```bash
-gcloud compute url-maps describe interledger-org --format=yaml > urlmap-staging.yaml
-```
+1. **Edit the local file**: Modify `ci/deploy/urlmap.yaml` as needed
+   - Add/remove hostRules for new domains
+   - Add/remove pathMatchers for routing logic
+   - Add/remove routeRules for path-based routing
 
-#### Edit the YAML
+2. **Import the updated configuration**:
+   ```bash
+   gcloud compute url-maps import interledger-org --source=ci/deploy/urlmap.yaml --quiet
+   ```
 
-Remove read-only fields before editing:
-- `creationTimestamp`
-- `fingerprint`
-- `id`
-- `kind`
-- `selfLink`
+3. **Verify changes**:
+   ```bash
+   gcloud compute url-maps describe interledger-org --format='yaml(hostRules,pathMatchers)'
+   ```
 
-Edit the `pathMatchers` and `routeRules` sections as needed.
+4. **Update the local file** (if you made changes directly in GCP):
+   ```bash
+   gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.yaml
+   # Clean up read-only fields manually (creationTimestamp, fingerprint, id, kind, selfLink)
+   ```
 
-#### Import Updated Configuration
-
-```bash
-gcloud compute url-maps import interledger-org --source=urlmap-staging.yaml --quiet
-```
-
-#### Verify Changes
-
-```bash
-gcloud compute url-maps describe interledger-org --format='yaml(pathMatchers)'
-```
-
-**Important**: Route rules are evaluated by priority (lower numbers first). Ensure your priorities are sequential and non-conflicting.
+**Important Notes**:
+- Route rules are evaluated by priority (lower numbers first)
+- The local `urlmap.yaml` file has read-only fields removed for easy editing
+- Always test changes before applying to production traffic
 
 ### Add a New Cloud Run Service
 
@@ -240,7 +249,8 @@ gcloud compute network-endpoint-groups create my-service-neg \
 ```bash
 gcloud compute backend-services create my-service-backend \
   --global \
-  --load-balancing-scheme=EXTERNAL_MANAGED
+  --load-balancing-scheme=EXTERNAL_MANAGED \
+  --protocol=HTTP
 ```
 
 #### 4. Add NEG to Backend
@@ -266,33 +276,49 @@ gcloud compute backend-services update my-service-backend \
 
 #### 6. Update URL Map
 
-Export, edit, and re-import the URL map (see above) to add routing rules for your new service.
+Edit `ci/deploy/urlmap.yaml` to add routing rules for your new service.
 
-Example addition to `pathMatchers`:
+**Example: Add path-based routing to existing domain**
 
 ```yaml
-- defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/staging-website-backend
+pathMatchers:
+- defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/drupal-sites-backend
   name: staging-matcher
   routeRules:
   - priority: 1
     matchRules:
     - prefixMatch: /my-path
     service: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/my-service-backend
+  - priority: 2
+    matchRules:
+    - prefixMatch: /developers
+    service: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/nginx-rewrite-backend
 ```
 
-Or add a new host matcher for a new domain:
+**Example: Add new hostname**
 
 ```yaml
 hostRules:
 - hosts:
   - my-new-domain.interledger.org
   pathMatcher: my-service-matcher
+
+pathMatchers:
+- defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websites/global/backendServices/my-service-backend
+  name: my-service-matcher
+```
+
+Then import the changes:
+```bash
+gcloud compute url-maps import interledger-org --source=ci/deploy/urlmap.yaml --quiet
 ```
 
 #### 7. Test
 
 ```bash
 curl -I https://staging.interledger.org/my-path
+# or
+curl -I https://my-new-domain.interledger.org
 ```
 
 ### Working with the GCE VM
@@ -390,9 +416,36 @@ sudo chmod -R 775 /var/www/staging/web/sites/default/files/
 
 **Note**: These scripts pass all arguments through to Drush using `"$@"`, so you can use them exactly like you would use Drush directly.
 
+## Backend Services
+
+Current backend services in use:
+
+- **`drupal-sites-backend`**: Serves both production and staging Drupal sites
+  - Backend: `staging-interledger-ig` (unmanaged instance group containing `interledger-org-drupal` VM)
+  - Health Check: `staging-interledger-health` (HTTP on port 80)
+  - CDN: Enabled (cache-mode: CACHE_ALL_STATIC, 1hr default TTL)
+  
+- **`nginx-rewrite-backend`**: Serves the `/developers` portal
+  - Backend: Cloud Run serverless NEG (`nginx-rewrite` service)
+  - CDN: Enabled
+  
+- **`umami-analytics-backend`**: Serves Umami analytics
+  - Backend: Cloud Run serverless NEG (`umami-analytics` service)
+
+**Note**: The instance group is named `staging-interledger-ig` for historical reasons, but it serves both environments.
+
 ## Files in This Directory
 
-- `urlmap-staging.yaml`: Exported URL map configuration (regenerate with `gcloud compute url-maps describe`)
+- **`urlmap.yaml`**: Current URL map configuration
+  - Export latest: `gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.yaml`
+  - Import changes: `gcloud compute url-maps import interledger-org --source=ci/deploy/urlmap.yaml --quiet`
+  - Read-only fields removed (creationTimestamp, fingerprint, id, kind, selfLink)
+  
+- **`staging/`**: Staging environment configuration files
+  - `settings.php`, `htaccess`, `robots.txt`, `cleanup.sh`
+  
+- **`production/`**: Production environment configuration files  
+  - `settings.php`, `htaccess`, `robots.txt`, `cleanup.sh`
 
 ## Troubleshooting
 
