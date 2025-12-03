@@ -10,12 +10,12 @@ import (
 )
 
 type BackupBackend interface {
-	DownloadFolder(source string, destination string) error
+	DownloadFolder(envConfig *EnvironmentConfig, destination string) error
 	ExportDatabase(databaseName string, dumpPath string) error
 	UploadArchive(archivePath string, destination string) error
 	DownloadArchive(archivePath string, destination string) error
 	ImportDatabase(databaseName string, dumpPath string) error
-	UploadFolder(source string, destination string) error
+	UploadFolder(source string, envConfig *EnvironmentConfig) error
 }
 
 type BackupEngineCloud struct {
@@ -65,10 +65,9 @@ func (e *BackupEngineCloud) PerformBackup(environment string, runId string) erro
 		return fmt.Errorf("ExportDatabase failed: %v", err)
 	}
 
-	// Download files from environment specific storage bucket
-	sourceStoragePath := fmt.Sprintf("gs://%s/", envConfig.StorageBucket)
-	Info("Step 2/4: Downloading files from storage bucket")
-	err = e.backupBackend.DownloadFolder(sourceStoragePath, filesFolder)
+	// Download files from VM via rsync
+	Info("Step 2/4: Downloading files from VM via rsync")
+	err = e.backupBackend.DownloadFolder(envConfig, filesFolder)
 	if err != nil {
 		Error("DownloadFolder failed: %v", err)
 		return fmt.Errorf("DownloadFolder failed: %v", err)
@@ -163,10 +162,9 @@ func (e *BackupEngineCloud) PerformRestore(environment string, runId string, des
 		return fmt.Errorf("ImportDatabase failed: %v", err)
 	}
 
-	// Step 4: Upload files to destination storage bucket
-	destinationStoragePath := fmt.Sprintf("gs://%s/", destConfig.StorageBucket)
-	Info("Step 4/4: Uploading files to destination storage bucket")
-	err = e.backupBackend.UploadFolder(filesFolder, destinationStoragePath)
+	// Step 4: Upload files to destination VM via rsync
+	Info("Step 4/4: Uploading files to destination VM via rsync")
+	err = e.backupBackend.UploadFolder(filesFolder, destConfig)
 	if err != nil {
 		Error("UploadFolder failed: %v", err)
 		return fmt.Errorf("UploadFolder failed: %v", err)

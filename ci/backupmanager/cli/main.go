@@ -45,8 +45,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "  - BACKUP_BUCKET")
 		fmt.Fprintln(os.Stderr, "  - GCP_PROJECT_ID")
 		fmt.Fprintln(os.Stderr, "  - DB_NAME_STAGING, DB_NAME_PRODUCTION")
-		fmt.Fprintln(os.Stderr, "  - STORAGE_BUCKET_STAGING, STORAGE_BUCKET_PRODUCTION")
 		fmt.Fprintln(os.Stderr, "  - CLOUDSQL_INSTANCE_STAGING, CLOUDSQL_INSTANCE_PRODUCTION")
+		fmt.Fprintln(os.Stderr, "  - TARGET_HOST_STAGING, TARGET_HOST_PRODUCTION")
+		fmt.Fprintln(os.Stderr, "  - TARGET_USER_STAGING, TARGET_USER_PRODUCTION")
+		fmt.Fprintln(os.Stderr, "  - TARGET_PATH_STAGING, TARGET_PATH_PRODUCTION")
 		os.Exit(1)
 	}
 
@@ -136,17 +138,21 @@ func loadConfigs() (backupmanager.EnvironmentConfigs, error) {
 	staging := &backupmanager.EnvironmentConfig{
 		BackupBucket:     os.Getenv("BACKUP_BUCKET"),
 		DBName:           os.Getenv("DB_NAME_STAGING"),
-		StorageBucket:    os.Getenv("STORAGE_BUCKET_STAGING"),
 		GCPProjectID:     os.Getenv("GCP_PROJECT_ID"),
 		CloudSQLInstance: os.Getenv("CLOUDSQL_INSTANCE_STAGING"),
+		TargetHost:       os.Getenv("TARGET_HOST_STAGING"),
+		TargetUser:       os.Getenv("TARGET_USER_STAGING"),
+		TargetPath:       os.Getenv("TARGET_PATH_STAGING"),
 	}
 
 	production := &backupmanager.EnvironmentConfig{
 		BackupBucket:     os.Getenv("BACKUP_BUCKET"),
 		DBName:           os.Getenv("DB_NAME_PRODUCTION"),
-		StorageBucket:    os.Getenv("STORAGE_BUCKET_PRODUCTION"),
 		GCPProjectID:     os.Getenv("GCP_PROJECT_ID"),
 		CloudSQLInstance: os.Getenv("CLOUDSQL_INSTANCE_PRODUCTION"),
+		TargetHost:       os.Getenv("TARGET_HOST_PRODUCTION"),
+		TargetUser:       os.Getenv("TARGET_USER_PRODUCTION"),
+		TargetPath:       os.Getenv("TARGET_PATH_PRODUCTION"),
 	}
 
 	// Validate required fields
@@ -156,10 +162,10 @@ func loadConfigs() (backupmanager.EnvironmentConfigs, error) {
 	if staging.GCPProjectID == "" {
 		return nil, fmt.Errorf("GCP_PROJECT_ID is required")
 	}
-	if staging.DBName == "" || staging.StorageBucket == "" || staging.CloudSQLInstance == "" {
+	if staging.DBName == "" || staging.CloudSQLInstance == "" || staging.TargetHost == "" || staging.TargetUser == "" || staging.TargetPath == "" {
 		return nil, fmt.Errorf("missing staging environment configuration")
 	}
-	if production.DBName == "" || production.StorageBucket == "" || production.CloudSQLInstance == "" {
+	if production.DBName == "" || production.CloudSQLInstance == "" || production.TargetHost == "" || production.TargetUser == "" || production.TargetPath == "" {
 		return nil, fmt.Errorf("missing production environment configuration")
 	}
 

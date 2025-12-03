@@ -2,19 +2,36 @@ sudo chmod g+wx /var/www/staging
 
 cd /var/www/staging
 
+# Ensure deployer owns vendor directory for composer install
+sudo chown -R deployer:www-data vendor 2>/dev/null || true
+sudo chmod -R g+w vendor 2>/dev/null || true
+
+# Install/update composer dependencies
+composer install --no-dev --optimize-autoloader
+
 # Make all Drush binaries executable
 sudo chmod +x vendor/bin/drush
 sudo chmod +x vendor/bin/drush.php
 sudo chmod +x vendor/drush/drush/drush
 
-# Also ensure www-data can read the entire vendor tree
+# Set final ownership and permissions for vendor
 sudo chown -R deployer:www-data vendor
 sudo chmod -R g+rX vendor
 
-# Test
-# sudo -u www-data env \
-#   DRUPAL_DB_HOST=127.0.0.1 \
-#   DRUPAL_DB_NAME=interledger_org_staging \
-#   DRUPAL_DB_USER=staging \
-#   DRUPAL_DB_PASSWORD='XXXXXXXXXXXXXXXXXXXXXXX' \
-#   ./vendor/bin/drush --uri=staging.interledger.org cr
+# Create private files and config directories
+sudo mkdir -p private config
+sudo chown -R www-data:www-data private
+sudo chmod -R 770 private
+sudo chown -R deployer:www-data config
+sudo chmod -R 775 config
+
+# Protect sites/default directory (security requirement)
+sudo chmod 555 web/sites/default
+sudo chmod 444 web/sites/default/settings.php
+
+# Ensure files directory is writable by www-data
+sudo chown -R www-data:www-data web/sites/default/files
+sudo chmod -R 775 web/sites/default/files
+
+# Rebuild cache after deployment
+sudo /home/deployer/staging-drush.sh cr

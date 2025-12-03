@@ -23,6 +23,8 @@ endif
 ifeq ($(ENV),staging)
 	$(eval TARGETFOLDER=/var/www/staging)
 	$(eval TARGETENV=staging)
+	rsync ../ci/deploy/$(ENV)/htaccess $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/.htaccess
+	rsync ../ci/deploy/$(ENV)/robots.txt $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/robots.txt	
 else ifeq ($(ENV),production)
 	$(eval TARGETFOLDER=/var/www/production)
 	$(eval TARGETENV=production)
@@ -32,8 +34,6 @@ endif
 	@echo "Syncing files to $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)..."
 	rsync -avz --exclude=backupmanager --exclude='local' --exclude='web/sites/default/files' --exclude='vendor' --exclude='docker' --exclude='tmp' --exclude='e2e' --exclude='ci/' --exclude='.git/' --exclude='README.md' ../ $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/
 	rsync ../ci/deploy/$(ENV)/settings.php $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/sites/default/settings.php
-	rsync ../ci/deploy/$(ENV)/htaccess $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/.htaccess
-	rsync ../ci/deploy/$(ENV)/robots.txt $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/robots.txt
 	@echo "Running cleanup script on $(TARGETUSER)@$(TARGETHOST)..."
 	scp ../ci/deploy/$(ENV)/cleanup.sh $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/cleanup.sh
 	ssh $(TARGETUSER)@$(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"

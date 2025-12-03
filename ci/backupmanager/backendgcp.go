@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
 	"cloud.google.com/go/storage"
-	"google.golang.org/api/iterator"
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
 
@@ -25,141 +24,26 @@ func NewBackendGcp(configs EnvironmentConfigs) *BackendGcp {
 	}
 }
 
-// DownloadFolder downloads all files from a GCS bucket path to a local destination
-// source should be in format: gs://bucket-name/path/
-func (b *BackendGcp) DownloadFolder(source string, destination string) error {
-	Info("Starting download from %s to %s", source, destination)
-	ctx := context.Background()
-	client, err := storage.NewClient(ctx)
+// DownloadFolder downloads all files from the VM via rsync over SSH to a local destination
+func (b *BackendGcp) DownloadFolder(envConfig *EnvironmentConfig, destination string) error {
+	Info("Starting rsync download from %s@%s:%s to %s", envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath, destination)
+
+	// Build rsync command with SSH options
+	// Use -avz for archive mode, verbose, and compression
+	// Trailing slash on source ensures we copy contents, not the directory itself
+	source := fmt.Sprintf("%s@%s:%s/", envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath)
+
+	cmd := exec.Command("rsync", "-avz", "-e", "ssh", source, destination)
+
+	// Capture combined output for logging
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		Error("Failed to create storage client: %v", err)
-		return fmt.Errorf("failed to create storage client: %v", err)
-	}
-	defer client.Close()
-
-	// Parse the GCS path
-	if !strings.HasPrefix(source, "gs://") {
-		return fmt.Errorf("source must start with gs://")
-	}
-	source = strings.TrimPrefix(source, "gs://")
-	parts := strings.SplitN(source, "/", 2)
-	if len(parts) < 1 {
-		return fmt.Errorf("invalid GCS path: %s", source)
+		Error("Rsync failed: %v\nOutput: %s", err, string(output))
+		return fmt.Errorf("rsync failed: %v\nOutput: %s", err, string(output))
 	}
 
-	bucketName := parts[0]
-	prefix := ""
-	if len(parts) == 2 {
-		prefix = parts[1]
-	}
-
-	bucket := client.Bucket(bucketName)
-
-	// List all objects with the given prefix
-	Info("Listing objects in bucket %s with prefix %s", bucketName, prefix)
-	query := &storage.Query{Prefix: prefix}
-	it := bucket.Objects(ctx, query)
-
-	// Collect all files to download
-	type fileToDownload struct {
-		objectName string
-		localPath  string
-	}
-	var files []fileToDownload
-
-	for {
-		attrs, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			Error("Error iterating objects: %v", err)
-			return fmt.Errorf("error iterating objects: %v", err)
-		}
-
-		// Skip directories
-		if strings.HasSuffix(attrs.Name, "/") {
-			continue
-		}
-
-		// Determine the local file path
-		relativePath := strings.TrimPrefix(attrs.Name, prefix)
-		relativePath = strings.TrimPrefix(relativePath, "/")
-		localPath := filepath.Join(destination, relativePath)
-
-		files = append(files, fileToDownload{
-			objectName: attrs.Name,
-			localPath:  localPath,
-		})
-	}
-
-	Info("Found %d files to download, starting parallel download", len(files))
-
-	// Download files in parallel with a worker pool
-	const maxWorkers = 20
-	workers := maxWorkers
-	if len(files) < workers {
-		workers = len(files)
-	}
-
-	type result struct {
-		err error
-	}
-
-	results := make(chan result, len(files))
-	semaphore := make(chan struct{}, workers)
-
-	for _, f := range files {
-		semaphore <- struct{}{} // Acquire worker slot
-		go func(objectName, localPath string) {
-			defer func() { <-semaphore }() // Release worker slot
-
-			// Create directory structure
-			if err := os.MkdirAll(filepath.Dir(localPath), 0755); err != nil {
-				results <- result{err: fmt.Errorf("failed to create directory: %v", err)}
-				return
-			}
-
-			// Download the object
-			Info("Downloading %s to %s", objectName, localPath)
-			obj := bucket.Object(objectName)
-			reader, err := obj.NewReader(ctx)
-			if err != nil {
-				Error("Failed to read object %s: %v", objectName, err)
-				results <- result{err: fmt.Errorf("failed to read object %s: %v", objectName, err)}
-				return
-			}
-			defer reader.Close()
-
-			file, err := os.Create(localPath)
-			if err != nil {
-				Error("Failed to create local file %s: %v", localPath, err)
-				results <- result{err: fmt.Errorf("failed to create local file %s: %v", localPath, err)}
-				return
-			}
-			defer file.Close()
-
-			if _, err := io.Copy(file, reader); err != nil {
-				Error("Failed to download file %s: %v", objectName, err)
-				results <- result{err: fmt.Errorf("failed to download file %s: %v", objectName, err)}
-				return
-			}
-
-			results <- result{err: nil}
-		}(f.objectName, f.localPath)
-	}
-
-	// Wait for all downloads to complete and check for errors
-	fileCount := 0
-	for i := 0; i < len(files); i++ {
-		res := <-results
-		if res.err != nil {
-			return res.err
-		}
-		fileCount++
-	}
-
-	Info("Successfully downloaded %d files from %s", fileCount, source)
+	Info("Rsync output:\n%s", string(output))
+	Info("Successfully downloaded files via rsync from %s@%s:%s", envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath)
 	return nil
 }
 
@@ -500,131 +384,32 @@ func (b *BackendGcp) ImportDatabase(databaseName string, sqlFilePath string) err
 	return nil
 }
 
-func (b *BackendGcp) UploadFolder(sourcePath string, gcsDestination string) error {
-	Info("Uploading folder from %s to %s", sourcePath, gcsDestination)
+func (b *BackendGcp) UploadFolder(sourcePath string, envConfig *EnvironmentConfig) error {
+	Info("Uploading folder from %s to %s@%s:%s via rsync", sourcePath, envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath)
 
-	ctx := context.Background()
-	client, err := storage.NewClient(ctx)
+	// Build rsync command with SSH options
+	// Use -rlptz instead of -a to avoid setting directory timestamps and preserve permissions
+	// Delete files on destination that don't exist in source
+	destination := fmt.Sprintf("%s@%s:%s/", envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath)
+
+	// Add trailing slash to source to copy contents, not the directory itself
+	source := sourcePath
+	if !strings.HasSuffix(source, "/") {
+		source = source + "/"
+	}
+
+	// Use -rlpz: recursive, copy symlinks, preserve permissions, compress
+	// Use --no-times to skip setting timestamps entirely (avoids permission errors)
+	cmd := exec.Command("rsync", "-rlpz", "--delete", "--no-times", "--no-perms", "--chmod=ugo=rwX", "-e", "ssh", source, destination)
+
+	// Capture combined output for logging
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		Error("Failed to create storage client: %v", err)
-		return fmt.Errorf("failed to create storage client: %v", err)
-	}
-	defer client.Close()
-
-	// Parse the GCS path
-	if !strings.HasPrefix(gcsDestination, "gs://") {
-		return fmt.Errorf("gcsDestination must start with gs://")
-	}
-	gcsDestinationClean := strings.TrimPrefix(gcsDestination, "gs://")
-	parts := strings.SplitN(gcsDestinationClean, "/", 2)
-	if len(parts) < 1 {
-		return fmt.Errorf("invalid GCS path: %s", gcsDestination)
+		Error("Rsync upload failed: %v\nOutput: %s", err, string(output))
+		return fmt.Errorf("rsync upload failed: %v\nOutput: %s", err, string(output))
 	}
 
-	bucketName := parts[0]
-	prefix := ""
-	if len(parts) == 2 {
-		prefix = parts[1]
-	}
-
-	bucket := client.Bucket(bucketName) // Count total files first
-	totalFiles := 0
-	filepath.Walk(sourcePath, func(path string, info os.FileInfo, err error) error {
-		if err == nil && !info.IsDir() {
-			totalFiles++
-		}
-		return nil
-	})
-
-	Info("Found %d files to upload", totalFiles)
-
-	// Use parallel uploads
-	const maxWorkers = 10
-	sem := make(chan struct{}, maxWorkers)
-	errChan := make(chan error, totalFiles)
-	var wg sync.WaitGroup
-
-	uploadCount := 0
-
-	err = filepath.Walk(sourcePath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		wg.Add(1)
-		sem <- struct{}{} // Acquire semaphore
-
-		go func(filePath string) {
-			defer wg.Done()
-			defer func() { <-sem }() // Release semaphore
-
-			// Get relative path
-			relPath, err := filepath.Rel(sourcePath, filePath)
-			if err != nil {
-				errChan <- fmt.Errorf("failed to get relative path for %s: %v", filePath, err)
-				return
-			}
-
-			// Convert to GCS path format (use forward slashes)
-			gcsPath := filepath.ToSlash(relPath)
-			if prefix != "" {
-				gcsPath = prefix + "/" + gcsPath
-			}
-
-			// Open source file
-			file, err := os.Open(filePath)
-			if err != nil {
-				errChan <- fmt.Errorf("failed to open file %s: %v", filePath, err)
-				return
-			}
-			defer file.Close()
-
-			// Upload to GCS
-			obj := bucket.Object(gcsPath)
-			writer := obj.NewWriter(ctx)
-
-			if _, err := io.Copy(writer, file); err != nil {
-				writer.Close()
-				errChan <- fmt.Errorf("failed to upload file %s: %v", filePath, err)
-				return
-			}
-
-			if err := writer.Close(); err != nil {
-				errChan <- fmt.Errorf("failed to finalize upload for %s: %v", filePath, err)
-				return
-			}
-
-			Info("Uploaded: %s -> gs://%s/%s", relPath, bucketName, gcsPath)
-		}(path)
-
-		uploadCount++
-		return nil
-	})
-
-	if err != nil {
-		Error("Error walking directory: %v", err)
-		return fmt.Errorf("error walking directory: %v", err)
-	}
-
-	// Wait for all uploads to complete
-	wg.Wait()
-	close(errChan)
-
-	// Check for errors
-	var uploadErrors []string
-	for err := range errChan {
-		uploadErrors = append(uploadErrors, err.Error())
-	}
-
-	if len(uploadErrors) > 0 {
-		Error("Failed to upload %d files", len(uploadErrors))
-		return fmt.Errorf("failed to upload files: %s", strings.Join(uploadErrors, "; "))
-	}
-
-	Info("Successfully uploaded %d files to %s", totalFiles, gcsDestination)
+	Info("Rsync output:\n%s", string(output))
+	Info("Successfully uploaded files via rsync to %s@%s:%s", envConfig.TargetUser, envConfig.TargetHost, envConfig.TargetPath)
 	return nil
 }

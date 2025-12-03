@@ -16,7 +16,7 @@ func NewMockBackend() *MockBackend {
 	return &MockBackend{}
 }
 
-func (b *MockBackend) DownloadFolder(source string, destination string) error {
+func (b *MockBackend) DownloadFolder(envConfig *EnvironmentConfig, destination string) error {
 	if b.failDownload {
 		return fmt.Errorf("simulated download failure")
 	}
@@ -69,7 +69,7 @@ func (b *MockBackend) ImportDatabase(databaseName string, sqlFilePath string) er
 	return nil
 }
 
-func (b *MockBackend) UploadFolder(sourcePath string, gcsDestination string) error {
+func (b *MockBackend) UploadFolder(sourcePath string, envConfig *EnvironmentConfig) error {
 	// Mock folder upload logic - just verify source exists
 	if _, err := os.Stat(sourcePath); err != nil {
 		return fmt.Errorf("source path not found: %v", err)
@@ -82,16 +82,20 @@ func mockConfigs() EnvironmentConfigs {
 		"staging": &EnvironmentConfig{
 			BackupBucket:     "test-backup-bucket",
 			DBName:           "staging_db",
-			StorageBucket:    "test-storage-bucket",
 			GCPProjectID:     "test-project",
 			CloudSQLInstance: "test-instance-staging",
+			TargetHost:       "test-host",
+			TargetUser:       "test-user",
+			TargetPath:       "/var/www/staging/web/sites/default/files",
 		},
 		"production": &EnvironmentConfig{
 			BackupBucket:     "test-backup-bucket",
 			DBName:           "production_db",
-			StorageBucket:    "test-storage-bucket",
 			GCPProjectID:     "test-project",
 			CloudSQLInstance: "test-instance-production",
+			TargetHost:       "test-host",
+			TargetUser:       "test-user",
+			TargetPath:       "/var/www/production/web/sites/default/files",
 		},
 	}
 }

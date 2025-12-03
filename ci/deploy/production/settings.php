@@ -5,27 +5,19 @@
  * Drupal site-specific configuration file.
  */
 
-// Default configuration
-$db_host = getenv('DRUPAL_DB_HOST') ?: 'localhost';
-$db_port = '3306';
-$db_unix_socket = '';
-
-// Docker/Cloud Run environment
+// Database configuration from environment variables
 $databases['default']['default'] = array (
   'database' => getenv('DRUPAL_DB_NAME') ?: 'drupal',
   'username' => getenv('DRUPAL_DB_USER') ?: 'drupal',
   'password' => getenv('DRUPAL_DB_PASSWORD') ?: 'drupal123',
   'prefix' => '',
-  'host' => $db_host,
-  'port' => $db_port,
-  'unix_socket' => $db_unix_socket,
+  'host' => getenv('DRUPAL_DB_HOST') ?: '127.0.0.1',
+  'port' => '3306',
   'isolation_level' => 'READ COMMITTED',
   'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
   'driver' => 'mysql',
   'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
 );
-
-
 
 // Hash salt for security
 $settings['hash_salt'] = 'QDtxU5tjEIsxnYw0PyeovfnXD0UmXrY-TC6rNMuxoEmXQirsJL2tE47GLwr69F6UsHNhIohvug';
@@ -45,38 +37,38 @@ $settings['entity_update_backup'] = TRUE;
 $settings['state_cache'] = TRUE;
 $settings['migrate_node_migrate_type_classic'] = FALSE;
 
-/**
- * Configuration for Docker development environment
- */
-if (getenv('DRUPAL_DB_HOST')) {
-  // Trusted host settings for Docker and Cloud Run
-  $settings['trusted_host_patterns'] = [
-    '^localhost$',
-    '^127\.0\.0\.1$',
-    '^.+\.localhost$',
-    '^.+\.local$',
-    '^.+\.us-east1\.run\.app$',
-    '^.+\.us-east1\.run\.app$',    
-    '^10\.142\.0\.2$', # The internal IP of the Cloud Run instance. Used for health checks
-    '^interledger\.org$',
-  ];
+// Trusted host settings
+$settings['trusted_host_patterns'] = [
+  '^localhost$',
+  '^127\.0\.0\.1$',
+  '^.+\.localhost$',
+  '^.+\.local$',
+  '^.+\.us-east1\.run\.app$',
+  '^10\.142\.0\.2$',
+  '^interledger\.org$',
+  '^www\.interledger\.org$',
+];
+
+// Reverse proxy settings for HTTPS
+$settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy_addresses'] = [
+  $_SERVER['REMOTE_ADDR'],
+];
+
+// Force HTTPS for all URLs
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+  $_SERVER['HTTPS'] = 'on';
+}
+if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+  $_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
 }
   
 // File system paths
-$settings['file_public_path'] = '/var/www/staging/web/sites/default/files';
-$settings['file_public_base_url'] = '/sites/default/files';
-$settings['file_assets_path'] = 'sites/default/assets';
-$settings['file_private_path'] = '/tmp/drupal_private_files';
-
-// PHP storage directory (for compiled PHP code)
-// Use /tmp for PHP storage to avoid GCS latency - this needs to be fast local storage
-$settings['php_storage']['default'] = [
-'class' => 'Drupal\Component\PhpStorage\FileStorage',
-'directory' => '/tmp/drupal_php_storage',
-];
+$settings['file_public_path'] = 'sites/default/files';
+$settings['file_private_path'] = '/var/www/production/private';
 
 // Configuration sync directory
-$settings['config_sync_directory'] = '/var/drupal/files/config';
+$settings['config_sync_directory'] = '/var/www/production/config';
 
 // Enable CSS and JS aggregation for production
 $config['system.performance']['css']['preprocess'] = TRUE;

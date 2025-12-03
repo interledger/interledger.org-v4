@@ -50,6 +50,26 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYER_KEY }}" > ~/.ssh/deployer
+          chmod 600 ~/.ssh/deployer
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_STAGING }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_PRODUCTION }} >> ~/.ssh/known_hosts
+      
+      - name: Configure SSH to use deployer key
+        run: |
+          cat >> ~/.ssh/config << EOF
+          Host ${{ secrets.TARGET_HOST_STAGING }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          Host ${{ secrets.TARGET_HOST_PRODUCTION }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          EOF
+          chmod 600 ~/.ssh/config
+
       - name: Confirm restore operation
         run: |
           echo "### ⚠️ Restore Operation Confirmation" >> $GITHUB_STEP_SUMMARY
@@ -75,10 +95,14 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           DB_NAME_STAGING: ${{ secrets.DB_NAME_STAGING }}
           DB_NAME_PRODUCTION: ${{ secrets.DB_NAME_PRODUCTION }}
-          STORAGE_BUCKET_STAGING: ${{ secrets.STORAGE_BUCKET_STAGING }}
-          STORAGE_BUCKET_PRODUCTION: ${{ secrets.STORAGE_BUCKET_PRODUCTION }}
           CLOUDSQL_INSTANCE_STAGING: ${{ secrets.CLOUDSQL_INSTANCE_STAGING }}
           CLOUDSQL_INSTANCE_PRODUCTION: ${{ secrets.CLOUDSQL_INSTANCE_PRODUCTION }}
+          TARGET_HOST_STAGING: ${{ secrets.TARGET_HOST_STAGING }}
+          TARGET_HOST_PRODUCTION: ${{ secrets.TARGET_HOST_PRODUCTION }}
+          TARGET_USER_STAGING: ${{ secrets.TARGET_USER_STAGING }}
+          TARGET_USER_PRODUCTION: ${{ secrets.TARGET_USER_PRODUCTION }}
+          TARGET_PATH_STAGING: ${{ secrets.TARGET_PATH_STAGING }}
+          TARGET_PATH_PRODUCTION: ${{ secrets.TARGET_PATH_PRODUCTION }}
         run: |
           ./backup-cli preflight || echo "⚠️ Preflight checks failed, but continuing..."
 
@@ -89,10 +113,14 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           DB_NAME_STAGING: ${{ secrets.DB_NAME_STAGING }}
           DB_NAME_PRODUCTION: ${{ secrets.DB_NAME_PRODUCTION }}
-          STORAGE_BUCKET_STAGING: ${{ secrets.STORAGE_BUCKET_STAGING }}
-          STORAGE_BUCKET_PRODUCTION: ${{ secrets.STORAGE_BUCKET_PRODUCTION }}
           CLOUDSQL_INSTANCE_STAGING: ${{ secrets.CLOUDSQL_INSTANCE_STAGING }}
           CLOUDSQL_INSTANCE_PRODUCTION: ${{ secrets.CLOUDSQL_INSTANCE_PRODUCTION }}
+          TARGET_HOST_STAGING: ${{ secrets.TARGET_HOST_STAGING }}
+          TARGET_HOST_PRODUCTION: ${{ secrets.TARGET_HOST_PRODUCTION }}
+          TARGET_USER_STAGING: ${{ secrets.TARGET_USER_STAGING }}
+          TARGET_USER_PRODUCTION: ${{ secrets.TARGET_USER_PRODUCTION }}
+          TARGET_PATH_STAGING: ${{ secrets.TARGET_PATH_STAGING }}
+          TARGET_PATH_PRODUCTION: ${{ secrets.TARGET_PATH_PRODUCTION }}
         run: |
           ./backup-cli restore \
             -env ${{ inputs.source_environment }} \

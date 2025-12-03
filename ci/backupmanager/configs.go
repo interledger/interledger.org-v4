@@ -12,9 +12,11 @@ type EnvironmentConfigs map[string]*EnvironmentConfig
 type EnvironmentConfig struct {
 	BackupBucket     string
 	DBName           string
-	StorageBucket    string
 	GCPProjectID     string
 	CloudSQLInstance string
+	TargetHost       string
+	TargetUser       string
+	TargetPath       string
 }
 
 func environmentConfigs() (EnvironmentConfigs, error) {
@@ -53,12 +55,6 @@ func environmentConfig(environment string) (*EnvironmentConfig, error) {
 	}
 	cfg.DBName = dbName
 
-	storageBucket := os.Getenv(fmt.Sprintf("STORAGE_BUCKET_%s", strings.ToUpper(environment)))
-	if storageBucket == "" {
-		return nil, fmt.Errorf("missing configuration STORAGE_BUCKET_%s", strings.ToUpper(environment))
-	}
-	cfg.StorageBucket = storageBucket
-
 	gcpProjectID := os.Getenv("GCP_PROJECT_ID")
 	if gcpProjectID == "" {
 		return nil, fmt.Errorf("missing configuration GCP_PROJECT_ID")
@@ -70,6 +66,24 @@ func environmentConfig(environment string) (*EnvironmentConfig, error) {
 		return nil, fmt.Errorf("missing configuration CLOUDSQL_INSTANCE_%s", strings.ToUpper(environment))
 	}
 	cfg.CloudSQLInstance = cloudSQLInstance
+
+	targetHost := os.Getenv(fmt.Sprintf("TARGET_HOST_%s", strings.ToUpper(environment)))
+	if targetHost == "" {
+		return nil, fmt.Errorf("missing configuration TARGET_HOST_%s", strings.ToUpper(environment))
+	}
+	cfg.TargetHost = targetHost
+
+	targetUser := os.Getenv(fmt.Sprintf("TARGET_USER_%s", strings.ToUpper(environment)))
+	if targetUser == "" {
+		return nil, fmt.Errorf("missing configuration TARGET_USER_%s", strings.ToUpper(environment))
+	}
+	cfg.TargetUser = targetUser
+
+	targetPath := os.Getenv(fmt.Sprintf("TARGET_PATH_%s", strings.ToUpper(environment)))
+	if targetPath == "" {
+		return nil, fmt.Errorf("missing configuration TARGET_PATH_%s", strings.ToUpper(environment))
+	}
+	cfg.TargetPath = targetPath
 
 	// Return the typed config
 	return cfg, nil

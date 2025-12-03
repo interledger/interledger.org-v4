@@ -13,8 +13,13 @@ function interledger_preprocess(&$variables) {
 
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
-  $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-  $variables['current_page_title'] = $page_title;
+  $route_object = $route_match->getRouteObject();
+  
+  // Only get title if we have a valid route object
+  if ($route_object) {
+    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_object);
+    $variables['current_page_title'] = $page_title;
+  }
 
   $status = \Drupal::requestStack()->getCurrentRequest()->attributes->get('exception');
   if ($status) {
