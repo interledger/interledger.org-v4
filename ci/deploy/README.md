@@ -32,6 +32,14 @@ Both production and staging environments run on a single GCE instance (`interled
 - **Database Credentials**: Supplied via environment variables in Apache configuration (not in `settings.php` checked into git)
 - **Files**: Stored locally on VM in each environment's `web/sites/default/files/` directory
 
+#### Why Files Are Stored Locally
+
+We store Drupal's uploaded files directly on the VM's persistent disk rather than using GCS FUSE to mount a Cloud Storage bucket. This decision was made after extensive testing revealed stability issues with GCS FUSE.
+
+**Problem with GCS FUSE**: Drupal's cache rebuild operation (`drush cr`) dynamically deletes and recreates directories (e.g., `css/`, `js/`, `php/` within `sites/default/files/`). When these directories were mounted via GCS FUSE, this delete-and-recreate pattern caused directories to permanently disappear from the filesystem. This made the deployment extremely unstable, with cache rebuilds frequently breaking the site.
+
+**Current approach**: Files are stored on the VM's persistent disk and included in the backup/restore process via rsync. This provides stable, predictable behavior at the cost of requiring manual file synchronization during backups and restores.
+
 #### Database Configuration
 
 Database credentials are managed through Apache environment variables rather than being hardcoded in `settings.php`. This approach:
@@ -341,6 +349,16 @@ ssh deployer@34.23.109.31
 - **Staging**: `/var/www/staging`
 - **Apache Config**: `/etc/apache2/sites-available/`
 - **Apache Logs**: `/var/log/apache2/`
+
+#### Disk Snapshots
+
+The VM's persistent disk has automatic daily snapshots enabled via GCP Snapshot Schedules:
+- **Schedule**: Daily at 2:00 AM EST
+- **Retention**: 7 days
+- **Type**: Regional snapshots (us-east1)
+- **Configuration**: Attached via resource policy `daily-disk-snapshots`
+
+Snapshots are incremental and can be used to restore the disk in case of data loss or corruption. To restore from a snapshot, create a new disk from the snapshot and attach it to the VM.
 
 #### Common VM Tasks
 

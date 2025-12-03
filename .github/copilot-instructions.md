@@ -79,8 +79,14 @@ make deploy ENV=production RUN=manual-$(date +%Y%m%d)
 
 Deployment process:
 1. rsync code to VM (excluding files, vendor, local dev folders)
-2. Copy environment-specific `settings.php`, `htaccess`, `robots.txt`
-3. Run cleanup script on VM (composer install, cache clear, etc.)
+2. Copy environment-specific config files to temporary `.new` locations:
+   - `settings.php.new` (both environments)
+   - `.htaccess.new` and `robots.txt.new` (staging only - production uses defaults from source)
+3. Run cleanup script on VM which:
+   - Moves `.new` files into place with sudo (to handle protected file permissions)
+   - Runs composer install
+   - Rebuilds Drupal cache
+   - Sets final security permissions
 
 ## Backup and Restore System
 
@@ -199,11 +205,16 @@ gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.ya
 
 2. **Database Name in SQL Dumps**: Cloud SQL exports include the source database name. The backupmanager automatically replaces this during restore, but if you manually restore, you must replace all occurrences of the source database name with the target database name.
 
-3. **File Permissions**: Always use `www-data:www-data` ownership and `775` permissions for files directories after upload or restore.
+3. **File Permissions**: Always use `www-data:www-data` ownership and `775` permissions for files directories after upload or restore. The `sites/default` directory is set to `555` and `settings.php` to `444` for security - this is why deployment copies config files to `.new` locations first, then the cleanup script uses sudo to move them into place.
 
-4. **VM Instance Group Limitation**: A VM can only belong to one load-balanced instance group. Don't try to create separate instance groups for production and staging.
+4. **Environment-Specific Files**: 
+   - **Staging** overrides `.htaccess` and `robots.txt` (to block search engines)
+   - **Production** uses the default `.htaccess` and `robots.txt` from the source code's `web/` folder
+   - Both environments use custom `settings.php` with database credentials from Apache environment variables
 
-5. **Cache Layers**: Remember there are multiple cache layers:
+5. **VM Instance Group Limitation**: A VM can only belong to one load-balanced instance group. Don't try to create separate instance groups for production and staging.
+
+6. **Cache Layers**: Remember there are multiple cache layers:
    - Drupal cache (clear with drush: `~/production-drush.sh cr`)
    - Cloud CDN (invalidate with: `gcloud compute url-maps invalidate-cdn-cache`)
    - Browser cache
