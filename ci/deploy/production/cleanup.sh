@@ -2,6 +2,21 @@ sudo chmod g+wx /var/www/production
 
 cd /var/www/production
 
+# Install environment-specific configuration files
+if [ -f "settings.php.new" ]; then
+	sudo chmod 644 web/sites/default/settings.php 2>/dev/null || true
+	sudo mv settings.php.new web/sites/default/settings.php
+	echo "Installed settings.php"
+fi
+if [ -f ".htaccess.new" ]; then
+	sudo mv .htaccess.new web/.htaccess
+	echo "Installed .htaccess"
+fi
+if [ -f "robots.txt.new" ]; then
+	sudo mv robots.txt.new web/robots.txt
+	echo "Installed robots.txt"
+fi
+
 # Ensure deployer owns vendor directory for composer install
 sudo chown -R deployer:www-data vendor 2>/dev/null || true
 sudo chmod -R g+w vendor 2>/dev/null || true

@@ -53,7 +53,10 @@ else
 endif
 	@echo "Syncing files to $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)..."
 	rsync -avz --exclude=backupmanager --exclude='local' --exclude='web/sites/default/files' --exclude='vendor' --exclude='docker' --exclude='tmp' --exclude='e2e' --exclude='ci/' --exclude='.git/' --exclude='README.md' ../ $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/
-	rsync ../ci/deploy/$(ENV)/settings.php $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/web/sites/default/settings.php
+	@echo "Copying environment-specific configuration files..."
+	scp ../ci/deploy/$(ENV)/settings.php $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/settings.php.new
+	scp ../ci/deploy/$(ENV)/htaccess $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/.htaccess.new
+	scp ../ci/deploy/$(ENV)/robots.txt $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/robots.txt.new
 	@echo "Running cleanup script on $(TARGETUSER)@$(TARGETHOST)..."
 	scp ../ci/deploy/$(ENV)/cleanup.sh $(TARGETUSER)@$(TARGETHOST):$(TARGETFOLDER)/cleanup.sh
 	ssh $(TARGETUSER)@$(TARGETHOST) "cd $(TARGETFOLDER) && chmod +x cleanup.sh && ./cleanup.sh"
