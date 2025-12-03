@@ -219,6 +219,15 @@ gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.ya
    - Cloud CDN (invalidate with: `gcloud compute url-maps invalidate-cdn-cache`)
    - Browser cache
 
+7. **Content Security Policy (CSP) for oEmbed Content**: 
+   - Apache configs set CSP headers that control what can be embedded in iframes
+   - The `frame-src` directive must include all oEmbed providers (YouTube, Vimeo, etc.)
+   - **Current staging CSP**: `frame-src 'self' https://interledger.org https://podcast.interledger.org https://www.youtube.com https://player.vimeo.com`
+   - **Location**: Apache VirtualHost configs at `/etc/apache2/sites-available/01-staging.conf` and `/etc/apache2/sites-available/01-production.conf`
+   - **Drupal oEmbed settings**: Staging has `iframe_domain` set to `https://staging.interledger.org` in `settings.php` to ensure oEmbed URLs reference the correct environment
+   - **Debugging CSP**: Use `curl -I https://staging.interledger.org/ | grep -i content-security` to check active policies
+   - If adding new embed providers, update the CSP on the VM and reload Apache: `sudo systemctl reload apache2`
+
 ## GitHub Actions Secrets
 
 Required secrets for CI/CD:
