@@ -84,3 +84,6 @@ $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.database';
 
 // Enable permissions hardening for production
 $settings['skip_permissions_hardening'] = FALSE;
+
+// Configure oEmbed to use production URLs
+$config['media.settings']['iframe_domain'] = 'https://interledger.org';
