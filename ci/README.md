@@ -132,6 +132,54 @@ Required environment variables:
 
 ## Common Tasks
 
+### Running Drupal Drush Commands
+
+To run Drupal drush commands, you must SSH directly into the VM and use the provided convenience scripts. These scripts ensure Drupal runs with the correct permissions and database credentials.
+
+```bash
+# SSH to the VM
+ssh deployer@34.23.109.31
+
+# In the deployer home directory, use the appropriate script:
+
+# For staging:
+~/staging-drush.sh status           # Check staging status
+~/staging-drush.sh cache:rebuild    # Clear staging cache
+~/staging-drush.sh updb -y          # Run staging database updates
+
+# For production:
+~/production-drush.sh status        # Check production status
+~/production-drush.sh cache:rebuild # Clear production cache
+~/production-drush.sh user:login 1  # Get admin login link
+```
+
+These scripts automatically:
+- Set correct file permissions
+- Run as `www-data` user (required for Drupal)
+- Supply database credentials from environment variables
+- Set the correct site URI
+
+### Modifying Apache Configuration
+
+Apache virtual host configurations are located directly on the VM at `/etc/apache2/sites-available/`. To modify Apache configuration:
+
+```bash
+# SSH to the VM
+ssh deployer@34.23.109.31
+
+# Edit the configuration
+sudo nano /etc/apache2/sites-available/01-staging.conf      # For staging
+sudo nano /etc/apache2/sites-available/01-production.conf   # For production
+
+# After making changes, reload Apache
+sudo systemctl reload apache2
+
+# Verify configuration is valid
+sudo apache2ctl configtest
+```
+
+**Important**: Apache configuration changes on the VM are manual and not deployed via the CI/CD pipeline. Document any manual changes so they can be recreated if needed.
+
 ### Creating a Backup Before Deployment
 
 ```bash
