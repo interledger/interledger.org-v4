@@ -92,7 +92,7 @@ jobs:
           echo "- **Backup Location:** gs://${{ secrets.BACKUP_BUCKET }}/backups/${{ inputs.source_environment }}/backup_${{ inputs.run_id }}.tar.gz" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ inputs.destination_environment }}" == "production" ]; then
-            echo "🚨 **This restore will affect PRODUCTION. Additional approval may be required.**" >> $GITHUB_STEP_SUMMARY
+            echo "🚨 **This restore will affect PRODUCTION. Approval was required and granted.**" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Build backup CLI
