@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     needs: [check-production-environment]
-    if: always()
+    if: ${{ always() && (inputs.destination_environment != 'production' || needs.check-production-environment.result == 'success') }}
     
     steps:
       - name: Checkout code
