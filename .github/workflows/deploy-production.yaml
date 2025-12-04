@@ -27,6 +27,7 @@ jobs:
   deploy-production:
     needs: validate-confirmation
     runs-on: ubuntu-latest
+    environment: production
     
     steps:
       - name: Checkout code
