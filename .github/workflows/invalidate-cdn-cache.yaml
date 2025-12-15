@@ -1,0 +1,51 @@
+name: Invalidate CDN Cache
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
+      path:
+        description: 'Path to invalidate (e.g., / for all, /developers/* for specific path)'
+        required: true
+        type: string
+        default: '/*'
+
+jobs:
+  invalidate-cache:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GSA }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Invalidate CDN cache for ${{ github.event.inputs.environment }}
+        run: |
+          echo "Invalidating CDN cache for path: ${{ github.event.inputs.path }}"
+          gcloud compute url-maps invalidate-cdn-cache interledger-org \
+            --path "${{ github.event.inputs.path }}" \
+            --async
+
+      - name: Summary
+        run: |
+          echo "✅ CDN cache invalidation initiated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Path**: \`${{ github.event.inputs.path }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Note: CDN cache invalidation runs asynchronously and may take a few minutes to complete." >> $GITHUB_STEP_SUMMARY
