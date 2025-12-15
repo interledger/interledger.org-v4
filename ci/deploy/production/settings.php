@@ -20,7 +20,7 @@ $databases['default']['default'] = array (
 );
 
 // Hash salt for security
-$settings['hash_salt'] = 'QDtxU5tjEIsxnYw0PyeovfnXD0UmXrY-TC6rNMuxoEmXQirsJL2tE47GLwr69F6UsHNhIohvug';
+$settings['hash_salt'] = getenv('DRUPAL_SALT');
 
 /**
  * Site configuration
