@@ -1,0 +1,13 @@
+<ol>
+	{% for item in items %}
+		<li id="footnote-{{ loop.index }}">
+			<span class="visually-hidden">Footnote
+				{{loop.index}}
+			</span>
+			<sup aria-hidden="true">{{ loop.index }}
+			</sup>
+			{{ item.content }}
+			<a href="#ref-{{ loop.index }}" aria-label="Return to footnote {{ loop.index }} reference in article" class="footnote-backlink">↩</a>
+		</li>
+	{% endfor %}
+</ol>
