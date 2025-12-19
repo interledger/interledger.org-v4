@@ -1,10 +1,17 @@
 .footer-notes {
   padding-inline: 5%;
-}
-.footer-notes .content-wrapper {
   font-size: var(--step--1);
-  padding-block-start: var(--space-2xs);
-  border-block-start: 1px solid;
+}
+
+.footer-notes .content-wrapper::before {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 30%;
+  top: 0;
+  left: 0;
+  margin-bottom: var(--space-2xs);
+  background-color: black;
 }
 
 .footer-notes ol {
