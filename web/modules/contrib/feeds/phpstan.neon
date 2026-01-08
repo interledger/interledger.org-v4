@@ -61,6 +61,20 @@ parameters:
       path: src/Component/ZfExtensionManagerSfContainer.php
     -
       message: """
+        #^Access to constant on deprecated interface Laminas\\\\Feed\\\\Reader\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
+        #^Access to constant on deprecated interface Laminas\\\\Feed\\\\Writer\\\\ExtensionManagerInterface\\:
+        this interface is no longer needed, and shouldn't be relied upon$#
+      """
+      count: 1
+      path: src/Component/ZfExtensionManagerSfContainer.php
+    -
+      message: """
         #^Parameter \\$feed_bridge_reader of method Drupal\\\\feeds\\\\Feeds\\\\Parser\\\\SyndicationParser\\:\\:__construct\\(\\) has typehint with deprecated interface Laminas\\\\Feed\\\\Reader\\\\ExtensionManagerInterface\\:
         this interface is no longer needed, and shouldn't be relied upon$#
       """

@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "math",
  *   label = @Translation("Math"),
  *   description = @Translation("Performs basic mathematical calculations on the imported value."),
- *   category = "Number"
+ *   category = @Translation("Number"),
+ *   itemUsage = "ignored"
  * )
  */
 class Math extends TamperBase {

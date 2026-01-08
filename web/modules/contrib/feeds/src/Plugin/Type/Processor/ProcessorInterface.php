@@ -69,6 +69,14 @@ interface ProcessorInterface extends FeedsPluginInterface {
   const DELETE_NON_EXISTENT = '_delete';
 
   /**
+   * Initialize the processor.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed being imported.
+   */
+  public function initialize(FeedInterface $feed);
+
+  /**
    * Processes the results from a parser.
    *
    * @param \Drupal\feeds\FeedInterface $feed

@@ -17,11 +17,11 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
   protected $feedType;
 
   /**
-   * The url to the tamper listing page.
+   * The path to the tamper listing page.
    *
    * @var string
    */
-  protected $url;
+  protected $tamperListPath;
 
   /**
    * The manager for FeedTypeTamperMeta instances.
@@ -37,7 +37,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
     parent::setUp();
 
     // Add body field.
-    node_add_body_field($this->nodeType);
+    $this->addBodyField();
 
     // Add a feed type with mapping to body.
     $this->feedType = $this->createFeedType([
@@ -52,7 +52,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
       ]),
     ]);
 
-    $this->url = $this->feedType->toUrl('tamper');
+    $this->tamperListPath = '/admin/structure/feeds/manage/' . $this->feedType->id() . '/tamper';
 
     // Get the manager for FeedTypeTamperMeta instances.
     $this->feedTypeTamperManager = $this->container->get('feeds_tamper.feed_type_tamper_manager');
@@ -63,7 +63,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
    */
   public function testAddTamperInstance() {
     // Go to the tamper listing.
-    $this->drupalGet($this->url);
+    $this->drupalGet($this->tamperListPath);
 
     // Click link for adding a tamper plugin to the source 'description'.
     $this->getSession()
@@ -102,7 +102,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
    * Tests adding the Tamper plugin 'feeds_tamper_test'.
    */
   public function testAddTestPlugin() {
-    $this->drupalGet($this->url->toString() . '/add/content');
+    $this->drupalGet($this->tamperListPath . '/add/content');
 
     // Select plugin.
     $edit = [
@@ -147,7 +147,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
     $this->feedType->save();
 
     // Go to the tamper listing.
-    $this->drupalGet($this->url);
+    $this->drupalGet($this->tamperListPath);
 
     // Click link for editing this tamper plugin.
     $this->getSession()
@@ -192,7 +192,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
     $this->feedType->save();
 
     // Go to the tamper listing.
-    $this->drupalGet($this->url);
+    $this->drupalGet($this->tamperListPath);
 
     // Click link for editing this tamper plugin.
     $this->getSession()
@@ -237,7 +237,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
     $this->feedType->save();
 
     // Go to the tamper listing.
-    $this->drupalGet($this->url);
+    $this->drupalGet($this->tamperListPath);
 
     // Click link for removing this tamper plugin.
     $this->getSession()
@@ -295,7 +295,7 @@ class UiCrudTest extends FeedsTamperBrowserTestBase {
     $this->feedType->save();
 
     // Go to the tamper listing.
-    $this->drupalGet($this->url);
+    $this->drupalGet($this->tamperListPath);
 
     // Change weights.
     $edit = [

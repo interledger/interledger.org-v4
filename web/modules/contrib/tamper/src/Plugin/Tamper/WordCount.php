@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "word_count",
  *   label = @Translation("Get number of words"),
  *   description = @Translation("Get the number of words in a string"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class WordCount extends TamperBase {

@@ -262,7 +262,7 @@ class File extends EntityReference {
    *   In case the file extension is not valid.
    */
   protected function getFileName($url) {
-    $filename = trim($this->fileSystem->basename($url), " \t\n\r\0\x0B.");
+    $filename = trim(basename($url), " \t\n\r\0\x0B.");
     // Remove query string from file name, if it has one.
     [$filename] = explode('?', $filename);
     $extension = substr($filename, strrpos($filename, '.') + 1);
@@ -413,6 +413,13 @@ class File extends EntityReference {
     catch (EntityStorageException | FileException $e) {
       return FALSE;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function hasAutocreateSupport() {
+    return FALSE;
   }
 
 }

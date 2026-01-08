@@ -13,7 +13,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "default_value",
  *   label = @Translation("Set value or default value"),
  *   description = @Translation("Set value or default value."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class DefaultValue extends TamperBase {

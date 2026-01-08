@@ -2,6 +2,7 @@
 
 namespace Drupal\tamper;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -24,13 +25,28 @@ class TamperManager extends DefaultPluginManager implements TamperManagerInterfa
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct(
-      'Plugin/Tamper',
-      $namespaces,
-      $module_handler,
-      'Drupal\tamper\TamperInterface',
-      'Drupal\tamper\Annotation\Tamper'
-    );
+    // Check if there is support for attributed plugins.
+    // @todo Remove BC layer when dropping support for Drupal < 10.2.0.
+    if (!class_exists('\Drupal\Component\Plugin\Attribute\Plugin')) {
+      // No attribute support yet.
+      parent::__construct(
+        'Plugin/Tamper',
+        $namespaces,
+        $module_handler,
+        'Drupal\tamper\TamperInterface',
+        'Drupal\tamper\Annotation\Tamper',
+      );
+    }
+    else {
+      parent::__construct(
+        'Plugin/Tamper',
+        $namespaces,
+        $module_handler,
+        'Drupal\tamper\TamperInterface',
+        'Drupal\tamper\Attribute\Tamper',
+        'Drupal\tamper\Annotation\Tamper',
+      );
+    }
     $this->alterInfo('tamper_info');
     $this->setCacheBackend($cache_backend, 'tamper_info_plugins');
   }
@@ -48,6 +64,42 @@ class TamperManager extends DefaultPluginManager implements TamperManagerInterfa
     }
 
     return new $plugin_class($configuration, $plugin_id, $plugin_definition, $configuration['source_definition']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function processDefinition(&$definition, $plugin_id) {
+    parent::processDefinition($definition, $plugin_id);
+
+    if (!array_key_exists('itemUsage', $definition)) {
+      $definition['itemUsage'] = NULL;
+    }
+
+    // Validate the itemUsage value.
+    $this->validateItemUsageValue($definition['itemUsage'], $plugin_id);
+  }
+
+  /**
+   * Validates if the provided value is a known itemUsage type.
+   *
+   * @param mixed $value
+   *   The value to check.
+   * @param string $plugin_id
+   *   The ID of the plugin for which the value gets checked.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   *   In case the value is not correct.
+   */
+  protected function validateItemUsageValue($value, string $plugin_id) {
+    if ($value !== NULL && !in_array($value, ItemUsage::cases(), TRUE)) {
+      throw new PluginException(sprintf(
+        'Plugin "%s" has invalid itemUsage "%s". Allowed: %s.',
+        $plugin_id,
+        is_scalar($value) ? $value : gettype($value),
+        implode(', ', ItemUsage::cases())
+      ));
+    }
   }
 
   /**

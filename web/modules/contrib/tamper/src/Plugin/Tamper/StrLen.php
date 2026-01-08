@@ -13,7 +13,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "str_len",
  *   label = @Translation("Get string length"),
  *   description = @Translation("Get the length of a string"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class StrLen extends TamperBase {

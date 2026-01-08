@@ -3,11 +3,14 @@
 namespace Drupal\Tests\feeds_tamper\FunctionalJavascript;
 
 use Drupal\Tests\feeds\FunctionalJavascript\FeedsJavascriptTestBase;
+use Drupal\Tests\feeds_tamper\Traits\FeedsTamperCommonTrait;
 
 /**
  * Base class for Feeds Tamper javascript tests.
  */
 abstract class FeedsTamperJavascriptTestBase extends FeedsJavascriptTestBase {
+
+  use FeedsTamperCommonTrait;
 
   /**
    * Modules to enable.

@@ -39,3 +39,27 @@ parameters:
       """
       count: 21
       path: tests/src/Unit/Plugin/Tamper/KeywordFilterTest.php
+    
+    -
+      # The "override" setting from the Hash plugin is deprecated, but
+      # still used by the plugin itself for backwards compatibility.
+      # @todo Remove this ignore on Tamper 2.0.0.
+      message: """
+        #^Fetching deprecated class constant SETTING_OVERRIDE of class Drupal\\\\tamper\\\\Plugin\\\\Tamper\\\\Hash\\:
+        in tamper\\:8\\.x-1\\.0\\-beta2 and is removed from tamper\\:2\\.0\\.0\\. Use
+          the 'only_if_empty' setting instead\\.$#
+      """
+      count: 3
+      path: src/Plugin/Tamper/Hash.php
+    
+    -
+      # The "override" setting from the Hash plugin is deprecated, but
+      # still used by the plugin itself for backwards compatibility.
+      # @todo Remove this ignore on Tamper 2.0.0.
+      message: """
+        #^Fetching deprecated class constant SETTING_OVERRIDE of class Drupal\\\\tamper\\\\Plugin\\\\Tamper\\\\Hash\\:
+        in tamper\\:8\\.x-1\\.0\\-beta2 and is removed from tamper\\:2\\.0\\.0\\. Use
+          the 'only_if_empty' setting instead\\.$#
+      """
+      count: 2
+      path: tests/src/Unit/Plugin/Tamper/HashTest.php

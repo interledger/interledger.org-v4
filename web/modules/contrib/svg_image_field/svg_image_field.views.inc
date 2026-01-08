@@ -5,6 +5,7 @@
  * Provide views data for svg_image_field.module.
  */
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\field\FieldStorageConfigInterface;
 
 /**
@@ -16,7 +17,19 @@ use Drupal\field\FieldStorageConfigInterface;
  * @see views_field_default_views_data()
  */
 function svg_image_field_field_views_data(FieldStorageConfigInterface $field_storage) {
-  $data = views_field_default_views_data($field_storage);
+  if (!class_exists(DeprecationHelper::class)) {
+    // @phpstan-ignore-next-line
+    $data = views_field_default_views_data($field_storage);
+  }
+  else {
+    $data = DeprecationHelper::backwardsCompatibleCall(
+      currentVersion: \Drupal::VERSION,
+      deprecatedVersion: '11.2',
+      currentCallable: fn() => \Drupal::service('views.field_data_provider')->defaultFieldImplementation($field_storage),
+      deprecatedCallable: fn() => views_field_default_views_data($field_storage),
+    );
+  }
+
   foreach ($data as $table_name => $table_data) {
     // Add the relationship only on the target_id field.
     $data[$table_name][$field_storage->getName() . '_target_id']['relationship'] = [
@@ -45,7 +58,18 @@ function svg_image_field_field_views_data_views_data_alter(array &$data, FieldSt
   /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
   $table_mapping = $entity_manager->getStorage($entity_type_id)->getTableMapping();
 
-  [$label] = views_entity_field_label($entity_type_id, $field_name);
+  if (!class_exists(DeprecationHelper::class)) {
+    // @phpstan-ignore-next-line
+    [$label] = views_entity_field_label($entity_type_id, $field_name);
+  }
+  else {
+    [$label] = DeprecationHelper::backwardsCompatibleCall(
+      currentVersion: \Drupal::VERSION,
+      deprecatedVersion: '11.2',
+      currentCallable: fn() => \Drupal::service('entity_field.manager')->getFieldLabels($entity_type_id, $field_name),
+      deprecatedCallable: fn() => views_entity_field_label($entity_type_id, $field_name),
+    );
+  }
 
   $data['file_managed'][$pseudo_field_name]['relationship'] = [
     'title' => t('@entity using @field',
