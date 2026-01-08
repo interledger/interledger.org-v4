@@ -18,7 +18,7 @@ class FeedsBatchBatch extends FeedsBatchBase {
    *   An associative array defining the batch.
    */
   protected function batchSet(array $batch_definition) {
-    return batch_set($batch_definition);
+    batch_set($batch_definition);
   }
 
   /**

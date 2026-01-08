@@ -50,6 +50,13 @@ class SyndicationItem extends BaseItem {
   protected $author_email;
 
   /**
+   * An array of authors of the feed item.
+   *
+   * @var array
+   */
+  protected $authors;
+
+  /**
    * Published date as UNIX time GMT.
    *
    * @var int

@@ -3,19 +3,20 @@
 namespace Drupal\Tests\feeds\Kernel\Entity;
 
 use Drupal\Core\Logger\RfcLogLevel;
-use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Drupal\feeds\Entity\Feed;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ImportFinishedEvent;
 use Drupal\feeds\Exception\LockException;
-use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\FeedImportPeriodInterface;
 use Drupal\feeds\Feeds\State\CleanStateInterface;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
 use Drupal\feeds\Plugin\Type\Fetcher\FetcherInterface;
 use Drupal\feeds\Plugin\Type\Parser\ParserInterface;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\feeds\StateInterface;
 use Drupal\node\Entity\Node;
+use Drupal\Tests\feeds\Kernel\FeedsKernelTestBase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -112,6 +113,101 @@ class FeedTest extends FeedsKernelTestBase {
     $this->feedType->save();
     $feed = $this->reloadFeed($feed);
     $feed->setSource($this->resourcesPath() . '/rss/googlenewstz.rss2');
+    $feed->import();
+
+    $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $feed->getImportedTime());
+    $this->assertSame($feed->getImportedTime() + 3600, $feed->getNextImportTime());
+  }
+
+  /**
+   * Checks using periodic import override setting on the feed.
+   *
+   * Checks if the import period from the feed gets used when periodic import
+   * per feed is allowed.
+   *
+   * @covers ::getImportPeriod
+   * @covers ::getNextImportTime
+   */
+  public function testGetImportPeriodWithAllowedOverride() {
+    $feed = $this->createFeed($this->feedType->id());
+
+    // Since there is nothing imported yet, there is no import time.
+    $this->assertSame(-2, $feed->getImportPeriod());
+    // And there is also no next import time yet.
+    $this->assertSame(-1, $feed->getNextImportTime());
+
+    // Setup periodic import and import something.
+    $this->feedType->set('import_period', 3600);
+    $this->feedType->setImportPeriodPerFeedAllowed(TRUE);
+    $this->feedType->save();
+    $feed->set('periodic_import', 1800);
+    $feed->setSource($this->resourcesPath() . '/rss/googlenewstz.rss2');
+    $feed->save();
+    $feed = $this->reloadEntity($feed);
+    $feed->import();
+
+    $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $feed->getImportedTime());
+    $this->assertSame($feed->getImportedTime() + 1800, $feed->getNextImportTime());
+  }
+
+  /**
+   * Checks using the feed type periodic import setting.
+   *
+   * Checks if the import period from the feed type gets used when periodic
+   * import per feed is not allowed, even if an override value is set on the
+   * feed.
+   *
+   * @covers ::getImportPeriod
+   * @covers ::getNextImportTime
+   */
+  public function testGetImportPeriodNoOverride() {
+    $feed = $this->createFeed($this->feedType->id());
+
+    // Since there is nothing imported yet, there is no import time.
+    $this->assertSame(-2, $feed->getImportPeriod());
+    // And there is also no next import time yet.
+    $this->assertSame(-1, $feed->getNextImportTime());
+
+    // Setup periodic import and import something.
+    $this->feedType->set('import_period', 3600);
+    $this->feedType->setImportPeriodPerFeedAllowed(FALSE);
+    $feed->set('periodic_import', 1800);
+    $this->feedType->save();
+    $feed->setSource($this->resourcesPath() . '/rss/googlenewstz.rss2');
+    $feed->save();
+    $feed = $this->reloadEntity($feed);
+    $feed->import();
+
+    $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $feed->getImportedTime());
+    $this->assertSame($feed->getImportedTime() + 3600, $feed->getNextImportTime());
+  }
+
+  /**
+   * Checks using the default periodic import setting.
+   *
+   * Checks if the import period from the feed type gets used when periodic
+   * import per feed is allowed, but the 'periodic_import' field is configured
+   * to use the feed type default.
+   *
+   * @covers ::getImportPeriod
+   * @covers ::getNextImportTime
+   */
+  public function testGetImportPeriodUseDefault() {
+    $feed = $this->createFeed($this->feedType->id());
+
+    // Since there is nothing imported yet, there is no import time.
+    $this->assertSame(-2, $feed->getImportPeriod());
+    // And there is also no next import time yet.
+    $this->assertSame(-1, $feed->getNextImportTime());
+
+    // Setup periodic import and import something.
+    $this->feedType->set('import_period', 3600);
+    $this->feedType->setImportPeriodPerFeedAllowed(TRUE);
+    $this->feedType->save();
+    $feed->set('periodic_import', FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD);
+    $feed->setSource($this->resourcesPath() . '/rss/googlenewstz.rss2');
+    $feed->save();
+    $feed = $this->reloadEntity($feed);
     $feed->import();
 
     $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $feed->getImportedTime());

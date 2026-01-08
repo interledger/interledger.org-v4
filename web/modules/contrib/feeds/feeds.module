@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -185,7 +186,12 @@ function feeds_file_download($uri) {
 
   foreach ($feeds as $feed) {
     if ($feed->getSource() === $uri && $feed->access('import')) {
-      return file_get_content_headers($file);
+      return DeprecationHelper::backwardsCompatibleCall(
+        currentVersion: \Drupal::VERSION,
+        deprecatedVersion: '11.2',
+        currentCallable: fn() => $file->getDownloadHeaders(),
+        deprecatedCallable: fn() => file_get_content_headers($file),
+      );
     }
   }
 

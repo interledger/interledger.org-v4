@@ -9,3 +9,11 @@ tamper.feeds_tamper_test:
     number:
       type: float
       label: 'Float value'
+
+tamper.feeds_tamper_test_source_user:
+  mapping:
+    used_sources:
+      type: sequence
+      label: 'Used sources'
+      sequence:
+        type: string

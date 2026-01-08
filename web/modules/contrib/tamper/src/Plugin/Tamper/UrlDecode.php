@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "url_decode",
  *   label = @Translation("URL Decode"),
  *   description = @Translation("Run values through the <a href='http://us3.php.net/urldecode'>urldecode()</a> function."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class UrlDecode extends TamperBase {

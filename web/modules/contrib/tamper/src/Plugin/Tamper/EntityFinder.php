@@ -23,8 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "entity_finder",
  *   label = @Translation("Entity Finder"),
  *   description = @Translation("Finds an entity based on columns and fields. Returns the ID of the entity."),
- *   category = "Other",
- *   handle_multiples = TRUE
+ *   category = @Translation("Other"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class EntityFinder extends TamperBase implements ContainerFactoryPluginInterface {
@@ -489,8 +490,8 @@ class EntityFinder extends TamperBase implements ContainerFactoryPluginInterface
 
     $field_definitions = [];
     if (!$this->entityTypeSupportBundles($entity_type_id)) {
-      // Return only base field definitions.
-      $field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
+      // Return base and fieldable field definitions.
+      $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity_type_id, $entity_type_id);
     }
     else {
       // Check if a bundle is selected. If so, return fields only for that

@@ -2,7 +2,7 @@
 
 namespace Drupal\feeds\Event;
 
-// phpcs:disable Drupal.Classes.PropertyDeclaration
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // phpcs:disable Drupal.NamingConventions.ValidVariableName.LowerCamelName
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -16,7 +16,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "trim",
  *   label = @Translation("Characters to trim"),
  *   description = @Translation("Characters to trim."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class Trim extends TamperBase {

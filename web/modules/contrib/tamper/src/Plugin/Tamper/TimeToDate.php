@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "timetodate",
  *   label = @Translation("Unix timestamp to Date"),
  *   description = @Translation("Unix timestamp to Date"),
- *   category = "Date/time"
+ *   category = @Translation("Date/time"),
+ *   itemUsage = "ignored"
  * )
  */
 class TimeToDate extends TamperBase {

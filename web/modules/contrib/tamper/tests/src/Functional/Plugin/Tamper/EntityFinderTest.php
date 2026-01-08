@@ -346,4 +346,41 @@ class EntityFinderTest extends TamperPluginTestBase {
     $this->assertConfigSaved($expected);
   }
 
+  /**
+   * Tests that fieldable fields are available for non-bundled entity types.
+   */
+  public function testFieldableFieldsWithoutBundle() {
+    // Create a fieldable field on a bundle-less entity type.
+    $this->createFieldWithStorage('field_extra', [
+      'entity_type' => 'entity_test_no_bundle',
+      'bundle' => 'entity_test_no_bundle',
+      'type' => 'string',
+    ]);
+
+    // Go to the plugin configuration page.
+    $this->drupalGet('/tamper_test/test/' . static::$pluginId);
+
+    // Select the bundle-less entity type.
+    $edit = ['entity_type' => 'entity_test_no_bundle'];
+    $this->submitForm($edit, 'Submit');
+
+    // Assert that both base field 'name' and fieldable field 'field_extra' are
+    // available.
+    $this->assertSession()->optionExists('field', 'name');
+    $this->assertSession()->optionExists('field', 'field_extra');
+
+    // Select the fieldable field and save config.
+    $edit = ['field' => 'field_extra'];
+    $this->submitForm($edit, 'Submit');
+
+    $expected = [
+      'entity_type' => 'entity_test_no_bundle',
+      'bundle' => NULL,
+      'field' => 'field_extra',
+      'column' => NULL,
+      'id' => static::$pluginId,
+    ];
+    $this->assertConfigSaved($expected);
+  }
+
 }

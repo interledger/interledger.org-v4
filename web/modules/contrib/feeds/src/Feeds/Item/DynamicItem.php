@@ -7,7 +7,9 @@ namespace Drupal\feeds\Feeds\Item;
  *
  * This should be avoided unless the parser allows dynamic field.
  */
-class DynamicItem implements ItemInterface {
+class DynamicItem implements ItemInterface, ValidatableItemInterface {
+
+  use ItemValidTrait;
 
   /**
    * The field data.

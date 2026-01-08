@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "number_format",
  *   label = @Translation("Format a number"),
  *   description = @Translation("Format a number."),
- *   category = "Number"
+ *   category = @Translation("Number"),
+ *   itemUsage = "ignored"
  * )
  */
 class NumberFormat extends TamperBase {

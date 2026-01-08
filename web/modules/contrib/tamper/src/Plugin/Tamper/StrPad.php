@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "str_pad",
  *   label = @Translation("Pad a string"),
  *   description = @Translation("Pad a string"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class StrPad extends TamperBase {

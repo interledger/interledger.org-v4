@@ -36,6 +36,7 @@ composer (D9):
   extends: .composer-base
   variables:
     PHP_VERSION: "7.4"
+    PHP_IMAGE_VARIANT: apache
     DRUPAL_CORE: "9.5.11"
     IGNORE_PROJECT_DRUPAL_CORE_VERSION: 1
 

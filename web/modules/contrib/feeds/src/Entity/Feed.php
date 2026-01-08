@@ -11,16 +11,20 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Drupal\feeds\Event\DeleteFeedsEvent;
 use Drupal\feeds\Event\EntityEvent;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ImportFinishedEvent;
 use Drupal\feeds\Exception\LockException;
+use Drupal\feeds\FeedImportPeriodInterface;
 use Drupal\feeds\FeedInterface;
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds\Feeds\State\CleanState;
+use Drupal\feeds\FeedTypeForm;
+use Drupal\feeds\FeedTypeImportPeriodPerFeedInterface;
+use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Plugin\Type\FeedsPluginInterface;
 use Drupal\feeds\StateInterface;
 use Drupal\user\UserInterface;
@@ -80,7 +84,7 @@ use Drupal\user\UserInterface;
  *   }
  * )
  */
-class Feed extends ContentEntityBase implements FeedInterface {
+class Feed extends ContentEntityBase implements FeedInterface, FeedImportPeriodInterface {
 
   use EntityChangedTrait;
 
@@ -162,6 +166,17 @@ class Feed extends ContentEntityBase implements FeedInterface {
    */
   public function getImportedTime() {
     return (int) $this->get('imported')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getImportPeriod(): int {
+    if ($this->get('periodic_import')->value === NULL) {
+      // If the field is not present, fall back to the feed type setting.
+      return FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD;
+    }
+    return (int) $this->get('periodic_import')->value;
   }
 
   /**
@@ -361,6 +376,13 @@ class Feed extends ContentEntityBase implements FeedInterface {
     $this->set('imported', $time);
 
     $interval = $this->getType()->getImportPeriod();
+    if ($this->getType() instanceof FeedTypeImportPeriodPerFeedInterface && $this->getType()->isImportPeriodPerFeedAllowed()) {
+      $interval = $this->getImportPeriod();
+      // Fallback to the feed type's import period if the field value is -2.
+      if ($interval == FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD) {
+        $interval = $this->getType()->getImportPeriod();
+      }
+    }
     if ($interval !== FeedTypeInterface::SCHEDULE_NEVER) {
       $this->set('next', $interval + $time);
     }
@@ -743,6 +765,8 @@ class Feed extends ContentEntityBase implements FeedInterface {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['periodic_import'] = self::basePeriodicImportFieldDefinition();
+
     $fields['queued'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Queued'))
       ->setDescription(t('Time when this feed was queued for refresh, 0 if not queued.'))
@@ -775,6 +799,37 @@ class Feed extends ContentEntityBase implements FeedInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
+  }
+
+  /**
+   * Defines the 'periodic_import' base field for feeds.
+   *
+   * @return Drupal\Core\Field\FieldStorageDefinitionInterface
+   *   The base field definition.
+   */
+  public static function basePeriodicImportFieldDefinition(): FieldStorageDefinitionInterface {
+    $periods = FeedTypeForm::getImportPeriods();
+
+    $periods = [
+      FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD => t('Use the feed type default'),
+      FeedTypeInterface::SCHEDULE_NEVER => t('Off'),
+      FeedTypeInterface::SCHEDULE_CONTINUOUSLY => t('As often as possible'),
+    ] + $periods;
+
+    return BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Import period'))
+      ->setDescription(t('Choose how often a feed should be imported.'))
+      ->setDefaultValue(FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD)
+      ->setSetting('allowed_values', $periods)
+      ->setDisplayOptions('view', [
+        'type' => 'list_default',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
   }
 
   /**

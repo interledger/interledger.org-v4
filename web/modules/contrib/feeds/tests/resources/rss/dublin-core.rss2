@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>RSS Feed with Dublin Core namespace</title>
+    <link>https://www.example.com</link>
+    <description>RSS feed that makes use of the dc namespace</description>
+    <language>en</language>
+    <item>
+      <title>A lovely evening in ChrisBurg</title>
+      <link>https://www.example.com/lovely-evening-123</link>
+      <description>Chris and Rosje are going for a walk in the park and make a short stop in the center of the park, at the fountain.</description>
+      <guid isPermaLink="true">cdk:123</guid>
+      <pubDate>Do, 8 May 2025 20:32:00 +0100</pubDate>
+      <dc:creator>Chris the Koala</dc:creator>
+      <dc:creator>Rosje</dc:creator>
+      <dc:date>2025-05-08</dc:date>
+      <dc:source>The CdK newspaper</dc:source>
+      <dc:title>A very lovely evening in ChrisBurg</dc:title>
+      <dc:identifier>pmid:123</dc:identifier>
+      <dc:identifier>cdk/lovely-evening-123</dc:identifier>
+    </item>
+  </channel>
+</rss>
