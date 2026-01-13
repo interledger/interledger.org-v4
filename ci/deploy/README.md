@@ -102,6 +102,35 @@ Client (Browser)
     └─ umami-analytics-backend → Cloud Run NEG
 ```
 
+### HTTP to HTTPS Redirect
+
+All HTTP (port 80) traffic is automatically redirected to HTTPS (port 443) using a separate forwarding rule and URL map:
+
+```
+Client (Browser) - HTTP Request
+    ↓
+[1] HTTP Forwarding Rule (34.111.215.251:80)
+    ↓ "Incoming HTTP traffic"
+    ↓
+[2] Target HTTP Proxy (interledger-org-http-proxy)
+    ↓
+[3] HTTP Redirect URL Map (interledger-org-http-redirect)
+    ↓ "301 Permanent Redirect to HTTPS"
+    ↓
+Client follows redirect to HTTPS
+```
+
+**Components:**
+- **Forwarding Rule**: `interledger-org-http` (port 80, same IP as HTTPS)
+- **Target HTTP Proxy**: `interledger-org-http-proxy`
+- **URL Map**: `interledger-org-http-redirect` (configuration stored in `ci/deploy/http-redirect-urlmap.yaml`)
+- **Reserved IP**: `interledger-org-ip` (34.111.215.251)
+
+**Configuration File**: `ci/deploy/http-redirect-urlmap.yaml` defines the redirect behavior:
+- All HTTP requests receive a 301 permanent redirect to HTTPS
+- Host rules ensure redirects work for all domains (production, staging, www)
+- Preserves the original path and query parameters
+
 **Key architectural decisions:**
 
 - **Single Backend for Both Environments**: Both production and staging use `drupal-sites-backend` because a VM instance can only belong to one load-balanced instance group
@@ -198,9 +227,17 @@ gcloud compute operations list \
 
 ### Update URL Map
 
-The URL Map defines all routing rules. The current configuration is stored in `ci/deploy/urlmap.yaml`.
+The URL Map defines all routing rules. We maintain two URL maps:
 
-#### Make Changes to URL Map
+1. **HTTPS URL Map** (`interledger-org`): Routes HTTPS traffic to backends
+   - Configuration: `ci/deploy/urlmap.yaml`
+   - Handles path-based routing to different backends
+
+2. **HTTP Redirect URL Map** (`interledger-org-http-redirect`): Redirects HTTP to HTTPS
+   - Configuration: `ci/deploy/http-redirect-urlmap.yaml`
+   - Simple redirect for all HTTP traffic
+
+#### Make Changes to HTTPS URL Map
 
 1. **Edit the local file**: Modify `ci/deploy/urlmap.yaml` as needed
    - Add/remove hostRules for new domains
@@ -223,10 +260,26 @@ The URL Map defines all routing rules. The current configuration is stored in `c
    # Clean up read-only fields manually (creationTimestamp, fingerprint, id, kind, selfLink)
    ```
 
+#### Make Changes to HTTP Redirect URL Map
+
+1. **Edit the local file**: Modify `ci/deploy/http-redirect-urlmap.yaml` as needed
+   - Add/remove hostRules for new domains that need HTTP→HTTPS redirect
+
+2. **Import the updated configuration**:
+   ```bash
+   gcloud compute url-maps import interledger-org-http-redirect --source=ci/deploy/http-redirect-urlmap.yaml --quiet
+   ```
+
+3. **Verify changes**:
+   ```bash
+   gcloud compute url-maps describe interledger-org-http-redirect
+   ```
+
 **Important Notes**:
 - Route rules are evaluated by priority (lower numbers first)
-- The local `urlmap.yaml` file has read-only fields removed for easy editing
+- The local `urlmap.yaml` files have read-only fields removed for easy editing
 - Always test changes before applying to production traffic
+- **When adding new domains, update BOTH URL maps** - one for HTTPS routing, one for HTTP redirect
 
 ### Add a New Cloud Run Service
 
@@ -454,10 +507,17 @@ Current backend services in use:
 
 ## Files in This Directory
 
-- **`urlmap.yaml`**: Current URL map configuration
+- **`urlmap.yaml`**: HTTPS URL map configuration (port 443 routing)
+  - Routes HTTPS traffic to appropriate backends
   - Export latest: `gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.yaml`
   - Import changes: `gcloud compute url-maps import interledger-org --source=ci/deploy/urlmap.yaml --quiet`
   - Read-only fields removed (creationTimestamp, fingerprint, id, kind, selfLink)
+
+- **`http-redirect-urlmap.yaml`**: HTTP redirect URL map configuration (port 80 → HTTPS redirect)
+  - Redirects all HTTP traffic to HTTPS with 301 permanent redirects
+  - Export latest: `gcloud compute url-maps export interledger-org-http-redirect --destination=ci/deploy/http-redirect-urlmap.yaml`
+  - Import changes: `gcloud compute url-maps import interledger-org-http-redirect --source=ci/deploy/http-redirect-urlmap.yaml --quiet`
+  - **Remember**: When adding new domains, update BOTH this file and `urlmap.yaml`
   
 - **`staging/`**: Staging environment configuration files
   - `settings.php`, `htaccess`, `robots.txt`, `cleanup.sh`

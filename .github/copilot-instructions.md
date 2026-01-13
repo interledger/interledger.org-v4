@@ -25,12 +25,23 @@ This is the Interledger Foundation website, a Drupal 10 CMS deployed on Google C
 
 ### Load Balancer Routing
 
-The URL map (`interledger-org`) routes traffic:
+**HTTPS Traffic (Port 443):**
+
+The URL map (`interledger-org`) routes HTTPS traffic:
 1. `interledger.org` → `drupal-sites-backend` (VM) for all paths except:
    - `/developers` → `nginx-rewrite-backend` (Cloud Run)
 2. `staging.interledger.org` → `drupal-sites-backend` (VM) for all paths except:
    - `/developers` → `nginx-rewrite-backend` (Cloud Run)
 3. `uwa.interledger.org` → `umami-analytics-backend` (Cloud Run)
+
+**HTTP Traffic (Port 80):**
+
+The HTTP redirect URL map (`interledger-org-http-redirect`) handles all HTTP traffic:
+- All HTTP requests receive a 301 permanent redirect to HTTPS
+- Preserves the original hostname and path
+- Configuration stored in `ci/deploy/http-redirect-urlmap.yaml`
+
+**Key Point**: We maintain TWO separate URL maps - one for HTTPS routing (the main `urlmap.yaml`) and one for HTTP→HTTPS redirect (`http-redirect-urlmap.yaml`). When adding new domains, update BOTH files.
 
 ### Database Credentials
 
@@ -60,6 +71,8 @@ $databases['default']['default'] = [
   - **`ci/Makefile`**: Commands for deploy, backup, restore operations
   - **`ci/backupmanager/`**: Go application for backup/restore with Cloud SQL
   - **`ci/deploy/`**: Environment-specific configs and load balancer configuration
+    - **`urlmap.yaml`**: HTTPS URL map configuration (port 443 routing)
+    - **`http-redirect-urlmap.yaml`**: HTTP redirect URL map (port 80 → HTTPS redirect)
 - **`web/`**: Drupal docroot
 - **`local/`**: Local development with Docker Compose
 - **`.github/workflows/`**: GitHub Actions workflows
@@ -183,25 +196,42 @@ sudo chmod -R 775 /var/www/production/web/sites/default/files/
 
 ## URL Map Management
 
-The URL map configuration is stored at `ci/deploy/urlmap.yaml` with read-only fields removed.
+We maintain two URL map configurations:
 
-**To modify routing:**
+**HTTPS URL Map** (`interledger-org`):
+- Stored at `ci/deploy/urlmap.yaml` with read-only fields removed
+- Routes HTTPS traffic to appropriate backends
+
+**HTTP Redirect URL Map** (`interledger-org-http-redirect`):
+- Stored at `ci/deploy/http-redirect-urlmap.yaml`
+- Redirects all HTTP traffic to HTTPS with 301 permanent redirects
+
+**To modify HTTPS routing:**
 1. Edit `ci/deploy/urlmap.yaml`
 2. Import: `gcloud compute url-maps import interledger-org --source=ci/deploy/urlmap.yaml --quiet`
 3. Verify: `gcloud compute url-maps describe interledger-org`
 
-**To update local file:**
+**To modify HTTP redirect (when adding new domains):**
+1. Edit `ci/deploy/http-redirect-urlmap.yaml`
+2. Import: `gcloud compute url-maps import interledger-org-http-redirect --source=ci/deploy/http-redirect-urlmap.yaml --quiet`
+3. Verify: `gcloud compute url-maps describe interledger-org-http-redirect`
+4. Test: `curl -I http://newdomain.com`
+
+**To update local files:**
 ```bash
 gcloud compute url-maps export interledger-org --destination=ci/deploy/urlmap.yaml
+gcloud compute url-maps export interledger-org-http-redirect --destination=ci/deploy/http-redirect-urlmap.yaml
 # Remove read-only fields: creationTimestamp, fingerprint, id, kind, selfLink
 ```
 
 ## Common Pitfalls
 
-1. **Certificate Map Entries**: When adding a new domain, remember to create both:
-   - The certificate: `gcloud certificate-manager certificates create ...`
-   - The certificate map entry: `gcloud certificate-manager maps entries create ...`
-   - Map entries take 5-10 minutes to become ACTIVE
+1. **HTTP and HTTPS for New Domains**: When adding a new domain, configure BOTH protocols:
+   - **HTTPS**: Create certificate, certificate map entry, and add to `ci/deploy/urlmap.yaml`
+   - **HTTP**: Add domain to `ci/deploy/http-redirect-urlmap.yaml` and import the updated config
+   - Forgetting HTTP redirect means `http://` requests will fail instead of redirecting to `https://`
+   - Both URL maps share the same IP address (34.111.215.251) but use different forwarding rules and target proxies
+   - Certificate map entries take 5-10 minutes to become ACTIVE
 
 2. **Database Name in SQL Dumps**: Cloud SQL exports include the source database name. The backupmanager automatically replaces this during restore, but if you manually restore, you must replace all occurrences of the source database name with the target database name.
 
