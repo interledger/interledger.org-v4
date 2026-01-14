@@ -494,7 +494,7 @@ Current backend services in use:
 - **`drupal-sites-backend`**: Serves both production and staging Drupal sites
   - Backend: `staging-interledger-ig` (unmanaged instance group containing `interledger-org-drupal` VM)
   - Health Check: `staging-interledger-health` (HTTP on port 80)
-  - CDN: Enabled (cache-mode: CACHE_ALL_STATIC, 1hr default TTL)
+  - CDN: Enabled with `cacheMode: USE_ORIGIN_HEADERS`, so Drupal/Apache `Cache-Control` headers dictate TTLs for both HTML and assets
   
 - **`nginx-rewrite-backend`**: Serves the `/developers` portal
   - Backend: Cloud Run serverless NEG (`nginx-rewrite` service)
@@ -504,6 +504,8 @@ Current backend services in use:
   - Backend: Cloud Run serverless NEG (`umami-analytics` service)
 
 **Note**: The instance group is named `staging-interledger-ig` for historical reasons, but it serves both environments.
+
+**CDN verification reminder**: Google Cloud CDN does **not** add an `Age` (or similar) response header. To confirm cache hits, use Cloud CDN logs or hit-rate metrics instead of relying on origin headers.
 
 ## Files in This Directory
 
