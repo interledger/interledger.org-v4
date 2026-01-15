@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "explode",
  *   label = @Translation("Explode"),
  *   description = @Translation("Break up sequenced data into an array"),
- *   category = "List"
+ *   category = @Translation("List"),
+ *   itemUsage = "ignored"
  * )
  */
 class Explode extends TamperBase {

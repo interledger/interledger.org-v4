@@ -3,7 +3,6 @@
 namespace Drupal\Tests\ds\Functional;
 
 use Drupal\block_content\Entity\BlockContent;
-use Drupal\user\Entity\User;
 
 /**
  * Tests for the manage display tab in Display Suite.
@@ -32,7 +31,7 @@ class BlockTest extends TestBase {
   /**
    * The created user.
    *
-   * @var User
+   * @var \Drupal\user\Entity\User
    */
   protected $adminUser;
 

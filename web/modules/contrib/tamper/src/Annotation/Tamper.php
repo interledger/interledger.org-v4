@@ -60,4 +60,17 @@ class Tamper extends Plugin {
    */
   public $handle_multiples = FALSE;
 
+  /**
+   * Describes how (or whether) the plugin uses a tamperable item.
+   *
+   * Allowed values:
+   * - "required": The plugin cannot function without an item.
+   * - "optional": The plugin can use an item, but works without it.
+   * - "ignored": The plugin completely ignores the item.
+   * - null / omitted: Not specified (default behavior).
+   *
+   * @var string|null
+   */
+  public $itemUsage = NULL;
+
 }

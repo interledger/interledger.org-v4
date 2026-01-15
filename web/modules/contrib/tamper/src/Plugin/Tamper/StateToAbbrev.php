@@ -12,7 +12,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "state_to_abbrev",
  *   label = @Translation("State to abbrev"),
  *   description = @Translation("Converts this field from a full state name string to the two character abbreviation."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class StateToAbbrev extends TamperBase {

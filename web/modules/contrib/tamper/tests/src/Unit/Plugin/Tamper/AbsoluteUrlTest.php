@@ -236,4 +236,35 @@ class AbsoluteUrlTest extends TamperPluginTestBase {
     ];
   }
 
+  /**
+   * Tests if the AbsoluteUrl plugin returns the right used properties.
+   *
+   * @covers ::getUsedSourceProperties
+   *
+   * @dataProvider getUsedSourcePropertiesProvider
+   */
+  public function testGetUsedSourceProperties(array $expected, array $config) {
+    $this->plugin->setConfiguration($config);
+    $item = new TamperItem();
+    $this->assertSame($expected, $this->plugin->getUsedSourceProperties($item));
+  }
+
+  /**
+   * Data provider for testGetUsedSourceProperties().
+   */
+  public static function getUsedSourcePropertiesProvider(): array {
+    return [
+      'no config' => [
+        'expected' => [],
+        'config' => [],
+      ],
+      'source configured' => [
+        'expected' => ['base_url'],
+        'config' => [
+          AbsoluteUrl::SETTING_SOURCE => 'base_url',
+        ],
+      ],
+    ];
+  }
+
 }

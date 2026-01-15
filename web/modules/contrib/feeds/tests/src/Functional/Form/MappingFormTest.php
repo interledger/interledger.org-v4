@@ -20,6 +20,7 @@ class MappingFormTest extends FeedsBrowserTestBase {
     'feeds_test_plugin',
     'language',
     'content_translation',
+    'options',
   ];
 
   /**

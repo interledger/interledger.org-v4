@@ -2,18 +2,22 @@
 
 namespace Drupal\Tests\feeds_tamper\Unit\EventSubscriber;
 
+use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\Tests\feeds_tamper\Unit\FeedsTamperTestCase;
 use Drupal\feeds\Event\ParseEvent;
 use Drupal\feeds\Feeds\Item\DynamicItem;
+use Drupal\feeds\Feeds\Item\ValidatableItemInterface;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
+use Drupal\feeds\StateInterface;
 use Drupal\feeds_tamper\Adapter\TamperableFeedItemAdapter;
 use Drupal\feeds_tamper\EventSubscriber\FeedsSubscriber;
 use Drupal\feeds_tamper\FeedTypeTamperManagerInterface;
 use Drupal\feeds_tamper\FeedTypeTamperMetaInterface;
 use Drupal\tamper\Exception\SkipTamperDataException;
 use Drupal\tamper\Exception\SkipTamperItemException;
+use Drupal\tamper\Exception\TamperException;
 use Drupal\tamper\TamperInterface;
-use Drupal\Tests\feeds_tamper\Unit\FeedsTamperTestCase;
 use Prophecy\Argument;
 
 /**
@@ -28,6 +32,13 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
    * @var \Drupal\feeds_tamper\EventSubscriber\FeedsSubscriber
    */
   protected $subscriber;
+
+  /**
+   * The feed.
+   *
+   * @var \Drupal\feeds\FeedInterface
+   */
+  protected $feed;
 
   /**
    * The parse event.
@@ -49,8 +60,11 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
   public function setUp(): void {
     parent::setUp();
 
+    // Create a feed.
+    $this->feed = $this->getMockFeed();
+
     // Create parse event.
-    $this->event = new ParseEvent($this->getMockFeed(), $this->createMock(FetcherResultInterface::class));
+    $this->event = new ParseEvent($this->feed, $this->createMock(FetcherResultInterface::class));
     $this->event->setParserResult(new ParserResult());
 
     // Create tamper meta.
@@ -64,6 +78,7 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
 
     // And finally, create the subscriber to test.
     $this->subscriber = new FeedsSubscriber($tamper_manager);
+    $this->subscriber->setStringTranslation($this->createMock(TranslationInterface::class));
   }
 
   /**
@@ -370,6 +385,280 @@ class FeedsSubscriberTest extends FeedsTamperTestCase {
     if ($data == 'Foo') {
       throw new SkipTamperDataException();
     }
+  }
+
+  /**
+   * Tests that the tamperable item is updated after each applied tamper.
+   *
+   * Some Tamper plugins, like the Rewrite plugin and the Copy plugin operate
+   * mostly on the tamperable item, and less on the passed value. If these
+   * plugins are used in a chain, we need to make sure that they have the most
+   * up to date item.
+   */
+  public function testValueSavingToItem() {
+    // Create a Tamper plugin that performs a simple calculation.
+    $tamper1 = $this->createMock(TamperInterface::class);
+    $tamper1->expects($this->once())
+      ->method('tamper')
+      ->willReturnCallback([$this, 'callbackMath']);
+
+    // Create a Tamper plugin that concatenates two source values by
+    // accessing the tamperable item directly.
+    $tamper2 = $this->createMock(TamperInterface::class);
+    $tamper2->expects($this->once())
+      ->method('tamper')
+      ->willReturnCallback([$this, 'callbackConcatenate']);
+
+    $this->tamperMeta->expects($this->once())
+      ->method('getTampersGroupedBySource')
+      ->willReturn([
+        'alpha' => [$tamper1, $tamper2],
+      ]);
+
+    // Add an item to the parser result.
+    $item = new DynamicItem();
+    $item->set('alpha', 314);
+    $item->set('beta', 'Bar');
+    $item->set('gamma', 'Qux');
+    $this->event->getParserResult()->addItem($item);
+
+    // Run event callback.
+    $this->subscriber->afterParse($this->event);
+    $this->assertEquals('At Bar we have 315 Qux.', $item->get('alpha'));
+  }
+
+  /**
+   * Callback for testValueSavingToItem().
+   */
+  public function callbackMath($data, TamperableFeedItemAdapter $item) {
+    return $data + 1;
+  }
+
+  /**
+   * Callback for testValueSavingToItem().
+   */
+  public function callbackConcatenate($data, TamperableFeedItemAdapter $item) {
+    return strtr('At @beta we have @alpha @gamma.', [
+      '@alpha' => $item->getSourceProperty('alpha'),
+      '@beta' => $item->getSourceProperty('beta'),
+      '@gamma' => $item->getSourceProperty('gamma'),
+    ]);
+  }
+
+  /**
+   * Tests the catching of tamper exceptions.
+   */
+  public function testTamperExceptionCatching() {
+    // Create a tamper plugin that adds a '1' at the end of a string.
+    $tamper1 = $this->createMock(TamperInterface::class);
+    $tamper1->expects($this->exactly(4))
+      ->method('tamper')
+      ->willReturnCallback([$this, 'callbackTamperAddValue']);
+
+    // Create a tamper plugin that will throw a TamperException for some
+    // values. For this test that is when the value passed to the Tamper plugin
+    // is 'Foo1'.
+    $tamper2 = $this->createMock(TamperInterface::class);
+    $tamper2->expects($this->exactly(4))
+      ->method('tamper')
+      ->willReturnCallback([$this, 'callbackTamperException']);
+
+    // Create a tamper plugin that sets the value to 'Baz'.
+    $tamper3 = $this->createMock(TamperInterface::class);
+    $tamper3->expects($this->once())
+      ->method('tamper')
+      ->willReturn('Baz');
+
+    // Apply all tampers to source 'alpha' and only the first two tampers to
+    // source 'beta'. Note: normally tampers are applied to only one source at a
+    // time, but in this test we want to check both the result of all tampers
+    // combined and the result of only tampers 1 and 2 combined.
+    $this->tamperMeta->expects($this->once())
+      ->method('getTampersGroupedBySource')
+      ->willReturn([
+        'alpha' => [$tamper1, $tamper2, $tamper3],
+        'beta' => [$tamper1, $tamper2],
+      ]);
+
+    // Since one tamper will fail to apply, a message is expected to be set on
+    // the feeds state.
+    $state = $this->createMock(StateInterface::class);
+    $state->expects($this->once())
+      ->method('setMessage');
+
+    $this->feed->expects($this->once())
+      ->method('getState')
+      ->with(StateInterface::PARSE)
+      ->willReturn($state);
+
+    // Create two items. On the first item, the source 'alpha' has the value
+    // 'Foo'. Tamper 1 will change that into 'Foo1'. Tamper 2 will throw a
+    // TamperException because of that.
+    $item1 = new DynamicItem();
+    $item1->set('alpha', 'Foo');
+    $item1->set('beta', 'Bar');
+    $this->event->getParserResult()->addItem($item1);
+    $item2 = new DynamicItem();
+    $item2->set('alpha', 'Bar');
+    $item2->set('beta', 'Qux');
+    $this->event->getParserResult()->addItem($item2);
+
+    $this->subscriber->afterParse($this->event);
+
+    // Assert that 2 items still exist.
+    $this->assertEquals(2, $this->event->getParserResult()->count());
+    // And assert expected values.
+    $this->assertEquals('Bar1', $item1->get('beta'));
+    $this->assertEquals('Baz', $item2->get('alpha'));
+    $this->assertEquals('Qux1', $item2->get('beta'));
+  }
+
+  /**
+   * Tests that an item gets marked as invalid upon an exception.
+   */
+  public function testMarkItemInvalidUponException() {
+    if (!interface_exists(ValidatableItemInterface::class)) {
+      require_once __DIR__ . '/../../../stubs/ValidatableItemInterface.php';
+    }
+
+    // Create an item that can be validated.
+    $item = $this->prophesize(ValidatableItemInterface::class);
+    $item->get('alpha')
+      ->willReturn('Foo1');
+    $item->markInvalid('Applying tamper "qux" on source "alpha" failed with the error "Invalid data".')
+      ->willReturn($item)
+      ->shouldBeCalled();
+
+    // Create a tamper plugin that will throw a TamperException for some values.
+    $tamper = $this->createMock(TamperInterface::class);
+    $tamper->expects($this->once())
+      ->method('tamper')
+      ->willReturnCallback([$this, 'callbackTamperException']);
+    $tamper->expects($this->once())
+      ->method('getPluginId')
+      ->willReturn('qux');
+
+    $this->tamperMeta->expects($this->once())
+      ->method('getTampersGroupedBySource')
+      ->willReturn([
+        'alpha' => [$tamper],
+      ]);
+
+    // Since the tamper will fail to apply, a message is expected to be set on
+    // the feeds state.
+    $state = $this->createMock(StateInterface::class);
+    $state->expects($this->once())
+      ->method('setMessage');
+
+    $this->feed->expects($this->once())
+      ->method('getState')
+      ->with(StateInterface::PARSE)
+      ->willReturn($state);
+
+    $this->event->getParserResult()->addItem($item->reveal());
+    $this->subscriber->afterParse($this->event);
+  }
+
+  /**
+   * Tests the message that is set when an item gets marked as invalid.
+   *
+   * @param string $message
+   *   The expected error message.
+   * @param mixed $label
+   *   The tamper label.
+   *
+   * @dataProvider tamperLabelProvider
+   */
+  public function testMessageForInvalidItems(string $message, $label) {
+    if (!interface_exists(ValidatableItemInterface::class)) {
+      require_once __DIR__ . '/../../../stubs/ValidatableItemInterface.php';
+    }
+
+    // Create an item that can be validated.
+    $item = $this->prophesize(ValidatableItemInterface::class);
+    $item->get('alpha')
+      ->willReturn('Foo1');
+
+    // Set the expected message when the item gets marked as invalid.
+    $item->markInvalid($message)
+      ->willReturn($item)
+      ->shouldBeCalled();
+
+    // Create a tamper plugin that will throw a TamperException for some values.
+    $tamper = $this->prophesize(TamperInterface::class);
+    $tamper->tamper('Foo1', Argument::type(TamperableFeedItemAdapter::class))
+      ->willThrow(new TamperException('Invalid data'));
+    $tamper->getPluginId()
+      ->willReturn('qux');
+    $tamper->getSetting('label')
+      ->willReturn($label);
+    $tamper->getPluginDefinition()->willReturn(['id' => 'foo']);
+
+    $this->tamperMeta->expects($this->once())
+      ->method('getTampersGroupedBySource')
+      ->willReturn([
+        'alpha' => [$tamper->reveal()],
+      ]);
+
+    $state = $this->createMock(StateInterface::class);
+    $state->expects($this->once())
+      ->method('setMessage');
+    $this->feed->expects($this->once())
+      ->method('getState')
+      ->with(StateInterface::PARSE)
+      ->willReturn($state);
+
+    $this->event->getParserResult()->addItem($item->reveal());
+    $this->subscriber->afterParse($this->event);
+  }
+
+  /**
+   * Data provider for testMessageForInvalidItems().
+   */
+  public static function tamperLabelProvider(): array {
+    return [
+      [
+        'message' => 'Applying tamper "qux" on source "alpha" failed with the error "Invalid data".',
+        'label' => NULL,
+      ],
+      [
+        'message' => 'Applying tamper "qux" on source "alpha" failed with the error "Invalid data".',
+        'label' => '',
+      ],
+      [
+        'message' => 'Applying tamper "My Tamper" on source "alpha" failed with the error "Invalid data".',
+        'label' => 'My Tamper',
+      ],
+      [
+        'message' => 'Applying tamper "0" on source "alpha" failed with the error "Invalid data".',
+        'label' => '0',
+      ],
+    ];
+  }
+
+  /**
+   * Callback for testTamperExceptionCatching().
+   *
+   * Adds a '1' to the data.
+   *
+   * @return string
+   *   The tampered data.
+   */
+  public function callbackTamperAddValue($data, TamperableFeedItemAdapter $item) {
+    return $data . '1';
+  }
+
+  /**
+   * Callback for testTamperExceptionCatching().
+   *
+   * @throws \Drupal\tamper\TamperException
+   *   In case the data is 'Foo1'.
+   */
+  public function callbackTamperException($data, TamperableFeedItemAdapter $item) {
+    if ($data == 'Foo1') {
+      throw new TamperException('Invalid data');
+    }
+    return $data;
   }
 
 }

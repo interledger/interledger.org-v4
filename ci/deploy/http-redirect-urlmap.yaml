@@ -1,0 +1,15 @@
+name: interledger-org-http-redirect
+defaultUrlRedirect:
+  httpsRedirect: true
+  redirectResponseCode: MOVED_PERMANENTLY_DEFAULT
+hostRules:
+- hosts:
+  - interledger.org
+  - www.interledger.org
+  - staging.interledger.org
+  pathMatcher: redirect-matcher
+pathMatchers:
+- name: redirect-matcher
+  defaultUrlRedirect:
+    httpsRedirect: true
+    redirectResponseCode: MOVED_PERMANENTLY_DEFAULT

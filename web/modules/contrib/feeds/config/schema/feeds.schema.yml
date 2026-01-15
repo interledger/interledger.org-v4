@@ -31,6 +31,9 @@ feeds.feed_type.*:
     import_period:
       type: integer
       label: 'The import period'
+    import_period_per_feed:
+      type: boolean
+      label: 'True if the import period can be customized per feed'
     fetcher:
       type: string
       label: 'Fetcher id'

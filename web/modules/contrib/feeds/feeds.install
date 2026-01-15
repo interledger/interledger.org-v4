@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\feeds\Entity\Feed;
 
 /**
  * Implements hook_requirements().
@@ -164,9 +165,13 @@ function feeds_update_8003() {
 
 /**
  * Flush all caches to make plugin type "FeedsCustomSource" available.
+ *
+ * @see feeds_update_8008()
  */
 function feeds_update_8004() {
-  drupal_flush_all_caches();
+  // This update previously flushed caches. That could cause issues when
+  // updating to Drupal 11.3 at the same time, so this update is removed. The
+  // update is also unnecessary, because feeds_update_8008() does the same.
 }
 
 /**
@@ -181,9 +186,13 @@ function feeds_update_8005() {
 
 /**
  * Flush all caches to make the service "feeds.lock" available.
+ *
+ * @see feeds_update_8008()
  */
 function feeds_update_8006() {
-  drupal_flush_all_caches();
+  // This update previously flushed caches. That could cause issues when
+  // updating to Drupal 11.3 at the same time, so this update is removed. The
+  // update is also unnecessary, because feeds_update_8008() does the same.
 }
 
 /**
@@ -228,4 +237,22 @@ function feeds_update_8007() {
  */
 function feeds_update_8008() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Adds the 'periodic_import' field to feeds_feed entities.
+ */
+function feeds_update_8009() {
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service('module_installer');
+  $module_installer->install(['options']);
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definition = Feed::basePeriodicImportFieldDefinition();
+  $entity_definition_update_manager->installFieldStorageDefinition(
+    'periodic_import',
+    'feeds_feed',
+    'feeds',
+    $field_definition
+  );
 }

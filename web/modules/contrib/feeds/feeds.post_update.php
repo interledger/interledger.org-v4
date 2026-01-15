@@ -34,7 +34,7 @@ function feeds_post_update_actions_update_non_existent(&$sandbox = NULL) {
         $feed_type->getProcessor()
           ->setConfiguration($config);
         return TRUE;
-      };
+      }
       return FALSE;
     });
 }

@@ -13,8 +13,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "array_filter",
  *   label = @Translation("Filter items"),
  *   description = @Translation("Filter empty items from a list."),
- *   category = "List",
- *   handle_multiples = TRUE
+ *   category = @Translation("List"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class ArrayFilter extends TamperBase {

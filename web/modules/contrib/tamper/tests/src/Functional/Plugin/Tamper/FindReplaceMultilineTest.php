@@ -56,6 +56,38 @@ class FindReplaceMultilineTest extends TamperPluginTestBase {
           'find_replace' => "\ncat|dog \n \n Foo|Bar\n\n",
         ],
       ],
+      'with carriage return' => [
+        'expected' => [
+          'find_replace' => [
+            'John|Paul',
+            'Cat|Dog',
+            'Foo|Bar',
+          ],
+          'separator' => '|',
+          'case_sensitive' => FALSE,
+          'word_boundaries' => FALSE,
+          'whole' => FALSE,
+        ],
+        'edit' => [
+          'find_replace' => "John|Paul\r\nCat|Dog\r\nFoo|Bar\r\n",
+        ],
+      ],
+      'with carriage return and intended whitespace' => [
+        'expected' => [
+          'find_replace' => [
+            'John|Paul ',
+            'Cat|Dog',
+            ' Foo|Bar',
+          ],
+          'separator' => '|',
+          'case_sensitive' => FALSE,
+          'word_boundaries' => FALSE,
+          'whole' => FALSE,
+        ],
+        'edit' => [
+          'find_replace' => "John|Paul \r\nCat|Dog\r\n Foo|Bar\r\n",
+        ],
+      ],
       'missing separator' => [
         'expected' => [],
         'edit' => [

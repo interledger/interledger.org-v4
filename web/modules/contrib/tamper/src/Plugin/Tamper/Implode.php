@@ -14,8 +14,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "implode",
  *   label = @Translation("Implode"),
  *   description = @Translation("Converts an array to a string."),
- *   category = "List",
- *   handle_multiples = TRUE
+ *   category = @Translation("List"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class Implode extends TamperBase {

@@ -39,7 +39,7 @@ class FileTest extends FeedsBrowserTestBase {
   /**
    * Tests importing several files.
    */
-  public function test() {
+  public function testImport() {
     // Create a feed type for importing nodes with files.
     $feed_type = $this->createFeedTypeForCsv([
       'title' => 'title',
@@ -76,6 +76,36 @@ class FileTest extends FeedsBrowserTestBase {
       $file_path = $this->container->get('file_system')->realpath('public://' . date('Y-m') . '/' . $file);
       $this->assertFileExists($file_path);
     }
+  }
+
+  /**
+   * Tests that configuring a file target on the mapping page works.
+   */
+  public function testConfigureTarget() {
+    // Create a feed type.
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+
+    // Go to the mapping page, and a target to 'field_file'.
+    $edit = [
+      'add_target' => 'field_file',
+    ];
+    $this->drupalGet('/admin/structure/feeds/manage/' . $feed_type->id() . '/mapping');
+    $this->submitForm($edit, 'Save');
+
+    // Check editing target configuration.
+    $edit = [];
+    $this->submitForm($edit, 'target-settings-2');
+
+    // Assert that certain fields appear.
+    $this->assertSession()->fieldExists('mappings[2][settings][reference_by]');
+    $this->assertSession()->fieldExists('mappings[2][settings][existing]');
+
+    // Assert that the autocreate field does not exist, since the file target
+    // does not support that feature.
+    $this->assertSession()->fieldNotExists('mappings[2][settings][autocreate]');
   }
 
   /**

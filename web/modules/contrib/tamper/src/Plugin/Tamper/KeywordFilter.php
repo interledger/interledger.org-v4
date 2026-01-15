@@ -15,8 +15,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "keyword_filter",
  *   label = @Translation("Keyword filter"),
  *   description = @Translation("Filter based on a list of words/phrases."),
- *   category = "Filter",
- *   handle_multiples = TRUE
+ *   category = @Translation("Filter"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class KeywordFilter extends TamperBase {

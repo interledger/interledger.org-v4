@@ -2,7 +2,7 @@
 
 namespace Drupal\feeds\Component;
 
-// phpcs:disable Drupal.Classes.PropertyDeclaration
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // phpcs:disable Drupal.NamingConventions.ValidVariableName.LowerCamelName
 
 /**

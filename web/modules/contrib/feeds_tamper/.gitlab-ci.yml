@@ -28,7 +28,20 @@ include:
 #   OPT_IN_TEST_NEXT_MAJOR: '1'
 #   _CURL_TEMPLATES_REF: 'main'
 variables:
-  _CSPELL_IGNORE_PATHS: 'legacy/*'
   OPT_IN_TEST_PREVIOUS_MINOR: '1'
   OPT_IN_TEST_NEXT_MINOR: '1'
-  OPT_IN_TEST_NEXT_MAJOR: '1'
+  OPT_IN_TEST_PREVIOUS_MAJOR: '1'
+
+# Drupal 9 testing.
+composer (D9):
+  extends: .composer-base
+  variables:
+    PHP_VERSION: "7.4"
+    PHP_IMAGE_VARIANT: apache
+    DRUPAL_CORE: "9.5.11"
+    IGNORE_PROJECT_DRUPAL_CORE_VERSION: 1
+
+phpunit (D9):
+  extends: phpunit
+  needs:
+    - "composer (D9)"

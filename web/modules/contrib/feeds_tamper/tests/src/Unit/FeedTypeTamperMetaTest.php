@@ -3,11 +3,11 @@
 namespace Drupal\Tests\feeds_tamper\Unit;
 
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Tests\UnitTestCase;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds_tamper\FeedTypeTamperMeta;
 use Drupal\tamper\TamperInterface;
 use Drupal\tamper\TamperManagerInterface;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds_tamper\FeedTypeTamperMeta

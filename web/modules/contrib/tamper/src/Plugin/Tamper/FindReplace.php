@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "find_replace",
  *   label = @Translation("Find replace"),
  *   description = @Translation("Find and replace text"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class FindReplace extends TamperBase {

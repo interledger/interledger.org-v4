@@ -7,7 +7,6 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormState;
@@ -40,13 +39,6 @@ class FeedTypeForm extends EntityForm {
   protected $formFactory;
 
   /**
-   * Provides a service to handle various date related functionality.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
    * Turns a render array into a HTML string.
    *
    * @var \Drupal\Core\Render\RendererInterface
@@ -60,15 +52,12 @@ class FeedTypeForm extends EntityForm {
    *   The feed type storage controller.
    * @param \Drupal\feeds\Plugin\PluginFormFactory $factory
    *   The form factory.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The services of date.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The render object.
    */
-  public function __construct(ConfigEntityStorageInterface $feed_type_storage, PluginFormFactory $factory, DateFormatterInterface $date_formatter, RendererInterface $renderer) {
+  public function __construct(ConfigEntityStorageInterface $feed_type_storage, PluginFormFactory $factory, RendererInterface $renderer) {
     $this->feedTypeStorage = $feed_type_storage;
     $this->formFactory = $factory;
-    $this->dateFormatter = $date_formatter;
     $this->renderer = $renderer;
   }
 
@@ -79,7 +68,6 @@ class FeedTypeForm extends EntityForm {
     return new static(
       $container->get('entity_type.manager')->getStorage('feeds_feed_type'),
       $container->get('feeds_plugin_form_factory'),
-      $container->get('date.formatter'),
       $container->get('renderer')
     );
   }
@@ -150,47 +138,22 @@ class FeedTypeForm extends EntityForm {
       '#tree' => FALSE,
     ];
 
-    $times = [
-      900,
-      1800,
-      3600,
-      10800,
-      21600,
-      43200,
-      86400,
-      259200,
-      604800,
-      2419200,
-    ];
-
-    $period = array_map(function ($time) {
-      return $this->dateFormatter->formatInterval($time);
-    }, array_combine($times, $times));
-
-    foreach ($period as &$p) {
-      $p = $this->t('Every @p', ['@p' => $p]);
-    }
-
-    $period = [
-      FeedTypeInterface::SCHEDULE_NEVER => $this->t('Off'),
-      FeedTypeInterface::SCHEDULE_CONTINUOUSLY => $this->t('As often as possible'),
-    ] + $period;
-
-    $cron_required = [
-      '#type' => 'link',
-      '#url' => Url::fromUri('https://www.drupal.org/docs/user_guide/en/security-cron.html'),
-      '#title' => $this->t('Requires cron to be configured.'),
-      '#attributes' => [
-        'target' => '_new',
-      ],
-    ];
+    $periods = self::getImportPeriods();
     $form['feed_type_settings']['import_period'] = [
       '#type' => 'select',
       '#title' => $this->t('Import period'),
-      '#options' => $period,
-      '#description' => $this->t('Choose how often a feed should be imported.') . ' ' . $this->renderer->renderRoot($cron_required),
+      '#options' => $periods,
+      '#description' => self::getImportPeriodDescription(),
       '#default_value' => $this->entity->getImportPeriod(),
     ];
+    if ($this->entity instanceof FeedTypeImportPeriodPerFeedInterface) {
+      $form['feed_type_settings']['import_period_per_feed'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Allows import period per feed'),
+        '#description' => $this->t('If enabled each feed of this type can be configured with its own import period.'),
+        '#default_value' => $this->entity->isImportPeriodPerFeedAllowed(),
+      ];
+    }
 
     foreach ($this->entity->getPlugins() as $type => $plugin) {
       $options = $this->entity->getPluginOptionsList($type);
@@ -258,6 +221,59 @@ class FeedTypeForm extends EntityForm {
     }
 
     return parent::form($form, $form_state);
+  }
+
+  /**
+   * Returns the available import periods.
+   *
+   * @return array
+   *   The available import periods.
+   */
+  public static function getImportPeriods(): array {
+    $times = [
+      900,
+      1800,
+      3600,
+      10800,
+      21600,
+      43200,
+      86400,
+      259200,
+      604800,
+      2419200,
+    ];
+
+    $period = array_map(function ($time) {
+      return \Drupal::service('date.formatter')->formatInterval($time);
+    }, array_combine($times, $times));
+
+    foreach ($period as &$p) {
+      $p = t('Every @p', ['@p' => $p]);
+    }
+
+    $period = [
+      FeedTypeInterface::SCHEDULE_NEVER => t('Off'),
+      FeedTypeInterface::SCHEDULE_CONTINUOUSLY => t('As often as possible'),
+    ] + $period;
+    return $period;
+  }
+
+  /**
+   * Returns a render array describing the import period description.
+   *
+   * @return array
+   *   A render array describing the import period description.
+   */
+  public static function getImportPeriodDescription(): array {
+    return [
+      '#type' => 'link',
+      '#prefix' => t('Choose how often a feed should be imported.') . ' ',
+      '#url' => Url::fromUri('https://www.drupal.org/docs/user_guide/en/security-cron.html'),
+      '#title' => t('Requires cron to be configured.'),
+      '#attributes' => [
+        'target' => '_new',
+      ],
+    ];
   }
 
   /**

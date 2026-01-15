@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\feeds_tamper\Functional\Form;
 
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\Tests\feeds_tamper\Functional\FeedsTamperBrowserTestBase;
+use Drupal\feeds\FeedTypeInterface;
 
 /**
  * Tests the page that lists all Tamper plugins.
@@ -50,7 +50,7 @@ class TamperListFormTest extends FeedsTamperBrowserTestBase {
    */
   protected function createFeedTypeWithBodyMapping(): FeedTypeInterface {
     // Add body field.
-    node_add_body_field($this->nodeType);
+    $this->addBodyField();
 
     return $this->createFeedType([
       'id' => 'my_feed_type',

@@ -3,6 +3,7 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\tamper\Exception\MissingItemException;
 use Drupal\tamper\Exception\TamperException;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
@@ -14,7 +15,8 @@ use Drupal\tamper\TamperBase;
  *   id = "absolute_url",
  *   label = @Translation("Make URLs absolute"),
  *   description = @Translation("Make URLs in markup absolute. (i.e. href='/stuff/things' to href='http://example.com/stuff/things)."),
- *   category = "HTML"
+ *   category = @Translation("HTML"),
+ *   itemUsage = "required"
  * )
  */
 class AbsoluteUrl extends TamperBase {
@@ -70,13 +72,24 @@ class AbsoluteUrl extends TamperBase {
   /**
    * {@inheritdoc}
    */
+  public function getUsedSourceProperties(TamperableItemInterface $item): array {
+    $source = $this->getSetting(self::SETTING_SOURCE);
+    if (isset($source)) {
+      return [$source];
+    }
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function tamper($data, ?TamperableItemInterface $item = NULL) {
     $source = $this->getSetting(self::SETTING_SOURCE);
     if (empty($source)) {
       throw new TamperException('You must define a valid source from the plugin settings.');
     }
     if (!$item instanceof TamperableItemInterface) {
-      throw new TamperException('The plugin "absolute_url" needs a tamperable item in order to operate.');
+      throw new MissingItemException('The plugin "absolute_url" needs a tamperable item in order to operate.');
     }
 
     $site_link = $item->getSourceProperty($source);
