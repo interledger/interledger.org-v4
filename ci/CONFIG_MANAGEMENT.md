@@ -59,7 +59,9 @@ drush config:export --destination=/var/www/html/config -y
 
 For regular updates:
 
-1.  Make changes locally (e.g., via Drupal UI or `drush config:set`).
+1.  **Make changes locally**:
+    - **Option A (Drupal Admin UI)**: Log in to your local site (e.g., `ddev login`), navigate to the configuration page (e.g., *Structure > Content types*), and make your changes. Save the form.
+    - **Option B (Drush)**: Run `drush config:set ...` commands.
 2.  Run `drush config:export --destination=/var/www/html/config -y`.
 3.  Commit the changed YAML files to git.
 4.  Deploy to Staging/Production.
@@ -75,3 +77,9 @@ For regular updates:
     > ssh deployer@34.23.109.31
     > ~/staging-drush.sh config:import -y
     > ```
+
+## Performance Considerations & Future Improvements
+
+Currently, `config:import` runs on every deployment.
+- **Efficiency**: Drush first checks for differences. If no configuration files have changed, the operation is very fast (seconds) and effectively skipped.
+- **Scaling**: As the site grows, if deployment times become a concern, we may strictly separate code deployment from configuration updates by moving `config:import` to a separate, manually triggered GitHub Action or Makefile target.
