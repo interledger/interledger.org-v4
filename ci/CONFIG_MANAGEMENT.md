@@ -49,10 +49,10 @@ Once you have the production baseline, re-apply your specific changes locally.
 
 ```bash
 # Example: Disable alt text requirement
-ddev drush config:set field.field.media.image.field_media_image settings.alt_field_required 0 -y
+drush config:set field.field.media.image.field_media_image settings.alt_field_required 0 -y
 
 # Export just the changes (will modify only the relevant files)
-ddev drush config:export --destination=/var/www/html/config -y
+drush config:export --destination=/var/www/html/config -y
 ```
 
 ## Routine Workflow
@@ -60,7 +60,7 @@ ddev drush config:export --destination=/var/www/html/config -y
 For regular updates:
 
 1.  Make changes locally (e.g., via Drupal UI or `drush config:set`).
-2.  Run `ddev drush config:export --destination=/var/www/html/config -y`.
+2.  Run `drush config:export --destination=/var/www/html/config -y`.
 3.  Commit the changed YAML files to git.
 4.  Deploy to Staging/Production.
 5.  **Important:** Manually run `config:import` on the server after deployment:
