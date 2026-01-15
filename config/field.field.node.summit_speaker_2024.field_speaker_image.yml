@@ -1,0 +1,19 @@
+uuid: c8f668a5-126a-418c-a803-d292a9f9a17c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_image
+    - node.type.summit_speaker_2024
+id: node.summit_speaker_2024.field_speaker_image
+field_name: field_speaker_image
+entity_type: node
+bundle: summit_speaker_2024
+label: 'Speaker image'
+description: 'Pulls `profilePicture` (URL) from https://sessionize.com/api/v2/m24b8gc6/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

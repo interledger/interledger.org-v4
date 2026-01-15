@@ -1,0 +1,19 @@
+uuid: 0cc45984-67a7-484e-8635-f44af2e62dcc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_seo_description
+    - node.type.summit_page
+id: node.summit_page.field_seo_description
+field_name: field_seo_description
+entity_type: node
+bundle: summit_page
+label: 'SEO description'
+description: 'Enter the meta description for this page. This content will show up in the `<head>` of the page and be used by search engines and for other SEO-related purposes.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

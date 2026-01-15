@@ -1,0 +1,22 @@
+uuid: 49e27fb2-a71e-49ce-8a93-1c905be41d8c
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: 2023_summit_speaker_slugs
+label: '2022 Summit speaker slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2022/speaker/[node:title]'
+selection_criteria:
+  87a76c70-c9b3-4f77-9734-05f02f6db06b:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 87a76c70-c9b3-4f77-9734-05f02f6db06b
+    context_mapping:
+      node: node
+    bundles:
+      summit_speaker_2022: summit_speaker_2022
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,0 +1,22 @@
+uuid: baa2117c-ac10-4e81-8db4-017ebbcbdd85
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.event_card
+id: node.event_card.promote
+field_name: promote
+entity_type: node
+bundle: event_card
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

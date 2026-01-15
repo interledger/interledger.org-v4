@@ -1,0 +1,13 @@
+uuid: 69e1b80c-5be1-443a-9cf3-eef5437c9204
+langcode: en-gb
+status: true
+dependencies: {  }
+name: article_feature
+label: 'Article feature'
+effects:
+  9ec2f28a-f12a-4eeb-b3bf-7389b3730c25:
+    uuid: 9ec2f28a-f12a-4eeb-b3bf-7389b3730c25
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

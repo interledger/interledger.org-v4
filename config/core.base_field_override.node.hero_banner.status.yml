@@ -1,0 +1,22 @@
+uuid: 14398fca-dcef-43ab-ae84-013c111ffb15
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.hero_banner
+id: node.hero_banner.status
+field_name: status
+entity_type: node
+bundle: hero_banner
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,34 @@
+uuid: 3e6cc4b2-b31a-45ab-b17f-8799cb20d049
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_og_image
+    - media.type.image
+    - node.type.summit_page
+  content:
+    - 'media:image:7ae8506f-bb78-4d36-afc2-5fbb1ece6c3b'
+id: node.summit_page.field_og_image
+field_name: field_og_image
+entity_type: node
+bundle: summit_page
+label: 'OG Image'
+description: 'Upload an image if it should be different from the default'
+required: true
+translatable: true
+default_value:
+  -
+    target_uuid: 7ae8506f-bb78-4d36-afc2-5fbb1ece6c3b
+    weight: 0
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

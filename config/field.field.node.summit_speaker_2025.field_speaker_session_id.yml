@@ -1,0 +1,19 @@
+uuid: d5ef63bc-2bbb-4c71-ad79-948c644017cc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_session_id
+    - node.type.summit_speaker_2025
+id: node.summit_speaker_2025.field_speaker_session_id
+field_name: field_speaker_session_id
+entity_type: node
+bundle: summit_speaker_2025
+label: 'Speaker session id'
+description: 'Pulls `sessions[X].id` from https://sessionize.com/api/v2/ts62m835/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,19 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            first: '« Primero'
+            last: 'Último »'
+      exposed_form:
+        options:
+          submit_button: Aplique
+  news_listing_page:
+    display_options:
+      filters:
+        field_tags_target_id:
+          expose:
+            label: 'Filtre por etiquetas'
+      menu:
+        description: ''

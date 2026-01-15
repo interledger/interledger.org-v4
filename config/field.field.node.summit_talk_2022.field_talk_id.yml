@@ -1,0 +1,19 @@
+uuid: 75390680-6a8c-4ba4-a5d5-8db47457682e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_id
+    - node.type.summit_talk_2022
+id: node.summit_talk_2022.field_talk_id
+field_name: field_talk_id
+entity_type: node
+bundle: summit_talk_2022
+label: 'Talk ID'
+description: 'Pulls `id` from https://sessionize.com/api/v2/lbapz770/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

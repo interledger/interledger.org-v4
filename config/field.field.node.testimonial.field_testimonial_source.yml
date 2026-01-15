@@ -1,0 +1,26 @@
+uuid: 650b01bb-4743-4dea-a863-22ac099a4018
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_testimonial_source
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.testimonial
+  module:
+    - text
+id: node.testimonial.field_testimonial_source
+field_name: field_testimonial_source
+entity_type: node
+bundle: testimonial
+label: 'Testimonial source'
+description: 'Enter the source of the content in the testimonial'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text

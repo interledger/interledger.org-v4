@@ -1,0 +1,21 @@
+uuid: a9d19ed8-45d8-45b0-841f-7afb9454efc2
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_start
+    - node.type.summit_talk
+  module:
+    - datetime
+id: node.summit_talk.field_talk_start
+field_name: field_talk_start
+entity_type: node
+bundle: summit_talk
+label: 'Talk start'
+description: 'Pulls `startsAt` from https://sessionize.com/api/v2/7ueublag/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

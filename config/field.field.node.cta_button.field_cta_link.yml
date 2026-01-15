@@ -1,0 +1,23 @@
+uuid: 20f79820-f0f1-4108-8cc0-137777402a28
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cta_link
+    - node.type.cta_button
+  module:
+    - link
+id: node.cta_button.field_cta_link
+field_name: field_cta_link
+entity_type: node
+bundle: cta_button
+label: 'CTA link'
+description: 'Enter the URL where you want to send your user to'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

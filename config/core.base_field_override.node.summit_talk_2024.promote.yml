@@ -1,0 +1,22 @@
+uuid: cf540bbb-59ec-490e-860b-aa4ac1713d8d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_talk_2024
+id: node.summit_talk_2024.promote
+field_name: promote
+entity_type: node
+bundle: summit_talk_2024
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

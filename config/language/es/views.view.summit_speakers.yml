@@ -1,0 +1,16 @@
+display:
+  2025_summit_speakers_listing:
+    display_options:
+      title: 'Oradores de la Cumbre 2025'
+  2022_summit_speakers_listing:
+    display_options:
+      title: 'Oradores de la Cumbre 2022'
+  2024_summit_speakers_listing:
+    display_options:
+      title: 'Oradores de la Cumbre 2024'
+  summit_speakers_listing:
+    display_options:
+      display_description: 'Oradores de la Cumbre 2023'
+  default:
+    display_options:
+      title: 'Oradores de la Cumbre 2023'

@@ -1,0 +1,18 @@
+uuid: 5ba909e3-1b99-4398-a221-0d5810b14eb0
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_speaker_2022
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.summit_speaker_2022
+target_entity_type_id: node
+target_bundle: summit_speaker_2022
+default_langcode: site_default
+language_alterable: true

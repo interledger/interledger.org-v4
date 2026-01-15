@@ -1,0 +1,29 @@
+uuid: bdbc6c72-a5a2-4b20-bd79-673ef1ae9d6a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.table.field_table_html
+    - node.type.table
+  module:
+    - text
+    - user
+id: node.table.default
+targetEntityType: node
+bundle: table
+mode: default
+content:
+  field_table_html:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

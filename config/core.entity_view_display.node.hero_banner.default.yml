@@ -1,0 +1,160 @@
+uuid: d07d2fc3-5c0e-43b0-afe0-e3249e524a81
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.hero_banner.field_hero_background_image
+    - field.field.node.hero_banner.field_hero_background_position
+    - field.field.node.hero_banner.field_hero_background_video
+    - field.field.node.hero_banner.field_hero_blurb
+    - field.field.node.hero_banner.field_hero_caption
+    - field.field.node.hero_banner.field_hero_cta
+    - field.field.node.hero_banner.field_hero_gradient
+    - field.field.node.hero_banner.field_hero_image
+    - field.field.node.hero_banner.field_hero_shade_overlay
+    - field.field.node.hero_banner.field_hero_text
+    - field.field.node.hero_banner.field_hero_text_colour
+    - field.field.node.hero_banner.field_hero_type
+    - field.field.node.hero_banner.field_hero_video_poster
+    - field.field.node.hero_banner.field_umami_event
+    - field.field.node.hero_banner.field_vertical_text_alignment
+    - node.type.hero_banner
+  module:
+    - entity_reference_revisions
+    - link
+    - options
+    - text
+    - user
+id: node.hero_banner.default
+targetEntityType: node
+bundle: hero_banner
+mode: default
+content:
+  field_hero_background_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_hero_background_position:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_hero_background_video:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_hero_blurb:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_hero_caption:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_hero_cta:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_hero_gradient:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_hero_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_hero_shade_overlay:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_hero_text:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_hero_text_colour:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_hero_type:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_hero_video_poster:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_umami_event:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_vertical_text_alignment:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+hidden:
+  langcode: true
+  links: true

@@ -1,0 +1,14 @@
+uuid: ede13fc0-2a23-4344-a93e-a85d341d0f5c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - user.role.bot
+  module:
+    - user
+id: user_remove_role_action.bot
+label: 'Remove the Bot role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: bot

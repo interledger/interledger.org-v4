@@ -1,0 +1,19 @@
+uuid: 7ca91d35-c5d0-4437-96b2-f5dee2d97da5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_name
+    - node.type.summit_speaker_2022
+id: node.summit_speaker_2022.field_speaker_name
+field_name: field_speaker_name
+entity_type: node
+bundle: summit_speaker_2022
+label: 'Speaker name'
+description: 'Pulls `fullName` from https://sessionize.com/api/v2/lbapz770/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

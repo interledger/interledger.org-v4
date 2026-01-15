@@ -1,0 +1,33 @@
+uuid: c10069eb-e165-4c84-ba27-17744d13deea
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_pillar
+field_name: field_pillar
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: vision
+      label: 'Vision (Purple)'
+    -
+      value: mission
+      label: 'Mission (Orange)'
+    -
+      value: tech
+      label: 'Tech (Teal)'
+    -
+      value: values
+      label: 'Values (Pink)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

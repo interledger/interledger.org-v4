@@ -1,0 +1,33 @@
+uuid: a8b3bc64-dd9e-47c9-be84-1e4257fb7dde
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.tile.field_key_feature
+    - field.field.node.tile.field_key_number
+    - field.field.node.tile.field_tile_cta
+    - field.field.node.tile.field_tile_description
+    - field.field.node.tile.field_tile_icon
+    - field.field.node.tile.field_tile_type
+    - node.type.tile
+  module:
+    - user
+id: node.tile.teaser
+targetEntityType: node
+bundle: tile
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_key_feature: true
+  field_key_number: true
+  field_tile_cta: true
+  field_tile_description: true
+  field_tile_icon: true
+  field_tile_type: true
+  langcode: true

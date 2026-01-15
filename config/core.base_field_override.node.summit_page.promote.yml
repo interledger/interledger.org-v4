@@ -1,0 +1,22 @@
+uuid: c0dc92b7-f7db-419e-a33b-0bc208c0258e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_page
+id: node.summit_page.promote
+field_name: promote
+entity_type: node
+bundle: summit_page
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

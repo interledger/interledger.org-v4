@@ -1,0 +1,21 @@
+uuid: 3a89deab-9941-4b55-8936-03af86dae2c8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.card_category
+  module:
+    - text
+id: taxonomy_term.card_category.description
+field_name: description
+entity_type: taxonomy_term
+bundle: card_category
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

@@ -1,0 +1,18 @@
+uuid: 09f04532-a3bd-4806-a53d-d3b6f5fc8bad
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_talk
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.summit_talk
+target_entity_type_id: node
+target_bundle: summit_talk
+default_langcode: site_default
+language_alterable: true
