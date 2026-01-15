@@ -63,8 +63,15 @@ For regular updates:
 2.  Run `drush config:export --destination=/var/www/html/config -y`.
 3.  Commit the changed YAML files to git.
 4.  Deploy to Staging/Production.
-5.  **Important:** Manually run `config:import` on the server after deployment:
-    ```bash
-    ssh deployer@34.23.109.31
-    ~/staging-drush.sh config:import -y
-    ```
+5.  **Deployment:** The deployment process (via GitHub Actions or `make deploy`) now **automatically** runs:
+    - `drush config:import -y` (Configuration import)
+    - `drush cr` (Cache rebuild)
+
+6.  **Verify:** Check the changes on the site.
+
+    > [!NOTE]
+    > If you need to debug or run it manually:
+    > ```bash
+    > ssh deployer@34.23.109.31
+    > ~/staging-drush.sh config:import -y
+    > ```
