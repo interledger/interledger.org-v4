@@ -65,6 +65,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) {
   
 // File system paths
 $settings['file_public_path'] = 'sites/default/files';
+$settings['file_public_base_url'] = 'https://interledger.org/sites/default/files';
 $settings['file_private_path'] = '/var/www/production/private';
 
 // Configuration sync directory
