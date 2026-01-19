@@ -59,9 +59,15 @@ drush config:export --destination=/var/www/html/config -y
 
 For regular updates:
 
+> [!NOTE]
+> Ensure your local environment is configured to use the root `config/` directory.
+> - **DDEV**: Handled automatically via `settings.php`.
+> - **Custom Docker (`local/`)**: Ensure `local/docker-compose.yaml` mounts `../config` and `local/settings.php` points to `/var/www/html/config`.
+
 1.  **Make changes locally**:
     - **Option A (Drupal Admin UI)**: Log in to your local site (e.g., `ddev login`), navigate to the configuration page (e.g., *Structure > Content types*), and make your changes. Save the form.
-    - **Option B (Drush)**: Run `drush config:set ...` commands.
+    - **Option B (DDEV + Drush)**: Run `ddev drush config:set ...` commands.
+    - **Option C (Custom Docker + Drush)**: Run `make drush config:set ...` from the `local/` directory. If running manually inside the container, use `./vendor/bin/drush` from the project root (`/var/www/html`).
 2.  Run `drush config:export --destination=/var/www/html/config -y`.
 3.  Commit the changed YAML files to git.
 4.  Deploy to Staging/Production.
@@ -77,6 +83,26 @@ For regular updates:
     > ssh deployer@34.23.109.31
     > ~/staging-drush.sh config:import -y
     > ```
+
+## Merging & Consolidating Changes
+
+If you are working on a separate feature and want to incorporate these configuration changes, the procedure is standard Git merging for YAML files.
+
+### Steps to consolidate:
+1.  **Export your current local configuration**:
+    - **Inside container**: `./vendor/bin/drush config:export --destination=/var/www/html/config -y`
+    - **Outside container**: `make drush config:export -y` (from the `local/` directory)
+2.  **Pull/Merge this branch**:
+    ```bash
+    git pull origin <this-feature-branch>
+    ```
+    - Git will merge the YAML files in the `config/` directory. 
+3.  **Import the merged configuration**:
+    - **Inside container**: `./vendor/bin/drush config:import -y`
+    - **Outside container**: `make drush config:import -y`
+
+> [!IMPORTANT]
+> Since the `config/` directory is now at the project root, it is tracked by Git. Previously, it was buried in `web/sites/default/files/` which was ignored by `.gitignore`. This move is what allows you and the team to finally share and version-control configuration correctly.
 
 ## Performance Considerations & Future Improvements
 
