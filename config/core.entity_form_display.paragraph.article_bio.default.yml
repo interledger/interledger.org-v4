@@ -1,0 +1,34 @@
+uuid: 26da2af3-bebf-463c-b40c-bc9d423b68f1
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.article_bio.field_profile_bio
+    - field.field.paragraph.article_bio.field_profile_image
+    - paragraphs.paragraphs_type.article_bio
+  module:
+    - media_library
+    - text
+id: paragraph.article_bio.default
+targetEntityType: paragraph
+bundle: article_bio
+mode: default
+content:
+  field_profile_bio:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_profile_image:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

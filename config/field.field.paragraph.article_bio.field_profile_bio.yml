@@ -1,0 +1,26 @@
+uuid: 36a42268-1041-4ab3-8e53-6dc4c86a5cbc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_profile_bio
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - paragraphs.paragraphs_type.article_bio
+  module:
+    - text
+id: paragraph.article_bio.field_profile_bio
+field_name: field_profile_bio
+entity_type: paragraph
+bundle: article_bio
+label: 'Profile bio'
+description: 'Enter a short bio for the author. Please keep to 180 characters thereabouts.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text_long

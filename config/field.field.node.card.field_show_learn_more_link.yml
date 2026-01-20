@@ -1,0 +1,23 @@
+uuid: 67f8ccd1-74d2-48f2-8a9e-39ac6a6572ba
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_show_learn_more_link
+    - node.type.card
+id: node.card.field_show_learn_more_link
+field_name: field_show_learn_more_link
+entity_type: node
+bundle: card
+label: 'Show Learn More link'
+description: 'Shows a `Learn More ->` link at the bottom of the card'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

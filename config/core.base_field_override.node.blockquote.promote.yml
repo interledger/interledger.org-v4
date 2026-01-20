@@ -1,0 +1,22 @@
+uuid: 77322da9-66c3-4b14-9b5c-90eec8f8d133
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.blockquote
+id: node.blockquote.promote
+field_name: promote
+entity_type: node
+bundle: blockquote
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

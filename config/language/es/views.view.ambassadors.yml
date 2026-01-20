@@ -1,0 +1,11 @@
+label: Embajadores
+description: 'Opiniones relacionadas con embajadores'
+display:
+  active_ambassadors_listing_block:
+    display_title: 'ES Active'
+    display_options:
+      title: 'Embajadores 2025'
+  alumni_ambassadors_listing_block:
+    display_title: 'ES Alumni'
+    display_options:
+      title: 'Exparticipantes del programa de embajadores'

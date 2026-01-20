@@ -1,0 +1,31 @@
+uuid: b27d9d31-7ea0-46d8-9340-71381a735f86
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_thumbnail
+    - media.type.image
+    - media.type.svg
+    - node.type.article
+id: node.article.field_article_thumbnail
+field_name: field_article_thumbnail
+entity_type: node
+bundle: article
+label: 'Article thumbnail'
+description: 'Upload a thumbnail image for this article with dimensions 350x350. Please ensure image is optimised.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      svg: svg
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

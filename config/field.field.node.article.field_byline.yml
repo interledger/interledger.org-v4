@@ -1,0 +1,19 @@
+uuid: 55cb765b-1e3f-426b-bcba-2770c37bd86c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_byline
+    - node.type.article
+id: node.article.field_byline
+field_name: field_byline
+entity_type: node
+bundle: article
+label: Byline
+description: 'Fill in the author name for this article. It will display as "Written by AUTHOR_NAME".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,19 @@
+uuid: 755bd6d1-3e09-4d07-81a5-95607d870b6e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_heading
+    - node.type.form_block
+id: node.form_block.field_form_heading
+field_name: field_form_heading
+entity_type: node
+bundle: form_block
+label: 'Form heading'
+description: 'The heading to display above this form'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

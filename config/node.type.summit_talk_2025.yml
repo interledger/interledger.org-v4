@@ -1,0 +1,17 @@
+uuid: 7abe6a7a-d3e0-4c05-b582-dc6e8992bd49
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Summit talk (2025)'
+type: summit_talk_2025
+description: 'Used for displaying information about 2025 Summit talks. Data is pulled from Sessionize (ts62m835).'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

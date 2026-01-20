@@ -1,0 +1,27 @@
+uuid: b9a5de34-46a6-494d-9aac-8426eec676cd
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.podcast.field_podcast_description
+    - field.field.node.podcast.field_podcast_embed
+    - field.field.node.podcast.field_podcast_series
+    - node.type.podcast
+  module:
+    - user
+id: node.podcast.teaser
+targetEntityType: node
+bundle: podcast
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_podcast_description: true
+  field_podcast_embed: true
+  field_podcast_series: true
+  langcode: true

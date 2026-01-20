@@ -1,0 +1,21 @@
+uuid: 0b6fcfff-25e0-4135-9fe7-094139759e97
+langcode: en-gb
+status: true
+dependencies: {  }
+name: widget_preview
+label: 'Widget preview'
+effects:
+  9d9ef07f-63f9-4967-abac-fb6de2155e34:
+    uuid: 9d9ef07f-63f9-4967-abac-fb6de2155e34
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 200
+      height: 200
+      anchor: center-center
+  0a95b336-bdc7-4385-bc14-ea73c6fc449d:
+    uuid: 0a95b336-bdc7-4385-bc14-ea73c6fc449d
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

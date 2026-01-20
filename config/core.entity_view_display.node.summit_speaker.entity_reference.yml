@@ -1,0 +1,54 @@
+uuid: 81b3167e-4fd2-4f04-80fa-3e57c33cac32
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.entity_reference
+    - field.field.node.summit_speaker.feeds_item
+    - field.field.node.summit_speaker.field_speaker_bio
+    - field.field.node.summit_speaker.field_speaker_id
+    - field.field.node.summit_speaker.field_speaker_image
+    - field.field.node.summit_speaker.field_speaker_name
+    - field.field.node.summit_speaker.field_speaker_session_id
+    - field.field.node.summit_speaker.field_speaker_tagline
+    - field.field.node.summit_speaker.field_speaker_talk_entities
+    - field.field.node.summit_speaker.field_summit_year
+    - node.type.summit_speaker
+  module:
+    - layout_builder
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.summit_speaker.entity_reference
+targetEntityType: node
+bundle: summit_speaker
+mode: entity_reference
+content:
+  field_speaker_image:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: ds_content
+  field_speaker_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: ds_content
+hidden:
+  feeds_item: true
+  field_speaker_bio: true
+  field_speaker_id: true
+  field_speaker_session_id: true
+  field_speaker_tagline: true
+  field_speaker_talk_entities: true
+  field_summit_year: true
+  langcode: true
+  links: true

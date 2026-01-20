@@ -1,0 +1,10 @@
+uuid: 07b0fe14-9e3e-4bae-8fb4-64d7a726e9e8
+langcode: en-gb
+status: true
+dependencies: {  }
+id: article_bio
+label: 'Article bio'
+icon_uuid: null
+icon_default: null
+description: 'Used to show a short bio of profiles relevant to the blog post'
+behavior_plugins: {  }

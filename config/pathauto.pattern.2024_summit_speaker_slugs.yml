@@ -1,0 +1,22 @@
+uuid: 000ead78-747e-4bcc-a131-02c0b8ee80c3
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: 2024_summit_speaker_slugs
+label: '2024 Summit speaker slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2024/speaker/[node:title]'
+selection_criteria:
+  9125ee45-0225-442a-bb62-0ab5cc3799bb:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 9125ee45-0225-442a-bb62-0ab5cc3799bb
+    context_mapping:
+      node: node
+    bundles:
+      summit_speaker_2024: summit_speaker_2024
+selection_logic: and
+weight: -5
+relationships: {  }

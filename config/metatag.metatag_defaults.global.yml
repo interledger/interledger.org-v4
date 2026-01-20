@@ -1,0 +1,17 @@
+uuid: a4825bd7-3fb2-4a06-9281-ce6260017302
+langcode: en-gb
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: sL588ui1E_8-2c_UupwyYxcqX2OVyMFp3HTLbbFqvPc
+id: global
+label: Global
+tags:
+  canonical_url: '[current-page:url]'
+  description: 'The Interledger Foundation is a global nonprofit grantmaking foundation, leading the next revolution in payments through Interledger, the global network for inclusive digital financial service providers.'
+  og_description: 'The Interledger Foundation is a global nonprofit grantmaking foundation, leading the next revolution in payments through Interledger, the global network for inclusive digital financial service providers.'
+  og_image: 'https://interledger.org/sites/default/files/image-uploads/og-ilf.png'
+  og_site_name: '[site:name]'
+  og_title: '[current-page:title]'
+  og_type: website
+  title: '[current-page:title] | [site:name]'

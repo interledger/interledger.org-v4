@@ -1,0 +1,33 @@
+uuid: d603894d-a337-49a6-9934-eb280b7670b4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.svg.field_media_svg
+    - image.style.medium
+    - media.type.svg
+  module:
+    - image
+id: media.svg.media_library
+targetEntityType: media
+bundle: svg
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_media_svg: true
+  langcode: true
+  name: true
+  uid: true

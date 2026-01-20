@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: Kh1SKl8qPXL4aKYLOIlwn3YFfI-8i7AOB3MYauKJAb8
+enabled: true
+enabled_signature: false
+contact_email: tech@interledger.org
+contact_phone: ''
+contact_page_url: ''
+encryption_key_url: ''
+expiry_date: 1769077442
+policy_url: ''
+acknowledgments_url: ''
+signature_text: ''
+preferred_languages: en-gb
+canonical_urls: ''
+hiring_url: ''

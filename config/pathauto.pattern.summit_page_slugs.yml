@@ -1,0 +1,33 @@
+uuid: ef9e7a7d-85bb-443e-89e6-6209a72bc03b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: summit_page_slugs
+label: 'Summit page slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/[node:title]'
+selection_criteria:
+  07928298-f3c4-4c8f-af5a-c7dbd790d8bc:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 07928298-f3c4-4c8f-af5a-c7dbd790d8bc
+    context_mapping:
+      node: node
+    bundles:
+      summit_page: summit_page
+  db5af8a8-95f6-4f93-aa38-445890c79c41:
+    id: language
+    negate: false
+    uuid: db5af8a8-95f6-4f93-aa38-445890c79c41
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en-gb: en-gb
+selection_logic: and
+weight: -5
+relationships:
+  'node:langcode:language':
+    label: Language

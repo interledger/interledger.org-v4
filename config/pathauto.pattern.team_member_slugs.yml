@@ -1,0 +1,22 @@
+uuid: f9ea57a0-ecee-4058-a094-0326f4bc3bec
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: team_member_slugs
+label: 'Team member slugs'
+type: 'canonical_entities:node'
+pattern: 'team/[node:title]'
+selection_criteria:
+  224cc901-8085-4705-a0b0-af80f1be79e8:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 224cc901-8085-4705-a0b0-af80f1be79e8
+    context_mapping:
+      node: node
+    bundles:
+      team_member: team_member
+selection_logic: and
+weight: -5
+relationships: {  }

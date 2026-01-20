@@ -1,0 +1,21 @@
+uuid: 6a29804d-7481-4576-9b90-a741779438ea
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_form_id
+field_name: field_form_id
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

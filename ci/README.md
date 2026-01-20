@@ -159,6 +159,13 @@ These scripts automatically:
 - Supply database credentials from environment variables
 - Set the correct site URI
 
+### Configuration Management
+
+See [Configuration Management Guide](CONFIG_MANAGEMENT.md) for detailed instructions on:
+- Syncing local configuration with production
+- Exporting and importing configuration
+- Managing configuration drift
+
 ### Modifying Apache Configuration
 
 Apache virtual host configurations are located directly on the VM at `/etc/apache2/sites-available/`. To modify Apache configuration:

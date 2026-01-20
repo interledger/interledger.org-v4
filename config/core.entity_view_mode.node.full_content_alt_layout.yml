@@ -1,0 +1,11 @@
+uuid: aaa0e00d-7204-4c15-88f3-1a94ffab5ee4
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.full_content_alt_layout
+label: 'Full content (alt layout)'
+description: ''
+targetEntityType: node
+cache: true

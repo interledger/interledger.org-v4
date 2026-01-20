@@ -1,0 +1,19 @@
+uuid: 86a6a4fc-1788-4c4a-9800-dfe7000fdc4d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_umami_event
+    - node.type.hero_banner
+id: node.hero_banner.field_umami_event
+field_name: field_umami_event
+entity_type: node
+bundle: hero_banner
+label: 'Umami event'
+description: 'Enter the event label for tracking on analytics'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

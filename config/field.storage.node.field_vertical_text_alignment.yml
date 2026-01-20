@@ -1,0 +1,27 @@
+uuid: 2163d4e3-3504-41a4-b8e2-b22f7aa3fecf
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_vertical_text_alignment
+field_name: field_vertical_text_alignment
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: centered
+      label: Centered
+    -
+      value: bottom
+      label: Bottom
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,36 @@
+uuid: 0912312c-d862-4b99-8302-4cafecd1b72e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.article_bio.field_profile_bio
+    - field.field.paragraph.article_bio.field_profile_image
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.article_bio
+  module:
+    - media
+    - text
+id: paragraph.article_bio.default
+targetEntityType: paragraph
+bundle: article_bio
+mode: default
+content:
+  field_profile_bio:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_profile_image:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: thumbnail
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

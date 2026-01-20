@@ -1,0 +1,29 @@
+uuid: 7c6f5572-b505-4142-b933-8832223d2c82
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.footer_notes.field_footer_notes
+    - node.type.footer_notes
+  module:
+    - text
+    - user
+id: node.footer_notes.default
+targetEntityType: node
+bundle: footer_notes
+mode: default
+content:
+  field_footer_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

@@ -1,0 +1,18 @@
+uuid: 261f92ae-5287-4de4-a9ac-2c9464fd3dc0
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.hero_banner
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.hero_banner
+target_entity_type_id: node
+target_bundle: hero_banner
+default_langcode: site_default
+language_alterable: true

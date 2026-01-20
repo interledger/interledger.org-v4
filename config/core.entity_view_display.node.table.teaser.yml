@@ -1,0 +1,23 @@
+uuid: cdd04575-0c97-4e40-9af2-708bfe85db55
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.table.field_table_html
+    - node.type.table
+  module:
+    - user
+id: node.table.teaser
+targetEntityType: node
+bundle: table
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_table_html: true
+  langcode: true

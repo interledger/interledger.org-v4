@@ -1,0 +1,21 @@
+uuid: 30721e77-28d8-4934-aba6-8f51b097a8ff
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_employee
+    - node.type.team_member
+id: node.team_member.field_is_employee
+field_name: field_is_employee
+entity_type: node
+bundle: team_member
+label: 'Is employee?'
+description: 'Indicate if the team member is an employee of ILF.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

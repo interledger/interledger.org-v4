@@ -1,0 +1,19 @@
+uuid: e1ff87c7-665c-4116-a2b1-91856c017af8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_image
+    - node.type.summit_speaker
+id: node.summit_speaker.field_speaker_image
+field_name: field_speaker_image
+entity_type: node
+bundle: summit_speaker
+label: 'Speaker image'
+description: 'Pulls `profilePicture` (URL) from https://sessionize.com/api/v2/7ueublag/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

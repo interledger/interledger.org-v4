@@ -1,0 +1,21 @@
+uuid: aa0d94d4-6607-4560-a589-44c4d47e7e69
+langcode: en-gb
+status: true
+dependencies: {  }
+name: article_thumbnail
+label: 'Article thumbnail'
+effects:
+  7d76f70d-2f5a-4627-aa27-eed935305f7f:
+    uuid: 7d76f70d-2f5a-4627-aa27-eed935305f7f
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 250
+      height: 250
+      anchor: center-center
+  24d5806b-7b8f-40cc-bfeb-e07cf8d0a68d:
+    uuid: 24d5806b-7b8f-40cc-bfeb-e07cf8d0a68d
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

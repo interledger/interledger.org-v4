@@ -1,0 +1,48 @@
+uuid: ce928f56-47bb-4ec4-bc08-8fe8e5e04859
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.cta_stripe.field_cta_image
+    - field.field.node.cta_stripe.field_cta_text
+    - field.field.node.cta_stripe.field_cta_type
+    - node.type.cta_stripe
+  module:
+    - options
+    - text
+    - user
+id: node.cta_stripe.default
+targetEntityType: node
+bundle: cta_stripe
+mode: default
+content:
+  field_cta_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_cta_text:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_cta_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

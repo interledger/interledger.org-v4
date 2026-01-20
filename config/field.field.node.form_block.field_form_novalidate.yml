@@ -1,0 +1,21 @@
+uuid: c42feb8b-9b7a-4c1a-8c89-f9728b0ecd96
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_novalidate
+    - node.type.form_block
+id: node.form_block.field_form_novalidate
+field_name: field_form_novalidate
+entity_type: node
+bundle: form_block
+label: 'Form novalidate'
+description: 'When true it specifies that the form input should not be validated upon submission'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'true'
+  off_label: 'false'
+field_type: boolean

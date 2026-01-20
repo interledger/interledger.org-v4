@@ -1,0 +1,23 @@
+uuid: 070242e9-46a9-4141-b643-aaea1a04d731
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_caption
+    - node.type.card
+id: node.card.field_card_caption
+field_name: field_card_caption
+entity_type: node
+bundle: card
+label: 'Card caption'
+description: 'Indicate if the card has accompanying caption or not'
+required: true
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Has caption'
+  off_label: 'No caption'
+field_type: boolean

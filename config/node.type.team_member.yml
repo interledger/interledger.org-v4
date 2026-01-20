@@ -1,0 +1,17 @@
+uuid: 74d61086-5461-4f90-9b9a-3d949f3f305c
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Team member'
+type: team_member
+description: 'Used to create individual profiles of team members'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

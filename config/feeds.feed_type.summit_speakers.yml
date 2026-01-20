@@ -1,0 +1,177 @@
+uuid: 96dc52f7-031e-4032-bf02-cf2e26c47aa6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_speaker.field_speaker_bio
+    - field.field.node.summit_speaker.field_speaker_id
+    - field.field.node.summit_speaker.field_speaker_image
+    - field.field.node.summit_speaker.field_speaker_name
+    - field.field.node.summit_speaker.field_speaker_session_id
+    - field.field.node.summit_speaker.field_speaker_tagline
+    - field.field.node.summit_speaker.field_speaker_talk_entities
+    - field.field.node.summit_speaker.field_summit_year
+    - node.type.summit_speaker
+  module:
+    - feeds_ex
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      86f95b2c-62a8-4daf-9b24-7a02f0476b94:
+        default_value: '2023'
+        only_if_empty: true
+        uuid: 86f95b2c-62a8-4daf-9b24-7a02f0476b94
+        plugin: default_value
+        source: year
+        weight: 0
+        label: 'Set value or default value'
+label: '2023 Summit speakers'
+id: summit_speakers
+description: 'List of speakers for 2023 Summit'
+help: ''
+import_period: -1
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: false
+  use_pubsubhubbub: false
+  always_download: true
+  fallback_hub: ''
+  request_timeout: 30
+parser: jsonpath
+parser_configuration:
+  context:
+    value: '$.*'
+  source_encoding:
+    - auto
+  display_errors: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: summit_speaker
+  langcode: en-gb
+  insert_new: 0
+  update_existing: 2
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 1
+custom_sources:
+  fullname:
+    value: fullName
+    label: fullName
+    machine_name: fullname
+    type: json
+  tagline:
+    value: tagLine
+    label: tagLine
+    machine_name: tagline
+    type: json
+  title:
+    value: fullName
+    label: fullName
+    machine_name: title
+    type: json
+  profilepicture:
+    value: profilePicture
+    label: profilePicture
+    machine_name: profilepicture
+    type: json
+  bio:
+    value: bio
+    label: bio
+    machine_name: bio
+    type: json
+  id:
+    value: id
+    label: id
+    machine_name: id
+    type: json
+  sessionid:
+    value: 'sessions[*].id'
+    label: sessionId
+    machine_name: sessionid
+    type: json
+  sessionname:
+    value: 'sessions[*].name'
+    label: sessionName
+    machine_name: sessionname
+    type: json
+  year:
+    value: year
+    label: year
+    machine_name: year
+    type: blank
+mappings:
+  -
+    target: field_speaker_name
+    map:
+      value: fullname
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: title
+    map:
+      value: title
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_speaker_tagline
+    map:
+      value: tagline
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_speaker_image
+    map:
+      value: profilepicture
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_speaker_id
+    map:
+      value: id
+    settings:
+      language: null
+    unique:
+      value: 1
+  -
+    target: field_speaker_session_id
+    map:
+      value: sessionid
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_speaker_talk_entities
+    map:
+      target_id: sessionname
+    settings:
+      language: null
+      reference_by: title
+      autocreate: false
+      autocreate_bundle: summit_talk
+      feeds_item: false
+  -
+    target: field_speaker_bio
+    map:
+      value: bio
+    settings:
+      language: ''
+      format: basic_html
+  -
+    target: field_summit_year
+    map:
+      value: year
+    settings:
+      language: null
+    unique: {  }

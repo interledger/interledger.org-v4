@@ -1,0 +1,40 @@
+uuid: 2b59c0b0-4e73-4e36-a355-bf9a343e3b1d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_profile
+    - node.type.article
+    - paragraphs.paragraphs_type.article_bio
+  module:
+    - entity_reference_revisions
+id: node.article.field_article_profile
+field_name: field_article_profile
+entity_type: node
+bundle: article
+label: 'Article profile'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      article_bio: article_bio
+    negate: 0
+    target_bundles_drag_drop:
+      article_bio:
+        weight: 5
+        enabled: true
+      faq:
+        weight: 6
+        enabled: false
+      gradient:
+        weight: 7
+        enabled: false
+      social_media_link:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions

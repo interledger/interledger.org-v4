@@ -1,0 +1,27 @@
+uuid: 3294eb22-f4f2-4f39-8ea4-39644acedbdd
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.radio_field.field_input_id
+    - field.field.node.radio_field.field_input_name
+    - field.field.node.radio_field.field_input_value
+    - node.type.radio_field
+  module:
+    - user
+id: node.radio_field.teaser
+targetEntityType: node
+bundle: radio_field
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_input_id: true
+  field_input_name: true
+  field_input_value: true
+  langcode: true

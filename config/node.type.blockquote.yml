@@ -1,0 +1,17 @@
+uuid: 88f73ab5-f419-4834-8a2e-c1eceaf6789b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Blockquote
+type: blockquote
+description: 'Used to display text in the style of a blockquote'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false
