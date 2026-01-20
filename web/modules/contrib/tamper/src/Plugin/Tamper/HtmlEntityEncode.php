@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "html_entity_encode",
  *   label = @Translation("HTML entity encode"),
  *   description = @Translation("This will convert all HTML special characters such as &gt; and &amp; to &amp;gt; and &amp;apm;."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class HtmlEntityEncode extends TamperBase {

@@ -1,5 +1,5 @@
 global-styling:
-  version: 1.7.1
+  version: 1.7.4
   css:
     theme:
       css/fonts.css: {}
@@ -31,6 +31,7 @@ global-styling:
       css/components/cta-button.css: {}
       css/components/event-card.css: {}
       css/components/faq.css: {}
+      css/components/footer-notes.css: {}
       css/components/hero.css: {}
       css/components/highlight-text.css: {}
       css/components/podcast.css: {}

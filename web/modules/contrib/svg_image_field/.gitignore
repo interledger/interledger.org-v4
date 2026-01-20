@@ -8,6 +8,6 @@ recipes/*
 /vendor/
 /web/
 /.editorconfig
-/.gitattributes
 /phpstan.neon
 /phpcs.xml.dist
+/.ddev/xhprof/xhprof_prepend.php

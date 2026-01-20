@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "sprintf",
  *   label = @Translation("Format string"),
  *   description = @Translation("Format string"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class Sprintf extends TamperBase {

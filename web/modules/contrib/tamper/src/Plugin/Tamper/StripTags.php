@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "strip_tags",
  *   label = @Translation("Strip tags"),
  *   description = @Translation("Strip tags."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class StripTags extends TamperBase {

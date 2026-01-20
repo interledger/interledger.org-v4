@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\tamper\Unit\Plugin\Tamper;
 
+use Drupal\tamper\Exception\MissingItemException;
 use Drupal\tamper\Plugin\Tamper\Copy;
 use Drupal\tamper\TamperItem;
 
@@ -42,15 +43,14 @@ class CopyTest extends TamperPluginTestBase {
       Copy::SETTING_TO_FROM => 'to',
       Copy::SETTING_SOURCE => 'title',
     ];
-    $expected = [
-      'title' => 'Robots are scary!',
-      'body' => 'Robots are scary!',
-    ];
 
     $plugin = new Copy($config, 'copy', [], $this->getMockSourceDefinition());
     $item = $this->getTamperItem();
-
-    $this->assertEquals('Robots are scary!', $plugin->tamper('Robots are scary!', $item));
+    $this->assertEquals('Robots are cool.', $item->getSourceProperty('title'));
+    // When copying to, the original data stays the same.
+    $this->assertEquals('foo', $plugin->tamper('foo', $item));
+    // However the source property should have changed.
+    $this->assertEquals('foo', $item->getSourceProperty('title'));
   }
 
   /**
@@ -65,7 +65,20 @@ class CopyTest extends TamperPluginTestBase {
     $plugin = new Copy($config, 'copy', [], $this->getMockSourceDefinition());
     $item = $this->getTamperItem();
 
-    $this->assertEquals('Robots are cool.', $plugin->tamper('Robots are scary!', $item));
+    $this->assertEquals('Robots are cool.', $item->getSourceProperty('title'));
+    // The return value is now that of the title source.
+    $this->assertEquals('Robots are cool.', $plugin->tamper('foo', $item));
+    // The title source property has not been changed.
+    $this->assertEquals('Robots are cool.', $item->getSourceProperty('title'));
+  }
+
+  /**
+   * Test the plugin behavior without a tamperable item.
+   */
+  public function testEmptyTamperableItem() {
+    $this->expectException(MissingItemException::class);
+    $this->expectExceptionMessage('The copy plugin requires a tamperable item.');
+    $this->plugin->tamper('foo');
   }
 
   /**
@@ -80,6 +93,45 @@ class CopyTest extends TamperPluginTestBase {
    */
   public function testWithEmptyString() {
     $this->assertEquals('', $this->plugin->tamper('', $this->getTamperItem()));
+  }
+
+  /**
+   * Tests if the Copy plugin returns the right used properties.
+   *
+   * @covers ::getUsedSourceProperties
+   *
+   * @dataProvider getUsedSourcePropertiesProvider
+   */
+  public function testGetUsedSourceProperties(array $expected, array $config) {
+    $this->plugin->setConfiguration($config);
+    $item = new TamperItem();
+    $this->assertSame($expected, $this->plugin->getUsedSourceProperties($item));
+  }
+
+  /**
+   * Data provider for testGetUsedSourceProperties().
+   */
+  public static function getUsedSourcePropertiesProvider(): array {
+    return [
+      'no config' => [
+        'expected' => [],
+        'config' => [],
+      ],
+      'configured as to' => [
+        'expected' => [],
+        'config' => [
+          Copy::SETTING_TO_FROM => 'to',
+          Copy::SETTING_SOURCE => 'title',
+        ],
+      ],
+      'configured as from' => [
+        'expected' => ['title'],
+        'config' => [
+          Copy::SETTING_TO_FROM => 'from',
+          Copy::SETTING_SOURCE => 'title',
+        ],
+      ],
+    ];
   }
 
 }

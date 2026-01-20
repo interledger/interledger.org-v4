@@ -1,33 +1,40 @@
-# Interledger Foundation website
+# Interledger Foundation Website
 
-This is a Drupal powered CMS that manages all the content for the Interledger Foundation website. All the documentation for this project is in [the wiki](https://github.com/interledger/interledger.org-v4/wiki).
+This is a Drupal-powered CMS that manages all the content for the Interledger Foundation website. 
 
-## Local development
+**⚠️ Note: We are currently in the process of migrating from AWS to Google Cloud Platform (GCP).**
+
+## Documentation
+
+All documentation for working with website content is available in [the wiki](https://github.com/interledger/interledger.org-v4/wiki). Please refer to the wiki for:
+- Content creation and editing guidelines
+- Adding blog posts and podcast episodes
+- Managing multilingual content
+- General site-building philosophy
+
+## Environments
+
+- **Production**: https://interledger.org
+- **Staging**: https://staging.interledger.org
+
+## Infrastructure
+
+The website runs on GCP infrastructure:
+- **Compute**: Single GCE (Google Compute Engine) instance running Apache and Drupal
+- **Database**: Cloud SQL (MySQL)
+- **File Storage**: Files are stored locally on the instance at `/var/www/[environment]/web/sites/default/files`
+- **Backups**: Automated backup system using Cloud SQL exports and GCS storage
+- **Project**: All resources are in the `interledger-websites` GCP project
+
+## Local Development
 
 Please refer to the instructions here: https://github.com/interledger/interledger.org-v4/wiki/Setting-up-on-your-local-machine
 
-## Staging environment
+## Deployments and CI/CD
 
-We now have a [staging environment avilable](https://interledger-org-staging-395917053417.us-east1.run.app/). It is not fully functional yet, but we hope that this will form the backbone of how we will deploy the website in the future. 
-
-The staging environment runs as a [Google Cloud Run based container](https://console.cloud.google.com/run/detail/us-east1/interledger-org-staging/observability/metrics?hl=en&project=interledger-websites).
-- The `files` folder is mounted in from a GCS bucket called `interledger-org-staging-bucket`
-- The GCP project called `interledger-websites` and access is required if developers want to make changes here.
-- If you have the appropriate access you can manipulate the files folder directly on there, or you can use the [gsutil utility](https://cloud.google.com/storage/docs/gsutil_install) to upload or download files
-from and to the bucket.
-- The Database lives in a MySQL Cloud SQL instance and should be managed directly through Google Cloud SQL Studio. Databases can be imported and exported from there.
-
-Pipelines for Github Actions have been configured to automatically create a new container containing the drupal modifications on any merge to main.
-
-Known issues
-- At this point in time, the developer portal is not correctly being patched in for the staging environment.
-
-Uploading new files to the staging bucket. For this to work you should be authenticated into Google Cloud.
-```sh
-# Upload files to the staging environment
-gsutil -m cp -r files/* gs://interledger-org-staging-bucket/files
-
-# Download to local
-gsutil -m cp -r gs://interledger-org-staging-bucket/files files
-```
+All deployment processes, backup/restore operations, and CI/CD configurations are managed from the [`ci/`](./ci) directory. See the [ci/README.md](./ci/README.md) for detailed information about:
+- Deployment workflows
+- Backup and restore procedures
+- GitHub Actions workflows
+- Makefile commands
 

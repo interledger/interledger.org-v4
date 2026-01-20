@@ -68,24 +68,25 @@
 }
 
 /* Responsive card layout for medium screens and below */
+/* except for tables on Policy pages  */
 @media (max-width: 1024px) {
-  .table-wrapper table thead {
+  .table-wrapper table:not(.policy-table) thead {
     display: none;
   }
 
-  .table-wrapper table,
-  .table-wrapper table tbody {
+  .table-wrapper table:not(.policy-table),
+  .table-wrapper table:not(.policy-table) tbody {
     display: block;
   }
 
   .table-wrapper table tbody {
-    border: 1px solid var(---table-border-color-sm);
+    border: 1px solid var(--table-border-color-sm);
     border-radius: var(--border-radius);
     overflow: hidden;
     background: var(--table-bg-sm);
   }
 
-  .table-wrapper table tr {
+  .table-wrapper table:not(.policy-table) tr {
     display: block;
   }
 
@@ -101,8 +102,11 @@
     color: var(--table-fg-sm);
   }
 
-  .table-wrapper table td {
+  .table-wrapper table:not(.policy-table) td {
     display: block;
+  }
+
+  .table-wrapper table td {
     padding: var(--space-2xs) var(--space-xs);
     position: relative;
     color: var(--table-fg-sm);
@@ -143,4 +147,18 @@
     padding-top: var(--space-3xs);
     padding-bottom: var(--space-2xs);
   }
+}
+
+/* Policy Briefs page table styling  */
+.table-wrapper table.policy-table {
+  min-width: 600px;
+  max-width: none;
+}
+
+.table-wrapper table.policy-table td:first-child {
+  white-space: normal;
+}
+
+.table-wrapper:has(table.policy-table) {
+  overflow-x: auto;
 }

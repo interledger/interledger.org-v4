@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "url_encode",
  *   label = @Translation("URL Encode"),
  *   description = @Translation("Run values through the <a href='http://us3.php.net/urlencode'>urlencode()</a> function."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class UrlEncode extends TamperBase {

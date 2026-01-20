@@ -25,6 +25,7 @@ abstract class SvgImageFieldBrowserTestBase extends BrowserTestBase {
     'svg_image_field',
     'node',
     'field_ui',
+    'media',
   ];
 
   /**

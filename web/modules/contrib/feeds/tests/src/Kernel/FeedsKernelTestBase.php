@@ -94,7 +94,18 @@ abstract class FeedsKernelTestBase extends EntityKernelTestBase {
    */
   protected function setUpBodyField() {
     $this->installConfig(['field', 'filter', 'node']);
-    node_add_body_field($this->nodeType);
+
+    $this->createFieldWithStorage('body', [
+      'type' => 'text_with_summary',
+      'bundle' => $this->nodeType->id(),
+      'label' => 'Body',
+      'field' => [
+        'settings' => [
+          'display_summary' => TRUE,
+          'allowed_formats' => [],
+        ],
+      ],
+    ]);
   }
 
   /**

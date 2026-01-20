@@ -10,6 +10,11 @@ use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\media_library\Form\FileUploadForm;
 
+// Provide a BC layer for previous versions of the media source class.
+if (class_exists('\Drupal\media\Plugin\media\Source\File')) {
+  class_alias('\Drupal\svg_image_field\Plugin\media\Source\ScalableVectorGraphic', '\Drupal\svg_image_field\Plugin\media\Source\SVG');
+}
+
 /**
  * Implements hook_help().
  */

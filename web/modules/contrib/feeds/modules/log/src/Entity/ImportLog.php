@@ -54,7 +54,7 @@ class ImportLog extends ContentEntityBase implements ImportLogInterface {
    */
   public function logSource(FetcherResultInterface $result): string {
     $file_manager = $this->getFeedsLogFileManager();
-    $file_path = \Drupal::service('file_system')->basename($result->getFilePath());
+    $file_path = basename($result->getFilePath());
     $destination = $file_manager->saveData($result->getRaw(), $this->id() . '/source/' . $file_path);
     $this->sources[] = $destination;
 

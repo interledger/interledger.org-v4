@@ -3,6 +3,9 @@
 namespace Drupal\Tests\feeds\Functional;
 
 use Drupal\Tests\file\Functional\FileFieldTestBase;
+use Drupal\Tests\feeds\Traits\FeedCreationTrait;
+use Drupal\Tests\feeds\Traits\FeedsCommonTrait;
+use Drupal\feeds\Entity\Feed;
 use Drupal\file\Entity\File;
 
 /**
@@ -11,6 +14,9 @@ use Drupal\file\Entity\File;
  * @group feeds
  */
 class PrivateFileTest extends FileFieldTestBase {
+
+  use FeedCreationTrait;
+  use FeedsCommonTrait;
 
   /**
    * {@inheritdoc}
@@ -26,6 +32,7 @@ class PrivateFileTest extends FileFieldTestBase {
     'file_module_test',
     'field_ui',
     'feeds',
+    'options',
   ];
 
   /**
@@ -66,6 +73,53 @@ class PrivateFileTest extends FileFieldTestBase {
     // Confirmed that the generated URL is correct by downloading the shipped
     // file.
     $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
+   * Tests that uploaded files can be downloaded.
+   *
+   * @see feeds_file_download()
+   */
+  public function testDownloadFetcherFile() {
+    // Create a user with Feeds admin privileges.
+    $admin_user = $this->drupalCreateUser([
+      'administer feeds',
+      'access feed overview',
+    ]);
+    $this->drupalLogin($admin_user);
+
+    // Create a feed type using the upload fetcher.
+    $feed_type = $this->createFeedType([
+      'fetcher' => 'upload',
+      'fetcher_configuration' => [
+        'allowed_extensions' => 'csv',
+        'directory' => 'private://feeds',
+      ],
+    ]);
+
+    // Create feed and save.
+    $source_file = $this->resourcesPath() . '/csv/content.csv';
+    $edit = [
+      'title[0][value]' => $this->randomMachineName(),
+      'files[plugin_fetcher_source]' => $this->container->get('file_system')->realpath($source_file),
+    ];
+    $this->drupalGet('feed/add/' . $feed_type->id());
+    $this->submitForm($edit, 'Save');
+
+    // Load feed.
+    $feed = Feed::load(1);
+
+    // Generate file link.
+    $uri = $this->container->get('file_url_generator')->generateAbsoluteString($feed->getSource());
+
+    // Download the file and assert it is the same as the one uploaded. In the
+    // comparison, the data is trimmed because additional whitespace exists in
+    // the file that gets uploaded.
+    $this->drupalGet($uri);
+    $this->assertSession()->statusCodeEquals(200);
+    $expected = trim(file_get_contents($source_file));
+    $actual = trim($this->getSession()->getPage()->getContent());
+    $this->assertSame($expected, $actual, 'The uploaded file does not match with the source file.');
   }
 
 }

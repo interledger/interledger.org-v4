@@ -2,13 +2,21 @@
 
 namespace Drupal\feeds_tamper\EventSubscriber;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\ParseEvent;
+use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
+use Drupal\feeds\Feeds\Item\ValidatableItemInterface;
+use Drupal\feeds\Plugin\Type\Source\SourceInterface;
+use Drupal\feeds\StateInterface;
 use Drupal\feeds_tamper\Adapter\TamperableFeedItemAdapter;
 use Drupal\feeds_tamper\FeedTypeTamperManagerInterface;
 use Drupal\tamper\Exception\SkipTamperDataException;
 use Drupal\tamper\Exception\SkipTamperItemException;
+use Drupal\tamper\ItemUsageInterface;
+use Drupal\tamper\TamperableItemInterface;
+use Drupal\tamper\TamperInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,6 +27,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * into processing.
  */
 class FeedsSubscriber implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   /**
    * A feed type meta object.
@@ -105,6 +115,14 @@ class FeedsSubscriber implements EventSubscriberInterface {
         /** @var \Drupal\tamper\TamperInterface $tamper */
         foreach ($tampers as $tamper) {
           $definition = $tamper->getPluginDefinition();
+
+          // Check if the Tamper plugin uses any source fields from the item.
+          // Source fields provided by FeedsSource plugins then need to be
+          // lazy loaded.
+          if ($tamper instanceof ItemUsageInterface) {
+            $this->lazyLoadSources($item, $tamperable_item, $tamper, $event->getFeed());
+          }
+
           // Many plugins expect a scalar value but the current value of the
           // pipeline might be multiple scalars and in this case the current
           // value needs to be iterated and each scalar separately transformed.
@@ -120,15 +138,93 @@ class FeedsSubscriber implements EventSubscriberInterface {
             $item_value = $tamper->tamper($item_value, $tamperable_item);
             $multiple = $tamper->multiple();
           }
-        }
 
-        // Write the changed value.
-        $item->set($source, $item_value);
+          // Write the changed value to the item after each applied tamper, so
+          // that Tamper plugins that work with the tamperable item have the
+          // most up to date data there.
+          $item->set($source, $item_value);
+        }
       }
       catch (SkipTamperDataException $e) {
         // @todo We would rather unset the source, but that isn't possible yet
         // with ItemInterface.
         $item->set($source, NULL);
+      }
+      catch (SkipTamperItemException $e) {
+        // Should be caught by ::afterParse().
+        throw $e;
+      }
+      catch (\Exception $e) {
+        // An error happened. Catch exception and set a message on the feed.
+        /** @var \Drupal\feeds\StateInterface $state */
+        $state = $event->getFeed()->getState(StateInterface::PARSE);
+        $tamper_label = $tamper->getSetting('label');
+        $tamper_label = ($tamper_label !== '' && $tamper_label !== NULL) ? $tamper_label : $tamper->getPluginId();
+        $message = $this->t('Tampering failed for source %source when trying to applying the tamper %label: @exception', [
+          '%label' => $tamper_label,
+          '%source' => $source,
+          '@exception' => $e->getMessage(),
+        ]);
+        $state->setMessage($message, 'warning');
+
+        if ($item instanceof ValidatableItemInterface) {
+          $item->markInvalid(sprintf('Applying tamper "%s" on source "%s" failed with the error "%s".', $tamper_label, $source, $e->getMessage()));
+        }
+      }
+    }
+  }
+
+  /**
+   * Lazy loads sources from FeedsSource plugins, if used by the Tamper plugin.
+   *
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The Feeds item to set the source for.
+   * @param \Drupal\tamper\TamperableItemInterface $tamperable_item
+   *   The Tamper item (Feeds item adapted) to set the source for.
+   * @param \Drupal\tamper\TamperInterface $tamper
+   *   The Tamper plugin that is about to be applied.
+   * @param \Drupal\feeds\Feeds\FeedInterface $feed
+   *   The feed that is being imported.
+   */
+  protected function lazyLoadSources(ItemInterface $item, TamperableItemInterface $tamperable_item, TamperInterface $tamper, FeedInterface $feed) {
+    if (!$tamper instanceof ItemUsageInterface) {
+      // The Tamper plugin needs to implement ItemUsageInterface, else it cannot
+      // tell us which properties of the item are being used.
+      return;
+    }
+
+    // Get the feed type.
+    $feed_type = $feed->getType();
+
+    // Get used Tamper sources.
+    $tamper_sources = $tamper->getUsedSourceProperties($tamperable_item);
+
+    // Get available mapping sources.
+    $mapping_sources = $feed_type->getMappingSources();
+
+    // Limit mapping source list to those that are used by the Tamper plugin
+    // first.
+    $sources = array_intersect_key($mapping_sources, array_flip($tamper_sources));
+
+    // Limit list of sources by those that have an ID property. Because only
+    // these can belong to a FeedsSource plugin.
+    $sources = array_filter($sources, function ($source) {
+      return isset($source['id']);
+    });
+
+    // Loop through all sources that are possibly provided by a FeedsSource
+    // plugin and load the data for those that aren't already loaded.
+    foreach ($sources as $source_name => $source) {
+      if ($item->get($source_name)) {
+        // This source is already loaded.
+        continue;
+      }
+
+      // Load the data for this source, if it is indeed provided by a
+      // FeedsSource plugin.
+      $source_plugin = $feed_type->getSourcePlugin($source_name);
+      if ($source_plugin instanceof SourceInterface) {
+        $item->set($source_name, $source_plugin->getSourceElement($feed, $item));
       }
     }
   }

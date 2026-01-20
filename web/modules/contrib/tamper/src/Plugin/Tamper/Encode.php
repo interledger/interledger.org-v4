@@ -16,8 +16,9 @@ use Symfony\Component\Yaml\Yaml;
  *   id = "encode",
  *   label = @Translation("Encode/Decode"),
  *   description = @Translation("Encode (or Decode) the field contents."),
- *   category = "Text",
- *   handle_multiples = TRUE
+ *   category = @Translation("Text"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class Encode extends TamperBase {

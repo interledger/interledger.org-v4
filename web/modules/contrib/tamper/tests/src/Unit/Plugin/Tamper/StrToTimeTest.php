@@ -39,4 +39,58 @@ class StrToTimeTest extends TamperPluginTestBase {
     $this->plugin->tamper(new \stdClass());
   }
 
+  /**
+   * Test converting string to time.
+   *
+   * @covers ::tamper
+   */
+  public function testCustomDateFormat() {
+    // Parses as the 1st of December 2010 by default.
+    $this->assertEquals(1291161600, $this->plugin->tamper('12/01/2010 UTC'));
+    $this->plugin->setConfiguration([
+      'date_format' => 'd/m/Y T',
+    ]);
+    // Parses as the 12th of January 2010.
+    $this->assertEquals(1263254400, $this->plugin->tamper('12/01/2010 UTC'));
+  }
+
+  /**
+   * Test converting string to time.
+   *
+   * @covers ::tamper
+   */
+  public function testCustomDateFormatWithFallback() {
+    // Parses as the 1st of December 2010 by default.
+    $this->assertEquals(1291161600, $this->plugin->tamper('12/01/2010 UTC'));
+    $this->plugin->setConfiguration([
+      'date_format' => 'd/m/Y T',
+      'fallback' => TRUE,
+    ]);
+    // Parses as the 12th of January 2010.
+    $this->assertEquals(1263254400, $this->plugin->tamper('12/01/2010 UTC'));
+  }
+
+  /**
+   * @covers ::tamper
+   */
+  public function testTamperExceptionWithInvalidDateFormat() {
+    $this->expectException(TamperException::class);
+    $this->plugin->setConfiguration([
+      'date_format' => 'd/m/y',
+    ]);
+    // Attempt to parse using an incorrect format.
+    $this->plugin->tamper('12-01-2010');
+  }
+
+  /**
+   * @covers ::tamper
+   */
+  public function testIncompatibleDateFormatWithFallback() {
+    $this->plugin->setConfiguration([
+      'date_format' => 'd/m/y',
+      'fallback' => TRUE,
+    ]);
+    $this->assertEquals(1263214800, $this->plugin->tamper('12-01-2010'));
+  }
+
 }

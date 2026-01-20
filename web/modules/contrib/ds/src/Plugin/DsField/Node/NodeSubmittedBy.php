@@ -58,10 +58,10 @@ class NodeSubmittedBy extends Date {
   public function build() {
     $field = $this->getFieldConfiguration();
 
-    /* @var $node \Drupal\node\NodeInterface */
+    /** @var \Drupal\node\NodeInterface $node */
     $node = $this->entity();
 
-    /* @var $account \Drupal\user\UserInterface */
+    /** @var \Drupal\user\UserInterface $account */
     $account = $node->getOwner();
 
     $date_format = str_replace('ds_post_date_', '', $field['formatter']);

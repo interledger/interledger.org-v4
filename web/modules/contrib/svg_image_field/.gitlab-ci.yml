@@ -49,11 +49,14 @@ include:
 variables:
   OPT_IN_TEST_PREVIOUS_MAJOR: 1
   OPT_IN_TEST_PREVIOUS_MINOR: 1
-  #OPT_IN_TEST_NEXT_MINOR: 1
+  OPT_IN_TEST_NEXT_MINOR: 1
   OPT_IN_TEST_NEXT_MAJOR: 1
   OPT_IN_TEST_MAX_PHP: 1
   # Convenient, and we have no secrets.
   _SHOW_ENVIRONMENT_VARIABLES: 1
+  # Run Upgrade status job. See https://project.pages.drupalcode.org/gitlab_templates/jobs/upgrade-status/
+  # Uncomment when Drupal 12 becomes closer to stable
+  # RUN_JOB_UPGRADE_STATUS: 1
 
 ################
 # Require CSpell checks to pass.

@@ -1,0 +1,118 @@
+# .github/workflows/backup.yml
+name: Backup Database and Files
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to backup'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      run_id:
+        description: 'Run ID (leave empty for auto-generated timestamp)'
+        required: false
+        type: string
+
+concurrency:
+  group: archiving-process-limiter
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache-dependency-path: ci/backupmanager/go.sum
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GSA }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYER_KEY }}" > ~/.ssh/deployer
+          chmod 600 ~/.ssh/deployer
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_STAGING }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_PRODUCTION }} >> ~/.ssh/known_hosts
+      
+      - name: Configure SSH to use deployer key
+        run: |
+          cat >> ~/.ssh/config << EOF
+          Host ${{ secrets.TARGET_HOST_STAGING }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          Host ${{ secrets.TARGET_HOST_PRODUCTION }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Generate Run ID
+        id: generate_run_id
+        run: |
+          if [ -z "${{ inputs.run_id }}" ]; then
+            RUN_ID=$(date -u +"%Y%m%d-%H%M%S")
+          else
+            RUN_ID="${{ inputs.run_id }}"
+          fi
+          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+          echo "Generated Run ID: $RUN_ID"
+
+      - name: Build backup CLI
+        working-directory: ci/backupmanager
+        run: |
+          go mod download
+          go build -o backup-cli ./cli
+
+      - name: Run backup
+        working-directory: ci/backupmanager
+        env:
+          BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          DB_NAME_STAGING: ${{ secrets.DB_NAME_STAGING }}
+          DB_NAME_PRODUCTION: ${{ secrets.DB_NAME_PRODUCTION }}
+          CLOUDSQL_INSTANCE_STAGING: ${{ secrets.CLOUDSQL_INSTANCE_STAGING }}
+          CLOUDSQL_INSTANCE_PRODUCTION: ${{ secrets.CLOUDSQL_INSTANCE_PRODUCTION }}
+          TARGET_HOST_STAGING: ${{ secrets.TARGET_HOST_STAGING }}
+          TARGET_HOST_PRODUCTION: ${{ secrets.TARGET_HOST_PRODUCTION }}
+          TARGET_USER_STAGING: ${{ secrets.TARGET_USER_STAGING }}
+          TARGET_USER_PRODUCTION: ${{ secrets.TARGET_USER_PRODUCTION }}
+          TARGET_PATH_STAGING: ${{ secrets.TARGET_PATH_STAGING }}
+          TARGET_PATH_PRODUCTION: ${{ secrets.TARGET_PATH_PRODUCTION }}
+        run: |
+          ./backup-cli backup -env ${{ inputs.environment }} -run-id ${{ steps.generate_run_id.outputs.run_id }}
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "### ✅ Backup Completed Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** ${{ steps.generate_run_id.outputs.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backup Location:** gs://${{ secrets.BACKUP_BUCKET }}/backups/${{ inputs.environment }}/backup_${{ steps.generate_run_id.outputs.run_id }}.tar.gz" >> $GITHUB_STEP_SUMMARY
+
+      - name: Failure Summary
+        if: failure()
+        run: |
+          echo "### ❌ Backup Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** ${{ steps.generate_run_id.outputs.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY

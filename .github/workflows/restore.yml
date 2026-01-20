@@ -1,0 +1,165 @@
+# .github/workflows/restore.yml
+name: Restore Database and Files
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_environment:
+        description: 'Source environment (where backup was taken)'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      destination_environment:
+        description: 'Destination environment (where to restore)'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      run_id:
+        description: 'Run ID of the backup to restore'
+        required: true
+        type: string
+
+concurrency:
+  group: archiving-process-limiter
+  cancel-in-progress: false
+
+jobs:
+  check-production-environment:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.destination_environment == 'production' }}
+    environment: production
+    steps:
+      - name: Confirm production access
+        run: echo "✅ Production environment access approved"
+
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    needs: [check-production-environment]
+    if: ${{ always() && (inputs.destination_environment != 'production' || needs.check-production-environment.result == 'success') }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache-dependency-path: ci/backupmanager/go.sum
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GSA }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYER_KEY }}" > ~/.ssh/deployer
+          chmod 600 ~/.ssh/deployer
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_STAGING }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.TARGET_HOST_PRODUCTION }} >> ~/.ssh/known_hosts
+      
+      - name: Configure SSH to use deployer key
+        run: |
+          cat >> ~/.ssh/config << EOF
+          Host ${{ secrets.TARGET_HOST_STAGING }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          Host ${{ secrets.TARGET_HOST_PRODUCTION }}
+            IdentityFile ~/.ssh/deployer
+            StrictHostKeyChecking no
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Confirm restore operation
+        run: |
+          echo "### ⚠️ Restore Operation Confirmation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**WARNING:** This will overwrite data in the destination environment!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source Environment:** ${{ inputs.source_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Destination Environment:** ${{ inputs.destination_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** ${{ inputs.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backup Location:** gs://${{ secrets.BACKUP_BUCKET }}/backups/${{ inputs.source_environment }}/backup_${{ inputs.run_id }}.tar.gz" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.destination_environment }}" == "production" ]; then
+            echo "🚨 **This restore will affect PRODUCTION. Approval was required and granted.**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Build backup CLI
+        working-directory: ci/backupmanager
+        run: |
+          go mod download
+          go build -o backup-cli ./cli
+
+      - name: Run preflight checks
+        working-directory: ci/backupmanager
+        env:
+          BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          DB_NAME_STAGING: ${{ secrets.DB_NAME_STAGING }}
+          DB_NAME_PRODUCTION: ${{ secrets.DB_NAME_PRODUCTION }}
+          CLOUDSQL_INSTANCE_STAGING: ${{ secrets.CLOUDSQL_INSTANCE_STAGING }}
+          CLOUDSQL_INSTANCE_PRODUCTION: ${{ secrets.CLOUDSQL_INSTANCE_PRODUCTION }}
+          TARGET_HOST_STAGING: ${{ secrets.TARGET_HOST_STAGING }}
+          TARGET_HOST_PRODUCTION: ${{ secrets.TARGET_HOST_PRODUCTION }}
+          TARGET_USER_STAGING: ${{ secrets.TARGET_USER_STAGING }}
+          TARGET_USER_PRODUCTION: ${{ secrets.TARGET_USER_PRODUCTION }}
+          TARGET_PATH_STAGING: ${{ secrets.TARGET_PATH_STAGING }}
+          TARGET_PATH_PRODUCTION: ${{ secrets.TARGET_PATH_PRODUCTION }}
+        run: |
+          ./backup-cli preflight || echo "⚠️ Preflight checks failed, but continuing..."
+
+      - name: Run restore
+        working-directory: ci/backupmanager
+        env:
+          BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          DB_NAME_STAGING: ${{ secrets.DB_NAME_STAGING }}
+          DB_NAME_PRODUCTION: ${{ secrets.DB_NAME_PRODUCTION }}
+          CLOUDSQL_INSTANCE_STAGING: ${{ secrets.CLOUDSQL_INSTANCE_STAGING }}
+          CLOUDSQL_INSTANCE_PRODUCTION: ${{ secrets.CLOUDSQL_INSTANCE_PRODUCTION }}
+          TARGET_HOST_STAGING: ${{ secrets.TARGET_HOST_STAGING }}
+          TARGET_HOST_PRODUCTION: ${{ secrets.TARGET_HOST_PRODUCTION }}
+          TARGET_USER_STAGING: ${{ secrets.TARGET_USER_STAGING }}
+          TARGET_USER_PRODUCTION: ${{ secrets.TARGET_USER_PRODUCTION }}
+          TARGET_PATH_STAGING: ${{ secrets.TARGET_PATH_STAGING }}
+          TARGET_PATH_PRODUCTION: ${{ secrets.TARGET_PATH_PRODUCTION }}
+        run: |
+          ./backup-cli restore \
+            -env ${{ inputs.source_environment }} \
+            -run-id ${{ inputs.run_id }} \
+            -dest-env ${{ inputs.destination_environment }}
+
+      - name: Success Summary
+        if: success()
+        run: |
+          echo "### ✅ Restore Completed Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source Environment:** ${{ inputs.source_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Destination Environment:** ${{ inputs.destination_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** ${{ inputs.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The database and files have been successfully restored to **${{ inputs.destination_environment }}**." >> $GITHUB_STEP_SUMMARY
+
+      - name: Failure Summary
+        if: failure()
+        run: |
+          echo "### ❌ Restore Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source Environment:** ${{ inputs.source_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Destination Environment:** ${{ inputs.destination_environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** ${{ inputs.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ **The destination environment may be in an inconsistent state. Manual intervention may be required.**" >> $GITHUB_STEP_SUMMARY
