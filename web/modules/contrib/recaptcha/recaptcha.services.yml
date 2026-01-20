@@ -1,0 +1,9 @@
+services:
+  recaptcha.config_subscriber:
+    class: Drupal\recaptcha\EventSubscriber\RecaptchaSettingsConfigSubscriber
+    arguments: ['@cache_tags.invalidator']
+    tags:
+      - { name: event_subscriber }
+  recaptcha.drupal8post:
+    class: Drupal\recaptcha\ReCaptcha\RequestMethod\Drupal8Post
+    arguments: ['@http_client']

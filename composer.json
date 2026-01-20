@@ -32,6 +32,7 @@
         "drupal/metatag": "^2.2.0",
         "drupal/paragraphs": "^1.20.0",
         "drupal/pathauto": "^1.14.0",
+        "drupal/recaptcha": "^3.4",
         "drupal/redirect": "^1.12.0",
         "drupal/rename_admin_paths": "^3.0@beta",
         "drupal/securitytxt": "^1.4",
