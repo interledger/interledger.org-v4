@@ -15,6 +15,16 @@ on:
         description: 'Run ID (leave empty for auto-generated timestamp)'
         required: false
         type: string
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to backup (staging or production)'
+        required: true
+        type: string
+      run_id:
+        description: 'Run ID (leave empty for auto-generated timestamp)'
+        required: false
+        type: string
 
 concurrency:
   group: archiving-process-limiter
