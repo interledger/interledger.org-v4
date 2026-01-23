@@ -1,0 +1,31 @@
+{%
+  set title_classes = [
+    'ep-textblock-title'
+  ]
+%}
+{%
+  set subtitle_classes = [
+    'ep-textblock-subtitle'
+  ]
+%}
+{% if element['#field_name'] == 'field_title' %}
+  <h2{{ attributes.addClass(title_classes) }}>
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </h2>
+
+{% elseif element['#field_name'] == 'field_text'%}
+  <div{{ attributes.addClass(subtitle_classes) }}>
+    {% for item in items %}
+      <p>{{ item.content }}</p>
+    {% endfor %}
+  </div>
+{% else %}
+  <div{{ attributes }}>
+    {% for item in items %}
+      <p>{{ item.content }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+  

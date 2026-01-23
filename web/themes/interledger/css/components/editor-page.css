@@ -1,0 +1,117 @@
+.ep-hero {
+  background: linear-gradient(135deg, oklch(38.6% 0.06453 210.222), oklch(45% .1 190), #1f7265 60%, #4c7d6c);
+  padding: var(--space-xl) 0;
+  color: var(--color-white);
+}
+
+.ep-hero-container{
+  text-align: center;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+.hero-text-content {
+  min-width: 360px;
+  margin: auto;
+}
+
+.hero-text-content .ep-textblock-title {
+  font-size: var(--step-5);
+  font-weight: 700;
+  margin-block-end: var(--space-xs);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, .3);
+}
+
+.hero-text-content .ep-textblock-subtitle p {
+  font-size: var(--step-2);
+  font-weight: 300;
+  font-style: italic;
+  opacity: .95;
+}
+
+.ep-cta-list{
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ep-cta {
+  background-color:oklch(0.9054 0.154 194.77);
+  border-radius: 0.5rem;
+}
+
+.ep-cta-link {
+  padding: var(--space-xs) var(--space-m);
+}
+.ep-cta-link a {
+  color: black;
+}
+
+.flexible-content-zone{
+  /* text-align: center; */
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: var(--space-xl) 0;
+}
+.flexible-content-zone p {
+  margin-bottom: var(--space-xs)
+}
+
+.paragraph--type--ep-card-list{
+ margin-top: 2rem;
+}
+
+.card-list-title {
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.ep-card-list-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.ep-card {
+  background-color: rgba(211, 211, 211, 0.199);
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+.paragraph--type--ep-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* .ep-card-title{
+
+}
+.ep-card-description{
+
+} */
+.ep-card-image{
+  order: -1; 
+  width:100%;
+  margin-bottom: 2rem;
+}
+.ep-card-image img {
+  width: 100%; 
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.ep-callout-text {
+  font-size: var(--step-2);
+  font-weight: 600;
+  margin-block-end: var(--space-xs);
+}
+
+.paragraph--type--ep-media {
+  text-align: center;
+  margin: 2rem 0;
+}

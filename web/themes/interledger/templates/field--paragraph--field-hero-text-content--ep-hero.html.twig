@@ -1,0 +1,42 @@
+{%
+  set classes = [
+    'hero-text-content',
+  ]
+%}
+
+{# {% if label_hidden %} #}
+  {# {% if multiple %} #}
+    <div{{ attributes.addClass(classes) }}>
+      {% for item in items %}
+        <div{{ item.attributes }}>
+          {{item.content}}
+          
+          {# {% if item.content.field_title %}
+            <h1>{{ item.content.field_title }}</h1>
+          {% endif %}
+
+          {% if item.content.field_text %}
+            <p>{{ item.content.field_text }}</p>
+          {% endif %} #}
+        </div>
+      {% endfor %}
+    </div>
+  {# {% else %}
+    {% for item in items %}
+      <div{{ attributes.addClass(classes) }}>{{ item.content }}</div>
+    {% endfor %}
+  {% endif %} #}
+{# {% else %}
+  <div{{ attributes }}>
+    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+    {% if multiple %}
+      <div>
+    {% endif %}
+    {% for item in items %}
+      <div{{ item.attributes }}>{{ item.content }}</div>
+    {% endfor %}
+    {% if multiple %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %} #}

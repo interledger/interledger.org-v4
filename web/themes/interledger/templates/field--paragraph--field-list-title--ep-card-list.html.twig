@@ -1,0 +1,12 @@
+
+{%
+  set classes = ['card-list-title']
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {% for item in items %}
+    <h2{{ item.attributes }}>{{ item.content }}</h2>
+  {% endfor %}
+</div>
+
+
