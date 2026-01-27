@@ -1,0 +1,13 @@
+{%
+  set classes = ['ep-card-list-container']
+%}
+{%
+  set card_classes = ['ep-card']
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {% for item in items %}
+    <div{{ item.attributes.addClass(card_classes) }}>{{ item.content }}</div>
+  {% endfor %}
+</div>
+

@@ -1,0 +1,22 @@
+{%
+  set hero_classes = [
+    'ep-hero'
+  ]
+%}
+{%
+  set container_classes = [
+    'ep-hero-container'
+  ]
+%}
+
+<div{{ attributes.addClass(hero_classes) }}>
+  {% if multiple %}
+    <div>
+  {% endif %}
+  {% for item in items %}
+    <div{{ item.attributes.addClass(container_classes) }}>{{ item.content }}</div>
+  {% endfor %}
+  {% if multiple %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,13 @@
+name: "Admin Audit Trail Redirect"
+description: "Logs redirect CUD events performed by the user."
+type: module
+core_version_requirement: ^10 || ^11
+package: Administration
+dependencies:
+  - admin_audit_trail:admin_audit_trail
+  - redirect:redirect
+
+# Information added by Drupal.org packaging script on 2026-01-15
+version: '1.0.9'
+project: 'admin_audit_trail'
+datestamp: 1768480248

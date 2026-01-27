@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Logs comment CUD commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_comment_admin_audit_trail_handlers() {
+  // Comment event log handler.
+  $handlers = [];
+  $handlers['comment'] = [
+    'title' => t('Comment'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_comment_insert().
+ */
+function admin_audit_trail_comment_comment_insert($comment) {
+  $log = [
+    'type' => 'comment',
+    'operation' => 'insert',
+    'description' => t('%type: %title', [
+      '%type' => $comment->getTypeId(),
+      '%title' => $comment->getSubject(),
+    ]),
+    'ref_numeric' => $comment->id(),
+    'ref_char' => $comment->getSubject(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_comment_update().
+ */
+function admin_audit_trail_comment_comment_update($comment) {
+  $log = [
+    'type' => 'comment',
+    'operation' => 'update',
+    'description' => t('%type: %title', [
+      '%type' => $comment->getTypeId(),
+      '%title' => $comment->getSubject(),
+    ]),
+    'ref_numeric' => $comment->id(),
+    'ref_char' => $comment->getSubject(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_comment_delete().
+ */
+function admin_audit_trail_comment_comment_delete($comment) {
+  $log = [
+    'type' => 'comment',
+    'operation' => 'delete',
+    'description' => t('%type: %title', [
+      '%type' => $comment->getTypeId(),
+      '%title' => $comment->getSubject(),
+    ]),
+    'ref_numeric' => $comment->id(),
+    'ref_char' => $comment->getSubject(),
+  ];
+  admin_audit_trail_insert($log);
+}

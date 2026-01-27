@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Logs media entity CUD commands in the admin_audit_trail module.
+ */
+
+use Drupal\media\Entity\Media;
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_media_admin_audit_trail_handlers() {
+  $handlers = [];
+  // Media event log handler.
+  $handlers['media'] = [
+    'title' => t('Media'),
+  ];
+
+  return $handlers;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function admin_audit_trail_media_media_insert(Media $media) {
+  $log = [
+    'type' => 'media',
+    'operation' => 'insert',
+    'description' => t('%title (%type)%revision_log', [
+      '%type' => $media->bundle(),
+      '%title' => $media->getName(),
+      '%revision_log' => $media->getRevisionLogMessage() ? ': ' . $media->getRevisionLogMessage() : '',
+    ]),
+    'ref_numeric' => $media->id(),
+    'ref_char' => $media->label(),
+  ];
+
+  // Insert log.
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function admin_audit_trail_media_media_update(Media $media) {
+  $log = [
+    'type' => 'media',
+    'operation' => 'update',
+    'description' => t('%title (%type)%revision_log', [
+      '%type' => $media->bundle(),
+      '%title' => $media->getName(),
+      '%revision_log' => $media->getRevisionLogMessage() ? ': ' . $media->getRevisionLogMessage() : '',
+    ]),
+    'ref_numeric' => $media->id(),
+    'ref_char' => $media->label(),
+  ];
+
+  // Insert log.
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function admin_audit_trail_media_media_delete(Media $media) {
+  $log = [
+    'type' => 'media',
+    'operation' => 'delete',
+    'description' => t('%title (%type)%revision_log', [
+      '%type' => $media->bundle(),
+      '%title' => $media->getName(),
+      '%revision_log' => $media->getRevisionLogMessage() ? ': ' . $media->getRevisionLogMessage() : '',
+    ]),
+    'ref_numeric' => $media->id(),
+    'ref_char' => $media->label(),
+  ];
+
+  // Insert log.
+  admin_audit_trail_insert($log);
+}

@@ -1,0 +1,21 @@
+{
+  "name": "drupal/admin_audit_trail",
+  "description": "This module track logs of specific events that you'd like to review.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/admin_audit_trail",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Vardot",
+      "homepage": "https://www.drupal.org/vardot",
+      "role": "Maintenance for D8 and D9 versions"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/admin_audit_trail",
+    "source": "http://cgit.drupalcode.org/admin_audit_trail"
+  },
+  "require": {
+    "drupal/core": "^10 || ^11"
+  }
+}

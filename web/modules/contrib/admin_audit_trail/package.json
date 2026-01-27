@@ -1,0 +1,37 @@
+{
+  "name": "admin_audit_trail",
+  "description": "Logs general CUD events performed by the user (using the forms) on the website.",
+  "license": "GPL-2.0-or-later",
+  "private": true,
+  "engines": {
+    "yarn": ">= 4.9.3",
+    "node": ">= 20.0"
+  },
+  "packageManager": "yarn@4.9.3",
+  "keywords": [
+    "Drupal",
+    "admin",
+    "track logs"
+  ],
+  "author": "Vardot",
+  "scripts": {
+    "phpcs": "phpcs --standard=./.phpcs.xml .",
+    "phpcbf": "phpcbf --standard=./.phpcs.xml .",
+    "lint:yaml": "node ./node_modules/eslint/bin/eslint.js --config=.eslintrc.json --ext .yml .",
+    "spellcheck": "cspell lint ."
+  },
+  "devDependencies": {
+    "cspell": "^8.16.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jquery": "^1.5.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-yml": "^1.19.0",
+    "prettier": "^3.6.2"
+  }
+}

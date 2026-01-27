@@ -1,0 +1,16 @@
+{%
+  set classes = [
+    'ep-cta-list'
+  ]
+%}
+
+{%
+  set cta_classes = ['ep-cta']
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {% for item in items %}
+    <div{{ item.attributes.addClass(cta_classes) }}>{{ item.content }}</div>
+  {% endfor %}
+</div>
+

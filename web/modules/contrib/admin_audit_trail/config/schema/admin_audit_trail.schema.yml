@@ -1,0 +1,11 @@
+admin_audit_trail.settings:
+  type: config_object
+  label: 'Admin Audit Trail settings'
+  translatable: false
+  mapping:
+    filter_expanded:
+      type: boolean
+      label: 'Should the filters be expanded when viewing the admin audit trail.'
+    admin_audit_trail_row_limit:
+      type: integer
+      label: 'The maximum number of messages to keep in the audit trail log.'

@@ -6,7 +6,7 @@ type: module
 dependencies:
   - ds_extras:ds_extras
 
-# Information added by Drupal.org packaging script on 2025-12-27
-version: '8.x-3.34'
+# Information added by Drupal.org packaging script on 2026-01-26
+version: '8.x-3.35'
 project: 'ds'
-datestamp: 1766853221
+datestamp: 1769435482

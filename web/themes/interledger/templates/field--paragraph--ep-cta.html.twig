@@ -1,0 +1,11 @@
+{% set classes = ['ep-cta-link'] %} 
+
+{# umami event to be added  #}
+{% if element['#field_name'] == 'field_ep_cta' %}
+<div {{ attributes.addClass(classes) }}>
+  {% for item in items %}
+  <div {{item.attributes}}>{{ item.content }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+

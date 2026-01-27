@@ -1,0 +1,12 @@
+assets/vendor/**/*
+node_modules/**/*
+**/build/**/*
+**/js_test_files/**/*
+**/css_test_files/**/*.css
+*.yml
+vendor/**/*
+*.min.js
+*.min.css
+composer.lock
+package-lock.json
+yarn.lock

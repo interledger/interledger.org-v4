@@ -1,0 +1,287 @@
+<?php
+
+/**
+ * @file
+ * Track the logs of form submissions or other actions that performed by user.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function admin_audit_trail_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.admin_audit_trail':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t("You can track logs of specific events that you'd like to log. The events  by the user (using the forms) are saved in the database and can be viewed on the page admin/reports/events-track. You could use this to track number of times the CUD operation performed by which users. This module required by: Admin Audit Trail User Authentication, Admin Audit Trail Menu, Admin Audit Trail Node, Admin Audit Trail Taxonomy, Admin Audit Trail User.") . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Admin Audit Trail Menu') . '</dt>';
+      $output .= '<dd>' . t('Using this submodule you can logs menu CUD events performed by the user. This module requires: Admin Audit Trail.') . '</dd>';
+      $output .= '</dl>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Admin Audit Trail Node') . '</dt>';
+      $output .= '<dd>' . t('Using this submodule you can logs node CUD events performed by the user. This module requires: Admin Audit Trail.') . '</dd>';
+      $output .= '</dl>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Admin Audit Trail Taxonomy') . '</dt>';
+      $output .= '<dd>' . t('Using this submodule you can logs taxonomy vocabulary and term CUD events performed by the user. This module requires: Admin Audit Trail.') . '</dd>';
+      $output .= '</dl>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Admin Audit Trail User') . '</dt>';
+      $output .= '<dd>' . t('Using this submodule you can logs user CUD events performed by the user. This module requires: Admin Audit Trail.') . '</dd>';
+      $output .= '</dl>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Admin Audit Trail User Authentication') . '</dt>';
+      $output .= '<dd>' . t('Using this submodule you can logs user authentication (login logout and request password). This module requires: Admin Audit Trail.') . '</dd>';
+      $output .= '</dl>';
+
+      return $output;
+  }
+}
+
+/**
+ * Inserts the log record in the admin audit trail. Sets the lid.
+ *
+ * @param array $log
+ *   The log record to be saved. This record contains the following fields:
+ *   - {string} type
+ *     The event type. This is usually the object type that is described by this
+ *     event. Example: 'node' or 'user'. Required.
+ *   - {string} operation
+ *     The operation being performed. Example: 'insert'. Required.
+ *   - {string} description
+ *     A textual description of the event. Required.
+ *   - {string} ref_numeric
+ *     Reference to numeric id. Optional.
+ *   - {string} ref_char
+ *     Reference to alphabetical id. Optional.
+ */
+function admin_audit_trail_insert(array &$log) {
+  if (PHP_SAPI == 'cli') {
+    // Ignore CLI requests.
+    return;
+  }
+
+  if (empty($log['created'])) {
+    $log['created'] = \Drupal::time()->getRequestTime();
+  }
+
+  if (empty($log['uid'])) {
+    $account = \Drupal::currentUser();
+    $log['uid'] = $account->id();
+  }
+
+  $ip = \Drupal::request()->getClientIp();
+  if (empty($log['ip']) && !empty($ip)) {
+    $log['ip'] = $ip;
+  }
+
+  if (empty($log['path'])) {
+    $log['path'] = Url::fromRoute('<current>')->getInternalPath();
+  }
+
+  if (empty($log['ref_numeric'])) {
+    $log['ref_numeric'] = NULL;
+  }
+
+  // Allow the altering of the log array.
+  \Drupal::service('module_handler')->invokeAll('admin_audit_trail_log_alter', ['log' => &$log]);
+
+  $fields = [
+    'type' => $log['type'],
+    'operation' => $log['operation'],
+    'description' => $log['description'],
+    'created' => $log['created'],
+    'uid' => $log['uid'],
+    'ip' => $log['ip'] ?? '',
+    'path' => $log['path'],
+    'ref_char' => $log['ref_char'],
+    'ref_numeric' => $log['ref_numeric'],
+  ];
+
+  if (isset($log['lid'])) {
+    \Drupal::database()->update('admin_audit_trail')
+      ->fields($fields)
+      ->condition('lid', $log['lid'])
+      ->execute();
+  }
+  else {
+    \Drupal::database()->insert('admin_audit_trail')
+      ->fields($fields)
+      ->execute();
+  }
+}
+
+/**
+ * Returns all existing event handlers.
+ *
+ * @return array
+ *   An array with the event log handlers.
+ */
+function admin_audit_trail_get_event_handlers() {
+  $handlers = drupal_static(__FUNCTION__);
+  if ($handlers === NULL) {
+    $handlers = Drupal::moduleHandler()->invokeAll('admin_audit_trail_handlers');
+    \Drupal::moduleHandler()->alter('admin_audit_trail_handlers', $handlers);
+  }
+  return $handlers;
+}
+
+/**
+ * Returns all registered event types for Views filters.
+ *
+ * @return array
+ *   An associative array of event types keyed by machine name with labels.
+ */
+function admin_audit_trail_get_event_types() {
+  $types = [];
+  $handlers = admin_audit_trail_get_event_handlers();
+  foreach ($handlers as $type => $handler) {
+    $types[$type] = !empty($handler['title']) ? $handler['title'] : ucfirst($type);
+  }
+  asort($types);
+  return $types;
+}
+
+/**
+ * Form submission callback.
+ */
+function admin_audit_trail_form_submit(&$form, FormStateInterface $form_state) {
+  if ($form_state->has('admin_audit_trail_logged')
+    && $form_state->get('admin_audit_trail_logged') == TRUE) {
+    // Some forms are submitted twice, for instance the node_form.
+    // We will only call the submit callback once.
+    return;
+  }
+
+  $form_state->set('admin_audit_trail_logged', TRUE);
+
+  // Get form id.
+  $form_id = $form['#form_id'];
+
+  // Dispatch the submission to the correct event handler.
+  $handlers = admin_audit_trail_get_event_handlers();
+  foreach ($handlers as $type => $handler) {
+    $dispatch = FALSE;
+    if (!empty($handler['form_ids']) && in_array($form_id, $handler['form_ids'])) {
+      $dispatch = TRUE;
+    }
+    elseif (!empty($handler['form_ids_regexp'])) {
+      foreach ($handler['form_ids_regexp'] as $regexp) {
+        if (preg_match($regexp, $form_id)) {
+          $dispatch = TRUE;
+          break;
+        }
+      }
+    }
+
+    if ($dispatch) {
+      // Dispatch!
+      $function = $handler['form_submit_callback'];
+      if (function_exists($function)) {
+        $log = $function($form, $form_state, $form_id);
+        if (!empty($log)) {
+          // Log the event.
+          $log['type'] = $type;
+          admin_audit_trail_insert($log);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function admin_audit_trail_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Check if this form is relevant for audit logging before adding the handler.
+  $handlers = admin_audit_trail_get_event_handlers();
+  $is_relevant = FALSE;
+  foreach ($handlers as $handler) {
+    if (!empty($handler['form_ids']) && in_array($form_id, $handler['form_ids'])) {
+      $is_relevant = TRUE;
+      break;
+    }
+    elseif (!empty($handler['form_ids_regexp'])) {
+      foreach ($handler['form_ids_regexp'] as $regexp) {
+        if (preg_match($regexp, $form_id)) {
+          $is_relevant = TRUE;
+          break 2;
+        }
+      }
+    }
+  }
+
+  if ($is_relevant) {
+    // Add submit callback only to relevant forms.
+    admin_audit_trail_add_submit_handler($form, 'admin_audit_trail_form_submit');
+  }
+}
+
+/**
+ * Adds a submit handler to all submit hooks in the form tree.
+ *
+ * @param array &$element
+ *   A form element or the form itself.
+ * @param string $callback
+ *   The callback to be added.
+ */
+function admin_audit_trail_add_submit_handler(array &$element, $callback) {
+  if (array_key_exists("#submit", $element)) {
+    if ((!empty($element['#type']) && $element['#type'] == 'form') || count($element["#submit"])) {
+      $element["#submit"][] = $callback;
+    }
+  }
+  $keys = Element::children($element);
+  foreach ($keys as $key) {
+    if (is_array($element[$key])) {
+      admin_audit_trail_add_submit_handler($element[$key], $callback);
+    }
+  }
+}
+
+/**
+ * Truncate a string to a safe DB length.
+ */
+function admin_audit_trail_safe_truncate($value, $max_length = 255) {
+  if (!is_string($value)) {
+    return '';
+  }
+  return strlen($value) > $max_length
+    ? substr($value, 0, $max_length - 3) . '...'
+    : $value;
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Controls the size of the audit trail log table, paring it to 'admin_audit_trail_row_limit' messages.
+ */
+function admin_audit_trail_cron() {
+  // Cleanup the watchdog table.
+  $row_limit = \Drupal::config('admin_audit_trail.settings')->get('admin_audit_trail_row_limit');
+
+  // For row limit n, get the wid of the nth row in descending wid order.
+  // Counting the most recent n rows avoids issues with wid number sequences,
+  // e.g. auto_increment value > 1 or rows deleted directly from the table.
+  if ($row_limit > 0) {
+    $connection = \Drupal::database();
+    $min_row = $connection->select('admin_audit_trail', 'lid')
+      ->fields('lid', ['lid'])
+      ->orderBy('lid', 'DESC')
+      ->range($row_limit - 1, 1)
+      ->execute()->fetchField();
+
+    // Delete all table entries older than the nth row, if nth row was found.
+    if ($min_row) {
+      $connection->delete('admin_audit_trail')
+        ->condition('lid', $min_row, '<')
+        ->execute();
+    }
+  }
+}

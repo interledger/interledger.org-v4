@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Logs user role assignment and removal events in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_user_roles_admin_audit_trail_handlers() {
+  // User roles event log handler.
+  $handlers = [];
+  $handlers['user_roles'] = [
+    'title' => t('User Roles'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function admin_audit_trail_user_roles_user_update($account) {
+  $original_roles = $account->original->getRoles();
+  $current_roles = $account->getRoles();
+  $role_operations = [
+    'role_added' => array_diff($current_roles, $original_roles),
+    'role_removed' => array_diff($original_roles, $current_roles),
+  ];
+
+  foreach ($role_operations as $operation => $roles) {
+    foreach ($roles as $role_id) {
+      // Skip authenticated role as it's automatically assigned.
+      if ($role_id === 'authenticated') {
+        continue;
+      }
+
+      $role = \Drupal::entityTypeManager()->getStorage('user_role')->load($role_id);
+      $role_name = $role ? $role->label() : $role_id;
+
+      if ($operation === 'role_added') {
+        $description = t('Role %role_name added to user %user_name (uid %uid)', [
+          '%role_name' => $role_name,
+          '%user_name' => $account->getDisplayName(),
+          '%uid' => $account->id(),
+        ]);
+      }
+      else {
+        $description = t('Role %role_name removed from user %user_name (uid %uid)', [
+          '%role_name' => $role_name,
+          '%user_name' => $account->getDisplayName(),
+          '%uid' => $account->id(),
+        ]);
+      }
+
+      $log = [
+        'type' => 'user_roles',
+        'operation' => $operation,
+        'description' => $description,
+        'ref_numeric' => $account->id(),
+        'ref_char' => $account->getDisplayName() . ' - ' . $role_name,
+      ];
+      admin_audit_trail_insert($log);
+    }
+  }
+}
+
+/**
+ * Implements hook_user_role_insert().
+ */
+function admin_audit_trail_user_roles_user_role_insert($role) {
+  $log = [
+    'type' => 'user_roles',
+    'operation' => 'role_created',
+    'description' => t('Role %role_name (%role_id) created', [
+      '%role_name' => $role->label(),
+      '%role_id' => $role->id(),
+    ]),
+    'ref_numeric' => 0,
+    'ref_char' => $role->label(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_user_role_update().
+ */
+function admin_audit_trail_user_roles_user_role_update($role) {
+  $log = [
+    'type' => 'user_roles',
+    'operation' => 'role_updated',
+    'description' => t('Role %role_name (%role_id) updated', [
+      '%role_name' => $role->label(),
+      '%role_id' => $role->id(),
+    ]),
+    'ref_numeric' => 0,
+    'ref_char' => $role->label(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_user_role_delete().
+ */
+function admin_audit_trail_user_roles_user_role_delete($role) {
+  $log = [
+    'type' => 'user_roles',
+    'operation' => 'role_deleted',
+    'description' => t('Role %role_name (%role_id) deleted', [
+      '%role_name' => $role->label(),
+      '%role_id' => $role->id(),
+    ]),
+    'ref_numeric' => 0,
+    'ref_char' => $role->label(),
+  ];
+  admin_audit_trail_insert($log);
+}

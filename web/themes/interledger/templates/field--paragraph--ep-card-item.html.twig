@@ -1,0 +1,43 @@
+{%
+  set card_description = ['ep-card-description']
+%}
+{%
+  set card_title = ['ep-card-title']
+%} 
+{%
+  set card_image = ['ep-card-image']
+%} 
+{# {{dump()}} #}
+{% if element['#field_name'] == 'field_card_title' %}
+  <h3{{ attributes.addClass(card_title) }}>
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </h3>
+
+{% elseif element['#field_name'] == 'field_card_description' %}
+  <div{{ attributes.addClass(card_description) }}>
+    {% for item in items %}
+     <p> {{ item.content }}</p>
+    {% endfor %}
+  </div>
+
+{% elseif element['#field_name'] == 'field_card_image' %}
+  <div{{ attributes.addClass(card_image) }}>
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </div>
+{% else %}
+  <div{{ attributes.addClass(classes) }}>
+    {% for item in items %}
+      <p>{{ item.content }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{# <div{{ attributes }}>
+  {% for item in items %}
+    <div{{ item.attributes }}>{{ item.content }}</div>
+  {% endfor %}
+</div> #}

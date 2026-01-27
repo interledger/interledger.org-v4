@@ -1,0 +1,13 @@
+# Schema for the Views plugins of the Admin Audit Trail module.
+
+views.field.audit_trail_description:
+  type: views_field
+  label: 'Audit trail description'
+
+views.filter.audit_trail_types:
+  type: 'views.filter.in_operator'
+  label: 'Audit trail types'
+
+views.filter.audit_trail_operations:
+  type: 'views.filter.in_operator'
+  label: 'Audit trail operations'
