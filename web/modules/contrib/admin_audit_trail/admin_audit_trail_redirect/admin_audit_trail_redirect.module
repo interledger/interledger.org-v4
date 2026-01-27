@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Logs redirect CUD commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_redirect_admin_audit_trail_handlers() {
+  // Redirect event log handler.
+  $handlers = [];
+  $handlers['redirect'] = [
+    'title' => t('Redirect'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_redirect_insert().
+ */
+function admin_audit_trail_redirect_redirect_insert($redirect) {
+  $log = [
+    'type' => 'redirect',
+    'operation' => 'insert',
+    'description' => t('src: %source (%status) to: %dest', [
+      '%status' => $redirect->getStatusCode(),
+      '%source' => $redirect->getSourceUrl(),
+      '%dest' => $redirect->getRedirectUrl()->toString(),
+    ]),
+    'ref_numeric' => $redirect->id(),
+    'ref_char' => $redirect->getSourceUrl(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_redirect_update().
+ */
+function admin_audit_trail_redirect_redirect_update($redirect) {
+  $log = [
+    'type' => 'redirect',
+    'operation' => 'update',
+    'description' => t('src: %source (%status) to: %dest', [
+      '%status' => $redirect->getStatusCode(),
+      '%source' => $redirect->getSourceUrl(),
+      '%dest' => $redirect->getRedirectUrl()->toString(),
+    ]),
+    'ref_numeric' => $redirect->id(),
+    'ref_char' => $redirect->getSourceUrl(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_redirect_delete().
+ */
+function admin_audit_trail_redirect_redirect_delete($redirect) {
+  $log = [
+    'type' => 'redirect',
+    'operation' => 'delete',
+    'description' => t('src: %source (%status) to: %dest', [
+      '%status' => $redirect->getStatusCode(),
+      '%source' => $redirect->getSourceUrl(),
+      '%dest' => $redirect->getRedirectUrl()->toString(),
+    ]),
+    'ref_numeric' => $redirect->id(),
+    'ref_char' => $redirect->getSourceUrl(),
+  ];
+  admin_audit_trail_insert($log);
+}

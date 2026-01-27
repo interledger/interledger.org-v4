@@ -1,0 +1,21 @@
+include:
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - "/includes/include.drupalci.main.yml"
+      - "/includes/include.drupalci.variables.yml"
+      - "/includes/include.drupalci.workflows.yml"
+composer-lint:
+  allow_failure: true
+cspell:
+  allow_failure: true
+eslint:
+  allow_failure: true
+phpcs:
+  allow_failure: true
+phpstan:
+  allow_failure: true
+phpunit:
+  allow_failure: true
+  variables:
+    _PHPUNIT_EXTRA: ''

@@ -1,0 +1,17 @@
+# Legacy route - kept for backward compatibility.
+# The primary report is now provided via Views at /admin/reports/audit-trail.
+# This legacy form-based report will be removed in a future version.
+admin_audit_trail.report_form_legacy:
+  path: "/admin/reports/audit-trail/legacy"
+  defaults:
+    _controller: "\\Drupal\\admin_audit_trail\\Controller\\AdminController::adminPage"
+    _title: "Admin audit trails (Legacy)"
+  requirements:
+    _permission: "access admin audit trail"
+admin_audit_trail.settings:
+  path: '/admin/config/development/audit-trail/settings'
+  defaults:
+    _form: '\Drupal\admin_audit_trail\Form\SettingsForm'
+    _title: 'Admin audit trails Settings'
+  requirements:
+    _permission: 'configure admin audit trail'

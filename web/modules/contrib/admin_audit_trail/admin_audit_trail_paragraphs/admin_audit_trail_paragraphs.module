@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Logs paragraph CUD commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_paragraphs_admin_audit_trail_handlers() {
+  // Paragraphs event log handler.
+  $handlers = [];
+  $handlers['paragraph'] = [
+    'title' => t('Paragraphs'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_paragraph_insert().
+ */
+function admin_audit_trail_paragraphs_paragraph_insert($paragraph) {
+  $log = [
+    'type' => 'paragraph',
+    'operation' => 'insert',
+    'description' => t('%type: %title', [
+      '%type' => $paragraph->getType(),
+      '%title' => '(parent: ' . $paragraph->parent_type->value . '-' . $paragraph->parent_id->value . ')',
+    ]),
+    'ref_numeric' => $paragraph->id(),
+    'ref_char' => '',
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_paragraph_update().
+ */
+function admin_audit_trail_paragraphs_paragraph_update($paragraph) {
+  $log = [
+    'type' => 'paragraph',
+    'operation' => 'update',
+    'description' => t('%type: %title', [
+      '%type' => $paragraph->getType(),
+      '%title' => '(parent: ' . $paragraph->parent_type->value . '-' . $paragraph->parent_id->value . ')',
+    ]),
+    'ref_numeric' => $paragraph->id(),
+    'ref_char' => '',
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_paragraph_delete().
+ */
+function admin_audit_trail_paragraphs_paragraph_delete($paragraph) {
+  $log = [
+    'type' => 'paragraph',
+    'operation' => 'delete',
+    'description' => t('%type: %title', [
+      '%type' => $paragraph->getType(),
+      '%title' => '(parent: ' . $paragraph->parent_type->value . '-' . $paragraph->parent_id->value . ')',
+    ]),
+    'ref_numeric' => $paragraph->id(),
+    'ref_char' => '',
+  ];
+  admin_audit_trail_insert($log);
+}

@@ -1,0 +1,123 @@
+<?php
+
+/**
+ * @file
+ * Logs menu CUD commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_menu_admin_audit_trail_handlers() {
+  $handlers = [];
+
+  $handlers['menu'] = [
+    'title' => t('Menu'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_menu_insert().
+ */
+function admin_audit_trail_menu_menu_insert($menu) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'insert',
+    'description' => t('%title (%name)', [
+      '%title' => $menu->get('label'),
+      '%name' => $menu->get('id'),
+    ]),
+    'ref_char' => $menu->get('id'),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_menu_update().
+ */
+function admin_audit_trail_menu_menu_update($menu) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'update',
+    'description' => t('%title (%name)', [
+      '%title' => $menu->get('label'),
+      '%name' => $menu->get('id'),
+    ]),
+    'ref_char' => $menu->get('id'),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_menu_delete().
+ */
+function admin_audit_trail_menu_menu_delete($menu) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'delete',
+    'description' => t('%title (%name)', [
+      '%title' => $menu->get('label'),
+      '%name' => $menu->get('id'),
+    ]),
+    'ref_char' => $menu->get('id'),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_menu_link_insert().
+ */
+function admin_audit_trail_menu_menu_link_content_insert($link) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'link insert',
+    'description' => t('%title (%id), %path', [
+      '%title' => $link->getTitle(),
+      '%id' => $link->id(),
+      '%path' => $link->get('link')->uri,
+    ]),
+    'ref_numeric' => $link->id(),
+    'ref_char' => $link->getMenuName(),
+  ];
+
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_menu_link_update().
+ */
+function admin_audit_trail_menu_menu_link_content_update($link) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'link update',
+    'description' => t('%title (%id), %path', [
+      '%title' => $link->getTitle(),
+      '%id' => $link->id(),
+      '%path' => $link->get('link')->uri,
+    ]),
+    'ref_numeric' => $link->id(),
+    'ref_char' => $link->getMenuName(),
+  ];
+
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_menu_link_delete().
+ */
+function admin_audit_trail_menu_menu_link_content_delete($link) {
+  $log = [
+    'type' => 'menu',
+    'operation' => 'link delete',
+    'description' => t('%title (%id), %path', [
+      '%title' => $link->getTitle(),
+      '%id' => $link->id(),
+      '%path' => $link->get('link')->uri,
+    ]),
+    'ref_numeric' => $link->id(),
+    'ref_char' => $link->getMenuName(),
+  ];
+
+  admin_audit_trail_insert($log);
+}

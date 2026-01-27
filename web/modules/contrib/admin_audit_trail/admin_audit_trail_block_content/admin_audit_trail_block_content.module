@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Logs block content CUD commands in the admin_audit_trail module.
+ */
+
+use Drupal\block_content\BlockContentInterface;
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_block_content_admin_audit_trail_handlers() {
+  // Block content event log handler.
+  $handlers = [];
+  $handlers['block_content'] = [
+    'title' => t('Block Content'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function admin_audit_trail_block_content_block_content_insert(BlockContentInterface $entity) {
+  $log = [
+    'type' => 'block_content',
+    'operation' => 'insert',
+    'description' => t('%bundle: %title', [
+      '%bundle' => $entity->bundle(),
+      '%title' => $entity->label(),
+    ]),
+    'ref_numeric' => $entity->id(),
+    'ref_char' => $entity->label(),
+    'ref_entity' => $entity,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function admin_audit_trail_block_content_block_content_update(BlockContentInterface $entity) {
+  $log = [
+    'type' => 'block_content',
+    'operation' => 'update',
+    'description' => t('%bundle: %title', [
+      '%bundle' => $entity->bundle(),
+      '%title' => $entity->label(),
+    ]),
+    'ref_numeric' => $entity->id(),
+    'ref_char' => $entity->label(),
+    'ref_entity' => $entity,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function admin_audit_trail_block_content_block_content_delete(BlockContentInterface $entity) {
+  $log = [
+    'type' => 'block_content',
+    'operation' => 'delete',
+    'description' => t('%bundle: %title', [
+      '%bundle' => $entity->bundle(),
+      '%title' => $entity->label(),
+    ]),
+    'ref_numeric' => $entity->id(),
+    'ref_char' => $entity->label(),
+    'ref_entity' => $entity,
+  ];
+  admin_audit_trail_insert($log);
+}

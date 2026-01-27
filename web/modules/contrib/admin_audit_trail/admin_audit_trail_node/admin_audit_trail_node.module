@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Logs node CUD commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_node_admin_audit_trail_handlers() {
+  // Node event log handler.
+  $handlers = [];
+  $handlers['node'] = [
+    'title' => t('Node'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function admin_audit_trail_node_node_insert($node) {
+  $log = [
+    'type' => 'node',
+    'operation' => 'insert',
+    'description' => t('%type: %title', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function admin_audit_trail_node_node_update($node) {
+  $log = [
+    'type' => 'node',
+    'operation' => 'update',
+    'description' => t('%type: %title', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function admin_audit_trail_node_node_delete($node) {
+  $log = [
+    'type' => 'node',
+    'operation' => 'delete',
+    'description' => t('%type: %title', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_translation_insert().
+ */
+function admin_audit_trail_node_node_translation_insert($node) {
+  $log = [
+    'type' => 'node',
+    'operation' => 'translation insert',
+    'description' => t('%type: %title', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_translation_delete().
+ */
+function admin_audit_trail_node_node_translation_delete($node) {
+  $log = [
+    'type' => 'node',
+    'operation' => 'translation delete',
+    'description' => t('%type: %title', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}

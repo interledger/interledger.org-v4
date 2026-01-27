@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Logs workflows commands in the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_workflows_admin_audit_trail_handlers() {
+  // Workflows event log handler.
+  $handlers = [];
+  $handlers['workflows'] = [
+    'title' => t('Workflows'),
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function admin_audit_trail_workflows_node_insert($node) {
+  /** @var \Drupal\node\NodeInterface $node */
+  if (!$node->hasField('moderation_state')) {
+    return;
+  }
+  $new_state = $node->get("moderation_state")->getString();
+
+  $log = [
+    'type' => 'workflows',
+    'operation' => 'insert',
+    'description' => t('%type: %title - New node created with workflow state %new_state', [
+      '%type' => $node->getType(),
+      '%title' => $node->getTitle(),
+      '%new_state' => $new_state,
+    ]),
+    'ref_numeric' => $node->id(),
+    'ref_char' => $node->getTitle(),
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function admin_audit_trail_workflows_node_update($node) {
+  /** @var \Drupal\node\NodeInterface $node */
+  if (!$node->hasField('moderation_state')) {
+    return;
+  }
+
+  $new_state = $node->get("moderation_state")->getString();
+  $old_state = $node->original->get("moderation_state")->getString();
+
+  if ($old_state != $new_state) {
+    $log = [
+      'type' => 'workflows',
+      'operation' => 'update',
+      'description' => t('%type: %title - Workflow state changed from %old_state to %new_state', [
+        '%type' => $node->getType(),
+        '%title' => $node->getTitle(),
+        '%old_state' => $old_state,
+        '%new_state' => $new_state,
+      ]),
+      'ref_numeric' => $node->id(),
+      'ref_char' => $node->getTitle(),
+    ];
+    admin_audit_trail_insert($log);
+  }
+}

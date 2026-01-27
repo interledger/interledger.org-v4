@@ -1,0 +1,10 @@
+# The main audit trail menu link is provided by the View at /admin/reports/audit-trail.
+# The legacy form-based report remains accessible at /admin/reports/audit-trail/legacy
+# but is intentionally hidden from the menu to encourage use of the Views-based report.
+
+admin_audit_trail.settings:
+  title: "Admin audit trail settings"
+  parent: system.admin_config_development
+  description: "Configure admin audit trail settings."
+  weight: -5
+  route_name: admin_audit_trail.settings

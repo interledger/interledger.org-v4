@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * @file
+ * Logs entityqueue CUD commands in the admin_audit_trail module.
+ */
+
+use Drupal\entityqueue\Entity\EntityQueue;
+
+/**
+ * Implements hook_admin_audit_trail_handlers().
+ */
+function admin_audit_trail_entityqueue_admin_audit_trail_handlers() {
+  // Entityqueue and Entity_subqueue event log handler.
+  $handlers = [];
+  $handlers = [
+    "entity_queue" => [
+      "title" => t('Entityqueue'),
+    ],
+    "entity_subqueue" => [
+      "title" => t('Entity Subqueue'),
+    ],
+  ];
+  return $handlers;
+}
+
+/**
+ * Implements hook_entity_queue_insert().
+ */
+function admin_audit_trail_entityqueue_entity_queue_insert($entityqueue) {
+  $entityQueue = EntityQueue::load($entityqueue->id());
+  $title = $entityQueue->get('label');
+  $log = [
+    'type' => 'entity_queue',
+    'operation' => 'insert',
+    'description' => t('%type: %title - inserted', [
+      '%type' => $entityqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_queue_update().
+ */
+function admin_audit_trail_entityqueue_entity_queue_update($entityqueue) {
+  $entityQueue = EntityQueue::load($entityqueue->id());
+  $title = $entityQueue->get('label');
+  $log = [
+    'type' => 'entity_queue',
+    'operation' => 'update',
+    'description' => t('%type: %title - updated', [
+      '%type' => $entityqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_queue_predelete().
+ */
+function admin_audit_trail_entityqueue_entity_queue_predelete($entityqueue) {
+  $entityQueue = EntityQueue::load($entityqueue->id());
+  $title = $entityQueue->get('label');
+  $log = [
+    'type' => 'entity_queue',
+    'operation' => 'delete',
+    'description' => t('%type: %title - deleted', [
+      '%type' => $entityqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_subqueue_insert().
+ */
+function admin_audit_trail_entityqueue_entity_subqueue_insert($entity_subqueue) {
+  $title = $entity_subqueue->get('title')->getValue()[0]['value'];
+  $log = [
+    'type' => 'entity_subqueue',
+    'operation' => 'insert',
+    'description' => t('%type: %title - inserted', [
+      '%type' => $entity_subqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_subqueue_update().
+ */
+function admin_audit_trail_entityqueue_entity_subqueue_update($entity_subqueue) {
+  $title = $entity_subqueue->get('title')->getValue()[0]['value'];
+  $log = [
+    'type' => 'entity_subqueue',
+    'operation' => 'update',
+    'description' => t('%type: %title - updated', [
+      '%type' => $entity_subqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}
+
+/**
+ * Implements hook_entity_subqueue_predelete().
+ */
+function admin_audit_trail_entityqueue_entity_subqueue_predelete($entity_subqueue) {
+  $title = $entity_subqueue->get('title')->getValue()[0]['value'];
+  $log = [
+    'type' => 'entity_subqueue',
+    'operation' => 'delete',
+    'description' => t('%type: %title - deleted', [
+      '%type' => $entity_subqueue->bundle(),
+      '%title' => $title,
+    ]),
+    'ref_char' => $title,
+  ];
+  admin_audit_trail_insert($log);
+}

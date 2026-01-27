@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the admin_audit_trail module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function admin_audit_trail_schema() {
+  $schema['admin_audit_trail'] = [
+    'description' => 'Logged events by the admin_audit_trail module.',
+    'fields' => [
+      'lid' => [
+        'description' => 'Log id.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'type' => [
+        'description' => 'Event handler type.',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ],
+      'operation' => [
+        'description' => 'The operation performed.',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE,
+      ],
+      'path' => [
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Current path.',
+      ],
+      'ref_numeric' => [
+        'description' => 'A numeric value that can be used to reference an object.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'ref_char' => [
+        'description' => 'A character value that can be used to reference an object.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ],
+      'description' => [
+        'description' => 'Description of the event, in HTML.',
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'description' => 'User id that triggered this event (0 = anonymous user).',
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'ip' => [
+        'description' => 'IP address of the visitor that triggered this event.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ],
+      'created' => [
+        'description' => 'The event timestamp.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['lid'],
+    'indexes' => [
+      'created' => ['created'],
+      'user' => ['uid', 'ip'],
+      'ip' => ['ip'],
+      'join' => ['type', 'operation', 'ref_numeric', 'ref_char'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Feat: #3197592 Add settings form to toggle filter expansion and limit audit log table size.
+ */
+function admin_audit_trail_update_10001() {
+  $config_factory = \Drupal::configFactory()->getEditable('admin_audit_trail.settings');
+  $config_factory->set('filter_expanded', FALSE);
+  $config_factory->set('admin_audit_trail_row_limit', 0);
+  $config_factory->save(TRUE);
+}
+
+/**
+ * Install the Admin Audit Trail view.
+ */
+function admin_audit_trail_update_10002() {
+  // Check if Views module is enabled.
+  if (!\Drupal::moduleHandler()->moduleExists('views')) {
+    return t('Views module is not enabled. The Admin Audit Trail view was not installed.');
+  }
+
+  // Check if the view already exists.
+  $view = \Drupal::entityTypeManager()
+    ->getStorage('view')
+    ->load('admin_audit_trail');
+
+  if ($view) {
+    return t('Admin Audit Trail view already exists.');
+  }
+
+  // Get the module path and read the view configuration.
+  $module_path = \Drupal::service('extension.list.module')->getPath('admin_audit_trail');
+  $config_path = $module_path . '/config/optional/views.view.admin_audit_trail.yml';
+
+  if (!file_exists($config_path)) {
+    return t('View configuration file not found at @path', ['@path' => $config_path]);
+  }
+
+  // Load and parse the YAML configuration.
+  $yaml_content = file_get_contents($config_path);
+  $config_data = \Drupal::service('serialization.yaml')->decode($yaml_content);
+
+  // Create the view from configuration.
+  \Drupal::entityTypeManager()
+    ->getStorage('view')
+    ->create($config_data)
+    ->save();
+
+  return t('Admin Audit Trail view has been successfully installed.');
+}

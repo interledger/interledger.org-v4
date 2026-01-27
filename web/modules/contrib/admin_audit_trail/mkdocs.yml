@@ -1,0 +1,64 @@
+site_name: "Admin Audit Trail"
+repo_url: https://git.drupalcode.org/project/admin_audit_trail
+repo_name: drupal/admin_audit_trail
+edit_uri: /-/edit/1.0.x/docs/
+
+theme:
+  name: material
+  language: en
+  logo: logo.png
+  # favicon: favicon.ico
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      primary: indigo
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      primary: indigo
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: indigo
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.sections
+    # - navigation.expand
+
+nav:
+  - Introduction: "index.md"
+  - User Documentation:
+      - Installation and Setup: "1-users/0-installation.md"
+      - Viewing Logs: "1-users/1-viewing-logs.md"
+      - Understanding Logs: "1-users/2-understanding-logs.md"
+      - Use Cases: "1-users/3-use-cases.md"
+  - Administrator Documentation:
+      - Configuration: "2-admins/0-configuration.md"
+      - Permissions: "2-admins/1-permissions.md"
+      - Submodules: "2-admins/2-submodules.md"
+      - Performance: "2-admins/3-performance.md"
+  - Developer Documentation:
+      - Creating Custom Handlers: "3-developers/0-custom-handlers.md"
+      - API Reference: "3-developers/1-api-reference.md"
+      - Database Schema: "3-developers/2-database-schema.md"
+      - Testing: "3-developers/3-testing.md"
+  - Frequently Asked Questions: "faq.md"
+
+plugins:
+  - search
+  - privacy:
+      enabled: !ENV [CI, false]
+
+markdown_extensions:
+  # - markdown.extensions.admonition
+  - pymdownx.extra
