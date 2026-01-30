@@ -14,8 +14,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "aggregate",
  *   label = @Translation("Aggregate"),
  *   description = @Translation("Aggregates data, such as picking the maximum value."),
- *   category = "Number",
- *   handle_multiples = TRUE
+ *   category = @Translation("Number"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class Aggregate extends TamperBase {

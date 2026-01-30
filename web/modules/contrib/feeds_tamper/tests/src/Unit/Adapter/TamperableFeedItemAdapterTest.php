@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\feeds_tamper\Unit\Adapter;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\feeds\Feeds\Item\ItemInterface;
 use Drupal\feeds_tamper\Adapter\TamperableFeedItemAdapter;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\feeds_tamper\Adapter\TamperableFeedItemAdapter

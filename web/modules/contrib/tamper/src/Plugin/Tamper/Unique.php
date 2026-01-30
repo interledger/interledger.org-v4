@@ -13,8 +13,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "unique",
  *   label = @Translation("Unique"),
  *   description = @Translation("Makes the elements in a multivalued field unique."),
- *   category = "List",
- *   handle_multiples = TRUE
+ *   category = @Translation("List"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class Unique extends TamperBase {

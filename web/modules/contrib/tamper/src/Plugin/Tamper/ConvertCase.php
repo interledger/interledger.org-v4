@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "convert_case",
  *   label = @Translation("Convert case"),
  *   description = @Translation("Convert case."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class ConvertCase extends TamperBase {

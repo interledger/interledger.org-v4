@@ -13,7 +13,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "html_entity_decode",
  *   label = @Translation("HTML entity decode"),
  *   description = @Translation("Convert all HTML entities such as &amp;amp; and &amp;quot; to &amp; and &quot;."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class HtmlEntityDecode extends TamperBase {

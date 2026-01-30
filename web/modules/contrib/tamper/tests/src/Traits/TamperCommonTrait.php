@@ -53,4 +53,40 @@ trait TamperCommonTrait {
     ])->save();
   }
 
+  /**
+   * Returns the absolute path to the Drupal root.
+   *
+   * @return string
+   *   The absolute path to the directory where Drupal is installed.
+   */
+  protected function absolute() {
+    return realpath(getcwd());
+  }
+
+  /**
+   * Returns the absolute directory path of the Tamper module.
+   *
+   * @return string
+   *   The absolute path to the Tamper module.
+   */
+  protected function absolutePath() {
+    return $this->absolute() . '/' . $this->getModulePath('tamper');
+  }
+
+  /**
+   * Gets the path for the specified module.
+   *
+   * @param string $module_name
+   *   The module name.
+   *
+   * @return string
+   *   The Drupal-root relative path to the module directory.
+   *
+   * @throws \Drupal\Core\Extension\Exception\UnknownExtensionException
+   *   If the module does not exist.
+   */
+  protected function getModulePath(string $module_name): string {
+    return \Drupal::service('extension.list.module')->getPath($module_name);
+  }
+
 }

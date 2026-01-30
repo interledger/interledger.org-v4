@@ -122,7 +122,9 @@ abstract class FeedsFileSystemBase implements FeedsFileSystemInterface {
    */
   protected function prepareDirectory(string $dir) {
     if (!$this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
-      throw new \RuntimeException(t('Feeds directory either cannot be created or is not writable.'));
+      throw new \RuntimeException(t('Feeds directory "@directory" either cannot be created or is not writable.', [
+        '@directory' => $dir,
+      ]));
     }
   }
 

@@ -14,8 +14,9 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "required",
  *   label = @Translation("Required"),
  *   description = @Translation("Make this field required. If it is empty, the item will not be processed."),
- *   category = "Filter",
- *   handle_multiples = TRUE
+ *   category = @Translation("Filter"),
+ *   handle_multiples = TRUE,
+ *   itemUsage = "ignored"
  * )
  */
 class Required extends TamperBase {

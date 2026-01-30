@@ -322,7 +322,7 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
       return $target_ids;
     }
 
-    if ($this->configuration['autocreate'] && $field === $this->getLabelKey()) {
+    if ($this->hasAutocreateSupport() && $this->configuration['autocreate'] && $field === $this->getLabelKey()) {
       return [$this->createEntity($search)];
     }
 
@@ -363,16 +363,28 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
   }
 
   /**
+   * Determines if this target has autocreate support.
+   *
+   * @return bool
+   *   TRUE if supported, FALSE otherwise.
+   */
+  protected function hasAutocreateSupport() {
+    return TRUE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
     $config = parent::defaultConfiguration() + [
       'reference_by' => $this->getLabelKey(),
-      'autocreate' => FALSE,
-      'autocreate_bundle' => FALSE,
     ];
     if (array_key_exists('feeds_item', $this->getPotentialFields())) {
       $config['feeds_item'] = FALSE;
+    }
+    if ($this->hasAutocreateSupport()) {
+      $config['autocreate'] = FALSE;
+      $config['autocreate_bundle'] = FALSE;
     }
     return $config;
   }
@@ -425,41 +437,43 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
       ],
     ];
 
-    $form['autocreate'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Autocreate entity'),
-      '#default_value' => $this->configuration['autocreate'],
-      '#states' => [
-        'visible' => [
-          ':input[name="mappings[' . $delta . '][settings][reference_by]"]' => [
-            'value' => $this->getLabelKey(),
-          ],
-        ],
-      ],
-    ];
-
-    $bundles = $this->getBundles();
-    if (count($bundles) > 0) {
-
-      // Check that recent field configuration changes haven't invalidated any
-      // previous selection.
-      if (!in_array($this->configuration['autocreate_bundle'], $bundles)) {
-        $this->configuration['autocreate_bundle'] = reset($bundles);
-      }
-
-      $form['autocreate_bundle'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Bundle to autocreate'),
-        '#options' => $bundles,
-        '#default_value' => $this->configuration['autocreate_bundle'],
+    if ($this->hasAutocreateSupport()) {
+      $form['autocreate'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Autocreate entity'),
+        '#default_value' => $this->configuration['autocreate'],
         '#states' => [
           'visible' => [
-            ':input[name="mappings[' . $delta . '][settings][autocreate]"]' => [
-              ['checked' => TRUE, 'visible' => TRUE],
+            ':input[name="mappings[' . $delta . '][settings][reference_by]"]' => [
+              'value' => $this->getLabelKey(),
             ],
           ],
         ],
       ];
+
+      $bundles = $this->getBundles();
+      if (count($bundles) > 0) {
+
+        // Check that recent field configuration changes haven't invalidated any
+        // previous selection.
+        if (!in_array($this->configuration['autocreate_bundle'], $bundles)) {
+          $this->configuration['autocreate_bundle'] = reset($bundles);
+        }
+
+        $form['autocreate_bundle'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Bundle to autocreate'),
+          '#options' => $bundles,
+          '#default_value' => $this->configuration['autocreate_bundle'],
+          '#states' => [
+            'visible' => [
+              ':input[name="mappings[' . $delta . '][settings][autocreate]"]' => [
+                ['checked' => TRUE, 'visible' => TRUE],
+              ],
+            ],
+          ],
+        ];
+      }
     }
 
     return $form;
@@ -488,7 +502,7 @@ class EntityReference extends FieldTargetBase implements ConfigurableTargetInter
       ];
     }
 
-    if ($this->configuration['reference_by'] === $this->getLabelKey()) {
+    if ($this->hasAutocreateSupport() && $this->configuration['reference_by'] === $this->getLabelKey()) {
       $create = $this->configuration['autocreate'] ? $this->t('Yes') : $this->t('No');
       $summary[] = $this->t('Autocreate entities: %create', ['%create' => $create]);
       if ($this->configuration['autocreate'] && in_array($this->configuration['autocreate_bundle'], $this->getBundles())) {

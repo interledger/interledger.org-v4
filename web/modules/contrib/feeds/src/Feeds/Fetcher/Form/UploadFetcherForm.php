@@ -86,7 +86,9 @@ class UploadFetcherForm extends ExternalPluginFormBase implements ContainerInjec
 
     // Ensure that the upload directory exists.
     if (!empty($form['directory']) && !$this->fileSystem->prepareDirectory($values['directory'], FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
-      $form_state->setError($form['directory'], $this->t('The chosen directory does not exist and attempts to create it failed.'));
+      $form_state->setError($form['directory'], $this->t('The chosen directory "@directory" does not exist and attempts to create it failed.', [
+        '@directory' => $values['directory'],
+      ]));
     }
   }
 

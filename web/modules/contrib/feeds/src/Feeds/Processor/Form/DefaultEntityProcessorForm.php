@@ -171,12 +171,12 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
 
     $options = $this->getUpdateNonExistentActions();
     $selected = $this->plugin->getConfiguration('update_non_existent');
-    if (!isset($options[$selected])) {
+    if (is_string($selected) && strlen($selected) > 0 && !isset($options[$selected])) {
       $options[$selected] = $this->t('@label (action no longer available)', [
         '@label' => $selected,
       ]);
     }
-    if (!empty($options)) {
+    if ($options !== []) {
       $form['update_non_existent'] = [
         '#type' => 'select',
         '#title' => $this->t('Previously imported items'),
@@ -371,6 +371,11 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
 
     $action_definitions = $this->actionManager->getDefinitionsByType($this->plugin->entityType());
     foreach ($action_definitions as $id => $definition) {
+      // Filter out definitions that do not have a class specified.
+      if (!isset($definition['class'])) {
+        continue;
+      }
+
       // Filter out configurable actions.
       $interfaces = class_implements($definition['class']);
       if (isset($interfaces[ConfigurableInterface::class])) {

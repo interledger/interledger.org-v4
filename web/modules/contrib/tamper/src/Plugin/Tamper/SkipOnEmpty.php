@@ -13,7 +13,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "skip_on_empty",
  *   label = @Translation("Skip tampers on empty"),
  *   description = @Translation("If it is empty, further Tamper plugins won't be applied."),
- *   category = "Filter"
+ *   category = @Translation("Filter"),
+ *   itemUsage = "ignored"
  * )
  */
 class SkipOnEmpty extends TamperBase {

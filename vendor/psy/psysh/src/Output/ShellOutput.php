@@ -11,7 +11,7 @@
 
 namespace Psy\Output;
 
-use Psy\Formatter\SignatureFormatter;
+use Psy\Formatter\LinkFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -69,7 +69,9 @@ class ShellOutput extends ConsoleOutput
     public function page($messages, int $type = 0)
     {
         if (\is_string($messages)) {
-            $messages = (array) $messages;
+            // Split on newlines to avoid O(n^2) performance in Symfony's OutputFormatter
+            // when processing large strings with many style tags.
+            $messages = \explode("\n", $messages);
         }
 
         if (!\is_array($messages) && !\is_callable($messages)) {
@@ -154,7 +156,7 @@ class ShellOutput extends ConsoleOutput
     public function doWrite($message, $newline): void
     {
         // @todo Update OutputPager interface to require doWrite
-        if ($this->paging > 0 && $this->pager instanceof ProcOutputPager) {
+        if ($this->paging > 0 && ($this->pager instanceof ProcOutputPager || $this->pager instanceof PassthruPager)) {
             $this->pager->doWrite($message, $newline);
         } else {
             parent::doWrite($message, $newline);
@@ -189,8 +191,8 @@ class ShellOutput extends ConsoleOutput
         $this->theme->applyStyles($this->getFormatter(), $useGrayFallback);
         $this->theme->applyErrorStyles($this->getErrorOutput()->getFormatter(), $useGrayFallback);
 
-        // Set inline styles for SignatureFormatter hyperlinks
-        SignatureFormatter::setStyles($this->theme->getInlineStyles($useGrayFallback));
+        // Set inline styles for hyperlinks
+        LinkFormatter::setStyles($this->theme->getInlineStyles($useGrayFallback));
     }
 
     /**

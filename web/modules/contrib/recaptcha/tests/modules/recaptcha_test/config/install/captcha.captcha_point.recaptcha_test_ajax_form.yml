@@ -1,0 +1,9 @@
+langcode: en
+status: true
+formId: recaptcha_test_ajax_form
+captchaType: recaptcha/reCAPTCHA
+label: recaptcha_test_ajax_form
+dependencies:
+  enforced:
+    module:
+      - recaptcha_test

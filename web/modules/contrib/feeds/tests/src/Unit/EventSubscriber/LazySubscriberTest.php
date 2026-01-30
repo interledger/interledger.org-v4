@@ -13,6 +13,7 @@ use Drupal\feeds\Event\ProcessEvent;
 use Drupal\feeds\EventSubscriber\LazySubscriber;
 use Drupal\feeds\Feeds\Item\DynamicItem;
 use Drupal\feeds\Result\ParserResult;
+use Drupal\feeds\StateInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -48,6 +49,13 @@ class LazySubscriberTest extends FeedsUnitTestCase {
    * @var \Drupal\feeds\StateInterface
    */
   protected $state;
+
+  /**
+   * The clean state object.
+   *
+   * @var \Drupal\feeds\Feeds\State\CleanStateInterface
+   */
+  protected $cleanState;
 
   /**
    * The feed type entity.
@@ -99,10 +107,16 @@ class LazySubscriberTest extends FeedsUnitTestCase {
       ->will($this->throwException(new \Exception()));
 
     $this->state = $this->createMock('Drupal\feeds\StateInterface');
+    $this->cleanState = $this->createMock('\Drupal\feeds\Feeds\State\CleanStateInterface');
     $this->feed = $this->createMock('Drupal\feeds\FeedInterface');
     $this->feed->expects($this->any())
       ->method('getState')
-      ->willReturn($this->state);
+      ->willReturnCallback(function (string $state) {
+        if ($state === StateInterface::CLEAN) {
+          return $this->cleanState;
+        }
+        return $this->state;
+      });
     $this->feedType = $this->createMock('Drupal\feeds\FeedTypeInterface');
     $this->feedType->expects($this->any())
       ->method('getMappedSources')
@@ -130,6 +144,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
    * @covers ::onInitImport
    */
   public function testOnInitImport() {
+    /** @var \Drupal\feeds\Result\FetcherResultInterface $fetcher_result */
     $fetcher_result = $this->createMock('Drupal\feeds\Result\FetcherResultInterface');
     $parser_result = new ParserResult();
     $parser_result->addItem(new DynamicItem());
@@ -144,6 +159,8 @@ class LazySubscriberTest extends FeedsUnitTestCase {
       ->willReturn($parser_result);
     $this->processor->expects($this->once())
       ->method('process');
+    $this->processor->expects($this->once())
+      ->method('initialize');
 
     $this->feedType->expects($this->once())
       ->method('getFetcher')
@@ -151,7 +168,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
     $this->feedType->expects($this->once())
       ->method('getParser')
       ->willReturn($this->parser);
-    $this->feedType->expects($this->once())
+    $this->feedType->expects($this->exactly(2))
       ->method('getProcessor')
       ->willReturn($this->processor);
 

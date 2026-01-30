@@ -29,6 +29,7 @@ use Drupal\feeds\Exception\MissingTargetException;
 use Drupal\feeds\Exception\ValidationException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\ItemInterface;
+use Drupal\feeds\Feeds\Item\ValidatableItemInterface;
 use Drupal\feeds\Feeds\State\CleanStateInterface;
 use Drupal\feeds\FieldTargetDefinition;
 use Drupal\feeds\Plugin\Type\MappingPluginFormInterface;
@@ -219,13 +220,18 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   /**
    * {@inheritdoc}
    */
-  public function process(FeedInterface $feed, ItemInterface $item, StateInterface $state) {
-    // Initialize clean list if needed.
+  public function initialize(FeedInterface $feed) {
     $clean_state = $feed->getState(StateInterface::CLEAN);
-    if (!$clean_state->initiated()) {
+    // Initialize clean list if needed.
+    if ($clean_state instanceof CleanStateInterface && !$clean_state->initiated()) {
       $this->initCleanList($feed, $clean_state);
     }
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function process(FeedInterface $feed, ItemInterface $item, StateInterface $state) {
     $skip_new = $this->configuration['insert_new'] == static::SKIP_NEW;
     $existing_entity_id = $this->existingEntityId($feed, $item);
     $skip_existing = $this->configuration['update_existing'] == static::SKIP_EXISTING;
@@ -233,6 +239,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     // If the entity is an existing entity it must be removed from the clean
     // list.
     if ($existing_entity_id) {
+      $clean_state = $feed->getState(StateInterface::CLEAN);
       $clean_state->removeItem($existing_entity_id);
     }
 
@@ -291,6 +298,9 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       // Set feeds_item values.
       $feeds_item = $entity->get('feeds_item')->getItemByFeed($feed, TRUE);
       $feeds_item->hash = $hash;
+
+      // Validate the item.
+      $this->itemValidate($item, $entity, $feed);
 
       // Set new revision if needed.
       if ($this->configuration['revision']) {
@@ -694,6 +704,57 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     }
 
     return FALSE;
+  }
+
+  /**
+   * Checks if the source item is valid.
+   *
+   * @param \Drupal\feeds\Feeds\Item\ItemInterface $item
+   *   The source item.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity that would be created or updated if the item is valid.
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed that controls the import.
+   *
+   * @throws \Drupal\feeds\Exception\ValidationException
+   *   In case the item is found to be invalid.
+   */
+  protected function itemValidate(ItemInterface $item, EntityInterface $entity, FeedInterface $feed) {
+    if (!$item instanceof ValidatableItemInterface) {
+      // The item has no known validation support.
+      return;
+    }
+
+    // Check if the item is valid.
+    if (!$item->isValid()) {
+      // The item is not valid, create a validation error message.
+      $entity_details = $this->identifyEntity($entity, $feed);
+      $message = $item->getInvalidMessage();
+      if (strlen($message) < 1) {
+        if (isset($entity_details['label'])) {
+          $message = $this->t('The source item for entity @label is invalid.', [
+            '@label' => $entity_details['label'],
+          ]);
+        }
+        else {
+          $message = $this->t('A source item could not be imported because it is invalid.');
+        }
+      }
+      else {
+        if (isset($entity_details['label'])) {
+          $message = $this->t('The source item for entity @label is invalid: @message', [
+            '@label' => $entity_details['label'],
+            '@message' => $message,
+          ]);
+        }
+        else {
+          $message = $this->t('A source item could not be imported because it is invalid: @message', [
+            '@message' => $message,
+          ]);
+        }
+      }
+      throw new ValidationException($message);
+    }
   }
 
   /**

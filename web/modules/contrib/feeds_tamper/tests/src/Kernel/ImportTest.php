@@ -73,10 +73,9 @@ class ImportTest extends FeedsTamperKernelTestBase {
     // Add a tamper that should skip items with 'ipsum' in the title.
     $this->feedTypeTamperMeta->addTamper([
       'plugin' => 'keyword_filter',
-      'word_list' => ['ipsum'],
+      'words_list' => ['ipsum'],
       'invert' => TRUE,
       'source' => 'title',
-      'function' => 'mb_stripos',
       'weight' => 0,
     ]);
     $this->feedTypeTamperMeta->addTamper([
@@ -143,6 +142,32 @@ class ImportTest extends FeedsTamperKernelTestBase {
 
     $node = Node::load(2);
     $this->assertEquals('2-Ut-wisi-enim-ad-minim-veniam foo', $node->title->value);
+  }
+
+  /**
+   * Tests tampering using the FeedsSource plugin "basic_field".
+   */
+  public function testWithFeedsSourcePluginBasicField() {
+    // Use a source defined by the FeedsSource plugin "basic_field".
+    $this->feedTypeTamperMeta->addTamper([
+      'plugin' => 'rewrite',
+      'text' => '[parent:title] - [title]',
+      'source' => 'title',
+    ]);
+
+    // Create a feed and import file.
+    $feed = $this->createFeed($this->feedType->id(), [
+      'title' => 'Foo',
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(2);
+
+    $node = Node::load(1);
+    $this->assertEquals('Foo - Lorem ipsum', $node->title->value);
+
+    $node = Node::load(2);
+    $this->assertEquals('Foo - Ut wisi enim ad minim veniam', $node->title->value);
   }
 
 }

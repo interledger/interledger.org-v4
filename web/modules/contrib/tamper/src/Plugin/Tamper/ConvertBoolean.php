@@ -13,7 +13,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "convert_boolean",
  *   label = @Translation("Convert to Boolean"),
  *   description = @Translation("Convert to boolean."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class ConvertBoolean extends TamperBase {
@@ -60,7 +61,7 @@ class ConvertBoolean extends TamperBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Match case'),
       '#default_value' => $this->getSetting(self::SETTING_MATCH_CASE),
-      '#description' => $this->t('Match the case.'),
+      '#description' => $this->t('If enabled, the comparison becomes case-sensitive.'),
     ];
 
     // If no match setting.
@@ -174,7 +175,7 @@ class ConvertBoolean extends TamperBase {
     if ($match_field == $false_value) {
       return FALSE;
     }
-    if ($this->getSetting(self::SETTING_NO_MATCH) == 'pass') {
+    if ($this->getSetting(self::SETTING_NO_MATCH) === 'pass') {
       return $data;
     }
     return $this->getSetting(self::SETTING_NO_MATCH);

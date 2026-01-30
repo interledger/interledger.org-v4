@@ -2,6 +2,7 @@ defaultService: https://www.googleapis.com/compute/v1/projects/interledger-websi
 hostRules:
 - hosts:
   - interledger.org
+  - www.interledger.org
   pathMatcher: production-matcher
 - hosts:
   - staging.interledger.org

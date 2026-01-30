@@ -67,10 +67,8 @@ class FeedTypeListBuilderTest extends FeedsTamperBrowserTestBase {
 
     // Assert that weight selector ranges from -10 to 10.
     $this->drupalGet('/admin/structure/feeds/manage/my_feed_type/tamper');
-    $weight_selector = $this->getSession()
-      ->getPage()
-      ->find('css', '#edit-title-' . $uuid . '-weight');
-    $this->assertEquals(implode('', range(-10, 10)), $weight_selector->getText());
+    $weights = $this->findWeightRange($uuid);
+    $this->assertEquals(range(-10, 10), $weights);
 
     // Now add 19 more tampers and assert that the weight selector still ranges
     // from -10 to 10.
@@ -86,10 +84,8 @@ class FeedTypeListBuilderTest extends FeedsTamperBrowserTestBase {
     $feed_type->save();
 
     $this->drupalGet('/admin/structure/feeds/manage/my_feed_type/tamper');
-    $weight_selector = $this->getSession()
-      ->getPage()
-      ->find('css', '#edit-title-' . $uuid . '-weight');
-    $this->assertEquals(implode('', range(-10, 10)), $weight_selector->getText());
+    $weights = $this->findWeightRange($uuid);
+    $this->assertEquals(range(-10, 10), $weights);
 
     // Finally, add two more tampers. Assert that weight selector now ranges
     // from -11 to 11.
@@ -105,10 +101,30 @@ class FeedTypeListBuilderTest extends FeedsTamperBrowserTestBase {
     $feed_type->save();
 
     $this->drupalGet('/admin/structure/feeds/manage/my_feed_type/tamper');
-    $weight_selector = $this->getSession()
+    $weights = $this->findWeightRange($uuid);
+    $this->assertEquals(range(-11, 11), $weights);
+  }
+
+  /**
+   * Tries to find the weight options for the given Tamper plugin instance.
+   *
+   * @param string $uuid
+   *   The UUID of the Tamper plugin instance.
+   *
+   * @return string[]
+   *   A list of weight options.
+   */
+  protected function findWeightRange(string $uuid): array {
+    $options = $this->getSession()
       ->getPage()
-      ->find('css', '#edit-title-' . $uuid . '-weight');
-    $this->assertEquals(implode('', range(-11, 11)), $weight_selector->getText());
+      ->findAll('xpath', "//select[@id='edit-title-$uuid-weight']/option/@value");
+
+    $weights = [];
+    foreach ($options as $option) {
+      $weights[] = $option->getText();
+    }
+
+    return $weights;
   }
 
 }

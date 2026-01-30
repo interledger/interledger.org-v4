@@ -79,3 +79,7 @@ field.widget.settings.svg_image_field_widget:
     preview_image_max_height:
       type: integer
       label: 'Preview max height'
+
+media.source.svg:
+  type: media.source.field_aware
+  label: '"SVG" media source configuration'

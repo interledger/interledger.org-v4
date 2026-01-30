@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "str_pos",
  *   label = @Translation("Get position of sub-string"),
  *   description = @Translation("Get the position of a sub-string in a string"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class StrPos extends TamperBase {

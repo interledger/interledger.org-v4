@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "find_replace_regex",
  *   label = @Translation("Find replace REGEX"),
  *   description = @Translation("Find replace REGEX"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class FindReplaceRegex extends TamperBase {

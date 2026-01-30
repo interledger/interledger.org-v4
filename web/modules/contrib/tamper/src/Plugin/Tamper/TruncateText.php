@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "truncate_text",
  *   label = @Translation("Truncate"),
  *   description = @Translation("Truncate"),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class TruncateText extends TamperBase {

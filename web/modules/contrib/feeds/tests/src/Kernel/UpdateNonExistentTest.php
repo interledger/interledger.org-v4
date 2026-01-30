@@ -147,6 +147,21 @@ class UpdateNonExistentTest extends FeedsKernelTestBase {
     $feed->import();
     $node = $this->reloadEntity($node);
     static::assertEquals('Egypt, Hamas exchange fire on Gaza frontier, 1 dead - Reuters', $node->getTitle());
+
+    // Import an "updated" version of the file with no results.
+    $node = $this->getNodeByTitle('Obama wants to fast track a final health care bill - USA Today');
+    $this->assertTrue($node->isPublished(), 'Node is published');
+
+    $feed->setSource($this->resourcesPath() . '/rss/googlenewstz_empty.rss2');
+    $feed->save();
+    $feed->import();
+
+    // All the nodes should have been unpublished.
+    $node = $this->getNodeByTitle('Obama wants to fast track a final health care bill - USA Today');
+    $this->assertFalse($node->isPublished(), 'Node is unpublished');
+
+    // Assert that the clean list is empty for the feed.
+    $this->assertCleanListEmpty($feed);
   }
 
   /**
@@ -185,12 +200,108 @@ class UpdateNonExistentTest extends FeedsKernelTestBase {
     // Assert that the clean list is empty for the feed.
     $this->assertCleanListEmpty($feed);
 
+    // Import an "updated" version of the file with no results.
+    $feed->setSource($this->resourcesPath() . '/rss/googlenewstz_empty.rss2');
+    $feed->save();
+    $feed->import();
+
+    // Assert that all the nodes have been removed.
+    static::assertEquals(0, $feed->getItemCount());
+    $this->assertNodeCount(0);
+
+    // Assert that the clean list is empty for the feed.
+    $this->assertCleanListEmpty($feed);
+
     // Re-import the original feed to import the removed node again.
     $feed->setSource($this->resourcesPath() . '/rss/googlenewstz.rss2');
     $feed->save();
     $feed->import();
     static::assertEquals(6, $feed->getItemCount());
     $this->assertNodeCount(6);
+  }
+
+  /**
+   * Tests cleaning feeds with different clean settings in the same request.
+   *
+   * This test creates two feed types:
+   * - One where the 'update_non_existent' setting is set to '_delete';
+   * - One where the 'update_non_existent' setting is set to
+   * 'entity:unpublish_action:node'.
+   *
+   * First, content is imported for both of them. After that, for both feeds
+   * a source is imported where one item is removed. This should initiate a
+   * clean stage for both of them. Then it is checked if the
+   * 'update_non_existent' setting is applied correctly for both feeds.
+   */
+  public function testCleanMultipleFeeds() {
+    // Set 'update_non_existent' setting for the first feed type to 'delete'.
+    $config = $this->feedType->getProcessor()->getConfiguration();
+    $config['update_non_existent'] = ProcessorInterface::DELETE_NON_EXISTENT;
+    $this->feedType->getProcessor()->setConfiguration($config);
+    $this->feedType->save();
+
+    // Create a second feed type. This feed type imports CSV files instead of
+    // RSS and the 'update_non_existent' setting is set to 'unpublish'.
+    $feed_type2 = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'name' => 'name',
+    ], [
+      'processor_configuration' => [
+        'update_existing' => ProcessorInterface::UPDATE_EXISTING,
+        'update_non_existent' => 'entity:unpublish_action:node',
+        'values' => [
+          'type' => 'article',
+        ],
+      ],
+      'mappings' => [
+        [
+          'target' => 'feeds_item',
+          'map' => ['guid' => 'guid'],
+          'unique' => ['guid' => TRUE],
+          'settings' => [],
+        ],
+        [
+          'target' => 'title',
+          'map' => ['value' => 'name'],
+        ],
+      ],
+    ]);
+
+    // For both feed types, create a feed and import the first file.
+    $feed1 = $this->createFeed($this->feedType->id(), [
+      'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
+    ]);
+    $feed1->import();
+    $feed2 = $this->createFeed($feed_type2->id(), [
+      'source' => $this->resourcesPath() . '/csv/content_string_id.csv',
+    ]);
+    $feed2->import();
+
+    // Assert amount of imported items.
+    static::assertEquals(6, $feed1->getItemCount());
+    static::assertEquals(2, $feed2->getItemCount());
+    $this->assertNodeCount(8);
+
+    // For both feeds, set a source file from which one item is removed.
+    $feed1->setSource($this->resourcesPath() . '/rss/googlenewstz_missing.rss2');
+    $feed1->save();
+    $feed2->setSource($this->resourcesPath() . '/csv/content_string_id_missing.csv');
+    $feed2->save();
+
+    // And now import both feeds, which should initiate a clean stage for
+    // both of them. One node should get removed (from feed 1) and one node
+    // should get unpublished (from feed 2).
+    $feed1->import();
+    $feed2->import();
+
+    // Assert that one node was removed.
+    static::assertEquals(5, $feed1->getItemCount());
+    static::assertEquals(2, $feed2->getItemCount());
+    $this->assertNodeCount(7);
+
+    // Assert that one was unpublished.
+    $node = $this->getNodeByTitle('Minnesota');
+    $this->assertFalse($node->isPublished());
   }
 
   /**

@@ -15,7 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "country_to_code",
  *   label = @Translation("Country to ISO code"),
  *   description = @Translation("Converts this field from a country name string to the two character ISO 3166-1 alpha-2 code."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class CountryToCode extends TamperBase implements ContainerFactoryPluginInterface {

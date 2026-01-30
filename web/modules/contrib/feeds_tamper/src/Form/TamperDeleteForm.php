@@ -69,7 +69,7 @@ class TamperDeleteForm extends ConfirmFormBase {
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FeedTypeInterface $feeds_feed_type = NULL, $tamper_uuid = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FeedTypeInterface $feeds_feed_type = NULL, $tamper_uuid = NULL) {
     $this->assertTamper($feeds_feed_type, $tamper_uuid);
 
     $this->feedsFeedType = $feeds_feed_type;

@@ -119,6 +119,79 @@ class CronTest extends FeedsBrowserTestBase {
   }
 
   /**
+   * Tests per-feed import period behavior.
+   *
+   * Verifies that an individual feed can override the default import interval
+   * defined by its feed type.
+   *
+   * The feed type is configured as follows:
+   * - Periodic import is set to "Every 1 hour".
+   * - The option allowing the feed to override the periodic import setting
+   *   is enabled.
+   *
+   * The feed is configured as follows:
+   * - Periodic import is set to "Every 30 min".
+   *
+   * After running the first import, it is expected that the feed's own periodic
+   * import setting is respected when determining the next import time. This
+   * should be the last import time + 30 minutes.
+   */
+  public function testImportPeriodPerFeed() {
+    $feed_type = $this->createFeedType();
+
+    // Set import period to once an hour and unset unique target.
+    $feed_type->setImportPeriod(3600);
+    $mappings = $feed_type->getMappings();
+    unset($mappings[0]['unique']);
+    $feed_type->setMappings($mappings);
+    $feed_type->setImportPeriodPerFeedAllowed(TRUE);
+    $feed_type->save();
+
+    // Create a feed.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesUrl() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // Verify initial values of the feed.
+    $feed = $this->reloadEntity($feed);
+    $this->assertEquals(0, $feed->getImportedTime());
+    $this->assertSame(-2, $feed->getImportPeriod());
+    $this->assertEquals(0, $feed->getNextImportTime());
+    $this->assertEquals(0, $feed->getItemCount());
+
+    // Set periodic import of the feed to 30 minutes, overriding the feed type's
+    // default.
+    $feed->set('periodic_import', 1800);
+    $feed->save();
+
+    // Cron should import some nodes.
+    // Clear the download cache so that the http fetcher doesn't trick us.
+    \Drupal::cache('feeds_download')->deleteAll();
+    sleep(1);
+    $this->cronRun();
+    $feed = $this->reloadEntity($feed);
+    $this->assertEquals(6, $feed->getItemCount());
+
+    // Assert that the next import time is 30 minutes later than the last import
+    // time. This would verify that the periodic import setting from the feed is
+    // used (instead of that from the feed type).
+    $imported = $feed->getImportedTime();
+    $this->assertGreaterThan(0, $imported);
+    $this->assertEquals($imported + 1800, $feed->getNextImportTime());
+
+    // Run cron again. Nothing should change on this cron run, because the next
+    // import is expected to take place at least 30 minutes later.
+    \Drupal::cache('feeds_download')->deleteAll();
+    sleep(1);
+    $this->cronRun();
+    $feed = $this->reloadEntity($feed);
+    $this->assertEquals(6, $feed->getItemCount());
+
+    // Assert that the next import time did not change.
+    $this->assertEquals($imported + 1800, $feed->getNextImportTime());
+  }
+
+  /**
    * Tests the behavior of the "in progress" directory when the URL returns 404.
    */
   public function testFeedWith404Url() {

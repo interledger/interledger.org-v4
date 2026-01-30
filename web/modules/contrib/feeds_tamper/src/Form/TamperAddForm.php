@@ -85,7 +85,7 @@ class TamperAddForm extends TamperFormBase {
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FeedTypeInterface $feeds_feed_type = NULL, $source_field = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FeedTypeInterface $feeds_feed_type = NULL, $source_field = NULL) {
     $this->assertSourceField($feeds_feed_type, $source_field);
 
     $this->feedsFeedType = $feeds_feed_type;

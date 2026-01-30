@@ -14,7 +14,8 @@ use Drupal\tamper\TamperableItemInterface;
  *   id = "find_replace_multiline",
  *   label = @Translation("Find replace (multiline)"),
  *   description = @Translation("Find and replace text, with multiple search/replacement patterns defined together."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class FindReplaceMultiline extends TamperBase {
@@ -125,7 +126,13 @@ class FindReplaceMultiline extends TamperBase {
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
-    $lines = explode("\n", $form_state->getValue(self::SETTING_FIND_REPLACE));
+    $find_replace = $form_state->getValue(self::SETTING_FIND_REPLACE);
+
+    // Make sure that carriage returns are removed.
+    $find_replace = str_replace("\r", '', $find_replace);
+
+    // Now convert to an array.
+    $lines = explode("\n", $find_replace);
 
     // Remove empty lines.
     foreach ($lines as $index => $line) {

@@ -9,7 +9,9 @@ use Drupal\Core\Plugin\PluginBase;
 /**
  * Provides a base class to tamper data from.
  */
-abstract class TamperBase extends PluginBase implements TamperInterface {
+abstract class TamperBase extends PluginBase implements TamperInterface, ItemUsageInterface {
+
+  use ItemUsageTrait;
 
   /**
    * The source definition.

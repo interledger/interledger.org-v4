@@ -34,7 +34,7 @@ namespace Drupal\Tests\feeds\Unit\Element {
       $form_state = new FormState();
       /** @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $stream_wrapper_manager */
       $stream_wrapper_manager = new StreamWrapperManager($this->createMock('\Psr\Container\ContainerInterface'));
-      $element_object = new Uri([], '', []);
+      $element_object = $this->createPartialMock(Uri::class, []);
 
       $element = ['#value' => ' public://test', '#parents' => ['element']];
       $element += $element_object->getInfo();

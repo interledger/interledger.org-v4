@@ -2,8 +2,8 @@
 
 namespace Drupal\feeds_tamper;
 
-use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\feeds\FeedTypeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Manager for FeedTypeTamperMeta instances.
@@ -13,7 +13,7 @@ class FeedTypeTamperManager implements FeedTypeTamperManagerInterface {
   /**
    * The service container.
    *
-   * @var \Drupal\Component\DependencyInjection\ContainerInterface
+   * @var \Symfony\Component\DependencyInjection\ContainerInterface
    */
   protected $container;
 
@@ -27,7 +27,7 @@ class FeedTypeTamperManager implements FeedTypeTamperManagerInterface {
   /**
    * Constructs a new FeedTypeTamperManager.
    *
-   * @param \Drupal\Component\DependencyInjection\ContainerInterface $container
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
    *   The service container.
    */
   public function __construct(ContainerInterface $container) {

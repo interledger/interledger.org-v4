@@ -5,6 +5,7 @@ namespace Drupal\tamper;
 /**
  * Defines a single tamper item class.
  */
+#[\AllowDynamicProperties]
 class TamperItem implements TamperableItemInterface {
 
   /**

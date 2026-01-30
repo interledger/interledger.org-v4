@@ -32,4 +32,5 @@
 
 .contact-wrapper .form-actions {
   margin-block-start: var(--space-m);
+  margin-block-end: var(--space-l);
 }

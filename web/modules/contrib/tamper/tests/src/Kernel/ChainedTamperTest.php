@@ -5,6 +5,7 @@ namespace Drupal\Tests\tamper\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\tamper\Exception\TamperException;
 use Drupal\tamper\SourceDefinitionInterface;
+use Drupal\tamper\TamperItem;
 
 /**
  * Tests chaining multiple tampers together.
@@ -25,11 +26,13 @@ class ChainedTamperTest extends KernelTestBase {
    *
    * @param mixed $expected
    *   The expected outcome.
-   * @param mixed $value
-   *   The input.
+   * @param array $item_data
+   *   The item data.
+   * @param string $source_key
+   *   The field to pick from the item.
    * @param array $tampers
-   *   A list of tampers to apply along with their config. Each item in the
-   *   array should consist of the following:
+   *   (optional) A list of tampers to apply along with their config. Each item
+   *   in the array should consist of the following:
    *   - plugin: (string) the ID of the Tamper plugin to apply.
    *   - config: (array) Configuration for the plugin.
    *   - expected_exception: (string, optional) if applying a plugin should
@@ -38,9 +41,16 @@ class ChainedTamperTest extends KernelTestBase {
    *
    * @dataProvider chainedTampersDataProvider
    */
-  public function testChainedTampers($expected, $value, array $tampers) {
+  public function testChainedTampers($expected, array $item_data, string $source_key, array $tampers = []) {
     $manager = \Drupal::service('plugin.manager.tamper');
     $multiple = FALSE;
+    $item = new TamperItem();
+    foreach ($item_data as $key => $value) {
+      $item->setSourceProperty($key, $value);
+    }
+
+    // Get the value for a source.
+    $value = $item->getSourceProperty($source_key);
 
     foreach ($tampers as $plugin_data) {
       $plugin_data['config']['source_definition'] = $this->createMock(SourceDefinitionInterface::class);
@@ -58,17 +68,20 @@ class ChainedTamperTest extends KernelTestBase {
       if ($multiple && !$definition['handle_multiples']) {
         $new_value = [];
         foreach ($value as $scalar_value) {
-          $new_value[] = $tamper->tamper($scalar_value);
+          $new_value[] = $tamper->tamper($scalar_value, $item);
         }
         $value = $new_value;
       }
       else {
-        $value = $tamper->tamper($value);
+        $value = $tamper->tamper($value, $item);
         $multiple = $tamper->multiple();
       }
+
+      // Write the changed value.
+      $item->setSourceProperty($source_key, $value);
     }
 
-    $this->assertEquals($expected, $value);
+    $this->assertEquals($expected, $item->getSourceProperty($source_key));
   }
 
   /**
@@ -76,9 +89,12 @@ class ChainedTamperTest extends KernelTestBase {
    */
   public static function chainedTampersDataProvider() {
     return [
-      [
+      'explode-implode' => [
         'expected' => 'a|b|c',
-        'input' => 'a,b,c',
+        'item_data' => [
+          'foo' => 'a,b,c',
+        ],
+        'source_key' => 'foo',
         'tampers' => [
           [
             'plugin' => 'explode',
@@ -94,9 +110,12 @@ class ChainedTamperTest extends KernelTestBase {
           ],
         ],
       ],
-      [
+      'explode-double-implode' => [
         'expected' => 'a|b|c',
-        'input' => 'a,b,c',
+        'item_data' => [
+          'foo' => 'a,b,c',
+        ],
+        'source_key' => 'foo',
         'tampers' => [
           [
             'plugin' => 'explode',
@@ -118,9 +137,12 @@ class ChainedTamperTest extends KernelTestBase {
           ],
         ],
       ],
-      [
+      'explode-too-much' => [
         'expected' => NULL,
-        'input' => 'a,b,c',
+        'item_data' => [
+          'foo' => 'a,b,c',
+        ],
+        'source_key' => 'foo',
         'tampers' => [
           [
             'plugin' => 'explode',
@@ -155,12 +177,15 @@ class ChainedTamperTest extends KernelTestBase {
           ],
         ],
       ],
-      [
+      'multiple-explode' => [
         'expected' => [
           ['a', 'b', 'c'],
           [1, 2],
         ],
-        'input' => 'a,b,c;1,2',
+        'item_data' => [
+          'foo' => 'a,b,c;1,2',
+        ],
+        'source_key' => 'foo',
         'tampers' => [
           [
             'plugin' => 'explode',
@@ -172,6 +197,28 @@ class ChainedTamperTest extends KernelTestBase {
             'plugin' => 'explode',
             'config' => [
               'separator' => ',',
+            ],
+          ],
+        ],
+      ],
+      'replace and rewrite' => [
+        'expected' => '(123)456-7890',
+        'item_data' => [
+          'phone' => '123/456-7890',
+        ],
+        'source_key' => 'phone',
+        'tampers' => [
+          [
+            'plugin' => 'find_replace',
+            'config' => [
+              'find' => '/',
+              'replace' => ')',
+            ],
+          ],
+          [
+            'plugin' => 'rewrite',
+            'config' => [
+              'text' => '([phone]',
             ],
           ],
         ],

@@ -76,7 +76,7 @@ class TamperListForm extends FormBase {
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FeedTypeInterface $feeds_feed_type = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FeedTypeInterface $feeds_feed_type = NULL) {
     $this->feedsFeedType = $feeds_feed_type;
     $tamper_meta = $this->feedTypeTamperManager->getTamperMeta($this->feedsFeedType);
     $this->tampers = $tamper_meta->getTampersGroupedBySource();

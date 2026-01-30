@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Provides deliberately broken definitions for tests.
+ */
+
+/**
+ * Implements hook_action_info_alter().
+ */
+function feeds_test_broken_action_info_alter(array &$actions) {
+  // Simulate a broken action plugin: missing 'class' entry.
+  $actions['feeds_test_broken_test_action'] = [
+    'type' => 'node',
+    'label' => t('Broken action'),
+    'configurable' => FALSE,
+  ];
+}

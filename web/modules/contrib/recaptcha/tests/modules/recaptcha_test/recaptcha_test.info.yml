@@ -1,0 +1,12 @@
+name: 'reCAPTCHA Test'
+type: module
+description: 'Test module for the recaptcha module.'
+package: Testing
+core_version_requirement: ^8.9 || ^9 || ^10
+dependencies:
+  - fences:recaptcha
+
+# Information added by Drupal.org packaging script on 2024-08-13
+version: '8.x-3.4'
+project: 'recaptcha'
+datestamp: 1723563037

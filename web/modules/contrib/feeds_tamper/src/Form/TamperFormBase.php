@@ -83,7 +83,7 @@ abstract class TamperFormBase extends FormBase {
     $form[self::VAR_PLUGIN_CONFIGURATION] = [
       '#type' => 'container',
       '#tree' => TRUE,
-      '#attributes' => ['id' => ['plugin-config']],
+      '#attributes' => ['id' => 'plugin-config'],
     ];
 
     if ($this->plugin) {

@@ -65,6 +65,8 @@ class TamperForm extends FormBase {
       'bar' => 'Bar',
       'baz' => 'Baz',
       'quxxie' => 'Qux',
+      // A source with an unconventional name.
+      'a"b_c' => 'Unconventional',
     ]);
     $this->pluginCollection = new TamperPluginCollection($tamper_manager, $source_definition, []);
   }

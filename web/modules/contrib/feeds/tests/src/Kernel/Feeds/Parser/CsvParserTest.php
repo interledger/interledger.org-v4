@@ -157,7 +157,6 @@ class CsvParserTest extends FeedsKernelTestBase {
    * Tests that Blank sources are ignored by the CSV parser.
    */
   public function testImportWithBlankSource() {
-    $this->setUpBodyField();
     $this->createFieldWithStorage('field_alpha');
 
     // Create a feed type using the XML parser.

@@ -1,0 +1,26 @@
+recaptcha_test.page:
+  path: '/recaptcha-test'
+  defaults:
+    _controller: '\Drupal\recaptcha_test\Controller\RecaptchaTestAjaxFormController::button'
+    _title: 'reCAPTCHA Test Ajax Page'
+  requirements:
+    # This route is only meant for testing purposes, no permission check needed:
+    _access: 'TRUE'
+
+recaptcha_test.ajax:
+  path: '/recaptcha-test/ajax'
+  defaults:
+    _controller: '\Drupal\recaptcha_test\Controller\RecaptchaTestAjaxFormController::ajaxForm'
+    _title: 'reCAPTCHA Test Ajax Controller'
+  requirements:
+    # This route is only meant for testing purposes, no permission check needed:
+    _access: 'TRUE'
+
+recaptcha_test.form:
+  path: '/recaptcha-test/form'
+  defaults:
+    _form: '\Drupal\recaptcha_test\Form\RecaptchaTestAjaxForm'
+    _title: 'reCAPTCHA Test Ajax Form'
+  requirements:
+    # This route is only meant for testing purposes, no permission check needed:
+    _access: 'TRUE'

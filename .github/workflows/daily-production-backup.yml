@@ -1,0 +1,24 @@
+name: Daily Production Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  prepare_run_id:
+    runs-on: ubuntu-latest
+    outputs:
+      run_id: ${{ steps.generate.outputs.run_id }}
+    steps:
+      - name: Generate date-based run ID
+        id: generate
+        run: echo "run_id=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+
+  run_backup:
+    needs: prepare_run_id
+    uses: ./.github/workflows/backup.yml
+    with:
+      environment: production
+      run_id: ${{ needs.prepare_run_id.outputs.run_id }}
+    secrets: inherit

@@ -80,6 +80,8 @@ class EntityReferenceTest extends FeedsBrowserTestBase {
     $this->assertSession()->optionExists('mappings[2][settings][autocreate_bundle]', 'foo');
     $this->assertSession()->optionExists('mappings[2][settings][autocreate_bundle]', 'qux');
     $this->assertSession()->optionNotExists('mappings[2][settings][autocreate_bundle]', 'bar');
+    // Assert that the autocreate field exists.
+    $this->assertSession()->fieldExists('mappings[2][settings][autocreate]');
   }
 
 }

@@ -137,15 +137,15 @@ class ItemListControllerTest extends FeedsBrowserTestBase {
       // A RouteNotFoundException can be thrown for some entity types and is not
       // considered an error.
       [
-        'class' => RouteNotFoundException::class,
-        'message' => 'No route',
+        'exception_class' => RouteNotFoundException::class,
+        'exception_message' => 'No route',
         'display_message' => FALSE,
       ],
       // A MissingMandatoryParametersException can be thrown for some entity
       // types and is not considered an error.
       [
-        'class' => MissingMandatoryParametersException::class,
-        'message' => 'Some mandatory parameters are missing',
+        'exception_class' => MissingMandatoryParametersException::class,
+        'exception_message' => 'Some mandatory parameters are missing',
         'display_message' => FALSE,
         'args' => [
           'foo.route',
@@ -157,16 +157,16 @@ class ItemListControllerTest extends FeedsBrowserTestBase {
       // An EntityMalformedException should be considered an error that should
       // be displayed and logged.
       [
-        'class' => EntityMalformedException::class,
-        'message' => 'The entity is malformed.',
+        'exception_class' => EntityMalformedException::class,
+        'exception_message' => 'The entity is malformed.',
         'display_message' => TRUE,
       ],
       // A RuntimeException should be considered an error that should be
       // displayed and logged. However, in this case there is no message to be
       // shown, so it should only get logged.
       [
-        'class' => \RuntimeException::class,
-        'message' => NULL,
+        'exception_class' => \RuntimeException::class,
+        'exception_message' => NULL,
         'display_message' => FALSE,
       ],
     ];

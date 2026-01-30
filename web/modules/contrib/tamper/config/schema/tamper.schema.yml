@@ -147,6 +147,12 @@ tamper.find_replace_regex:
 
 tamper.hash:
   mapping:
+    data_to_hash:
+      type: string
+      label: 'Data to hash'
+    only_if_empty:
+      type: boolean
+      label: 'Only if empty'
     override:
       type: boolean
       label: 'Override set value'
@@ -250,6 +256,15 @@ tamper.strip_tags:
       type: string
       label: 'Allowed tags'
 
+tamper.strtotime:
+  mapping:
+    date_format:
+      type: string
+      label: 'Custom date format'
+    fallback:
+      type: boolean
+      label: 'Fallback to strtotime() if the date could not be parsed.'
+
 tamper.trim:
   mapping:
     character:
@@ -276,6 +291,12 @@ tamper.truncate_text:
     wordsafe:
       type: boolean
       label: 'Truncate on a word boundary'
+
+tamper.twig:
+  mapping:
+    template:
+      type: string
+      label: 'Twig template'
 
 tamper.url_encode:
   mapping:

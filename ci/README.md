@@ -37,6 +37,11 @@ make deploy ENV=staging RUN=manual-$(date +%Y%m%d)
 - Authenticate with GCP: `gcloud auth login`
 - Ensure `.env` file exists at `ci/backupmanager/cli/.env`
 
+**Scheduled backups:**
+- Production backups run daily at 03:00 UTC via GitHub Actions.
+- Workflow: `.github/workflows/daily-production-backup.yml`
+- Run ID format: `YYYYMMDD` (UTC)
+
 ```bash
 # Backup staging environment
 make backup ENV=staging RUN=backup-$(date +%Y%m%d)
@@ -70,6 +75,7 @@ Located in `.github/workflows/`:
 
 - **`rebuild-staging.yaml`**: Automatically deploys to staging on merge to `main`
 - **`backup.yml`**: Manual workflow to create backups of staging or production
+- **`daily-production-backup.yml`**: Scheduled daily production backup (03:00 UTC) using a date-based run ID
 - **`restore.yml`**: Manual workflow to restore from backups
 
 ### Manual Workflows

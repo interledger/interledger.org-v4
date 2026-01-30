@@ -15,6 +15,7 @@
         "drupal/core": "^8 || ^9 || ^10 || ^11"
     },
     "require-dev": {
-        "drupal/feeds": "3.x-dev"
+        "drupal/feeds": "^3.0 || 3.x-dev",
+        "drupal/tamper": "1.x-dev"
     }
 }

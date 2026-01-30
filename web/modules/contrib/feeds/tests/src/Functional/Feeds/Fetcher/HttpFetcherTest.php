@@ -47,7 +47,7 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
     drupal_flush_all_caches();
 
     // Add body field.
-    node_add_body_field($this->nodeType);
+    $this->setUpBodyField();
 
     // Add taxonomy reference field.
     Vocabulary::create(['vid' => 'tags', 'name' => 'Tags'])->save();

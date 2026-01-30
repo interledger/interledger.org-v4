@@ -24,15 +24,28 @@ class HashTest extends TamperPluginTestBase {
     return [
       'no values' => [
         'expected' => [
-          'override' => FALSE,
+          'data_to_hash' => 'item',
+          'only_if_empty' => FALSE,
         ],
       ],
       'with values' => [
         'expected' => [
-          'override' => TRUE,
+          'data_to_hash' => 'data',
+          'only_if_empty' => TRUE,
         ],
         'edit' => [
-          'override' => '1',
+          'data_to_hash' => 'data',
+          'only_if_empty' => '1',
+        ],
+      ],
+      'with only_if_empty disabled' => [
+        'expected' => [
+          'data_to_hash' => 'data',
+          'only_if_empty' => FALSE,
+        ],
+        'edit' => [
+          'data_to_hash' => 'data',
+          'only_if_empty' => '0',
         ],
       ],
     ];

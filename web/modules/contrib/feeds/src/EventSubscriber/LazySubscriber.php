@@ -114,6 +114,13 @@ class LazySubscriber implements EventSubscriberInterface {
             }
           }
 
+          // Initialize the feed immediately after parsing, this ensures that
+          // item clean ups are triggered even if there are no items to process.
+          $feed
+            ->getType()
+            ->getProcessor()
+            ->initialize($feed);
+
           // Finally set the parser result on the event.
           $event->setParserResult($result);
         });
@@ -130,21 +137,20 @@ class LazySubscriber implements EventSubscriberInterface {
         break;
 
       case 'clean':
-        foreach ($event->getFeed()->getType()->getPlugins() as $plugin) {
-          if (!$plugin instanceof CleanableInterface) {
-            continue;
-          }
-
-          $dispatcher->addListener(FeedsEvents::CLEAN, function (CleanEvent $event) use ($plugin) {
+        $dispatcher->addListener(FeedsEvents::CLEAN, function (CleanEvent $event) {
+          $feed = $event->getFeed();
+          foreach ($feed->getType()->getPlugins() as $plugin) {
+            if (!$plugin instanceof CleanableInterface) {
+              continue;
+            }
             try {
-              $feed = $event->getFeed();
               $plugin->clean($feed, $event->getEntity(), $feed->getState(StateInterface::CLEAN));
             }
             catch (\Exception $e) {
               Error::logException($this->logger, $e);
             }
-          });
-        }
+          }
+        });
         break;
 
     }

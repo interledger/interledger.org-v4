@@ -86,7 +86,7 @@ class FieldValidationTest extends FeedsBrowserTestBase {
    */
   public function testImportFieldWithAdminFilterFormatInUi() {
     // Create a body field for the article content type.
-    node_add_body_field($this->nodeType);
+    $this->setUpBodyField();
 
     // Create a filter not available to anonymous users.
     $format = FilterFormat::create([
@@ -151,7 +151,7 @@ class FieldValidationTest extends FeedsBrowserTestBase {
    */
   public function testImportFieldWithAdminFilterFormatOnCron() {
     // Create a body field for the article content type.
-    node_add_body_field($this->nodeType);
+    $this->setUpBodyField();
 
     // Create a filter not available to anonymous users.
     $format = FilterFormat::create([

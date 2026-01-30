@@ -17,7 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "transliteration",
  *   label = @Translation("Transliterates text from Unicode to US-ASCII."),
  *   description = @Translation("Runs the value through the transliteration service. Letters will have language decorations and accents removed."),
- *   category = "Text"
+ *   category = @Translation("Text"),
+ *   itemUsage = "ignored"
  * )
  */
 class Transliteration extends TamperBase implements ContainerFactoryPluginInterface {

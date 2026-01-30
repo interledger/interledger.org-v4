@@ -83,9 +83,9 @@ class LinkTest extends FeedsKernelTestBase {
     $messages = \Drupal::messenger()->messagesByType('warning');
     $this->assertCount(2, $messages);
     $this->assertStringContainsString('The content <em class="placeholder">Invalid url</em> failed to validate', (string) $messages[0]);
-    $this->assertStringContainsString("field_link.0: The path 'string' is invalid.", (string) $messages[0]);
+    $this->assertStringContainsString("The path 'string' is invalid.", (string) $messages[0]);
     $this->assertStringContainsString('The content <em class="placeholder">Another invalid url</em> failed to validate', (string) $messages[1]);
-    $this->assertStringContainsString('field_link.0.uri: This value should be of the correct primitive type.', (string) $messages[1]);
+    $this->assertStringContainsString('This value should be of the correct primitive type.', (string) $messages[1]);
 
     // Clear the logged messages so no failure is reported on tear down.
     $this->logger->clearMessages();

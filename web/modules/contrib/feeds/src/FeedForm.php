@@ -55,6 +55,28 @@ class FeedForm extends ContentEntityForm {
       '#weight' => 99,
     ];
     $form = parent::form($form, $form_state);
+    // Handle import period per feed access.
+    $form['periodic_import']['#access'] = FALSE;
+    if ($feed_type instanceof FeedTypeImportPeriodPerFeedInterface && $feed_type->isImportPeriodPerFeedAllowed()) {
+      $form['periodic_import']['#access'] = TRUE;
+      $form['periodic_import']['widget']['#description'] = FeedTypeForm::getImportPeriodDescription();
+      if (isset($form['periodic_import']['widget']['#options'][FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD])) {
+        $periods = FeedTypeForm::getImportPeriods();
+        $form['periodic_import']['widget']['#options'][FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD] = $this->t('Use the feed type default: @default', [
+          '@default' => $periods[$feed_type->getImportPeriod()],
+        ]);
+
+        // If no value is set yet, set default value to the feed type's default.
+        if (empty($form['periodic_import']['widget']['#default_value'])) {
+          $form['periodic_import']['widget']['#default_value'] = FeedImportPeriodInterface::USE_FEED_TYPE_IMPORT_PERIOD;
+        }
+
+        // Remove the "None" option as it effectively does the same as
+        // "Use the feed type default".
+        unset($form['periodic_import']['widget']['#options']['_none']);
+      }
+
+    }
 
     $form['plugin']['#tree'] = TRUE;
     foreach ($feed_type->getPlugins() as $type => $plugin) {
