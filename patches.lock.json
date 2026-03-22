@@ -1,0 +1,17 @@
+{
+    "_hash": "6f2e082a3c1680efe2428293e7eba7a17fe83c3e8e61f6dfa939b2444e837b91",
+    "patches": {
+        "drupal/core": [
+            {
+                "package": "drupal/core",
+                "description": "[PP-1] Use hook_theme_suggestions in views",
+                "url": "https://www.drupal.org/files/issues/2023-06-12/2923634-92.patch",
+                "sha256": "bd4e0a4b5ddea83f5854a65c4f7001ca9d0af22891f6509151d176aa6c7ecff9",
+                "depth": 2,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}

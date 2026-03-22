@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2025 Justin Hileman
+ * (c) 2012-2026 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -134,8 +134,25 @@ class ShellOutput extends ConsoleOutput
                 $messages = \array_map([OutputFormatter::class, 'escape'], $messages);
             }
 
+            $indent = \str_repeat(' ', $pad + 2); // Indent continuation lines to align with text
+
             foreach ($messages as $i => $line) {
-                $messages[$i] = \sprintf($template, $i, $line);
+                // Check if line contains newlines (multi-line entry)
+                if (\strpos($line, "\n") !== false) {
+                    // Split into lines and indent continuation lines
+                    $lines = \explode("\n", $line);
+                    $firstLine = \array_shift($lines);
+                    $indentedLines = \array_map(function ($l) use ($indent) {
+                        return $indent.$l;
+                    }, $lines);
+
+                    $messages[$i] = \sprintf($template, $i, $firstLine);
+                    if (!empty($indentedLines)) {
+                        $messages[$i] .= "\n".\implode("\n", $indentedLines);
+                    }
+                } else {
+                    $messages[$i] = \sprintf($template, $i, $line);
+                }
             }
 
             // clean this up for super.

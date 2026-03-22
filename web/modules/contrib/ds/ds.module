@@ -115,13 +115,17 @@ function ds_theme_registry_alter(&$theme_registry) {
           // Variable holding the preprocess functions to add later.
           $preprocess_functions_to_add = [];
 
-          // Overrides don't get the template_preprocess_field function.
-          if (!in_array('template_preprocess_field', $theme_registry[$hook_field_name]['preprocess functions'])) {
+          // See https://www.drupal.org/node/3501136
+          if (isset($theme_registry['field']['initial preprocess'])) {
+            $theme_registry[$hook_field_name]['initial preprocess'] = $theme_registry['field']['initial preprocess'];
+          }
+          // Overrides don't get the template_preprocess_field function < D11.2
+          elseif (!in_array('template_preprocess_field', $theme_registry[$hook_field_name]['preprocess functions'])) {
             $preprocess_functions_to_add[] = 'template_preprocess_field';
           }
 
           // Overrides don't get the ds_preprocess_field function.
-          if (!in_array('ds_preprocess_field', $theme_registry[$hook_field_name]['preprocess functions'])) {
+          if (!isset($theme_registry[$hook_field_name]['preprocess functions']) || !in_array('ds_preprocess_field', $theme_registry[$hook_field_name]['preprocess functions'])) {
             $preprocess_functions_to_add[] = 'ds_preprocess_field';
           }
 
@@ -150,6 +154,7 @@ function ds_theme_registry_alter(&$theme_registry) {
   //
   // @see
   //   - https://www.drupal.org/node/2862683 (core queue)
+  //   - https://www.drupal.org/node/2911996 (core queue)
   //   - https://www.drupal.org/node/2802429 (DS queue)
   //     (and maybe others)
   // ------------------------------------------------------------------------
@@ -201,6 +206,10 @@ function ds_theme_registry_alter(&$theme_registry) {
               'type' => 'theme_engine',
               'theme path' => $theme_path,
             ];
+            // See https://www.drupal.org/node/3501136
+            if (isset($theme_registry[$hook]['initial preprocess'])) {
+              $implementations[$new_hook]['initial preprocess'] = $theme_registry[$hook]['initial preprocess'];
+            }
             if (isset($theme_registry[$hook]['preprocess functions'])) {
               $implementations[$new_hook]['preprocess functions'] = $theme_registry[$hook]['preprocess functions'];
             }
@@ -217,6 +226,7 @@ function ds_theme_registry_alter(&$theme_registry) {
   // ------------------------------------------------------------------------
   // End of workaround, hopefully we can kill this one day.
   // ------------------------------------------------------------------------
+
   // Run field group preprocess before ds_entity_view.
   if (function_exists('field_group_build_entity_groups')
     && isset($theme_registry['ds_entity_view'])
@@ -1216,7 +1226,7 @@ function template_preprocess_field__ds_field_expert(&$variables) {
     // Add attributes.
     if (!empty($variables['settings'][$key . '-at'])) {
       $attributes = explode(' ', $variables['settings'][$key . '-at']);
-      foreach ($attributes as $key => $attribute) {
+      foreach ($attributes as $attribute) {
         if (str_contains($attribute, '=')) {
           $attribute_parts = explode('=', $attribute, 2);
           $var_attributes[$attribute_parts[0]] = trim($attribute_parts[1], '\"');
@@ -1294,7 +1304,7 @@ function ds_layout_alter(&$definitions) {
     return;
   }
   /** @var \Drupal\Core\Layout\LayoutDefinition $definition */
-  foreach ($definitions as $key => $definition) {
+  foreach ($definitions as $definition) {
     if ($definition->getProvider() == 'ds') {
       $definition->setIconPath(NULL);
     }

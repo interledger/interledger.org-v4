@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2025 Justin Hileman
+ * (c) 2012-2026 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -34,8 +34,9 @@ class Theme
         'returnValue'  => '=>  ',
     ];
 
+    // Custom themes fall back to DEFAULT_STYLES for any undefined style.
     const DEFAULT_STYLES = [
-        'info'    => ['white', 'blue', ['bold']],
+        'info'    => ['green', null, ['bold']],
         'warning' => ['black', 'yellow'],
         'error'   => ['white', 'red', ['bold']],
         'whisper' => ['gray'],
@@ -46,7 +47,7 @@ class Theme
         'urgent' => ['red'],
         'hidden' => ['black'],
 
-        // Visibility
+        // Keywords
         'public'    => [null, null, ['bold']],
         'protected' => ['yellow'],
         'private'   => ['red'],
@@ -54,6 +55,7 @@ class Theme
         'const'     => ['cyan'],
         'class'     => ['blue', null, ['underscore']],
         'function'  => [null],
+        'virtual'   => ['magenta'],
         'default'   => [null],
 
         // Types
@@ -70,6 +72,11 @@ class Theme
 
         // Code-specific formatting
         'inline_html' => ['cyan'],
+
+        // Interactive readline
+        'input_frame'       => ['bright-white', 'gray'],
+        'input_frame_error' => ['bright-white', 'red'],
+        'input_highlight'   => [null, null, ['reverse']],
     ];
 
     const ERROR_STYLES = ['info', 'warning', 'error', 'whisper', 'class'];
@@ -280,9 +287,18 @@ class Theme
      */
     private function getStyle(string $name, bool $useGrayFallback): array
     {
-        return \array_map(function ($style) use ($useGrayFallback) {
-            return ($useGrayFallback && $style === 'gray') ? $this->grayFallback : $style;
-        }, $this->styles[$name]);
+        if (!$useGrayFallback) {
+            return $this->styles[$name];
+        }
+
+        // The default input_frame styles use extended colors (bright-white,
+        // gray) unavailable on older Symfony Console. Drop them rather than
+        // falling back to unreadable backgrounds.
+        if (($name === 'input_frame' || $name === 'input_frame_error') && $this->styles[$name] === static::DEFAULT_STYLES[$name]) {
+            return [null, null];
+        }
+
+        return \array_map(fn ($style) => ($style === 'gray') ? $this->grayFallback : $style, $this->styles[$name]);
     }
 
     /**
