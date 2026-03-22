@@ -185,7 +185,8 @@ class ComposerStaticInit969219525714a33a1696abd06bf370ac
         ),
         'cweagans\\Composer\\' => 
         array (
-            0 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
+            0 => __DIR__ . '/..' . '/cweagans/composer-configurable-plugin/src',
+            1 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
         ),
         'Twig\\' => 
         array (

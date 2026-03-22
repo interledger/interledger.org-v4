@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2025 Justin Hileman
+ * (c) 2012-2026 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,9 @@ use Psy\Manual\V3Manual;
 use Psy\Output\OutputPager;
 use Psy\Output\ShellOutput;
 use Psy\Output\Theme;
+use Psy\Readline\Interactive\Input\History as InteractiveHistory;
 use Psy\TabCompletion\AutoCompleter;
+use Psy\Util\Tty;
 use Psy\VarDumper\Presenter;
 use Psy\VersionUpdater\Checker;
 use Psy\VersionUpdater\GitHubChecker;
@@ -49,6 +51,10 @@ class Configuration
     const INTERACTIVE_MODE_FORCED = 'forced';
     const INTERACTIVE_MODE_DISABLED = 'disabled';
 
+    const PROJECT_TRUST_PROMPT = 'prompt';
+    const PROJECT_TRUST_ALWAYS = 'always';
+    const PROJECT_TRUST_NEVER = 'never';
+
     const VERBOSITY_QUIET = 'quiet';
     const VERBOSITY_NORMAL = 'normal';
     const VERBOSITY_VERBOSE = 'verbose';
@@ -63,6 +69,8 @@ class Configuration
         'defaultIncludes',
         'eraseDuplicates',
         'errorLoggingLevel',
+        'useExperimentalReadline',
+        'useSuggestions',
         'forceArrayIndexes',
         'formatterStyles',
         'historyFile',
@@ -71,6 +79,7 @@ class Configuration
         'interactiveMode',
         'logging',
         'manualDbFile',
+        'trustProject',
         'pager',
         'prompt',
         'rawOutput',
@@ -101,6 +110,8 @@ class Configuration
     private $historyFile;
     private int $historySize = 0;
     private ?bool $eraseDuplicates = null;
+    private bool $useExperimentalReadline = false;
+    private bool $useSuggestions = false;
     private ?string $manualDbFile = null;
     private bool $hasReadline;
     private ?bool $useReadline = null;
@@ -116,6 +127,7 @@ class Configuration
     private ?bool $useUnicode = null;
     private ?bool $useTabCompletion = null;
     private array $newMatchers = [];
+    private array $newCompletionSources = [];
     private ?array $autoloadWarmers = null;
     private $implicitUse = false;
     private ?ShellLogger $logger = null;
@@ -123,6 +135,7 @@ class Configuration
     private bool $warnOnMultipleConfigs = false;
     private string $colorMode = self::COLOR_MODE_AUTO;
     private string $interactiveMode = self::INTERACTIVE_MODE_AUTO;
+    private ProjectTrust $projectTrust;
     private ?string $updateCheck = null;
     private ?string $updateManualCheck = null;
     private ?string $startupMessage = null;
@@ -132,6 +145,8 @@ class Configuration
     private string $verbosity = self::VERBOSITY_NORMAL;
     private bool $yolo = false;
     private ?Theme $theme = null;
+    private bool $localConfigLoaded = false;
+    private bool $forceWarmAutoload = false;
 
     // services
     private ?Readline\Readline $readline = null;
@@ -159,6 +174,7 @@ class Configuration
     public function __construct(array $config = [])
     {
         $this->configPaths = new ConfigPaths();
+        $this->projectTrust = new ProjectTrust($this->configPaths);
 
         // explicit configFile option
         if (isset($config['configFile'])) {
@@ -169,6 +185,21 @@ class Configuration
             $this->configFile = $configFile;
         }
 
+        $trustOverride = null;
+        if (isset($config['trustProject'])) {
+            $this->setTrustProject($config['trustProject']);
+            $trustOverride = $this->projectTrust->getMode();
+        } elseif (isset($_SERVER['PSYSH_TRUST_PROJECT']) && $_SERVER['PSYSH_TRUST_PROJECT'] !== '') {
+            $this->projectTrust->setModeFromEnv($_SERVER['PSYSH_TRUST_PROJECT']);
+            $trustOverride = $this->projectTrust->getMode();
+        } elseif (\PHP_SAPI === 'cli-server') {
+            $trust = \getenv('PSYSH_TRUST_PROJECT');
+            if ($trust !== false && $trust !== '') {
+                $this->projectTrust->setModeFromEnv($trust);
+                $trustOverride = $this->projectTrust->getMode();
+            }
+        }
+
         // legacy baseDir option
         if (isset($config['baseDir'])) {
             $msg = "The 'baseDir' configuration option is deprecated; ".
@@ -176,10 +207,20 @@ class Configuration
             throw new DeprecatedException($msg);
         }
 
-        unset($config['configFile'], $config['baseDir']);
+        unset(
+            $config['configFile'],
+            $config['baseDir'],
+            $config['trustProject']
+        );
 
         // go go gadget, config!
         $this->loadConfig($config);
+
+        // Ensure that explicit project trust settings are applied
+        if ($trustOverride !== null && $this->projectTrust->getMode() !== $trustOverride) {
+            $this->projectTrust->setMode($trustOverride);
+        }
+
         $this->init();
     }
 
@@ -201,7 +242,12 @@ class Configuration
      */
     public static function fromInput(InputInterface $input): self
     {
-        $config = new self(['configFile' => self::getConfigFileFromInput($input)]);
+        $configOptions = [
+            'configFile'   => self::getConfigFileFromInput($input),
+            'trustProject' => self::getProjectTrustFromInput($input),
+        ];
+
+        $config = new self($configOptions);
 
         // Handle --color and --no-color (and --ansi and --no-ansi aliases)
         if (self::getOptionFromInput($input, ['color', 'ansi'])) {
@@ -238,11 +284,17 @@ class Configuration
         // Handle --warm-autoload
         if (self::getOptionFromInput($input, ['warm-autoload'])) {
             $config->setWarmAutoload(true);
+            $config->setForceWarmAutoload(true);
         }
 
         // Handle --yolo
         if (self::getOptionFromInput($input, ['yolo'])) {
             $config->setYolo(true);
+        }
+
+        // Handle --experimental-readline
+        if (self::getOptionFromInput($input, ['experimental-readline'])) {
+            $config->setUseExperimentalReadline(true);
         }
 
         return $config;
@@ -261,6 +313,22 @@ class Configuration
         }
 
         return $input->getParameterOption('--config', null, true) ?: $input->getParameterOption('-c', null, true);
+    }
+
+    /**
+     * Get the desired project trust from the given input.
+     *
+     * @return bool|null project trust, or null if none is specified
+     */
+    private static function getProjectTrustFromInput(InputInterface $input): ?bool
+    {
+        if (self::getOptionFromInput($input, ['no-trust-project'])) {
+            return false;
+        } elseif (self::getOptionFromInput($input, ['trust-project'])) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -379,6 +447,8 @@ class Configuration
         return [
             new InputOption('config', 'c', InputOption::VALUE_REQUIRED, 'Use an alternate PsySH config file location.'),
             new InputOption('cwd', null, InputOption::VALUE_REQUIRED, 'Use an alternate working directory.'),
+            new InputOption('trust-project', null, InputOption::VALUE_NONE, 'Trust the current project for this run.'),
+            new InputOption('no-trust-project', null, InputOption::VALUE_NONE, 'Run in Restricted Mode for this project.'),
 
             new InputOption('color', null, InputOption::VALUE_NONE, 'Force colors in output.'),
             new InputOption('no-color', null, InputOption::VALUE_NONE, 'Disable colors in output.'),
@@ -398,6 +468,7 @@ class Configuration
 
             new InputOption('self-update', 'u', InputOption::VALUE_NONE, 'Update to the latest version'),
 
+            new InputOption('experimental-readline', null, InputOption::VALUE_NONE, 'Use experimental interactive readline implementation.'),
             new InputOption('yolo', null, InputOption::VALUE_NONE, 'Run PsySH with minimal input validation. You probably don\'t want this.'),
             new InputOption('warm-autoload', null, InputOption::VALUE_NONE, 'Enable autoload warming for better tab completion.'),
             new InputOption('info', null, InputOption::VALUE_NONE, 'Display PsySH environment and configuration info.'),
@@ -412,7 +483,8 @@ class Configuration
      * If a config file is available, it will be loaded and merged with the current config.
      *
      * If no custom config file was specified and a local project config file
-     * is available, it will be loaded and merged with the current config.
+     * is available, it may be loaded and merged with the current config
+     * depending on project trust settings.
      */
     public function init()
     {
@@ -424,9 +496,7 @@ class Configuration
             $this->loadConfigFile($configFile);
         }
 
-        if (!$this->configFile && $localConfig = $this->getLocalConfigFile()) {
-            $this->loadConfigFile($localConfig);
-        }
+        $this->loadLocalConfigIfTrusted();
 
         $this->configPaths->overrideDirs([
             'configDir'  => $this->configDir,
@@ -490,6 +560,235 @@ class Configuration
     }
 
     /**
+     * Configure the project trust mode.
+     *
+     * Accepts boolean values or one of: 'prompt', 'always', 'never'.
+     *
+     * @param bool|string|null $mode
+     */
+    public function setTrustProject($mode): void
+    {
+        if ($mode === null) {
+            $this->projectTrust->setMode(self::PROJECT_TRUST_PROMPT);
+
+            return;
+        }
+
+        if (\is_bool($mode)) {
+            $this->projectTrust->setMode($mode ? self::PROJECT_TRUST_ALWAYS : self::PROJECT_TRUST_NEVER);
+
+            return;
+        }
+
+        if (!\is_string($mode)) {
+            throw new \InvalidArgumentException('Invalid trustProject value. Expected: prompt, always, or never');
+        }
+
+        switch (\strtolower(\trim($mode))) {
+            case 'prompt':
+                $this->projectTrust->setMode(self::PROJECT_TRUST_PROMPT);
+                break;
+            case 'always':
+                $this->projectTrust->setMode(self::PROJECT_TRUST_ALWAYS);
+                break;
+            case 'never':
+                $this->projectTrust->setMode(self::PROJECT_TRUST_NEVER);
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid trustProject value. Expected: prompt, always, or never');
+        }
+    }
+
+    /**
+     * Get the current project trust mode.
+     */
+    public function getProjectTrustMode(): string
+    {
+        return $this->projectTrust->getMode();
+    }
+
+    /**
+     * Force autoload warming for this run, regardless of project trust status.
+     */
+    public function setForceWarmAutoload(bool $force = true): void
+    {
+        $this->forceWarmAutoload = $force;
+    }
+
+    /**
+     * Load local config with an interactive trust prompt when appropriate.
+     *
+     * When stdin is not interactive, loads local config without prompting and
+     * writes a warning to stderr.
+     */
+    public function loadLocalConfigWithPrompt(InputInterface $input, OutputInterface $output): void
+    {
+        if ($this->localConfigLoaded) {
+            return;
+        }
+
+        $localConfigRoot = $this->projectTrust->getLocalConfigRoot();
+        $composerRoot = $this->projectTrust->getProjectRoot();
+        $checkLocalPsyshBinary = $this->projectTrust->shouldPromptForLocalPsyshBinary();
+
+        // Collect features by root that need trust
+        $featuresByRoot = [];
+
+        // Check for local config (cwd only)
+        if ($localConfigRoot !== null && $this->hasLocalConfig($localConfigRoot)) {
+            $trustStatus = $this->projectTrust->getProjectTrustStatus($localConfigRoot);
+            if ($trustStatus === null) {
+                $featuresByRoot[$localConfigRoot][] = 'Local config (.psysh.php)';
+            }
+        }
+
+        // Check for local PsySH binary (at Composer root, where vendor/bin lives)
+        if ($checkLocalPsyshBinary && $composerRoot !== null && $this->projectTrust->getLocalPsyshProjectRoot($composerRoot) !== null) {
+            $trustStatus = $this->projectTrust->getProjectTrustStatus($composerRoot);
+            if ($trustStatus === null) {
+                $featuresByRoot[$composerRoot][] = 'local PsySH binary';
+            }
+        }
+
+        // Check for autoload warming (Composer root, may differ from cwd)
+        if ($composerRoot !== null && $this->shouldReportAutoloadWarming($composerRoot)) {
+            $trustStatus = $this->projectTrust->getProjectTrustStatus($composerRoot);
+            if ($trustStatus === null) {
+                $featuresByRoot[$composerRoot][] = 'Project autoload (vendor/autoload.php)';
+            }
+        }
+
+        // If nothing needs trust, we're done
+        if (empty($featuresByRoot)) {
+            // Load local config if it's already trusted
+            if ($localConfigRoot !== null && $this->projectTrust->getProjectTrustStatus($localConfigRoot) === true) {
+                $this->loadLocalConfigIfPresent($localConfigRoot);
+            }
+
+            return;
+        }
+
+        // Handle force untrust
+        if ($this->projectTrust->getForceUntrust() || $this->projectTrust->getMode() === self::PROJECT_TRUST_NEVER) {
+            return;
+        }
+
+        // Non-interactive: warn and skip untrusted features (do not auto-trust)
+        if (!$this->getInputInteractive() || !$input->isInteractive()) {
+            $errorOutput = $output;
+            if ($errorOutput instanceof \Symfony\Component\Console\Output\ConsoleOutput) {
+                $errorOutput = $errorOutput->getErrorOutput();
+            }
+
+            foreach ($featuresByRoot as $root => $features) {
+                $prettyDir = ConfigPaths::prettyPath($root);
+                $errorOutput->writeln(
+                    "<comment>Restricted Mode: skipping untrusted project features from {$prettyDir} (non-interactive mode). Use --trust-project to allow.</comment>"
+                );
+            }
+
+            if ($localConfigRoot !== null && $this->projectTrust->getProjectTrustStatus($localConfigRoot) === true) {
+                $this->loadLocalConfigIfPresent($localConfigRoot);
+            }
+
+            return;
+        }
+
+        // Interactive: prompt per-root
+        foreach ($featuresByRoot as $root => $features) {
+            if ($this->projectTrust->promptForTrust($input, $output, $root, $features)) {
+                // Check for local PsySH binary that needs re-run message
+                if ($checkLocalPsyshBinary && ($localPsyshRoot = $this->projectTrust->getLocalPsyshProjectRoot($root))) {
+                    $prettyLocal = ConfigPaths::prettyPath($localPsyshRoot);
+                    $output->writeln('');
+                    $output->writeln("<comment>Local PsySH version detected at {$prettyLocal}.</comment>");
+                    $output->writeln('Re-run PsySH to use the trusted local version, or pass --trust-project to use it immediately.');
+                    $output->writeln('');
+                }
+            }
+        }
+
+        // Load local config if now trusted
+        if ($localConfigRoot !== null && $this->projectTrust->getProjectTrustStatus($localConfigRoot) === true) {
+            $this->loadLocalConfigIfPresent($localConfigRoot);
+        }
+    }
+
+    /**
+     * Check if a local config file exists at the given root.
+     */
+    private function hasLocalConfig(string $root): bool
+    {
+        if (isset($this->configFile)) {
+            return false;
+        }
+
+        return @\is_file($root.'/.psysh.php');
+    }
+
+    private function loadLocalConfigIfTrusted(): void
+    {
+        if ($this->localConfigLoaded || isset($this->configFile)) {
+            return;
+        }
+
+        $localConfigRoot = $this->projectTrust->getLocalConfigRoot();
+        if ($localConfigRoot === null) {
+            return;
+        }
+
+        if ($this->projectTrust->getProjectTrustStatus($localConfigRoot) === true) {
+            $this->loadLocalConfigIfPresent($localConfigRoot);
+        }
+    }
+
+    private function loadLocalConfigIfPresent(string $projectRoot): void
+    {
+        if ($this->localConfigLoaded || isset($this->configFile)) {
+            return;
+        }
+
+        $localConfig = $projectRoot.'/.psysh.php';
+        if (@\is_file($localConfig)) {
+            $this->loadConfigFile($localConfig);
+            $this->localConfigLoaded = true;
+            $this->configPaths->overrideDirs([
+                'configDir'  => $this->configDir,
+                'dataDir'    => $this->dataDir,
+                'runtimeDir' => $this->runtimeDir,
+            ]);
+        }
+    }
+
+    private function shouldReportAutoloadWarming(string $projectRoot): bool
+    {
+        if ($this->forceWarmAutoload) {
+            return false;
+        }
+
+        if (!$this->hasComposerAutoloadWarmerConfigured()) {
+            return false;
+        }
+
+        return $this->projectTrust->hasComposerAutoloadFiles($projectRoot);
+    }
+
+    private function hasComposerAutoloadWarmerConfigured(): bool
+    {
+        if ($this->autoloadWarmers === null) {
+            $this->autoloadWarmers = $this->parseWarmAutoloadConfig(false);
+        }
+
+        foreach ($this->autoloadWarmers as $warmer) {
+            if ($warmer instanceof TabCompletion\AutoloadWarmer\ComposerAutoloadWarmer) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Load configuration values from an array of options.
      *
      * @param array $options
@@ -511,7 +810,7 @@ class Configuration
             $this->setUseTabCompletion($options['tabCompletion']);
         }
 
-        foreach (['commands', 'matchers', 'casters'] as $option) {
+        foreach (['commands', 'matchers', 'completionSources', 'casters'] as $option) {
             if (isset($options[$option])) {
                 $method = 'add'.\ucfirst($option);
                 $this->$method($options[$option]);
@@ -686,12 +985,26 @@ class Configuration
     /**
      * Get the readline history file path.
      *
-     * Defaults to `/history` inside the shell's base config dir unless
-     * explicitly overridden.
+     * Defaults to `/psysh_history` (standard readline) or
+     * `/psysh_history.jsonl` (interactive readline) in the shell's config dir
+     * unless explicitly overridden.
      */
     public function getHistoryFile(): ?string
     {
         if (isset($this->historyFile)) {
+            return $this->historyFile;
+        }
+
+        $configDir = $this->configPaths->currentConfigDir();
+        if ($configDir === null) {
+            return null;
+        }
+
+        if ($this->usesInteractiveHistoryFormat()) {
+            $jsonlHistoryFile = $configDir.'/psysh_history.jsonl';
+            $this->bootstrapInteractiveHistoryFile($jsonlHistoryFile);
+            $this->setHistoryFile($jsonlHistoryFile);
+
             return $this->historyFile;
         }
 
@@ -706,16 +1019,49 @@ class Configuration
 
             $this->setHistoryFile($files[0]);
         } else {
-            // fallback: create our own history file
-            $configDir = $this->configPaths->currentConfigDir();
-            if ($configDir === null) {
-                return null;
-            }
-
             $this->setHistoryFile($configDir.'/psysh_history');
         }
 
         return $this->historyFile;
+    }
+
+    /**
+     * Determine whether history should use the interactive JSONL format.
+     */
+    private function usesInteractiveHistoryFormat(): bool
+    {
+        if (isset($this->readline) && $this->readline instanceof Readline\InteractiveReadlineInterface) {
+            return true;
+        }
+
+        return $this->getReadlineClass() === Readline\InteractiveReadline::class;
+    }
+
+    /**
+     * Bootstrap interactive JSONL history from legacy history file if needed.
+     *
+     * This is intentionally one-way: once JSONL exists, legacy and JSONL
+     * history files diverge.
+     */
+    private function bootstrapInteractiveHistoryFile(string $jsonlHistoryFile): void
+    {
+        if (@\is_file($jsonlHistoryFile)) {
+            return;
+        }
+
+        $legacyFiles = $this->configPaths->configFiles(['psysh_history', 'history']);
+        if (empty($legacyFiles)) {
+            return;
+        }
+
+        $legacyHistoryFile = $legacyFiles[0];
+        if (!@\is_readable($legacyHistoryFile)) {
+            return;
+        }
+
+        $history = new InteractiveHistory($this->getHistorySize(), $this->getEraseDuplicates() ?? false);
+        $history->importFromFile($legacyHistoryFile);
+        $history->saveToFile($jsonlHistoryFile);
     }
 
     /**
@@ -848,6 +1194,7 @@ class Configuration
     {
         if (!isset($this->readline)) {
             $className = $this->getReadlineClass();
+
             $this->readline = new $className(
                 $this->getHistoryFile(),
                 $this->getHistorySize(),
@@ -865,6 +1212,11 @@ class Configuration
      */
     private function getReadlineClass(): string
     {
+        // Experimental interactive readline (opt-in via config or --experimental-readline)
+        if ($this->useExperimentalReadline() && Readline\InteractiveReadline::isSupported()) {
+            return Readline\InteractiveReadline::class;
+        }
+
         if ($this->useReadline()) {
             if (Readline\GNUReadline::isSupported()) {
                 return Readline\GNUReadline::class;
@@ -1128,6 +1480,38 @@ class Configuration
     }
 
     /**
+     * Enable experimental interactive readline implementation.
+     */
+    public function setUseExperimentalReadline(bool $enabled): void
+    {
+        $this->useExperimentalReadline = $enabled;
+    }
+
+    /**
+     * Check whether to use experimental interactive readline.
+     */
+    public function useExperimentalReadline(): bool
+    {
+        return $this->useExperimentalReadline;
+    }
+
+    /**
+     * Enable inline suggestions in interactive readline.
+     */
+    public function setUseSuggestions(bool $enabled): void
+    {
+        $this->useSuggestions = $enabled;
+    }
+
+    /**
+     * Check whether inline suggestions are enabled.
+     */
+    public function useSuggestions(): bool
+    {
+        return $this->useSuggestions;
+    }
+
+    /**
      * Enable or disable tab completion.
      *
      * @param bool $useTabCompletion
@@ -1159,6 +1543,10 @@ class Configuration
      */
     public function useTabCompletion(): bool
     {
+        if (isset($this->readline) && $this->readline instanceof Readline\InteractiveReadlineInterface) {
+            return $this->useTabCompletion ?? true;
+        }
+
         return isset($this->useTabCompletion) ? ($this->hasReadline && $this->useTabCompletion) : $this->hasReadline;
     }
 
@@ -1382,6 +1770,33 @@ class Configuration
     }
 
     /**
+     * Add completion sources.
+     *
+     * @internal experimental; API may change before Interactive Readline is stable
+     *
+     * @param Completion\Source\SourceInterface[] $sources
+     */
+    public function addCompletionSources(array $sources)
+    {
+        $this->newCompletionSources = \array_merge($this->newCompletionSources, $sources);
+        if (isset($this->shell)) {
+            $this->doAddCompletionSources();
+        }
+    }
+
+    /**
+     * Internal method for adding completion sources. This will set any new
+     * sources once a Shell is available.
+     */
+    private function doAddCompletionSources()
+    {
+        if (!empty($this->newCompletionSources)) {
+            $this->shell->addCompletionSources($this->newCompletionSources);
+            $this->newCompletionSources = [];
+        }
+    }
+
+    /**
      * Configure autoload warming.
      *
      * @param bool|array $config False to disable, true for defaults, or array for custom config
@@ -1410,6 +1825,24 @@ class Configuration
     {
         if ($this->autoloadWarmers === null) {
             $this->autoloadWarmers = $this->parseWarmAutoloadConfig(false);
+        }
+
+        if ($this->forceWarmAutoload || $this->projectTrust->getForceTrust() || $this->projectTrust->getMode() === self::PROJECT_TRUST_ALWAYS) {
+            return $this->autoloadWarmers;
+        }
+
+        $projectRoot = $this->projectTrust->getProjectRoot();
+        if ($projectRoot !== null && ($this->projectTrust->getForceUntrust() || !$this->projectTrust->isProjectTrusted($projectRoot))) {
+            $filtered = \array_values(\array_filter(
+                $this->autoloadWarmers,
+                fn ($warmer) => !$warmer instanceof TabCompletion\AutoloadWarmer\ComposerAutoloadWarmer
+            ));
+
+            if (\count($filtered) !== \count($this->autoloadWarmers)) {
+                $this->projectTrust->warnUntrustedAutoloadWarming($projectRoot, $this->getOutput());
+            }
+
+            return $filtered;
         }
 
         return $this->autoloadWarmers;
@@ -1743,6 +2176,7 @@ class Configuration
         $this->shell = $shell;
         $this->doAddCommands();
         $this->doAddMatchers();
+        $this->doAddCompletionSources();
 
         // Configure SignatureFormatter for hyperlinks
         SignatureFormatter::setManual($this->getManual());
@@ -2533,13 +2967,6 @@ class Configuration
      */
     private static function looksLikeAPipe($stream): bool
     {
-        if (\function_exists('posix_isatty')) {
-            return !\posix_isatty($stream);
-        }
-
-        $stat = \fstat($stream);
-        $mode = $stat['mode'] & 0170000;
-
-        return $mode === 0010000 || $mode === 0040000 || $mode === 0100000 || $mode === 0120000;
+        return !Tty::isatty($stream);
     }
 }
