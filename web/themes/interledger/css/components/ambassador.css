@@ -1,6 +1,5 @@
 /* Ambassador content type styles */
 .logo-wrapper .ambassador {
-  display: flex;
   width: 100%;
   align-items: center;
 }
