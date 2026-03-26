@@ -817,3 +817,35 @@
     padding: 2rem;
   }
 }
+
+/* NextGen goals block styling */
+.nextgen-goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  justify-content: space-between;
+}
+
+.nextgen-goals > * {
+  flex: 1 1 12em;
+  max-width: 100%;
+}
+
+.nextgen-goals .card-content-wrapper {
+  height: 100%;
+}
+
+.nextgen-goals .card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-light-gray);
+  border-top: 8px solid var(--color-primary);
+  align-content: center;
+}
+
+.nextgen-goals .card .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  padding: var(--space-s);
+  text-align: center;
+}
