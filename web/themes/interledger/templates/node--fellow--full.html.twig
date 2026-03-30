@@ -1,0 +1,23 @@
+{% set mediaEntity = node.field_fellow_photo.entity %}
+{% set imageUri = mediaEntity.field_media_image.entity.uri.value %}
+{% if imageUri %}
+	{% set imageUrl = file_url(imageUri) %}
+{% endif %}
+{% set imageAlt = mediaEntity.field_media_image.alt %}
+
+<div class="speaker node--{{ node.id }}">
+	<header class="speaker__header">
+		<div class="content-wrapper speaker-wrapper">
+			<div class="speaker__text">
+				<h1>{{ node.field_fellow_name.0.value|raw }}</h1>
+				<p>{{ node.field_fellow_tagline.0.value|raw }}</p>
+			</div>
+			<div class="speaker__img">
+				<img src="{{ imageUrl }}" alt="{{ imageAlt }}" loading="lazy">
+			</div>
+		</div>
+	</header>
+	<div class="content-wrapper speaker__info text__body">
+		{{ node.field_fellow_bio.0.value |raw }}
+	</div>
+</div>
