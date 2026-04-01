@@ -1,7 +1,7 @@
 {% set mediaEntity = content.field_fellow_photo[0]['#entity'] %}
 {% set imageUri = mediaEntity.field_media_image.entity.uri.value %}
 {% if imageUri %}
-	{% set imageUrl = file_url(imageUri | image_style('thumbnail')) %}
+	{% set imageUrl = file_url(imageUri | image_style('medium')) %}
 {% endif %}
 {% set imageAlt = mediaEntity.field_media_image.alt %}
 {% set nodeLink = path('entity.node.canonical', {'node': node.id}) %}
