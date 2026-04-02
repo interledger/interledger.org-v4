@@ -21,3 +21,12 @@
   margin-block-start: var(--space-3xs);
   margin-block-end: var(--space-2xs);
 }
+
+.people-grid a {
+  text-decoration: none;
+}
+
+.people-grid a:hover h2,
+.people-grid a:focus h2 {
+  text-decoration: underline;
+}
