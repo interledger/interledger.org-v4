@@ -1,0 +1,293 @@
+uuid: e914c87e-1c42-43dc-bef7-87f9778e3d59
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - block_content.type.basic
+    - core.entity_view_display.node.page.default
+    - core.entity_view_display.node.summit_page.default
+    - feeds.feed_type.2025_summit_speakers
+    - feeds.feed_type.2025_summit_talks
+    - filter.format.full_html
+    - filter.format.restricted_html
+    - media.type.audio
+    - media.type.document
+    - media.type.image
+    - media.type.remote_video
+    - media.type.svg
+    - media.type.video
+    - node.type.ambassador
+    - node.type.article
+    - node.type.blockquote
+    - node.type.callout_text
+    - node.type.card
+    - node.type.cta_button
+    - node.type.cta_stripe
+    - node.type.event_card
+    - node.type.faqs
+    - node.type.form_block
+    - node.type.form_field
+    - node.type.hero_banner
+    - node.type.highlight_text
+    - node.type.page
+    - node.type.podcast
+    - node.type.summit_page
+    - node.type.team_member
+    - node.type.testimonial
+    - node.type.text
+    - node.type.tile
+  module:
+    - block
+    - block_content
+    - conditional_fields
+    - config_translation
+    - content_translation
+    - contextual
+    - ds
+    - feeds
+    - feeds_tamper
+    - field_ui
+    - file
+    - filter
+    - help
+    - layout_builder
+    - locale
+    - media
+    - menu_link_content
+    - node
+    - paragraphs
+    - path
+    - redirect
+    - system
+    - taxonomy
+    - toolbar
+    - views_ui
+id: admin_support
+label: 'Admin Support'
+weight: 5
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access block library'
+  - 'access content overview'
+  - 'access contextual links'
+  - 'access feed overview'
+  - 'access files overview'
+  - 'access help pages'
+  - 'access media overview'
+  - 'access site reports'
+  - 'access toolbar'
+  - 'admin display suite'
+  - 'admin fields'
+  - 'administer block content'
+  - 'administer block_content display'
+  - 'administer block_content fields'
+  - 'administer blocks'
+  - 'administer content types'
+  - 'administer feeds'
+  - 'administer feeds_feed fields'
+  - 'administer feeds_tamper'
+  - 'administer media display'
+  - 'administer media fields'
+  - 'administer menu'
+  - 'administer modules'
+  - 'administer node display'
+  - 'administer node fields'
+  - 'administer paragraph fields'
+  - 'administer paragraphs settings'
+  - 'administer paragraphs types'
+  - 'administer redirects'
+  - 'administer taxonomy_term fields'
+  - 'administer url aliases'
+  - 'administer views'
+  - 'configure all page node layout overrides'
+  - 'configure all summit_page node layout overrides'
+  - 'configure any layout'
+  - 'configure editable page node layout overrides'
+  - 'configure editable summit_page node layout overrides'
+  - 'create 2025_summit_speakers feeds'
+  - 'create 2025_summit_talks feeds'
+  - 'create ambassador content'
+  - 'create and edit custom blocks'
+  - 'create article content'
+  - 'create audio media'
+  - 'create basic block content'
+  - 'create blockquote content'
+  - 'create callout_text content'
+  - 'create card content'
+  - 'create content translations'
+  - 'create cta_button content'
+  - 'create cta_stripe content'
+  - 'create document media'
+  - 'create event_card content'
+  - 'create faqs content'
+  - 'create form_block content'
+  - 'create form_field content'
+  - 'create hero_banner content'
+  - 'create highlight_text content'
+  - 'create image media'
+  - 'create media'
+  - 'create page content'
+  - 'create podcast content'
+  - 'create remote_video media'
+  - 'create summit_page content'
+  - 'create team_member content'
+  - 'create testimonial content'
+  - 'create text content'
+  - 'create tile content'
+  - 'create url aliases'
+  - 'create video media'
+  - 'delete any basic block content'
+  - 'delete any summit_page content'
+  - 'delete media'
+  - 'delete own ambassador content'
+  - 'delete own article content'
+  - 'delete own audio media'
+  - 'delete own blockquote content'
+  - 'delete own callout_text content'
+  - 'delete own card content'
+  - 'delete own cta_button content'
+  - 'delete own cta_stripe content'
+  - 'delete own document media'
+  - 'delete own event_card content'
+  - 'delete own faqs content'
+  - 'delete own form_block content'
+  - 'delete own form_field content'
+  - 'delete own hero_banner content'
+  - 'delete own highlight_text content'
+  - 'delete own image media'
+  - 'delete own page content'
+  - 'delete own podcast content'
+  - 'delete own remote_video media'
+  - 'delete own summit_page content'
+  - 'delete own team_member content'
+  - 'delete own testimonial content'
+  - 'delete own text content'
+  - 'delete own tile content'
+  - 'delete own video media'
+  - 'edit any ambassador content'
+  - 'edit any article content'
+  - 'edit any audio media'
+  - 'edit any basic block content'
+  - 'edit any blockquote content'
+  - 'edit any callout_text content'
+  - 'edit any card content'
+  - 'edit any cta_button content'
+  - 'edit any cta_stripe content'
+  - 'edit any document media'
+  - 'edit any event_card content'
+  - 'edit any faqs content'
+  - 'edit any form_block content'
+  - 'edit any form_field content'
+  - 'edit any hero_banner content'
+  - 'edit any highlight_text content'
+  - 'edit any image media'
+  - 'edit any page content'
+  - 'edit any podcast content'
+  - 'edit any remote_video media'
+  - 'edit any summit_page content'
+  - 'edit any team_member content'
+  - 'edit any testimonial content'
+  - 'edit any text content'
+  - 'edit any tile content'
+  - 'edit any video media'
+  - 'edit conditional fields'
+  - 'edit own ambassador content'
+  - 'edit own article content'
+  - 'edit own audio media'
+  - 'edit own blockquote content'
+  - 'edit own callout_text content'
+  - 'edit own card content'
+  - 'edit own cta_button content'
+  - 'edit own cta_stripe content'
+  - 'edit own document media'
+  - 'edit own event_card content'
+  - 'edit own faqs content'
+  - 'edit own form_block content'
+  - 'edit own form_field content'
+  - 'edit own hero_banner content'
+  - 'edit own highlight_text content'
+  - 'edit own image media'
+  - 'edit own page content'
+  - 'edit own podcast content'
+  - 'edit own remote_video media'
+  - 'edit own summit_page content'
+  - 'edit own team_member content'
+  - 'edit own testimonial content'
+  - 'edit own text content'
+  - 'edit own tile content'
+  - 'edit own video media'
+  - 'import 2025_summit_speakers feeds'
+  - 'import 2025_summit_talks feeds'
+  - 'tamper 2025_summit_speakers'
+  - 'tamper 2025_summit_talks'
+  - 'translate ambassador node'
+  - 'translate any entity'
+  - 'translate article node'
+  - 'translate audio media'
+  - 'translate blockquote node'
+  - 'translate callout_text node'
+  - 'translate card node'
+  - 'translate configuration'
+  - 'translate cta_button node'
+  - 'translate cta_stripe node'
+  - 'translate document media'
+  - 'translate editable entities'
+  - 'translate event_card node'
+  - 'translate faqs node'
+  - 'translate form_block node'
+  - 'translate form_field node'
+  - 'translate hero_banner node'
+  - 'translate highlight_text node'
+  - 'translate image media'
+  - 'translate interface'
+  - 'translate menu_link_content'
+  - 'translate page node'
+  - 'translate podcast node'
+  - 'translate remote_video media'
+  - 'translate summit_page node'
+  - 'translate svg media'
+  - 'translate team_member node'
+  - 'translate testimonial node'
+  - 'translate text node'
+  - 'translate tile node'
+  - 'translate video media'
+  - 'update any media'
+  - 'update content translations'
+  - 'update media'
+  - 'use text format full_html'
+  - 'use text format restricted_html'
+  - 'view all media revisions'
+  - 'view all revisions'
+  - 'view ambassador revisions'
+  - 'view any audio media revisions'
+  - 'view any basic block content history'
+  - 'view any document media revisions'
+  - 'view any image media revisions'
+  - 'view any remote_video media revisions'
+  - 'view any svg media revisions'
+  - 'view any video media revisions'
+  - 'view article revisions'
+  - 'view blockquote revisions'
+  - 'view callout_text revisions'
+  - 'view card revisions'
+  - 'view conditional fields'
+  - 'view cta_button revisions'
+  - 'view cta_stripe revisions'
+  - 'view event_card revisions'
+  - 'view faqs revisions'
+  - 'view form_block revisions'
+  - 'view form_field revisions'
+  - 'view hero_banner revisions'
+  - 'view highlight_text revisions'
+  - 'view own unpublished content'
+  - 'view own unpublished media'
+  - 'view page revisions'
+  - 'view podcast revisions'
+  - 'view summit_page revisions'
+  - 'view team_member revisions'
+  - 'view testimonial revisions'
+  - 'view text revisions'
+  - 'view the administration theme'
+  - 'view tile revisions'
+  - 'view unpublished paragraphs'

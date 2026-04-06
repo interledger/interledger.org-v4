@@ -1,0 +1,28 @@
+uuid: 5da4f7b5-562e-45cd-89b3-d0df053b2e77
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text_block_body
+    - filter.format.basic_html
+    - filter.format.full_html
+    - filter.format.plain_text
+    - node.type.text
+  module:
+    - text
+id: node.text.field_text_block_body
+field_name: field_text_block_body
+entity_type: node
+bundle: text
+label: 'Text block body'
+description: 'Enter the text content for this block. If there is no accompanying image, this block will be displayed as single column. If there is an accompanying image, it will be a 50-50 two column display.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - full_html
+    - plain_text
+field_type: text_long

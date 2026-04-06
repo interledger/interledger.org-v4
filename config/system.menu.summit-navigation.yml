@@ -1,0 +1,8 @@
+uuid: 890885f1-39b0-4ca7-8150-6a76e87b2803
+langcode: en-gb
+status: true
+dependencies: {  }
+id: summit-navigation
+label: 'Summit navigation'
+description: 'Summit site navigation'
+locked: false

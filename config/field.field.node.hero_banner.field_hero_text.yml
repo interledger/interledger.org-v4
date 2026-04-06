@@ -1,0 +1,26 @@
+uuid: 50852b20-f8af-4bac-b658-74b3595834f7
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_text
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.hero_banner
+  module:
+    - text
+id: node.hero_banner.field_hero_text
+field_name: field_hero_text
+entity_type: node
+bundle: hero_banner
+label: 'Hero text'
+description: 'Enter the text to be displayed on the hero banner'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text

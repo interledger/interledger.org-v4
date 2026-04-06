@@ -1,0 +1,32 @@
+uuid: 79690e29-d94a-4348-9dbe-3bc93487c859
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - filter.format.webform_default
+  module:
+    - contact
+    - file
+    - filter
+    - media
+    - search
+    - securitytxt
+    - shortcut
+    - system
+_core:
+  default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'delete own files'
+  - 'search content'
+  - 'use text format basic_html'
+  - 'use text format webform_default'
+  - 'view media'
+  - 'view securitytxt'

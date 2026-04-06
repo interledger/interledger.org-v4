@@ -1,0 +1,98 @@
+uuid: 7f4260f7-0065-4672-a48c-b0a4bbc79b63
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.card.field_card_blurb
+    - field.field.node.card.field_card_caption
+    - field.field.node.card.field_card_category
+    - field.field.node.card.field_card_image
+    - field.field.node.card.field_card_link
+    - field.field.node.card.field_card_title
+    - field.field.node.card.field_show_learn_more_link
+    - field.field.node.card.field_umami_event
+    - node.type.card
+  module:
+    - link
+    - text
+    - user
+id: node.card.default
+targetEntityType: node
+bundle: card
+mode: default
+content:
+  field_card_blurb:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_card_caption:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_card_category:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_card_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_card_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_card_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_show_learn_more_link:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_umami_event:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+hidden:
+  langcode: true
+  links: true

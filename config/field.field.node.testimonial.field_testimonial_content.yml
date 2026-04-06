@@ -1,0 +1,26 @@
+uuid: 23f25c39-525f-4921-84f3-5a650779f2a3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_testimonial_content
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.testimonial
+  module:
+    - text
+id: node.testimonial.field_testimonial_content
+field_name: field_testimonial_content
+entity_type: node
+bundle: testimonial
+label: 'Testimonial content'
+description: 'Enter the main content of this testimonial'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text_long

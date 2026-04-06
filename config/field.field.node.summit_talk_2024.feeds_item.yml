@@ -1,0 +1,23 @@
+uuid: 62cd2d2b-ecee-481d-b5d6-b46de5ea9ceb
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.summit_talk_2024
+  module:
+    - feeds
+id: node.summit_talk_2024.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: summit_talk_2024
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

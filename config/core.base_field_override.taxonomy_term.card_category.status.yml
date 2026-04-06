@@ -1,0 +1,22 @@
+uuid: b7083da6-5694-485c-ae26-e2e07374fc2a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.card_category
+id: taxonomy_term.card_category.status
+field_name: status
+entity_type: taxonomy_term
+bundle: card_category
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

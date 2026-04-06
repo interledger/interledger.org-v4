@@ -1,0 +1,19 @@
+uuid: 3e2fdf56-cd99-42bf-a004-0c4e423ed1f4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_name
+    - node.type.team_member
+id: node.team_member.field_name
+field_name: field_name
+entity_type: node
+bundle: team_member
+label: Name
+description: 'Enter the preferred name of the team member'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

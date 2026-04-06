@@ -1,0 +1,31 @@
+uuid: 67ff0bec-2a99-4901-8921-e531cb1c0dc3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_testimonial_image
+    - media.type.image
+    - media.type.svg
+    - node.type.testimonial
+id: node.testimonial.field_testimonial_image
+field_name: field_testimonial_image
+entity_type: node
+bundle: testimonial
+label: 'Testimonial image'
+description: 'Upload an image related to this testimonial'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      svg: svg
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

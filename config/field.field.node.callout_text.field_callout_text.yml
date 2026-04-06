@@ -1,0 +1,26 @@
+uuid: fee8adfa-081a-4521-abd3-cfcfa54e26eb
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_callout_text
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.callout_text
+  module:
+    - text
+id: node.callout_text.field_callout_text
+field_name: field_callout_text
+entity_type: node
+bundle: callout_text
+label: 'Callout text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text_long

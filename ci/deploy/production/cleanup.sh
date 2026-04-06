@@ -41,5 +41,8 @@ sudo chmod 444 web/sites/default/settings.php
 sudo chown -R www-data:www-data web/sites/default/files
 sudo chmod -R 775 web/sites/default/files
 
+# Import configuration
+sudo /home/deployer/production-drush.sh config:import -y
+
 # Rebuild cache after deployment
 sudo /home/deployer/production-drush.sh cr

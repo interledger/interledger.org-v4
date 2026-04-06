@@ -1,0 +1,19 @@
+uuid: 4e6bb442-400f-4629-9c16-da60c59ffa6a
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_radio_option
+field_name: field_radio_option
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

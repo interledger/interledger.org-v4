@@ -1,0 +1,29 @@
+uuid: f00e9e3e-475f-4fe6-ae88-12ddb0fc577c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.highlight_text.field_highlight_text
+    - node.type.highlight_text
+  module:
+    - user
+id: node.highlight_text.default
+targetEntityType: node
+bundle: highlight_text
+mode: default
+content:
+  field_highlight_text:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

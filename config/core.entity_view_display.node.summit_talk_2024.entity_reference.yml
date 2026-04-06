@@ -1,0 +1,52 @@
+uuid: ba88d7af-d95c-4b40-9b55-d9646a3b9d85
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.entity_reference
+    - field.field.node.summit_talk_2024.feeds_item
+    - field.field.node.summit_talk_2024.field_summit_year
+    - field.field.node.summit_talk_2024.field_talk_description
+    - field.field.node.summit_talk_2024.field_talk_end
+    - field.field.node.summit_talk_2024.field_talk_id
+    - field.field.node.summit_talk_2024.field_talk_speaker_entities
+    - field.field.node.summit_talk_2024.field_talk_start
+    - field.field.node.summit_talk_2024.field_talk_title
+    - field.field.node.summit_talk_2024.field_talk_video
+    - node.type.summit_talk_2024
+  module:
+    - user
+id: node.summit_talk_2024.entity_reference
+targetEntityType: node
+bundle: summit_talk_2024
+mode: entity_reference
+content:
+  field_talk_description:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_talk_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_summit_year: true
+  field_talk_end: true
+  field_talk_id: true
+  field_talk_speaker_entities: true
+  field_talk_start: true
+  field_talk_video: true
+  langcode: true

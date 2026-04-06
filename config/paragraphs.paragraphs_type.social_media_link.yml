@@ -1,0 +1,10 @@
+uuid: 9d28639f-b227-4516-84ca-ceb024118a3e
+langcode: en-gb
+status: true
+dependencies: {  }
+id: social_media_link
+label: 'Social media link'
+icon_uuid: null
+icon_default: null
+description: "Used to create social media links for team members' profiles"
+behavior_plugins: {  }

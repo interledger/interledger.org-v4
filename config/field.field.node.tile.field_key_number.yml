@@ -1,0 +1,19 @@
+uuid: e5d8fc41-80bb-4010-a0aa-cd533214c725
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_key_number
+    - node.type.tile
+id: node.tile.field_key_number
+field_name: field_key_number
+entity_type: node
+bundle: tile
+label: 'Key number'
+description: 'Enter the key numerical statistic you want to highlight'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

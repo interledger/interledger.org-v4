@@ -1,0 +1,119 @@
+uuid: c0eb696b-0707-4ff7-9205-3b32bae2627a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.form_block.field_form_class
+    - field.field.node.form_block.field_form_heading
+    - field.field.node.form_block.field_form_heading_image
+    - field.field.node.form_block.field_form_id
+    - field.field.node.form_block.field_form_link
+    - field.field.node.form_block.field_form_name
+    - field.field.node.form_block.field_form_novalidate
+    - field.field.node.form_block.field_form_target
+    - field.field.node.form_block.field_form_text
+    - field.field.node.form_block.field_input_field
+    - node.type.form_block
+  module:
+    - link
+    - text
+    - user
+id: node.form_block.default
+targetEntityType: node
+bundle: form_block
+mode: default
+content:
+  field_form_class:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_form_heading:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_form_heading_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_form_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_form_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_form_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_form_novalidate:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_form_target:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_form_text:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_input_field:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

@@ -1,0 +1,23 @@
+uuid: 77dc6185-a981-4d37-9d9c-a28abbc6fdc2
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.callout_text.field_callout_text
+    - node.type.callout_text
+  module:
+    - user
+id: node.callout_text.teaser
+targetEntityType: node
+bundle: callout_text
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_callout_text: true
+  langcode: true

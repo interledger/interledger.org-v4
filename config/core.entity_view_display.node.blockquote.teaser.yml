@@ -1,0 +1,25 @@
+uuid: 5e02a123-9e6a-4242-96bf-eb7aaff7107b
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.blockquote.field_blockquote
+    - field.field.node.blockquote.field_source
+    - node.type.blockquote
+  module:
+    - user
+id: node.blockquote.teaser
+targetEntityType: node
+bundle: blockquote
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_blockquote: true
+  field_source: true
+  langcode: true

@@ -1,0 +1,24 @@
+uuid: d6ec3d90-e9ab-4ff3-a2c9-99c74a53c6eb
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tile_description
+    - filter.format.basic_html
+    - node.type.tile
+  module:
+    - text
+id: node.tile.field_tile_description
+field_name: field_tile_description
+entity_type: node
+bundle: tile
+label: 'Tile description'
+description: 'Enter a short description of the number/feature'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text

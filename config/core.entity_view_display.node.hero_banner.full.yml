@@ -1,0 +1,59 @@
+uuid: 1ce0180d-36bf-4076-990a-f257b48da26c
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.hero_banner.field_hero_background_image
+    - field.field.node.hero_banner.field_hero_background_position
+    - field.field.node.hero_banner.field_hero_background_video
+    - field.field.node.hero_banner.field_hero_blurb
+    - field.field.node.hero_banner.field_hero_caption
+    - field.field.node.hero_banner.field_hero_cta
+    - field.field.node.hero_banner.field_hero_gradient
+    - field.field.node.hero_banner.field_hero_image
+    - field.field.node.hero_banner.field_hero_shade_overlay
+    - field.field.node.hero_banner.field_hero_text
+    - field.field.node.hero_banner.field_hero_text_colour
+    - field.field.node.hero_banner.field_hero_type
+    - field.field.node.hero_banner.field_hero_video_poster
+    - field.field.node.hero_banner.field_umami_event
+    - field.field.node.hero_banner.field_vertical_text_alignment
+    - node.type.hero_banner
+  module:
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.hero_banner.full
+targetEntityType: node
+bundle: hero_banner
+mode: full
+content:
+  field_hero_text:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_hero_background_image: true
+  field_hero_background_position: true
+  field_hero_background_video: true
+  field_hero_blurb: true
+  field_hero_caption: true
+  field_hero_cta: true
+  field_hero_gradient: true
+  field_hero_image: true
+  field_hero_shade_overlay: true
+  field_hero_text_colour: true
+  field_hero_type: true
+  field_hero_video_poster: true
+  field_umami_event: true
+  field_vertical_text_alignment: true
+  langcode: true
+  links: true

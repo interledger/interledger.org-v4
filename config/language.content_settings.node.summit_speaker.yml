@@ -1,0 +1,18 @@
+uuid: 7b1d5725-8521-439f-a82c-8daa2c064dce
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_speaker
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.summit_speaker
+target_entity_type_id: node
+target_bundle: summit_speaker
+default_langcode: site_default
+language_alterable: true

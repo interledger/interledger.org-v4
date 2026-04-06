@@ -1,0 +1,21 @@
+uuid: 76d9f2f6-8591-4e01-8b35-043957ffe9b5
+langcode: en-gb
+status: true
+dependencies: {  }
+name: profile_thumbnail
+label: 'Profile thumbnail'
+effects:
+  547b5610-fcd5-423a-bbc2-2ca002e41a45:
+    uuid: 547b5610-fcd5-423a-bbc2-2ca002e41a45
+    id: image_convert
+    weight: -9
+    data:
+      extension: webp
+  6c552f79-2c7b-48c0-9fcf-7d7251ecbd8c:
+    uuid: 6c552f79-2c7b-48c0-9fcf-7d7251ecbd8c
+    id: image_scale_and_crop
+    weight: -10
+    data:
+      width: 300
+      height: 300
+      anchor: center-center

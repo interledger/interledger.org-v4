@@ -1,0 +1,30 @@
+_core:
+  default_config_hash: 9bVDfWSa_In6VzTXmy04jJ_3ZQobihKjO9isuuUCPaw
+protect_all_forms: true
+unprotected_forms:
+  - user_login_form
+  - search_form
+  - search_block_form
+  - views_exposed_form
+  - honeypot_settings_form
+log: true
+element_name: url
+time_limit: 5
+expire: 300
+form_settings:
+  user_register_form: false
+  user_pass: false
+  contact_message_feedback_form: false
+  contact_message_personal_form: false
+  node_article_form: false
+  node_blockquote_form: false
+  node_callout_text_form: false
+  node_card_form: false
+  node_faqs_form: false
+  node_hero_banner_form: false
+  node_highlight_text_form: false
+  node_page_form: false
+  node_summit_page_form: false
+  node_team_member_form: false
+  node_testimonial_form: false
+  node_text_form: false

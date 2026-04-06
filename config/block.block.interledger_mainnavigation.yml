@@ -1,0 +1,29 @@
+uuid: 594875c2-505e-4a6b-9e7b-26b0a8224faf
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - interledger
+id: interledger_mainnavigation
+theme: interledger
+region: header
+weight: -4
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/summit\r\n/summit/*"

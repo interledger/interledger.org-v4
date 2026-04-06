@@ -1,0 +1,21 @@
+uuid: 232fafd3-fcc8-4a24-a214-b6f7a2bc4f51
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_type
+    - node.type.form_field
+  module:
+    - options
+id: node.form_field.field_input_type
+field_name: field_input_type
+entity_type: node
+bundle: form_field
+label: 'Input type'
+description: 'Enter the type of input that this is'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

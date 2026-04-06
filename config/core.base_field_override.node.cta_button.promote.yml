@@ -1,0 +1,22 @@
+uuid: 671a816a-7868-4571-b971-aa3c3f9736c6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.cta_button
+id: node.cta_button.promote
+field_name: promote
+entity_type: node
+bundle: cta_button
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

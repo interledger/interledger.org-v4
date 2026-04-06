@@ -1,0 +1,19 @@
+uuid: 7d106e59-7643-4c44-aa77-fa45792808c3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gradient_end
+    - paragraphs.paragraphs_type.gradient
+id: paragraph.gradient.field_gradient_end
+field_name: field_gradient_end
+entity_type: paragraph
+bundle: gradient
+label: 'End colour'
+description: 'Enter the oklch value for the end colour'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

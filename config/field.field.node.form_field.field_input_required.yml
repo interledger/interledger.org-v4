@@ -1,0 +1,23 @@
+uuid: 484758ca-3ca4-4803-a719-be112a8c691f
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_required
+    - node.type.form_field
+id: node.form_field.field_input_required
+field_name: field_input_required
+entity_type: node
+bundle: form_field
+label: 'Input required'
+description: 'Is this input field required?'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: required
+  off_label: optional
+field_type: boolean

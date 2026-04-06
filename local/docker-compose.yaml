@@ -13,6 +13,7 @@ services:
       - ./files:/var/www/html/web/sites/default/files:rw
       - ./files:/var/drupal/files:rw
       - ./private:/var/drupal/private:rw
+      - ../config:/var/www/html/config:ro
     depends_on:
       - db
     environment:

@@ -1,0 +1,21 @@
+uuid: 7c59ab7a-b31f-4561-8f59-7703b81e9803
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_summit_year
+    - node.type.summit_talk_2022
+id: node.summit_talk_2022.field_summit_year
+field_name: field_summit_year
+entity_type: node
+bundle: summit_talk_2022
+label: 'Summit year'
+description: 'Enter the year of the Summit. (for filtering purposes)'
+required: false
+translatable: true
+default_value:
+  -
+    value: '2022'
+default_value_callback: ''
+settings: {  }
+field_type: string

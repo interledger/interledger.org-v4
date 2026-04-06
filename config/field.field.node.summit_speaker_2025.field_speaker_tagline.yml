@@ -1,0 +1,19 @@
+uuid: 1d4081c1-4674-4598-8591-57f1b279da81
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_tagline
+    - node.type.summit_speaker_2025
+id: node.summit_speaker_2025.field_speaker_tagline
+field_name: field_speaker_tagline
+entity_type: node
+bundle: summit_speaker_2025
+label: 'Speaker tagline'
+description: 'Pulls `tagLine` from https://sessionize.com/api/v2/ts62m835/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,20 @@
+uuid: 1f034389-ffbd-41bf-87a5-263ab37e0896
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - media
+    - node
+id: node.field_article_thumbnail
+field_name: field_article_thumbnail
+entity_type: node
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

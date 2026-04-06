@@ -1,0 +1,39 @@
+uuid: 02f1c7ca-4d57-4bd3-b28a-53c6a3c4ba06
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text_block_media
+    - media.type.audio
+    - media.type.document
+    - media.type.image
+    - media.type.remote_video
+    - media.type.svg
+    - media.type.video
+    - node.type.text
+id: node.text.field_text_block_media
+field_name: field_text_block_media
+entity_type: node
+bundle: text
+label: 'Text block media'
+description: 'Upload a media file or link to remote video. If there is no accompanying text, this block will be displayed as single column. If there is accompanying text, it will be a 50-50 two column display. If there are multiple text blocks with images appearing on the same page, make sure all the images have the same dimensions. Recommended width of the image is 710px (adjust height as necessary). Strongly suggest keeping to a landscape ratio.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      document: document
+      image: image
+      remote_video: remote_video
+      svg: svg
+      video: video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference

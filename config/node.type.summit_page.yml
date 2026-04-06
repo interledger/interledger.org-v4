@@ -1,0 +1,18 @@
+uuid: ff0f87de-1f72-4590-b593-43a6320a2b3b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - summit-navigation
+    parent: 'summit-navigation:'
+name: 'Summit page'
+type: summit_page
+description: 'Used for the Summit website, a basic page with the Summit theme applied'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

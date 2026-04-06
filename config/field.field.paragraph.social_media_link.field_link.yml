@@ -1,0 +1,19 @@
+uuid: b07feff1-c0fe-46bf-8f3d-5a7c2b534109
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link
+    - paragraphs.paragraphs_type.social_media_link
+id: paragraph.social_media_link.field_link
+field_name: field_link
+entity_type: paragraph
+bundle: social_media_link
+label: Link
+description: 'Please enter the full URL of the link, e.g. https://www.linkedin.com/in/USER_NAME or https://github.com/USER_NAME'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

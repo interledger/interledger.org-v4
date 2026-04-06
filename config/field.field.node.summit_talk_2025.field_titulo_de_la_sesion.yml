@@ -1,0 +1,19 @@
+uuid: f9fadd7d-4b14-4b1b-afb6-ffcc9b0500cb
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_titulo_de_la_sesion
+    - node.type.summit_talk_2025
+id: node.summit_talk_2025.field_titulo_de_la_sesion
+field_name: field_titulo_de_la_sesion
+entity_type: node
+bundle: summit_talk_2025
+label: 'Título de la sesión'
+description: 'Pulls `Título de la sesión` from https://sessionize.com/api/v2/ts62m835/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

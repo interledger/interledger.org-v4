@@ -1,0 +1,29 @@
+uuid: 8ab4e09b-a86b-4680-9f0c-8b3c05ba14ee
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_talk_entities
+    - node.type.summit_speaker_2025
+    - node.type.summit_talk_2025
+id: node.summit_speaker_2025.field_speaker_talk_entities
+field_name: field_speaker_talk_entities
+entity_type: node
+bundle: summit_speaker_2025
+label: 'Speaker talk entities'
+description: 'Makes use of `sessions.name` pulled from https://sessionize.com/api/v2/ts62m835/view/Speakers to reference the relevant Summit talk node (might be fragile, please do QA)'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      summit_talk_2025: summit_talk_2025
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: summit_talk
+field_type: entity_reference

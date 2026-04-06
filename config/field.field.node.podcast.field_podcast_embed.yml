@@ -1,0 +1,24 @@
+uuid: bb014a88-f49e-4666-9ab2-06cbe6e72313
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_podcast_embed
+    - filter.format.full_html
+    - node.type.podcast
+  module:
+    - text
+id: node.podcast.field_podcast_embed
+field_name: field_podcast_embed
+entity_type: node
+bundle: podcast
+label: 'Podcast embed'
+description: 'Enter the embed code for the podcast episode.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

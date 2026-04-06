@@ -1,0 +1,11 @@
+uuid: 883a1647-9002-4cef-9c10-3080540b4a80
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - media
+id: media.widget_preview
+label: 'Widget preview'
+description: ''
+targetEntityType: media
+cache: true

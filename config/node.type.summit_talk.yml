@@ -1,0 +1,17 @@
+uuid: fc86cd59-9b80-4dc8-b0e4-f0b505e54e2b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Summit talk (2023)'
+type: summit_talk
+description: 'Used for displaying information about 2023 Summit talks. Data is pulled from Sessionize (7ueublag).'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

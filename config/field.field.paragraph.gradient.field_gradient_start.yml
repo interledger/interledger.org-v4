@@ -1,0 +1,19 @@
+uuid: 46d97178-f864-4b07-8fe1-d5e7ba55a73a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gradient_start
+    - paragraphs.paragraphs_type.gradient
+id: paragraph.gradient.field_gradient_start
+field_name: field_gradient_start
+entity_type: paragraph
+bundle: gradient
+label: 'Start colour'
+description: 'Enter the oklch value for the start colour'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

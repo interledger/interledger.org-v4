@@ -1,0 +1,22 @@
+uuid: 1a912620-3d8e-4b17-8859-203eab56a6a1
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: summit_speaker_slugs
+label: '2023 Summit speaker slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2023/speaker/[node:title]'
+selection_criteria:
+  cfdad33c-e8df-424c-a299-9722974b084b:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: cfdad33c-e8df-424c-a299-9722974b084b
+    context_mapping:
+      node: node
+    bundles:
+      summit_speaker: summit_speaker
+selection_logic: and
+weight: -5
+relationships: {  }

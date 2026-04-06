@@ -1,0 +1,20 @@
+uuid: c7994c70-a4a2-4cae-9838-29e4e1ac1268
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_source
+field_name: field_source
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

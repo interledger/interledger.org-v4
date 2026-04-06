@@ -1,0 +1,24 @@
+uuid: bfe14075-a696-4af3-8268-a942814c56da
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_table_html
+    - filter.format.full_html
+    - node.type.table
+  module:
+    - text
+id: node.table.field_table_html
+field_name: field_table_html
+entity_type: node
+bundle: table
+label: 'Table HTML'
+description: "Add a table using full HTML.  \r\nThe table will be wrapped with a div with classes `content-wrapper table-wrapper` giving it a consistent table style.  "
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

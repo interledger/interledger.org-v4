@@ -1,0 +1,29 @@
+uuid: b9648656-72c0-4847-abb6-92286f49beef
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_field
+    - node.type.form_block
+    - node.type.form_field
+id: node.form_block.field_input_field
+field_name: field_input_field
+entity_type: node
+bundle: form_block
+label: 'Input field'
+description: 'An input field which is created as Form Field content'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      form_field: form_field
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

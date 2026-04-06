@@ -1,0 +1,33 @@
+uuid: 46129d96-f60d-430c-9dc3-97aa5d2876b0
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: 2025_summit_speaker_slugs
+label: '2025 Summit speaker slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2025/speaker/[node:title]'
+selection_criteria:
+  ae67fa6c-aa9d-4e1a-bded-4b2e52ec4569:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: ae67fa6c-aa9d-4e1a-bded-4b2e52ec4569
+    context_mapping:
+      node: node
+    bundles:
+      summit_speaker_2025: summit_speaker_2025
+  ecd9ba38-a325-4fe6-be09-b6e0c6f106f8:
+    id: language
+    negate: false
+    uuid: ecd9ba38-a325-4fe6-be09-b6e0c6f106f8
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en-gb: en-gb
+selection_logic: and
+weight: -5
+relationships:
+  'node:langcode:language':
+    label: Language

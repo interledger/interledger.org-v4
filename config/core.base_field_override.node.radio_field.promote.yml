@@ -1,0 +1,22 @@
+uuid: ed7a9057-693f-467f-913d-815ef2a122cf
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.radio_field
+id: node.radio_field.promote
+field_name: promote
+entity_type: node
+bundle: radio_field
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

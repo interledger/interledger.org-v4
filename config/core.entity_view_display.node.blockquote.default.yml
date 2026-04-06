@@ -1,0 +1,33 @@
+uuid: 90be372e-3034-4de1-a794-45e74aedd715
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.blockquote.field_blockquote
+    - field.field.node.blockquote.field_source
+    - node.type.blockquote
+  module:
+    - text
+    - user
+id: node.blockquote.default
+targetEntityType: node
+bundle: blockquote
+mode: default
+content:
+  field_blockquote:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_source:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  langcode: true
+  links: true

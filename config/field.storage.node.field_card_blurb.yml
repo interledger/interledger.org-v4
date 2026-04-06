@@ -1,0 +1,20 @@
+uuid: a624e264-c74d-46c5-8d17-89b394fb7221
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_card_blurb
+field_name: field_card_blurb
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,21 @@
+uuid: be3f0b61-3921-4e00-bfbd-61d82b8a1c2c
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_speaker_tagline
+field_name: field_speaker_tagline
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

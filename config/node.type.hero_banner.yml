@@ -1,0 +1,18 @@
+uuid: 004dbedf-231c-4761-8d06-e57b39f9a449
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Hero banner'
+type: hero_banner
+description: 'Used for Hero banners to be displayed at the top of a page.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

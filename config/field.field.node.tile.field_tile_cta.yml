@@ -1,0 +1,23 @@
+uuid: 9cde3281-d406-4123-8ad0-387f2f947efc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tile_cta
+    - node.type.tile
+  module:
+    - link
+id: node.tile.field_tile_cta
+field_name: field_tile_cta
+entity_type: node
+bundle: tile
+label: 'Tile CTA'
+description: 'Enter the relevant link for this tile'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 1
+field_type: link

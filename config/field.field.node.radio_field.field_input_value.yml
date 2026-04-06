@@ -1,0 +1,19 @@
+uuid: 6c49086d-704f-43b1-8aa9-f1793ac9ddf7
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_value
+    - node.type.radio_field
+id: node.radio_field.field_input_value
+field_name: field_input_value
+entity_type: node
+bundle: radio_field
+label: 'Input value'
+description: 'Enter the value of the input element'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

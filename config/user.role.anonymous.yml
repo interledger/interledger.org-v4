@@ -1,0 +1,26 @@
+uuid: 2b32a38a-4f36-4020-b7a9-7b71fb6833bc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - filter.format.restricted_html
+  module:
+    - contact
+    - filter
+    - media
+    - search
+    - securitytxt
+    - system
+_core:
+  default_config_hash: 6WavjUYXIegP9AAg2zXGx54MWIVoomC3SZhNiqe-Dyk
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access site-wide contact form'
+  - 'search content'
+  - 'use text format restricted_html'
+  - 'view media'
+  - 'view securitytxt'

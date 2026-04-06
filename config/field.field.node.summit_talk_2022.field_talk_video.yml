@@ -1,0 +1,29 @@
+uuid: 29e014ea-99d3-43a8-a8b8-812efa1a8c4a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_video
+    - media.type.remote_video
+    - node.type.summit_talk_2022
+id: node.summit_talk_2022.field_talk_video
+field_name: field_talk_video
+entity_type: node
+bundle: summit_talk_2022
+label: 'Talk video'
+description: 'Pick a remote video link to display.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      remote_video: remote_video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

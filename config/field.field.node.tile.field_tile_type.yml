@@ -1,0 +1,21 @@
+uuid: e3d72315-7d1b-42b9-b5b9-c6a2f3a7a18f
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tile_type
+    - node.type.tile
+  module:
+    - options
+id: node.tile.field_tile_type
+field_name: field_tile_type
+entity_type: node
+bundle: tile
+label: 'Tile type'
+description: 'Select the type of tile required'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

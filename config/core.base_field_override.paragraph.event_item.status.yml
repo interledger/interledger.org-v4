@@ -1,0 +1,22 @@
+uuid: 612314eb-e1a3-4ab4-a1f4-064602863138
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.event_item
+id: paragraph.event_item.status
+field_name: status
+entity_type: paragraph
+bundle: event_item
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

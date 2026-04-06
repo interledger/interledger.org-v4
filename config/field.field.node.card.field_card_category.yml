@@ -1,0 +1,29 @@
+uuid: 682986ec-b6b9-4e00-8bf1-4dca6af8bafc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_category
+    - node.type.card
+    - taxonomy.vocabulary.card_category
+id: node.card.field_card_category
+field_name: field_card_category
+entity_type: node
+bundle: card
+label: 'Card category'
+description: 'Use this to group cards together for display in a specific view block. If not, leave this blank.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      card_category: card_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,12 @@
+display:
+  team_profiles_block:
+    display_options:
+      header:
+        area:
+          content:
+            value: '<h2>Equipo Directivo de la ILF</h2>'
+            format: basic_html
+  hackathon_2025_judges:
+    display_title: 'Jueces del Hackathon 2025'
+    display_options:
+      title: ''

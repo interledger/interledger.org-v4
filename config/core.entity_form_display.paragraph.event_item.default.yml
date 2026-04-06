@@ -1,0 +1,53 @@
+uuid: b2170b9d-0aeb-4755-bd79-5dc92591fcb6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_item.field_event_blurb
+    - field.field.paragraph.event_item.field_event_link
+    - field.field.paragraph.event_item.field_event_subheading
+    - field.field.paragraph.event_item.field_umami_event
+    - paragraphs.paragraphs_type.event_item
+  module:
+    - link
+    - text
+id: paragraph.event_item.default
+targetEntityType: paragraph
+bundle: event_item
+mode: default
+content:
+  field_event_blurb:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_link:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_event_subheading:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_umami_event:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

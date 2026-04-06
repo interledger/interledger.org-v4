@@ -1,0 +1,23 @@
+uuid: 6704b694-fb30-40e5-b9da-9bc7930b55d6
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.highlight_text.field_highlight_text
+    - node.type.highlight_text
+  module:
+    - user
+id: node.highlight_text.teaser
+targetEntityType: node
+bundle: highlight_text
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_highlight_text: true
+  langcode: true

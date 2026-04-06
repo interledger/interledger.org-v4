@@ -1,0 +1,31 @@
+uuid: 65a3ec6f-f4f9-4629-8261-3dbe0aa7a9b4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_heading_image
+    - media.type.image
+    - media.type.svg
+    - node.type.form_block
+id: node.form_block.field_form_heading_image
+field_name: field_form_heading_image
+entity_type: node
+bundle: form_block
+label: 'Form heading image'
+description: "Upload an image to be used as part of this form block's heading. SVG preferred."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      svg: svg
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

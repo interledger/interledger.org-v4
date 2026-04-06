@@ -1,0 +1,27 @@
+uuid: e3ae0744-3ff7-4958-bf57-dc13d7709d0f
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - interledger
+id: interledger_pagetitle
+theme: interledger
+region: admin
+weight: -4
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

@@ -1,0 +1,29 @@
+uuid: d9d33721-673f-4a10-ab03-7942e8f25382
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tile_icon
+    - media.type.svg
+    - node.type.tile
+id: node.tile.field_tile_icon
+field_name: field_tile_icon
+entity_type: node
+bundle: tile
+label: 'Tile icon'
+description: 'Upload an icon in SVG format'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      svg: svg
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

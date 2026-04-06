@@ -1,0 +1,17 @@
+uuid: a4462132-8683-47a0-942f-52d5689f4ade
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Event Card'
+type: event_card
+description: 'Used for event details (date, location, and registration link) in a column layout within a card.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,17 @@
+uuid: eff9cdbc-3d29-41c4-abc4-fd64ec8b24ad
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Footer notes'
+type: footer_notes
+description: 'Used to present references and explanatory notes that support the main page content.'
+help: "Whenever you use this component, ensure that any inline references follow this structure:\r\n&lt;a href=\"#footnote-{number}\" id=\"ref-{number}\" aria-label=\"Footnote {number}\"&gt;&lt;sup&gt;{number}&lt;/sup>&lt;/a&gt;"
+new_revision: true
+preview_mode: 1
+display_submitted: false

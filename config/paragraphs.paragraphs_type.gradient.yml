@@ -1,0 +1,10 @@
+uuid: d525bd39-12b7-4c4f-8f19-ffec6f358937
+langcode: en-gb
+status: true
+dependencies: {  }
+id: gradient
+label: Gradient
+icon_uuid: null
+icon_default: null
+description: 'Used to define the start and end colours for a two-tone gradient'
+behavior_plugins: {  }

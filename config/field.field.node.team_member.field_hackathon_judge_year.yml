@@ -1,0 +1,25 @@
+uuid: 0c3a3d2e-2c98-496b-ab07-d72715f09656
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hackathon_judge_year
+    - node.type.team_member
+id: node.team_member.field_hackathon_judge_year
+field_name: field_hackathon_judge_year
+entity_type: node
+bundle: team_member
+label: 'Hackathon Judge Year'
+description: 'The hackathon year this team member is judging.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

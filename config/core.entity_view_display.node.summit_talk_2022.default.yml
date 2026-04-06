@@ -1,0 +1,82 @@
+uuid: 0fc138da-6b7f-4e32-9c92-ac48d8d1e238
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_talk_2022.feeds_item
+    - field.field.node.summit_talk_2022.field_summit_year
+    - field.field.node.summit_talk_2022.field_talk_description
+    - field.field.node.summit_talk_2022.field_talk_end
+    - field.field.node.summit_talk_2022.field_talk_id
+    - field.field.node.summit_talk_2022.field_talk_speaker_entities
+    - field.field.node.summit_talk_2022.field_talk_start
+    - field.field.node.summit_talk_2022.field_talk_title
+    - field.field.node.summit_talk_2022.field_talk_video
+    - node.type.summit_talk_2022
+  module:
+    - datetime
+    - user
+id: node.summit_talk_2022.default
+targetEntityType: node
+bundle: summit_talk_2022
+mode: default
+content:
+  field_talk_description:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_talk_end:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_talk_speaker_entities:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    weight: 5
+    region: content
+  field_talk_start:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_talk_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_talk_video:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  feeds_item: true
+  field_summit_year: true
+  field_talk_id: true
+  langcode: true
+  links: true

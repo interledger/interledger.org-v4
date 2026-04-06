@@ -1,0 +1,17 @@
+uuid: 57333a92-e549-42b2-95fb-f4a3eb50b45e
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Table
+type: table
+description: 'Used for building a table with multiple rows, content in Full HTML'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false
