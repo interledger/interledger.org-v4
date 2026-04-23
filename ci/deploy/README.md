@@ -166,7 +166,7 @@ The developers portal (`https://interledger.org/developers` and `https://staging
 1. **Source**: `interledger.org-developers` GitHub repository
 2. **Build & hosting**: Netlify builds on push to `main` and serves at `https://interledger-org-developers.netlify.app/developers/`
 3. **Proxy**: A small nginx service on Cloud Run (`nginx-rewrite`) reverse-proxies `/developers/*` requests from the GCP load balancer to Netlify. The container holds no site content.
-4. **Caching**: Cloud CDN is enabled on `nginx-rewrite-backend` (default TTL 1hr, max 24hr). Netlify's own edge is effectively just an origin hop for the proxy.
+4. **Caching**: Cloud CDN is enabled on `nginx-rewrite-backend`. In normal operation, updated `/developers` content usually appears within about 1 hour because the default CDN TTL is 1 hour, but cached responses may persist longer depending on cache headers, up to the configured 24-hour maximum TTL. Netlify's own edge is effectively just an origin hop for the proxy.
 5. **Routing**: Both production and staging `/developers` paths route to the same Cloud Run service via `nginx-rewrite-backend`
 
 ### Deployment Flow
