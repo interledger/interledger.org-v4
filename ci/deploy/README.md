@@ -159,46 +159,54 @@ The load balancer performs health checks on the GCE instance:
 
 ## The /developers Portal
 
-The developers portal (`https://interledger.org/developers` and `https://staging.interledger.org/developers`) is a static Astro site served via nginx on Cloud Run.
-
-**Note**: Unlike the main Drupal sites which run on the GCE VM, the developers portal continues to use Cloud Run for its static content delivery.
+The developers portal (`https://interledger.org/developers` and `https://staging.interledger.org/developers`) is an Astro/Starlight site built and hosted on **Netlify**, fronted by the GCP load balancer so the browser URL stays on `interledger.org`.
 
 ### Architecture
 
 1. **Source**: `interledger.org-developers` GitHub repository
-2. **Build**: Astro builds static site in GitHub Actions
-3. **Storage**: Synced to `gs://interledger-org-developers-portal/developers`
-4. **Container**: Multi-stage Docker build fetches content from GCS at build time
-5. **Serving**: nginx on Cloud Run serves baked-in static files
-6. **Caching**: Cloud CDN enabled (1hr TTL for HTML, 24hr max)
-7. **Routing**: Both production and staging `/developers` paths route to the same Cloud Run service
+2. **Build & hosting**: Netlify builds on push to `main` and serves at `https://interledger-org-developers.netlify.app/developers/`
+3. **Proxy**: A small nginx service on Cloud Run (`nginx-rewrite`) reverse-proxies `/developers/*` requests from the GCP load balancer to Netlify. The container holds no site content.
+4. **Caching**: Cloud CDN is enabled on `nginx-rewrite-backend` (default TTL 1hr, max 24hr). Netlify's own edge is effectively just an origin hop for the proxy.
+5. **Routing**: Both production and staging `/developers` paths route to the same Cloud Run service via `nginx-rewrite-backend`
 
 ### Deployment Flow
 
 ```
-GitHub Push to main
+GitHub Push to main (interledger.org-developers)
   ↓
-GitHub Actions (.github/workflows/deploy_gcs.yml)
+Netlify build & deploy
   ↓
-  1. Build Astro site (bun run build)
-  2. Sync to GCS bucket
-  3. Build nginx container (fetches from GCS)
-  4. Deploy to Cloud Run (nginx-rewrite service)
-  5. Invalidate CDN cache (/developers/*)
+https://interledger-org-developers.netlify.app/developers/
+  ↑
+  └── proxied live by ──
+      Cloud Run nginx (nginx-rewrite)
+  ↑
+  └── path-routed from ──
+      GCP Load Balancer /developers/*
   ↓
 interledger.org/developers
 staging.interledger.org/developers
 ```
 
+The `nginx-rewrite` container itself is rebuilt only when `ci/nginx-rewrite/**` changes (via the `Deploy nginx proxy to Cloud Run` workflow in the developers repo). Content changes do **not** require a container rebuild.
+
+### CDN cache after a Netlify deploy
+
+Because Cloud CDN caches `/developers/*`, content changes on Netlify can take up to 1 hour to appear on `interledger.org/developers/`. To force an immediate refresh, run the **Invalidate CDN** workflow in the `interledger.org-developers` repo, or run:
+
+```bash
+gcloud compute url-maps invalidate-cdn-cache interledger-org --path "/developers/*" --async
+```
+
 ### Nginx Configuration
 
-Simple configuration using standard nginx patterns:
-- **Root**: `/usr/share/nginx/html` (contains `developers/` folder)
-- **try_files**: `$uri $uri/ $uri/index.html =404` for pretty URLs
-- **Redirects**: `/developers` → `/developers/` (301)
-- **absolute_redirect off**: Ensures relative redirects for load balancer compatibility
+Thin reverse proxy:
+- **`location /developers/`**: `proxy_pass` to `https://interledger-org-developers.netlify.app` with Host header override and `proxy_ssl_server_name on`
+- **`location = /developers`**: 301 → `/developers/`
+- **`absolute_redirect off`**: keep redirects relative so the public hostname/scheme survives the proxy hop
+- **`proxy_redirect`**: rewrite absolute Netlify URLs in `Location` headers back to relative paths
 
-See `interledger.org-developers/ci/nginx-rewrite/` for nginx config and Dockerfile.
+See `interledger.org-developers/ci/nginx-rewrite/` for the nginx config and Dockerfile.
 
 ## Common Operations
 
