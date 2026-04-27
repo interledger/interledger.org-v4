@@ -11,7 +11,7 @@ This is the Interledger Foundation website, a Drupal 10 CMS deployed on Google C
 - **Database**: Cloud SQL (MySQL) with separate databases for staging and production
 - **Load Balancer**: GCP External HTTPS Load Balancer (IP: 34.111.215.251)
 - **Files**: Stored locally on VM at `/var/www/{environment}/web/sites/default/files/`
-- **Static Portal**: Developers portal runs on Cloud Run (nginx serving Astro-built static site)
+- **Developers Portal**: Built and hosted by Netlify; a Cloud Run nginx service (`nginx-rewrite`) reverse-proxies `/developers/*` from the GCP load balancer to Netlify so the address bar stays on `interledger.org`
 
 ### Environment Configuration
 
@@ -178,7 +178,7 @@ sudo chmod -R 775 /var/www/production/web/sites/default/files/
 
 ### Backend Services
 - `drupal-sites-backend`: Serves both production and staging Drupal
-- `nginx-rewrite-backend`: Serves `/developers` portal (Cloud Run)
+- `nginx-rewrite-backend`: Cloud Run reverse-proxy forwarding `/developers/*` to Netlify (Cloud CDN enabled)
 - `umami-analytics-backend`: Serves Umami analytics (Cloud Run)
 
 ### Instance Groups
