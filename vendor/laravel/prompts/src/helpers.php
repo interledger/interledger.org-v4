@@ -424,8 +424,40 @@ if (! function_exists('\Laravel\Prompts\task')) {
      * @param  Closure(Support\Logger): TReturn  $callback
      * @return TReturn
      */
-    function task(string $label, Closure $callback, ?int $limit = null): mixed
+    function task(string $label, Closure $callback, ?int $limit = null, bool $keepSummary = false, ?string $subLabel = null): mixed
     {
-        return (new Task($label, $limit ?? 10))->run($callback);
+        return (new Task($label, $limit ?? 10, $keepSummary, $subLabel))->run($callback);
+    }
+}
+
+if (! function_exists('\Laravel\Prompts\datatable')) {
+    /**
+     * Display an interactive data table.
+     *
+     * @param  array<int, string|array<int, string>>|Collection<int, string|array<int, string>>  $headers
+     * @param  array<int|string, array<int, string>>|Collection<int|string, array<int, string>>|null  $rows
+     */
+    function datatable(
+        array|Collection $headers = [],
+        array|Collection|null $rows = null,
+        int $scroll = 10,
+        string $label = '',
+        string $hint = '',
+        bool|string $required = false,
+        mixed $validate = null,
+        ?Closure $transform = null,
+        ?Closure $filter = null,
+    ): mixed {
+        return (new DataTablePrompt(
+            headers: $headers,
+            rows: $rows,
+            scroll: $scroll,
+            label: $label,
+            hint: $hint,
+            required: $required,
+            validate: $validate,
+            transform: $transform,
+            filter: $filter,
+        ))->prompt();
     }
 }

@@ -2177,9 +2177,8 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayPluginInte
     $rows = (!empty($this->view->result) || $this->view->style_plugin->evenEmpty()) ? $this->view->style_plugin->render() : [];
 
     $element = [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#pre_render' => [[$this, 'elementPreRender']],
       '#rows' => $rows,
       // Assigned by reference so anything added in $element['#attached'] will

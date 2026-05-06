@@ -180,9 +180,8 @@ abstract class RowPluginBase extends PluginBase {
    */
   public function render($row) {
     return [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#options' => $this->options,
       '#row' => $row,
       '#field_alias' => $this->field_alias ?? '',

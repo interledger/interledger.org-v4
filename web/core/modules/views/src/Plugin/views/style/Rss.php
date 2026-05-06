@@ -130,9 +130,8 @@ class Rss extends StylePluginBase {
     }
 
     $build = [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#options' => $this->options,
       '#rows' => $rows,
       '#attached' => [

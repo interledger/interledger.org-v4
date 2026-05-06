@@ -14,9 +14,11 @@ use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity_block\Plugin\Derivative\EntityBlockDeriver;
@@ -84,6 +86,8 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
     protected EntityTypeManagerInterface $entityTypeManager,
     EntityDisplayRepositoryInterface $entityDisplayRepository,
     protected LoggerChannelFactoryInterface $loggerFactory,
+    private ModuleHandlerInterface $moduleHandler,
+    private RouteMatchInterface $routeMatch,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
@@ -96,6 +100,10 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $this->entityStorage = $entityTypeManager->getStorage($this->entityTypeName);
       $this->entityViewBuilder = $entityTypeManager->getHandler($this->entityTypeName, 'view_builder');
       $this->viewModeOptions = $entityDisplayRepository->getViewModeOptions($this->entityTypeName);
+      if ($this->moduleHandler->moduleExists('canvas')) {
+        // Group view modes by whether a Canvas template exists for them.
+        $this->viewModeOptions = $this->groupViewModesByCanvasTemplate();
+      }
     }
     catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       $this->loggerFactory->get('entity')->error($e->getMessage());
@@ -110,7 +118,9 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $configuration, $plugin_id, $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('entity_display.repository'),
-      $container->get('logger.factory')
+      $container->get('logger.factory'),
+      $container->get(ModuleHandlerInterface::class),
+      $container->get(RouteMatchInterface::class)
     );
   }
 
@@ -120,6 +130,8 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function defaultConfiguration(): array {
     return [
       'label_display' => FALSE,
+      'entity' => '',
+      'view_mode' => 'default',
     ];
   }
 
@@ -138,10 +150,8 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#maxlength' => 1024,
     ];
 
-    if (isset($config['entity'])) {
-      if ($entity = $this->entityStorage->load($config['entity'])) {
-        $form['entity']['#default_value'] = $entity;
-      }
+    if (!empty($config['entity']) && $entity = $this->entityStorage->load($config['entity'])) {
+      $form['entity']['#default_value'] = $entity;
     }
 
     $view_mode = $config['view_mode'] ?? NULL;
@@ -179,13 +189,28 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
+  public function access(AccountInterface $account, $return_as_object = FALSE) {
+    if ($this->isCanvasPreview()) {
+      if ($this->getEntity() == NULL) {
+        // Allow access to the block in Canvas preview even if the entity
+        // doesn't exist, so that the block placeholder will be rendered.
+        return $return_as_object ? AccessResult::allowed() : TRUE;
+      }
+    }
+    return parent::access($account, $return_as_object);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state): void {
     parent::blockSubmit($form, $form_state);
 
-    $this->configuration['entity'] = $form_state->getValue('entity');
-    $this->configuration['view_mode'] = $form_state->getValue('view_mode');
+    $entity_id = $form_state->getValue('entity');
+    $this->configuration['entity'] = $entity_id !== NULL ? (string) $entity_id : '';
+    $this->configuration['view_mode'] = $form_state->getValue('view_mode') ?? 'default';
 
-    if ($entity = $this->entityStorage->load($this->configuration['entity'])) {
+    if (!empty($this->configuration['entity']) && $entity = $this->entityStorage->load($this->configuration['entity'])) {
       $plugin_definition = $this->getPluginDefinition();
       $admin_label = $plugin_definition['admin_label'];
       if ($this->configuration['label_display'] !== 'visible') {
@@ -223,6 +248,12 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $view_mode = $this->configuration['view_mode'] ?? 'default';
 
       return $render_controller->view($entity, $view_mode);
+    }
+    if ($this->isCanvasPreview()) {
+      // If we're in a Canvas preview, render a placeholder if the entity doesn't exist.
+      return [
+        '#markup' => $this->t('Choose an entity to display.'),
+      ];
     }
 
     return [];
@@ -279,6 +310,56 @@ class EntityBlock extends BlockBase implements ContainerFactoryPluginInterface {
     }
 
     return NULL;
+  }
+
+  /**
+   * Determines whether we are in a Canvas preview route.
+   */
+  private function isCanvasPreview(): bool {
+    return $this->moduleHandler->moduleExists('canvas') && $this->routeMatch->getRouteObject()->getOption('_canvas_use_template_draft') === TRUE;
+  }
+
+  /**
+   * Sorts view modes by Canvas template availability.
+   *
+   * View modes with Canvas templates are listed first with "(Canvas enabled)"
+   * suffix.
+   *
+   * @return array
+   *   An array of view mode options sorted by template availability.
+   */
+  private function groupViewModesByCanvasTemplate(): array {
+    $storage = $this->entityTypeManager->getStorage('content_template');
+
+    // Find all content templates for this entity type.
+    $template_ids = $storage->getQuery()
+      ->condition('content_entity_type_id', $this->entityTypeName)
+      ->accessCheck(FALSE)
+      ->execute();
+
+    // Extract view modes that have templates.
+    $view_modes_with_templates = [];
+    foreach ($template_ids as $id) {
+      // ID format is: entity_type.bundle.view_mode
+      $parts = explode('.', $id);
+      if (count($parts) === 3) {
+        $view_modes_with_templates[$parts[2]] = TRUE;
+      }
+    }
+
+    // Sort options: Canvas-enabled first, with suffix added.
+    $with_template = [];
+    $without_template = [];
+    foreach ($this->viewModeOptions as $view_mode => $label) {
+      if (isset($view_modes_with_templates[$view_mode])) {
+        $with_template[$view_mode] = $label . ' ' . $this->t('(Canvas enabled)');
+      }
+      else {
+        $without_template[$view_mode] = $label;
+      }
+    }
+
+    return $with_template + $without_template;
   }
 
 }
