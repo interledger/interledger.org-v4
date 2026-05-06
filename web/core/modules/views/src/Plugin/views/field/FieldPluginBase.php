@@ -1788,9 +1788,8 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
   public function theme(ResultRow $values) {
     $renderer = $this->getRenderer();
     $build = [
-      '#theme' => 'views_view_field',
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#field' => $this,
       '#row' => $values,
     ];

@@ -137,9 +137,8 @@ class Rss extends RssPluginBase {
     $item->elements = &$node->rss_elements;
     $item->nid = $node->id();
     $build = [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#options' => $this->options,
       '#row' => $item,
     ];

@@ -1,6 +1,8 @@
 block.settings.entity_block:*:
   type: block_settings
   label: 'Entity Block'
+  constraints:
+    FullyValidatable: ~
   mapping:
     entity:
       type: string

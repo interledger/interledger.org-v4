@@ -89,8 +89,7 @@ class Full extends SqlBase {
     ];
 
     return [
-      '#theme' => $this->definition['theme'],
-      '#views_plugin' => $this,
+      '#theme' => $this->themeFunctions(),
       '#tags' => $tags,
       '#element' => $this->options['id'],
       '#pagination_heading_level' => parent::getHeadingLevel(),

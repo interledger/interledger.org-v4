@@ -79,9 +79,8 @@ class DefaultSummary extends StylePluginBase {
     }
 
     return [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#options' => $this->options,
       '#rows' => $rows,
     ];

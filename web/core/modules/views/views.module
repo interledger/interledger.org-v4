@@ -106,7 +106,6 @@ function views_theme($existing, $type, $theme, $path) {
     'display' => [
       'view_array' => [],
       'view' => NULL,
-      'views_plugin' => NULL,
       'rows' => [],
       'header' => [],
       'footer' => [],
@@ -119,12 +118,11 @@ function views_theme($existing, $type, $theme, $path) {
       'attachment_before' => [],
       'attachment_after' => [],
     ],
-    'style' => ['view' => NULL, 'views_plugin' => NULL,'options' => NULL, 'rows' => NULL, 'title' => NULL],
-    'row' => ['view' => NULL, 'views_plugin' => NULL, 'options' => NULL, 'row' => NULL, 'field_alias' => NULL],
-    'exposed_form' => ['view' => NULL, 'views_plugin' => NULL, 'options' => NULL],
+    'style' => ['view' => NULL, 'options' => NULL, 'rows' => NULL, 'title' => NULL],
+    'row' => ['view' => NULL, 'options' => NULL, 'row' => NULL, 'field_alias' => NULL],
+    'exposed_form' => ['view' => NULL, 'options' => NULL],
     'pager' => [
       'view' => NULL,
-      'views_plugin' => NULL,
       'options' => NULL,
       'tags' => [],
       'quantity' => 9,
@@ -136,10 +134,10 @@ function views_theme($existing, $type, $theme, $path) {
 
   // Default view themes
   $hooks['views_view_field'] = $base + [
-    'variables' => ['view' => NULL, 'views_plugin' => NULL, 'field' => NULL, 'row' => NULL],
+    'variables' => ['view' => NULL, 'field' => NULL, 'row' => NULL],
   ];
   $hooks['views_view_grouping'] = $base + [
-    'variables' => ['view' => NULL, 'views_plugin' => NULL, 'grouping' => NULL, 'grouping_level' => NULL, 'rows' => NULL, 'title' => NULL],
+    'variables' => ['view' => NULL, 'grouping' => NULL, 'grouping_level' => NULL, 'rows' => NULL, 'title' => NULL],
   ];
 
   // Only display, pager, row, and style plugins can provide theme hooks.
@@ -225,15 +223,6 @@ function views_theme($existing, $type, $theme, $path) {
   ];
 
   return $hooks;
-}
-
-/**
- * Implements hook_theme_suggestions_alter().
- */
-function views_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-  if (isset($variables['views_plugin'])) {
-    $suggestions = array_reverse(array_unique(array_merge($suggestions, $variables['views_plugin']->themeFunctions())));
-  }
 }
 
 /**

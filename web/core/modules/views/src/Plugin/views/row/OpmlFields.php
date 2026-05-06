@@ -192,9 +192,8 @@ class OpmlFields extends RowPluginBase {
     $item = array_filter($item);
 
     $build = [
-      '#theme' => $this->definition['theme'],
+      '#theme' => $this->themeFunctions(),
       '#view' => $this->view,
-      '#views_plugin' => $this,
       '#options' => $this->options,
       '#row' => $item,
       '#field_alias' => $this->field_alias ?? '',
