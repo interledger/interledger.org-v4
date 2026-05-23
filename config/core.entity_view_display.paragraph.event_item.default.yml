@@ -1,0 +1,54 @@
+uuid: c66b30d1-922a-4028-a545-21c63db8d46a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_item.field_event_blurb
+    - field.field.paragraph.event_item.field_event_link
+    - field.field.paragraph.event_item.field_event_subheading
+    - field.field.paragraph.event_item.field_umami_event
+    - paragraphs.paragraphs_type.event_item
+  module:
+    - link
+    - text
+id: paragraph.event_item.default
+targetEntityType: paragraph
+bundle: event_item
+mode: default
+content:
+  field_event_blurb:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_event_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_event_subheading:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_umami_event:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden: {  }

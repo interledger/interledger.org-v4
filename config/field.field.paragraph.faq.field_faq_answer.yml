@@ -1,0 +1,28 @@
+uuid: db86752d-b81e-448a-9b44-2c7955e4d050
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_faq_answer
+    - filter.format.basic_html
+    - filter.format.full_html
+    - filter.format.plain_text
+    - paragraphs.paragraphs_type.faq
+  module:
+    - text
+id: paragraph.faq.field_faq_answer
+field_name: field_faq_answer
+entity_type: paragraph
+bundle: faq
+label: Answer
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - full_html
+    - plain_text
+field_type: text_long

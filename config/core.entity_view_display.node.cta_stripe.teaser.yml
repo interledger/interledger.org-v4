@@ -1,0 +1,27 @@
+uuid: e3a5e83b-1d53-4c8c-924f-db5fb3b90bd2
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.cta_stripe.field_cta_image
+    - field.field.node.cta_stripe.field_cta_text
+    - field.field.node.cta_stripe.field_cta_type
+    - node.type.cta_stripe
+  module:
+    - user
+id: node.cta_stripe.teaser
+targetEntityType: node
+bundle: cta_stripe
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_cta_image: true
+  field_cta_text: true
+  field_cta_type: true
+  langcode: true

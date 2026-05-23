@@ -1,0 +1,21 @@
+uuid: 68c0fc3b-428d-45bb-a403-fffdc020e3a5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text_block_position
+    - node.type.text
+id: node.text.field_text_block_position
+field_name: field_text_block_position
+entity_type: node
+bundle: text
+label: 'Text block position'
+description: 'Select this if you want the text in the two column display to be on the right. By default, the text will be on the left. If no image is involved, you can just choose N/A.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: Right
+  off_label: Left
+field_type: boolean

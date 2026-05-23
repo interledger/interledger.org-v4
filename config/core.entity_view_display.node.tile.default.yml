@@ -1,0 +1,80 @@
+uuid: 2362dcff-6d9f-4505-8883-962f3ac1b2de
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.tile.field_key_feature
+    - field.field.node.tile.field_key_number
+    - field.field.node.tile.field_tile_cta
+    - field.field.node.tile.field_tile_description
+    - field.field.node.tile.field_tile_icon
+    - field.field.node.tile.field_tile_type
+    - node.type.tile
+  module:
+    - link
+    - options
+    - text
+    - user
+id: node.tile.default
+targetEntityType: node
+bundle: tile
+mode: default
+content:
+  field_key_feature:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_key_number:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_tile_cta:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_tile_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_tile_icon:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_tile_type:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  langcode: true

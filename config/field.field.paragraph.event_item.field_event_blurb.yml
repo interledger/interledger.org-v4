@@ -1,0 +1,28 @@
+uuid: e4afed67-14f6-475f-8277-c5160964a07e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_blurb
+    - filter.format.basic_html
+    - filter.format.full_html
+    - filter.format.plain_text
+    - paragraphs.paragraphs_type.event_item
+  module:
+    - text
+id: paragraph.event_item.field_event_blurb
+field_name: field_event_blurb
+entity_type: paragraph
+bundle: event_item
+label: 'Event blurb'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - full_html
+    - plain_text
+field_type: text_long

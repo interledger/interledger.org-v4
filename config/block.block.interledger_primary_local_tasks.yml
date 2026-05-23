@@ -1,0 +1,31 @@
+uuid: a7566a58-bd42-4cf3-99d7-2754ac9b699e
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - interledger
+_core:
+  default_config_hash: ACjBZI5shAMiiUpsz-inLYVXDqNNXRnSzAWV3kV_8Hw
+id: interledger_primary_local_tasks
+theme: interledger
+region: admin
+weight: -3
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

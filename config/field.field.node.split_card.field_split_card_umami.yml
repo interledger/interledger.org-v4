@@ -1,0 +1,19 @@
+uuid: 45496f2b-3ad6-4542-8695-317e9970fbe0
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_split_card_umami
+    - node.type.split_card
+id: node.split_card.field_split_card_umami
+field_name: field_split_card_umami
+entity_type: node
+bundle: split_card
+label: 'Split card umami'
+description: 'Enter the event label for tracking on analytics'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

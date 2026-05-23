@@ -1,0 +1,35 @@
+uuid: 3d38f73e-7326-4261-b484-595015310f47
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_image
+    - media.type.image
+    - media.type.remote_video
+    - media.type.svg
+    - media.type.video
+    - node.type.card
+id: node.card.field_card_image
+field_name: field_card_image
+entity_type: node
+bundle: card
+label: 'Card media'
+description: 'Provide some media content for this card. If the card is part of a larger grid, make sure all images on individual cards are the same dimensions. Recommended width of the image is 710px (adjust height as necessary). Strongly suggest keeping to a landscape or 1:1 ratio.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      remote_video: remote_video
+      svg: svg
+      video: video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

@@ -1,0 +1,25 @@
+uuid: e4dc038d-1d34-427c-9688-76fef5b14417
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.callout_text.field_callout_text
+    - node.type.callout_text
+  module:
+    - text
+    - user
+id: node.callout_text.default
+targetEntityType: node
+bundle: callout_text
+mode: default
+content:
+  field_callout_text:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  langcode: true
+  links: true

@@ -1,0 +1,34 @@
+uuid: 6970e52f-378f-49cb-91b5-2e6d92d34e6f
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.faq.field_faq_answer
+    - field.field.paragraph.faq.field_faq_question
+    - paragraphs.paragraphs_type.faq
+  module:
+    - text
+id: paragraph.faq.default
+targetEntityType: paragraph
+bundle: faq
+mode: default
+content:
+  field_faq_answer:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_faq_question:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

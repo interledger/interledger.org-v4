@@ -1,0 +1,18 @@
+uuid: 0a82f2f2-9bba-4764-946d-c1cbf937f1f5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.radio_field
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.radio_field
+target_entity_type_id: node
+target_bundle: radio_field
+default_langcode: site_default
+language_alterable: true

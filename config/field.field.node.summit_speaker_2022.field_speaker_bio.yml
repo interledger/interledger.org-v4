@@ -1,0 +1,24 @@
+uuid: 9f8ee0da-d142-4113-a15f-cc7db16fd147
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_bio
+    - filter.format.basic_html
+    - node.type.summit_speaker_2022
+  module:
+    - text
+id: node.summit_speaker_2022.field_speaker_bio
+field_name: field_speaker_bio
+entity_type: node
+bundle: summit_speaker_2022
+label: 'Speaker bio'
+description: 'Pulls `bio` from https://sessionize.com/api/v2/lbapz770/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

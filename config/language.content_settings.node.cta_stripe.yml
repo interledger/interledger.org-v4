@@ -1,0 +1,18 @@
+uuid: 85cd022b-c97d-4c13-9fbd-15e61045c922
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.cta_stripe
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.cta_stripe
+target_entity_type_id: node
+target_bundle: cta_stripe
+default_langcode: site_default
+language_alterable: true

@@ -1,0 +1,29 @@
+uuid: 64563194-43d6-40c6-9d74-43d3c807b386
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_profile_image
+    - media.type.image
+    - paragraphs.paragraphs_type.article_bio
+id: paragraph.article_bio.field_profile_image
+field_name: field_profile_image
+entity_type: paragraph
+bundle: article_bio
+label: 'Profile image'
+description: 'Upload a headshot of the author of dimensions 300x300.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

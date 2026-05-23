@@ -1,0 +1,22 @@
+uuid: 5a866cdb-45fa-43b1-82ef-1f08216f4159
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.split_card
+id: node.split_card.promote
+field_name: promote
+entity_type: node
+bundle: split_card
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

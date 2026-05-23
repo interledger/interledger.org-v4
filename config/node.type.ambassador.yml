@@ -1,0 +1,17 @@
+uuid: 13099c65-f0e5-4ff1-bdba-ebf3a7493fb0
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Ambassador
+type: ambassador
+description: 'Used to create individual profiles of our ambassadors'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

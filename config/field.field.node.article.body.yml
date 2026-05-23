@@ -1,0 +1,34 @@
+uuid: fe02dc1a-81d9-4296-b51f-b53c82804412
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - filter.format.basic_html
+    - filter.format.full_html
+    - filter.format.plain_text
+    - node.type.article
+  module:
+    - text
+id: node.article.body
+field_name: body
+entity_type: node
+bundle: article
+label: Body
+description: 'Enter the full content of the article'
+required: true
+translatable: true
+default_value:
+  -
+    value: ''
+    summary: 'The Interledger Foundation is a global nonprofit grantmaking foundation, leading the next revolution in payments through Interledger, the global network for inclusive digital financial service providers.'
+    format: basic_html
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: true
+  allowed_formats:
+    - basic_html
+    - full_html
+    - plain_text
+field_type: text_with_summary

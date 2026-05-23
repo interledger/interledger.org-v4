@@ -1,0 +1,33 @@
+uuid: ff6d5451-b7bf-4378-8012-97ac4643ed0b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: page_slugs
+label: 'Page slugs'
+type: 'canonical_entities:node'
+pattern: '[node:title]'
+selection_criteria:
+  d9b85298-188a-461e-998c-21320c6f7243:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: d9b85298-188a-461e-998c-21320c6f7243
+    context_mapping:
+      node: node
+    bundles:
+      page: page
+  2270803f-9b78-4b4e-8e31-46a62146ec3b:
+    id: language
+    negate: false
+    uuid: 2270803f-9b78-4b4e-8e31-46a62146ec3b
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en-gb: en-gb
+selection_logic: and
+weight: -5
+relationships:
+  'node:langcode:language':
+    label: Language

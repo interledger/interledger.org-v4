@@ -1,0 +1,29 @@
+uuid: 94331667-84ff-4e48-b27d-e41178d2bd81
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - system.menu.summit-navigation
+  module:
+    - system
+  theme:
+    - interledger
+id: interledger_summitnavigation
+theme: interledger
+region: header
+weight: -3
+provider: null
+plugin: 'system_menu_block:summit-navigation'
+settings:
+  id: 'system_menu_block:summit-navigation'
+  label: 'Summit navigation'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/summit\r\n/summit/*"

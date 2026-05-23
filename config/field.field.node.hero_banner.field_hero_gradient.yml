@@ -1,0 +1,37 @@
+uuid: c694f3b3-7432-4017-bc9e-078876a9ccd9
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_gradient
+    - node.type.hero_banner
+    - paragraphs.paragraphs_type.gradient
+  module:
+    - entity_reference_revisions
+id: node.hero_banner.field_hero_gradient
+field_name: field_hero_gradient
+entity_type: node
+bundle: hero_banner
+label: 'Hero gradient'
+description: "Enter the start and end oklch values for the banner's background gradient"
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      gradient: gradient
+    negate: 0
+    target_bundles_drag_drop:
+      faq:
+        weight: 5
+        enabled: false
+      gradient:
+        weight: 4
+        enabled: true
+      social_media_link:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

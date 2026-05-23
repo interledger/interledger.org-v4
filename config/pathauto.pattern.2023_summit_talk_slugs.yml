@@ -1,0 +1,22 @@
+uuid: f024c6a8-c220-458c-952d-cbb854cd30fc
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: 2023_summit_talk_slugs
+label: '2022 Summit talk slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2022/talk/[node:title]'
+selection_criteria:
+  eaeb0feb-e1c8-4bfb-af10-df9bdec21bfe:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: eaeb0feb-e1c8-4bfb-af10-df9bdec21bfe
+    context_mapping:
+      node: node
+    bundles:
+      summit_talk_2022: summit_talk_2022
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,0 +1,80 @@
+uuid: 2df6f906-51d3-4ce3-b267-c5484ffa3cc8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.summit_speaker
+    - node.type.summit_speaker_2022
+    - node.type.summit_speaker_2024
+    - node.type.summit_speaker_2025
+    - node.type.summit_talk
+    - node.type.summit_talk_2022
+    - node.type.summit_talk_2024
+    - node.type.summit_talk_2025
+  module:
+    - node
+id: bot
+label: Bot
+weight: 4
+is_admin: null
+permissions:
+  - 'create summit_speaker content'
+  - 'create summit_speaker_2022 content'
+  - 'create summit_speaker_2024 content'
+  - 'create summit_speaker_2025 content'
+  - 'create summit_talk content'
+  - 'create summit_talk_2022 content'
+  - 'create summit_talk_2024 content'
+  - 'create summit_talk_2025 content'
+  - 'delete any summit_speaker content'
+  - 'delete any summit_speaker_2022 content'
+  - 'delete any summit_speaker_2024 content'
+  - 'delete any summit_speaker_2025 content'
+  - 'delete any summit_talk content'
+  - 'delete any summit_talk_2022 content'
+  - 'delete any summit_talk_2024 content'
+  - 'delete any summit_talk_2025 content'
+  - 'delete own summit_speaker_2024 content'
+  - 'delete own summit_speaker_2025 content'
+  - 'delete own summit_talk_2024 content'
+  - 'delete own summit_talk_2025 content'
+  - 'delete summit_speaker revisions'
+  - 'delete summit_speaker_2022 revisions'
+  - 'delete summit_speaker_2024 revisions'
+  - 'delete summit_speaker_2025 revisions'
+  - 'delete summit_talk revisions'
+  - 'delete summit_talk_2022 revisions'
+  - 'delete summit_talk_2024 revisions'
+  - 'delete summit_talk_2025 revisions'
+  - 'edit any summit_speaker content'
+  - 'edit any summit_speaker_2022 content'
+  - 'edit any summit_speaker_2024 content'
+  - 'edit any summit_speaker_2025 content'
+  - 'edit any summit_talk content'
+  - 'edit any summit_talk_2022 content'
+  - 'edit any summit_talk_2024 content'
+  - 'edit any summit_talk_2025 content'
+  - 'edit own summit_speaker content'
+  - 'edit own summit_speaker_2022 content'
+  - 'edit own summit_speaker_2024 content'
+  - 'edit own summit_speaker_2025 content'
+  - 'edit own summit_talk content'
+  - 'edit own summit_talk_2022 content'
+  - 'edit own summit_talk_2024 content'
+  - 'edit own summit_talk_2025 content'
+  - 'revert summit_speaker revisions'
+  - 'revert summit_speaker_2022 revisions'
+  - 'revert summit_speaker_2024 revisions'
+  - 'revert summit_speaker_2025 revisions'
+  - 'revert summit_talk revisions'
+  - 'revert summit_talk_2022 revisions'
+  - 'revert summit_talk_2024 revisions'
+  - 'revert summit_talk_2025 revisions'
+  - 'view summit_speaker revisions'
+  - 'view summit_speaker_2022 revisions'
+  - 'view summit_speaker_2024 revisions'
+  - 'view summit_speaker_2025 revisions'
+  - 'view summit_talk revisions'
+  - 'view summit_talk_2022 revisions'
+  - 'view summit_talk_2024 revisions'
+  - 'view summit_talk_2025 revisions'

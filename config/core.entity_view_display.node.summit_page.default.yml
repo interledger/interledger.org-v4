@@ -1,0 +1,95 @@
+uuid: 3ae16896-158d-4826-996f-b26334a5b515
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_page.field_og_image
+    - field.field.node.summit_page.field_seo_description
+    - field.field.node.summit_page.layout_builder__layout
+    - node.type.summit_page
+  module:
+    - layout_builder
+    - layout_discovery
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          02c9833c-a537-4c19-b3b8-e57062978d9c:
+            uuid: 02c9833c-a537-4c19-b3b8-e57062978d9c
+            region: content
+            configuration:
+              id: 'extra_field_block:node:summit_page:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+          de600bda-8198-4049-84e7-67368158fb34:
+            uuid: de600bda-8198-4049-84e7-67368158fb34
+            region: content
+            configuration:
+              id: 'field_block:node:summit_page:field_seo_description'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          bbaa73bb-2bd9-4b37-b20a-863543fbc90d:
+            uuid: bbaa73bb-2bd9-4b37-b20a-863543fbc90d
+            region: content
+            configuration:
+              id: 'field_block:node:summit_page:field_og_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+        third_party_settings: {  }
+id: node.summit_page.default
+targetEntityType: node
+bundle: summit_page
+mode: default
+content:
+  field_og_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_seo_description:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true
+  layout_builder__layout: true

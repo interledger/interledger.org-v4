@@ -1,0 +1,26 @@
+uuid: 8e5de152-38ca-4767-8bdf-4afb33ac6280
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_blurb
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.card
+  module:
+    - text
+id: node.card.field_card_blurb
+field_name: field_card_blurb
+entity_type: node
+bundle: card
+label: 'Card blurb'
+description: 'Provide a short paragraph of text for this card'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text

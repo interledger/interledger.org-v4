@@ -1,0 +1,21 @@
+uuid: cd53282a-0bf6-4c79-854f-2e3aa9422a16
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_type
+    - node.type.hero_banner
+  module:
+    - options
+id: node.hero_banner.field_hero_type
+field_name: field_hero_type
+entity_type: node
+bundle: hero_banner
+label: 'Hero type'
+description: 'Choose the style of hero banner to display on the page'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

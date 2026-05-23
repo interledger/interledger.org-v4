@@ -1,0 +1,33 @@
+uuid: 21e5afe4-57b5-4ef7-b5a3-331166610cf7
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: spanish_summit_page_slugs
+label: 'Spanish Summit page slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/[node:title]'
+selection_criteria:
+  108293c9-d0f8-4779-a8aa-3a3457780bd5:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 108293c9-d0f8-4779-a8aa-3a3457780bd5
+    context_mapping:
+      node: node
+    bundles:
+      summit_page: summit_page
+  9a2d2750-48dd-4f37-8261-b9ac8793e7d4:
+    id: language
+    negate: false
+    uuid: 9a2d2750-48dd-4f37-8261-b9ac8793e7d4
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language

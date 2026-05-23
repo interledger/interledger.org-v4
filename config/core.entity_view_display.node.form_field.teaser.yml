@@ -1,0 +1,43 @@
+uuid: c9623d4b-246d-46c6-ab88-9b0390437c33
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.form_field.field_honeypot
+    - field.field.node.form_field.field_input_class
+    - field.field.node.form_field.field_input_id
+    - field.field.node.form_field.field_input_name
+    - field.field.node.form_field.field_input_placeholder
+    - field.field.node.form_field.field_input_required
+    - field.field.node.form_field.field_input_tabindex
+    - field.field.node.form_field.field_input_type
+    - field.field.node.form_field.field_input_value
+    - field.field.node.form_field.field_radio_option
+    - field.field.node.form_field.field_umami_event
+    - node.type.form_field
+  module:
+    - user
+id: node.form_field.teaser
+targetEntityType: node
+bundle: form_field
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_honeypot: true
+  field_input_class: true
+  field_input_id: true
+  field_input_name: true
+  field_input_placeholder: true
+  field_input_required: true
+  field_input_tabindex: true
+  field_input_type: true
+  field_input_value: true
+  field_radio_option: true
+  field_umami_event: true
+  langcode: true

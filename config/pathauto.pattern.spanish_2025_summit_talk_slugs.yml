@@ -1,0 +1,33 @@
+uuid: 76770244-c221-4f19-bda9-84731b95b356
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: spanish_2025_summit_talk_slugs
+label: 'Spanish 2025 Summit talk slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2025/talk/[node:title]'
+selection_criteria:
+  5ce7e74a-d04d-4fb0-a574-be34ec225bec:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 5ce7e74a-d04d-4fb0-a574-be34ec225bec
+    context_mapping:
+      node: node
+    bundles:
+      summit_talk_2025: summit_talk_2025
+  a27dc797-6e5b-4298-a056-d37ac28f2e77:
+    id: language
+    negate: false
+    uuid: a27dc797-6e5b-4298-a056-d37ac28f2e77
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language

@@ -1,0 +1,22 @@
+uuid: cad98379-7fbb-4561-9aba-907af9a98c41
+langcode: en-gb
+status: true
+dependencies:
+  theme:
+    - interledger
+_core:
+  default_config_hash: 2L0geP-ixCbCkEpW6BVF6H7vDUZN4ea07_Y9CociQm4
+id: interledger_secondary_local_tasks
+theme: interledger
+region: admin
+weight: -2
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility: {  }

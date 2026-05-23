@@ -1,0 +1,19 @@
+uuid: d920d75e-e8a1-4f82-93f2-7f6b2f20b687
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - link
+    - paragraphs
+id: paragraph.field_event_link
+field_name: field_event_link
+entity_type: paragraph
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

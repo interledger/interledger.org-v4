@@ -1,0 +1,19 @@
+uuid: c366d4e6-eeff-46f1-b885-6a79594c58ad
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_description
+    - node.type.summit_talk_2025
+id: node.summit_talk_2025.field_talk_description
+field_name: field_talk_description
+entity_type: node
+bundle: summit_talk_2025
+label: 'Talk description'
+description: 'Pulls `description` from https://sessionize.com/api/v2/ts62m835/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

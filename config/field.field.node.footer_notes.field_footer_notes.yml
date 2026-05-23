@@ -1,0 +1,24 @@
+uuid: ecd8d947-fc1f-4302-a3aa-ee20e265bd9d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_footer_notes
+    - filter.format.plain_text
+    - node.type.footer_notes
+  module:
+    - text
+id: node.footer_notes.field_footer_notes
+field_name: field_footer_notes
+entity_type: node
+bundle: footer_notes
+label: 'Footer notes'
+description: 'Enter footnotes in the order they appear in the text, placing each footnote in its own item. Do not add numbers; they will be generated automatically.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long

@@ -1,0 +1,29 @@
+uuid: a1b20424-6b50-497e-a4db-69ec6bd44dbf
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_radio_option
+    - node.type.form_field
+    - node.type.radio_field
+id: node.form_field.field_radio_option
+field_name: field_radio_option
+entity_type: node
+bundle: form_field
+label: 'Radio option'
+description: 'Individual radio input options'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      radio_field: radio_field
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

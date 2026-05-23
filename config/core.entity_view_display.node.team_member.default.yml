@@ -1,0 +1,102 @@
+uuid: 26817c9c-ee81-4ed8-88c9-e99d2c245ac4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.team_member.field_hackathon_judge_year
+    - field.field.node.team_member.field_is_employee
+    - field.field.node.team_member.field_name
+    - field.field.node.team_member.field_photo
+    - field.field.node.team_member.field_position
+    - field.field.node.team_member.field_profile
+    - field.field.node.team_member.field_social_media_links
+    - field.field.node.team_member.field_weight
+    - image.style.profile_display
+    - node.type.team_member
+  module:
+    - entity_reference_revisions
+    - media
+    - text
+    - user
+    - weight
+id: node.team_member.default
+targetEntityType: node
+bundle: team_member
+mode: default
+content:
+  field_hackathon_judge_year:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_is_employee:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_photo:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: profile_display
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_position:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_profile:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_social_media_links:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_weight:
+    type: default_weight
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

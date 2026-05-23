@@ -1,0 +1,23 @@
+uuid: d81da997-10fb-42aa-b981-f078a19bba42
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.summit_talk
+  module:
+    - feeds
+id: node.summit_talk.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: summit_talk
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

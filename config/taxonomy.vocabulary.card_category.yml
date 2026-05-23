@@ -1,0 +1,9 @@
+uuid: e4c7d39d-bada-4985-948e-ce69a03be7ed
+langcode: en-gb
+status: true
+dependencies: {  }
+name: 'Card category'
+vid: card_category
+description: 'Used to group cards for display as part of the same card grid'
+weight: 0
+new_revision: false

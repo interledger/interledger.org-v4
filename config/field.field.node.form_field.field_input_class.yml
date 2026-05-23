@@ -1,0 +1,19 @@
+uuid: b83a384d-0dc1-4dba-95a1-bff0925c1876
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_class
+    - node.type.form_field
+id: node.form_field.field_input_class
+field_name: field_input_class
+entity_type: node
+bundle: form_field
+label: 'Input class'
+description: 'Enter the class names for the input form field. This will be inserted directly between quotations. So enter class names as `class1 class2` etc.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

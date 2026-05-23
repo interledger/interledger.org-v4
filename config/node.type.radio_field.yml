@@ -1,0 +1,17 @@
+uuid: 4a24d7cc-2884-41e5-9d44-37ad7c1df926
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Radio field'
+type: radio_field
+description: 'Used to add radio options to Form Fields'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,19 @@
+uuid: 07ce9f85-70f0-47d8-898b-603efe893abc
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_ambassador_description
+field_name: field_ambassador_description
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

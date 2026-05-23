@@ -1,0 +1,19 @@
+uuid: c99312c4-6a37-46ae-9e2b-e275fddafcf3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_id
+    - node.type.form_block
+id: node.form_block.field_form_id
+field_name: field_form_id
+entity_type: node
+bundle: form_block
+label: 'Form id'
+description: 'The unique HTML ID attribute that is used to identify this form element'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

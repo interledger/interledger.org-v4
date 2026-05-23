@@ -1,0 +1,24 @@
+uuid: ef3cbaa9-336f-48d6-930b-ebd08d333e22
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_blurb
+    - filter.format.basic_html
+    - node.type.hero_banner
+  module:
+    - text
+id: node.hero_banner.field_hero_blurb
+field_name: field_hero_blurb
+entity_type: node
+bundle: hero_banner
+label: 'Hero blurb'
+description: 'Enter a blurb that will convince people to click on the CTA'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text

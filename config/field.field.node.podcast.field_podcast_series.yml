@@ -1,0 +1,21 @@
+uuid: 14c090fe-0a46-4e9f-9c24-2fab04e6437c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_podcast_series
+    - node.type.podcast
+  module:
+    - options
+id: node.podcast.field_podcast_series
+field_name: field_podcast_series
+entity_type: node
+bundle: podcast
+label: 'Podcast Series'
+description: 'Select the podcast series this episode belongs to'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

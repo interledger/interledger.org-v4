@@ -1,0 +1,23 @@
+uuid: 9b6ff297-a758-4066-8dec-350dc7d7e82f
+langcode: en-gb
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: cCiWdBHgLwj5omG35lsKc4LkW4MBdmcctkVop4ol5x0
+name: thumbnail
+label: 'Thumbnail (150×150)'
+effects:
+  b0f89362-c2dd-4f08-8ee6-899cf916e8a8:
+    uuid: b0f89362-c2dd-4f08-8ee6-899cf916e8a8
+    id: image_convert
+    weight: -8
+    data:
+      extension: webp
+  1af758c1-27e0-4a2a-a1d0-ff2bcca4092f:
+    uuid: 1af758c1-27e0-4a2a-a1d0-ff2bcca4092f
+    id: image_scale_and_crop
+    weight: -10
+    data:
+      width: 150
+      height: 150
+      anchor: center-center

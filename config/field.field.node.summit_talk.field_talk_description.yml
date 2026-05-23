@@ -1,0 +1,19 @@
+uuid: 405ab5d2-d72f-4e9f-a191-9f30ef0118a3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_description
+    - node.type.summit_talk
+id: node.summit_talk.field_talk_description
+field_name: field_talk_description
+entity_type: node
+bundle: summit_talk
+label: 'Talk description'
+description: 'Pulls `description` from https://sessionize.com/api/v2/7ueublag/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

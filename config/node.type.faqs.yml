@@ -1,0 +1,17 @@
+uuid: 4bc9dd82-d085-4d23-adc0-22429b3c8996
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: FAQs
+type: faqs
+description: 'Used to create a list of FAQs'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

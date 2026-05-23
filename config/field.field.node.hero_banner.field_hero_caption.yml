@@ -1,0 +1,24 @@
+uuid: 3fba0ecf-70d7-4101-a3e7-4c4d2cfbf951
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_caption
+    - filter.format.basic_html
+    - node.type.hero_banner
+  module:
+    - text
+id: node.hero_banner.field_hero_caption
+field_name: field_hero_caption
+entity_type: node
+bundle: hero_banner
+label: 'Hero caption'
+description: 'Enter an optional caption for the background photograph'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text

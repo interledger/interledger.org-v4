@@ -1,0 +1,21 @@
+uuid: b54de3fd-3d66-40b3-b6b4-a8e5316e25ea
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_talk_end
+    - node.type.summit_talk_2022
+  module:
+    - datetime
+id: node.summit_talk_2022.field_talk_end
+field_name: field_talk_end
+entity_type: node
+bundle: summit_talk_2022
+label: 'Talk end'
+description: 'Pulls `endsAt` from https://sessionize.com/api/v2/lbapz770/view/Sessions'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

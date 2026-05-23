@@ -1,0 +1,78 @@
+uuid: f108d867-f616-49cf-8f50-004d39f42cdf
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_speaker_2025.feeds_item
+    - field.field.node.summit_speaker_2025.field_speaker_bio
+    - field.field.node.summit_speaker_2025.field_speaker_biografia
+    - field.field.node.summit_speaker_2025.field_speaker_id
+    - field.field.node.summit_speaker_2025.field_speaker_image
+    - field.field.node.summit_speaker_2025.field_speaker_name
+    - field.field.node.summit_speaker_2025.field_speaker_session_id
+    - field.field.node.summit_speaker_2025.field_speaker_tagline
+    - field.field.node.summit_speaker_2025.field_speaker_talk_entities
+    - field.field.node.summit_speaker_2025.field_summit_year
+    - node.type.summit_speaker_2025
+  module:
+    - text
+    - user
+id: node.summit_speaker_2025.default
+targetEntityType: node
+bundle: summit_speaker_2025
+mode: default
+content:
+  field_speaker_bio:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_speaker_biografia:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_speaker_image:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_speaker_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_speaker_tagline:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_speaker_talk_entities:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: entity_reference
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+hidden:
+  feeds_item: true
+  field_speaker_id: true
+  field_speaker_session_id: true
+  field_summit_year: true
+  langcode: true
+  links: true

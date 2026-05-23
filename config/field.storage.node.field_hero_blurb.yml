@@ -1,0 +1,20 @@
+uuid: c08a680e-09ac-40d3-a46d-1e2eec989886
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_hero_blurb
+field_name: field_hero_blurb
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

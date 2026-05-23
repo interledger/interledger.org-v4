@@ -1,0 +1,18 @@
+uuid: 927e3ac7-d9b2-4a4b-96e6-39f24cb36469
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_form_novalidate
+field_name: field_form_novalidate
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

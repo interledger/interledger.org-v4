@@ -1,0 +1,80 @@
+uuid: 876b6d5e-be85-43b7-a609-3c71b31b4f48
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.team_member.field_hackathon_judge_year
+    - field.field.node.team_member.field_is_employee
+    - field.field.node.team_member.field_name
+    - field.field.node.team_member.field_photo
+    - field.field.node.team_member.field_position
+    - field.field.node.team_member.field_profile
+    - field.field.node.team_member.field_social_media_links
+    - field.field.node.team_member.field_weight
+    - image.style.profile_display
+    - node.type.team_member
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - media
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.team_member.full
+targetEntityType: node
+bundle: team_member
+mode: full
+content:
+  field_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_photo:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: profile_display
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_position:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_profile:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_social_media_links:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_hackathon_judge_year: true
+  field_is_employee: true
+  field_weight: true
+  langcode: true
+  links: true

@@ -1,0 +1,51 @@
+uuid: 521f18c2-f0bd-404c-a1e2-929433472c97
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.hero_banner.field_hero_background_image
+    - field.field.node.hero_banner.field_hero_background_position
+    - field.field.node.hero_banner.field_hero_background_video
+    - field.field.node.hero_banner.field_hero_blurb
+    - field.field.node.hero_banner.field_hero_caption
+    - field.field.node.hero_banner.field_hero_cta
+    - field.field.node.hero_banner.field_hero_gradient
+    - field.field.node.hero_banner.field_hero_image
+    - field.field.node.hero_banner.field_hero_shade_overlay
+    - field.field.node.hero_banner.field_hero_text
+    - field.field.node.hero_banner.field_hero_text_colour
+    - field.field.node.hero_banner.field_hero_type
+    - field.field.node.hero_banner.field_hero_video_poster
+    - field.field.node.hero_banner.field_umami_event
+    - field.field.node.hero_banner.field_vertical_text_alignment
+    - node.type.hero_banner
+  module:
+    - user
+id: node.hero_banner.teaser
+targetEntityType: node
+bundle: hero_banner
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_hero_background_image: true
+  field_hero_background_position: true
+  field_hero_background_video: true
+  field_hero_blurb: true
+  field_hero_caption: true
+  field_hero_cta: true
+  field_hero_gradient: true
+  field_hero_image: true
+  field_hero_shade_overlay: true
+  field_hero_text: true
+  field_hero_text_colour: true
+  field_hero_type: true
+  field_hero_video_poster: true
+  field_umami_event: true
+  field_vertical_text_alignment: true
+  langcode: true

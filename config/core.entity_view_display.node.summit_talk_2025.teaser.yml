@@ -1,0 +1,91 @@
+uuid: fe74dcba-9c50-473d-aebd-d02c0d591376
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.summit_talk_2025.feeds_item
+    - field.field.node.summit_talk_2025.field_descripcion
+    - field.field.node.summit_talk_2025.field_session_languages
+    - field.field.node.summit_talk_2025.field_summit_year
+    - field.field.node.summit_talk_2025.field_talk_description
+    - field.field.node.summit_talk_2025.field_talk_end
+    - field.field.node.summit_talk_2025.field_talk_id
+    - field.field.node.summit_talk_2025.field_talk_speaker_entities
+    - field.field.node.summit_talk_2025.field_talk_start
+    - field.field.node.summit_talk_2025.field_talk_title
+    - field.field.node.summit_talk_2025.field_talk_video
+    - field.field.node.summit_talk_2025.field_titulo_de_la_sesion
+    - node.type.summit_talk_2025
+  module:
+    - datetime
+    - user
+id: node.summit_talk_2025.teaser
+targetEntityType: node
+bundle: summit_talk_2025
+mode: teaser
+content:
+  field_talk_description:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: ds_content
+  field_talk_end:
+    type: datetime_custom
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'Y-m-d\TH:i:s'
+    third_party_settings: {  }
+    weight: 3
+    region: ds_content
+  field_talk_speaker_entities:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: ds_content
+  field_talk_start:
+    type: datetime_custom
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'Y-m-d\TH:i:s'
+    third_party_settings: {  }
+    weight: 2
+    region: ds_content
+  field_talk_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: ds_content
+  field_talk_video:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: ds_content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_descripcion: true
+  field_session_languages: true
+  field_summit_year: true
+  field_talk_id: true
+  field_titulo_de_la_sesion: true
+  langcode: true

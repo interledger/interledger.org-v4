@@ -1,0 +1,23 @@
+uuid: c627ff69-5765-4c0e-8917-f8a87bdb060b
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_background_position
+    - node.type.hero_banner
+  module:
+    - options
+id: node.hero_banner.field_hero_background_position
+field_name: field_hero_background_position
+entity_type: node
+bundle: hero_banner
+label: 'Hero background position'
+description: 'This modifies the vertical background position of the hero background image'
+required: false
+translatable: true
+default_value:
+  -
+    value: center
+default_value_callback: ''
+settings: {  }
+field_type: list_string

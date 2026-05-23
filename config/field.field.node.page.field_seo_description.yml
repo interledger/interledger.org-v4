@@ -1,0 +1,19 @@
+uuid: 2c4e3f9e-8e43-4e66-a8a4-cbe31d60945c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_seo_description
+    - node.type.page
+id: node.page.field_seo_description
+field_name: field_seo_description
+entity_type: node
+bundle: page
+label: 'SEO description'
+description: 'Enter the meta description for this page. This content will show up in the `<head>` of the page and be used by search engines and for other SEO-related purposes.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

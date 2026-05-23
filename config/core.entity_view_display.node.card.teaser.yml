@@ -1,0 +1,37 @@
+uuid: 287ab6c5-cbe5-4e31-b5d2-4f0aaea7a456
+langcode: en-gb
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.card.field_card_blurb
+    - field.field.node.card.field_card_caption
+    - field.field.node.card.field_card_category
+    - field.field.node.card.field_card_image
+    - field.field.node.card.field_card_link
+    - field.field.node.card.field_card_title
+    - field.field.node.card.field_show_learn_more_link
+    - field.field.node.card.field_umami_event
+    - node.type.card
+  module:
+    - user
+id: node.card.teaser
+targetEntityType: node
+bundle: card
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_card_blurb: true
+  field_card_caption: true
+  field_card_category: true
+  field_card_image: true
+  field_card_link: true
+  field_card_title: true
+  field_show_learn_more_link: true
+  field_umami_event: true
+  langcode: true

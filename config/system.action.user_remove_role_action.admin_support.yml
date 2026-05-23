@@ -1,0 +1,14 @@
+uuid: 3295cf04-0dfb-4298-8616-d1f518c43e1c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - user.role.admin_support
+  module:
+    - user
+id: user_remove_role_action.admin_support
+label: 'Remove the Admin Support role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: admin_support

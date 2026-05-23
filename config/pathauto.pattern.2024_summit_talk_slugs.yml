@@ -1,0 +1,22 @@
+uuid: 407a172d-2f33-4fec-9f6b-1ac592bddb8c
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: 2024_summit_talk_slugs
+label: '2024 Summit talk slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2024/talk/[node:title]'
+selection_criteria:
+  189dfa86-05df-4206-b58b-d1c4ee9b44af:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 189dfa86-05df-4206-b58b-d1c4ee9b44af
+    context_mapping:
+      node: node
+    bundles:
+      summit_talk_2024: summit_talk_2024
+selection_logic: and
+weight: -5
+relationships: {  }

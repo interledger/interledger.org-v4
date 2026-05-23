@@ -1,0 +1,26 @@
+uuid: 86a19f58-ec5a-4182-aea9-ab6dfabb1ee7
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - interledger
+_core:
+  default_config_hash: '-Ac3ISpIT0PQ-whzD7_dw0SdKi6dAbRFNWdSjOiVDqg'
+id: interledger_messages
+theme: interledger
+region: content
+weight: -2
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /user

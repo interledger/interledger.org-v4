@@ -1,0 +1,23 @@
+uuid: e128deeb-c6ad-4009-9118-cfcc7870fd1f
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_honeypot
+    - node.type.form_field
+id: node.form_field.field_honeypot
+field_name: field_honeypot
+entity_type: node
+bundle: form_field
+label: Honeypot
+description: 'Is this input field used as a hidden anti-spam honeypot field?'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'true'
+  off_label: 'false'
+field_type: boolean

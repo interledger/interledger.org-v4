@@ -1,0 +1,25 @@
+uuid: d671fb05-8f30-4289-9d15-70097cce4b13
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event_card.field_event_card_border
+    - field.field.node.event_card.field_event_item
+    - node.type.event_card
+  module:
+    - user
+id: node.event_card.teaser
+targetEntityType: node
+bundle: event_card
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_event_card_border: true
+  field_event_item: true
+  langcode: true

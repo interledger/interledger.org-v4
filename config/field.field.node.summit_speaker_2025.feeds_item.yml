@@ -1,0 +1,23 @@
+uuid: 2140f2ef-ab17-4d12-876e-f83cd5639e87
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.summit_speaker_2025
+  module:
+    - feeds
+id: node.summit_speaker_2025.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: summit_speaker_2025
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

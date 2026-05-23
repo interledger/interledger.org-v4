@@ -1,0 +1,100 @@
+uuid: a7369b36-053c-4276-830f-11f89c2bab38
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full_content_alt_layout
+    - field.field.node.team_member.field_hackathon_judge_year
+    - field.field.node.team_member.field_is_employee
+    - field.field.node.team_member.field_name
+    - field.field.node.team_member.field_photo
+    - field.field.node.team_member.field_position
+    - field.field.node.team_member.field_profile
+    - field.field.node.team_member.field_social_media_links
+    - field.field.node.team_member.field_weight
+    - image.style.profile_display
+    - node.type.team_member
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - media
+    - text
+    - user
+    - weight
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.team_member.full_content_alt_layout
+targetEntityType: node
+bundle: team_member
+mode: full_content_alt_layout
+content:
+  field_is_employee:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_photo:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: profile_display
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_position:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_profile:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_social_media_links:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_weight:
+    type: default_weight
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_hackathon_judge_year: true
+  langcode: true

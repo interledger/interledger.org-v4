@@ -1,0 +1,192 @@
+uuid: ea92b97d-cfdb-4e05-b11e-68c940a96729
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_speaker_2025.field_speaker_bio
+    - field.field.node.summit_speaker_2025.field_speaker_biografia
+    - field.field.node.summit_speaker_2025.field_speaker_id
+    - field.field.node.summit_speaker_2025.field_speaker_image
+    - field.field.node.summit_speaker_2025.field_speaker_name
+    - field.field.node.summit_speaker_2025.field_speaker_session_id
+    - field.field.node.summit_speaker_2025.field_speaker_tagline
+    - field.field.node.summit_speaker_2025.field_speaker_talk_entities
+    - field.field.node.summit_speaker_2025.field_summit_year
+    - node.type.summit_speaker_2025
+  module:
+    - feeds_ex
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      7a8cb7e7-3cd1-4573-b256-885bed03812f:
+        default_value: '2025'
+        only_if_empty: false
+        uuid: 7a8cb7e7-3cd1-4573-b256-885bed03812f
+        plugin: default_value
+        source: year
+        weight: 0
+        label: 'Set value or default value'
+label: '2025 Spanish Summit speakers'
+id: 2025_spanish_summit_speakers
+description: 'Spanish list of speakers for 2025 Summit'
+help: ''
+import_period: -1
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: false
+  use_pubsubhubbub: false
+  always_download: true
+  fallback_hub: ''
+  request_timeout: 30
+parser: jsonpath
+parser_configuration:
+  context:
+    value: '$.*'
+  source_encoding:
+    - auto
+  display_errors: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: summit_speaker_2025
+  langcode: es
+  insert_new: 0
+  update_existing: 2
+  update_non_existent: 'entity:unpublish_action:node'
+  skip_hash_check: false
+  skip_validation: false
+  skip_validation_types: {  }
+  authorize: true
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 5
+custom_sources:
+  fullname:
+    value: fullName
+    label: fullName
+    machine_name: fullname
+    type: json
+  tagline:
+    value: tagLine
+    label: tagLine
+    machine_name: tagline
+    type: json
+  profilepicture:
+    value: profilePicture
+    label: profilePicture
+    machine_name: profilepicture
+    type: json
+  id:
+    value: id
+    label: id
+    machine_name: id
+    type: json
+  sessionid:
+    value: 'sessions[*].id'
+    label: sessionId
+    machine_name: sessionid
+    type: json
+  sessionname:
+    value: 'sessions[*].name'
+    label: sessionName
+    machine_name: sessionname
+    type: json
+  bio:
+    value: bio
+    label: bio
+    machine_name: bio
+    type: json
+  year:
+    value: year
+    label: year
+    machine_name: year
+    type: blank
+  title:
+    value: fullName
+    label: fullName
+    machine_name: title
+    type: json
+  biografia:
+    value: 'questionAnswers[?(@.question=="Biografía")].answer'
+    label: biografia
+    machine_name: biografia
+    type: json
+mappings:
+  -
+    target: field_speaker_name
+    map:
+      value: fullname
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_speaker_tagline
+    map:
+      value: tagline
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_speaker_image
+    map:
+      value: profilepicture
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_speaker_id
+    map:
+      value: id
+    settings:
+      language: es
+    unique:
+      value: 1
+  -
+    target: field_speaker_session_id
+    map:
+      value: sessionid
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_speaker_talk_entities
+    map:
+      target_id: sessionname
+    settings:
+      language: es
+      reference_by: title
+      feeds_item: guid
+      autocreate: 0
+      autocreate_bundle: summit_talk_2025
+  -
+    target: field_speaker_bio
+    map:
+      value: bio
+    settings:
+      language: es
+      format: plain_text
+  -
+    target: field_summit_year
+    map:
+      value: year
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: title
+    map:
+      value: title
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_speaker_biografia
+    map:
+      value: biografia
+    settings:
+      language: es
+      format: plain_text

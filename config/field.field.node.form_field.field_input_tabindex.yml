@@ -1,0 +1,23 @@
+uuid: a45f4163-43a8-46d1-812e-0615c36321e3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_tabindex
+    - node.type.form_field
+id: node.form_field.field_input_tabindex
+field_name: field_input_tabindex
+entity_type: node
+bundle: form_field
+label: 'Input tabindex'
+description: 'Enter the tab order of an element (when the "tab" button is used for navigation)'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

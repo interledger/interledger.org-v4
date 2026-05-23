@@ -1,0 +1,21 @@
+uuid: 5591a6ca-5bb3-4a17-8b21-72ddad9553aa
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - node
+    - paragraphs
+id: node.field_social_media_links
+field_name: field_social_media_links
+entity_type: node
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

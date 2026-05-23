@@ -1,0 +1,14 @@
+uuid: facc1a0c-4c28-4994-9c2d-b33b9f130519
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - user.role.admin_support
+  module:
+    - user
+id: user_add_role_action.admin_support
+label: 'Add the Admin Support role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: admin_support

@@ -1,0 +1,21 @@
+uuid: b18d5a05-644f-42b7-9841-8b46c36e3112
+langcode: en-gb
+status: true
+dependencies: {  }
+name: profile_display
+label: 'Profile display'
+effects:
+  da6a4259-7301-4ac8-aada-9d5c66c2d9b0:
+    uuid: da6a4259-7301-4ac8-aada-9d5c66c2d9b0
+    id: image_convert
+    weight: -9
+    data:
+      extension: webp
+  cd2e642c-bf17-4dfe-a79c-8bdf42a6afd7:
+    uuid: cd2e642c-bf17-4dfe-a79c-8bdf42a6afd7
+    id: image_scale_and_crop
+    weight: -10
+    data:
+      width: 350
+      height: 350
+      anchor: center-center

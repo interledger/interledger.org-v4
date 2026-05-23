@@ -1,0 +1,43 @@
+uuid: 9c5b96ce-c3a9-4d26-a713-12854676c540
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.podcast.field_podcast_description
+    - field.field.node.podcast.field_podcast_embed
+    - field.field.node.podcast.field_podcast_series
+    - node.type.podcast
+  module:
+    - options
+    - text
+    - user
+id: node.podcast.default
+targetEntityType: node
+bundle: podcast
+mode: default
+content:
+  field_podcast_description:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_podcast_embed:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_podcast_series:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  langcode: true
+  links: true

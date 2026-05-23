@@ -1,0 +1,97 @@
+uuid: 0b1dcdd7-e132-4c55-a5ac-6263a4537e50
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.article.body
+    - field.field.node.article.field_article_profile
+    - field.field.node.article.field_article_thumbnail
+    - field.field.node.article.field_byline
+    - field.field.node.article.field_feature_image
+    - field.field.node.article.field_gradient_style
+    - field.field.node.article.field_pillar
+    - field.field.node.article.field_tags
+    - image.style.article_thumbnail
+    - node.type.article
+  module:
+    - ds
+    - media
+    - taxonomy
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_reset
+      library: null
+      disable_css: false
+      entity_classes: no_classes
+      settings:
+        classes:
+          layout_class: {  }
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        label: ''
+    regions:
+      ds_content:
+        - field_article_thumbnail
+        - body
+        - field_tags
+        - node_link
+    fields:
+      node_link:
+        plugin_id: node_link
+        weight: 3
+        label: hidden
+        formatter: default
+        settings:
+          'link text': 'Read more'
+          'link class': ''
+          wrapper: ''
+          class: ''
+_core:
+  default_config_hash: 83jX5ChAGdMzOxiDA_B1NjgebVMuD8lNVDgClg_QVP8
+id: node.article.teaser
+targetEntityType: node
+bundle: article
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 1
+    region: ds_content
+  field_article_thumbnail:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: article_thumbnail
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: ds_content
+  field_tags:
+    type: entity_reference_rss_category
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: ds_content
+hidden:
+  field_article_profile: true
+  field_byline: true
+  field_feature_image: true
+  field_gradient_style: true
+  field_pillar: true
+  langcode: true
+  links: true

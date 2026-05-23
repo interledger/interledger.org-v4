@@ -1,0 +1,33 @@
+uuid: 74335b3a-ea97-42e1-9b94-3ffe2261aef8
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: spanish_2025_summit_speaker_slugs
+label: 'Spanish 2025 Summit speaker slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2025/speaker/[node:title]'
+selection_criteria:
+  05b46b01-18b3-4db7-bd1d-a7c44692631e:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 05b46b01-18b3-4db7-bd1d-a7c44692631e
+    context_mapping:
+      node: node
+    bundles:
+      summit_speaker_2025: summit_speaker_2025
+  e8d5ef78-21b1-43eb-8c51-25ae95203982:
+    id: language
+    negate: false
+    uuid: e8d5ef78-21b1-43eb-8c51-25ae95203982
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language
