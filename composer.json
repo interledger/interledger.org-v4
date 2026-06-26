@@ -21,7 +21,7 @@
         "drupal/conditional_fields": "4.0.0-alpha6",
         "drupal/core-composer-scaffold": "^11.1",
         "drupal/core-project-message": "^11.1",
-        "drupal/core-recommended": "^10.6.7",
+        "drupal/core-recommended": "^10.6.11",
         "drupal/ds": "^3.37.0",
         "drupal/entity_block": "^2.0.1",
         "drupal/feeds": "^3.2.0",
@@ -68,7 +68,7 @@
         },
         "patches": {
             "drupal/core": {
-                "[PP-1] Use hook_theme_suggestions in views": "https://www.drupal.org/files/issues/2023-06-12/2923634-92.patch"
+                "[PP-1] Use hook_theme_suggestions in views": "https://www.drupal.org/files/issues/2026-05-21/2923634-122.patch"
             }
         },
         "drupal-scaffold": {
