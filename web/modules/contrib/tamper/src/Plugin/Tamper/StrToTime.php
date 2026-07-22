@@ -2,8 +2,11 @@
 
 namespace Drupal\tamper\Plugin\Tamper;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
@@ -13,19 +16,28 @@ use Drupal\tamper\TamperableItemInterface;
  * Please note that the presence of the timezone in the input string is
  * important for this plugin to function consistently if the system is not
  * configured to use UTC by default.
- *
- * @Tamper(
- *   id = "strtotime",
- *   label = @Translation("String to Unix Timestamp"),
- *   description = @Translation("This will take a string containing an English date format and convert it into a Unix Timestamp."),
- *   category = @Translation("Date/time"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'strtotime',
+  label: new TranslatableMarkup('String to Unix Timestamp'),
+  description: new TranslatableMarkup('This will take a string containing an English date format and convert it into a Unix Timestamp.'),
+  category: new TranslatableMarkup('Date/time'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class StrToTime extends TamperBase {
 
   const SETTING_DATE_FORMAT = 'date_format';
   const SETTING_FALLBACK = 'fallback';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration(): array {
+    return [
+      static::SETTING_DATE_FORMAT => '',
+      static::SETTING_FALLBACK => FALSE,
+    ] + parent::defaultConfiguration();
+  }
 
   /**
    * {@inheritdoc}
@@ -42,8 +54,8 @@ class StrToTime extends TamperBase {
     ];
     $form[static::SETTING_FALLBACK] = [
       '#type' => 'checkbox',
-      '#title' => t('Fallback to strtotime() if the date could not be parsed with the provided date format.'),
-      '#default_value' => $this->getSetting(static::SETTING_FALLBACK),
+      '#title' => $this->t('Fallback to strtotime() if the date could not be parsed with the provided date format.'),
+      '#default_value' => $this->getSetting(static::SETTING_FALLBACK) ?? FALSE,
       '#states' => [
         'visible' => [
           'input[name="plugin_configuration[date_format]"]' => ['filled' => TRUE],
@@ -67,9 +79,9 @@ class StrToTime extends TamperBase {
       ]);
     }
     else {
-      // Remove the setting if it's not configured.
-      unset($this->configuration[static::SETTING_DATE_FORMAT]);
-      unset($this->configuration[static::SETTING_FALLBACK]);
+      // Set settings back to the default.
+      $this->configuration[static::SETTING_DATE_FORMAT] = '';
+      $this->configuration[static::SETTING_FALLBACK] = FALSE;
     }
   }
 
@@ -86,7 +98,8 @@ class StrToTime extends TamperBase {
       throw new TamperException('Input should be a string.');
     }
 
-    if ($date_format = $this->getSetting(static::SETTING_DATE_FORMAT)) {
+    $date_format = $this->getSetting(static::SETTING_DATE_FORMAT);
+    if (is_string($date_format) && strlen($date_format) > 0) {
       try {
         return $this->convertFromFormat($data, $date_format);
       }

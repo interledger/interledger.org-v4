@@ -4,20 +4,22 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the Truncate Text plugin.
- *
- * @Tamper(
- *   id = "truncate_text",
- *   label = @Translation("Truncate"),
- *   description = @Translation("Truncate"),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'truncate_text',
+  label: new TranslatableMarkup('Truncate'),
+  description: new TranslatableMarkup('Truncate'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class TruncateText extends TamperBase {
 
   const SETTING_NUM_CHAR = 'num_char';

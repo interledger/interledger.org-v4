@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for stripping tags.
- *
- * @Tamper(
- *   id = "strip_tags",
- *   label = @Translation("Strip tags"),
- *   description = @Translation("Strip tags."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'strip_tags',
+  label: new TranslatableMarkup('Strip tags'),
+  description: new TranslatableMarkup('Strip tags.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class StripTags extends TamperBase {
 
   const SETTING_ALLOWED_TAGS = 'allowed_tags';

@@ -3,22 +3,24 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\SkipTamperItemException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for required values.
- *
- * @Tamper(
- *   id = "required",
- *   label = @Translation("Required"),
- *   description = @Translation("Make this field required. If it is empty, the item will not be processed."),
- *   category = @Translation("Filter"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'required',
+  label: new TranslatableMarkup('Required'),
+  description: new TranslatableMarkup('Make this field required. If it is empty, the item will not be processed.'),
+  category: new TranslatableMarkup('Filter'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Required extends TamperBase {
 
   const SETTING_INVERT = 'invert';

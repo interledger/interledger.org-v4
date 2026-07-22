@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the Str Pos plugin.
- *
- * @Tamper(
- *   id = "str_pos",
- *   label = @Translation("Get position of sub-string"),
- *   description = @Translation("Get the position of a sub-string in a string"),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'str_pos',
+  label: new TranslatableMarkup('Get position of sub-string'),
+  description: new TranslatableMarkup('Get the position of a sub-string in a string'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class StrPos extends TamperBase {
 
   const SETTING_SUBSTRING = 'substring';

@@ -3,22 +3,24 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for aggregating values.
- *
- * @Tamper(
- *   id = "aggregate",
- *   label = @Translation("Aggregate"),
- *   description = @Translation("Aggregates data, such as picking the maximum value."),
- *   category = @Translation("Number"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'aggregate',
+  label: new TranslatableMarkup('Aggregate'),
+  description: new TranslatableMarkup('Aggregates data, such as picking the maximum value.'),
+  category: new TranslatableMarkup('Number'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Aggregate extends TamperBase {
 
   const SETTING_FUNCTION = 'function';

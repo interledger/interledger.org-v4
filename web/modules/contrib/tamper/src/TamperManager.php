@@ -25,28 +25,14 @@ class TamperManager extends DefaultPluginManager implements TamperManagerInterfa
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    // Check if there is support for attributed plugins.
-    // @todo Remove BC layer when dropping support for Drupal < 10.2.0.
-    if (!class_exists('\Drupal\Component\Plugin\Attribute\Plugin')) {
-      // No attribute support yet.
-      parent::__construct(
-        'Plugin/Tamper',
-        $namespaces,
-        $module_handler,
-        'Drupal\tamper\TamperInterface',
-        'Drupal\tamper\Annotation\Tamper',
-      );
-    }
-    else {
-      parent::__construct(
-        'Plugin/Tamper',
-        $namespaces,
-        $module_handler,
-        'Drupal\tamper\TamperInterface',
-        'Drupal\tamper\Attribute\Tamper',
-        'Drupal\tamper\Annotation\Tamper',
-      );
-    }
+    parent::__construct(
+      'Plugin/Tamper',
+      $namespaces,
+      $module_handler,
+      'Drupal\tamper\TamperInterface',
+      'Drupal\tamper\Attribute\Tamper',
+      'Drupal\tamper\Annotation\Tamper',
+    );
     $this->alterInfo('tamper_info');
     $this->setCacheBackend($cache_backend, 'tamper_info_plugins');
   }

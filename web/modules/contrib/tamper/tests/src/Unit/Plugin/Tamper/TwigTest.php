@@ -18,18 +18,12 @@ use Twig\Loader\ChainLoader;
 class TwigTest extends TamperPluginTestBase {
 
   /**
-   * The twig environment.
+   * Creates a simple twig environment for testing.
    *
-   * @var \Drupal\Core\Template\TwigEnvironment
+   * @return \Drupal\Core\Template\TwigEnvironment
+   *   The twig environment.
    */
-  protected $twigEnvironment;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
+  protected function createTwigEnvironment(): TwigEnvironment {
     $cache = new NullBackend('twig');
     $twig_extension_hash = 'twig-extension-hash';
     $state = $this->getMockBuilder(StateInterface::class)->getMock();
@@ -38,9 +32,7 @@ class TwigTest extends TamperPluginTestBase {
       // Disable cache.
       'cache' => FALSE,
     ];
-    // Create a simple twig environment.
-    $twig = new TwigEnvironment(DRUPAL_ROOT, $cache, $twig_extension_hash, $state, $loader, $options);
-    $this->plugin->setTwigEnvironment($twig);
+    return new TwigEnvironment(DRUPAL_ROOT, $cache, $twig_extension_hash, $state, $loader, $options);
   }
 
   /**
@@ -68,6 +60,7 @@ class TwigTest extends TamperPluginTestBase {
    */
   protected function instantiatePlugin() {
     $config = [
+      'source_definition' => $this->getMockSourceDefinition(),
       Twig::SETTING_TEMPLATE => <<<EOF
       Title: {{ title }}
       Title (upper): {{ title|upper }}
@@ -84,7 +77,7 @@ class TwigTest extends TamperPluginTestBase {
       _context (source): {{ _tamper_item.getSourceProperty('_context') }}
       EOF,
     ];
-    return new Twig($config, 'twig', [], $this->getMockSourceDefinition());
+    return new Twig($config, 'twig', [], $this->createTwigEnvironment());
   }
 
   /**

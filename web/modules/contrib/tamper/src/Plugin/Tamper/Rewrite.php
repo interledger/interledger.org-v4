@@ -4,23 +4,22 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for rewriting a value.
- *
- * Note: itemUsage is set to "required", but the plugin won't throw an exception
- * if no item is passed. It just doesn't do anything meaningful without it.
- *
- * @Tamper(
- *   id = "rewrite",
- *   label = @Translation("Rewrite"),
- *   description = @Translation("Rewrite a field using tokens."),
- *   category = @Translation("Other"),
- *   itemUsage = "required"
- * )
  */
+#[Tamper(
+  id: 'rewrite',
+  label: new TranslatableMarkup('Rewrite'),
+  description: new TranslatableMarkup('Rewrite a field using tokens.'),
+  category: new TranslatableMarkup('Other'),
+  itemUsage: ItemUsage::REQUIRED,
+)]
 class Rewrite extends TamperBase {
 
   const SETTING_TEXT = 'text';

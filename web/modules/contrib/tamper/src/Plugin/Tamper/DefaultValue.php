@@ -3,20 +3,22 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for setting a value or default value.
- *
- * @Tamper(
- *   id = "default_value",
- *   label = @Translation("Set value or default value"),
- *   description = @Translation("Set value or default value."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'default_value',
+  label: new TranslatableMarkup('Set value or default value'),
+  description: new TranslatableMarkup('Set value or default value.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class DefaultValue extends TamperBase {
 
   const SETTING_DEFAULT_VALUE = 'default_value';

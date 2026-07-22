@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the Find replace REGEX plugin.
- *
- * @Tamper(
- *   id = "find_replace_regex",
- *   label = @Translation("Find replace REGEX"),
- *   description = @Translation("Find replace REGEX"),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'find_replace_regex',
+  label: new TranslatableMarkup('Find replace REGEX'),
+  description: new TranslatableMarkup('Find replace REGEX'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class FindReplaceRegex extends TamperBase {
 
   const SETTING_FIND = 'find';

@@ -10,25 +10,25 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\tamper\SourceDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Plugin implementation of the entity finder plugin.
- *
- * @Tamper(
- *   id = "entity_finder",
- *   label = @Translation("Entity Finder"),
- *   description = @Translation("Finds an entity based on columns and fields. Returns the ID of the entity."),
- *   category = @Translation("Other"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
-class EntityFinder extends TamperBase implements ContainerFactoryPluginInterface {
+#[Tamper(
+  id: 'entity_finder',
+  label: new TranslatableMarkup('Entity Finder'),
+  description: new TranslatableMarkup('Finds an entity based on columns and fields. Returns the ID of the entity.'),
+  category: new TranslatableMarkup('Other'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
+class EntityFinder extends TamperBase {
 
   const SETTING_ENTITY_TYPE = 'entity_type';
   const SETTING_BUNDLE = 'bundle';
@@ -65,8 +65,6 @@ class EntityFinder extends TamperBase implements ContainerFactoryPluginInterface
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\tamper\SourceDefinitionInterface $source_definition
-   *   A definition of which sources there are that Tamper plugins can use.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
@@ -74,26 +72,21 @@ class EntityFinder extends TamperBase implements ContainerFactoryPluginInterface
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, SourceDefinitionInterface $source_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityFieldManagerInterface $entity_field_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $source_definition);
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    #[Autowire(service: 'entity_type.manager')]
+    EntityTypeManagerInterface $entity_type_manager,
+    #[Autowire(service: 'entity_type.bundle.info')]
+    EntityTypeBundleInfoInterface $entity_type_bundle_info,
+    #[Autowire(service: 'entity_field.manager')]
+    EntityFieldManagerInterface $entity_field_manager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->entityFieldManager = $entity_field_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $configuration['source_definition'],
-      $container->get('entity_type.manager'),
-      $container->get('entity_type.bundle.info'),
-      $container->get('entity_field.manager'),
-    );
   }
 
   /**

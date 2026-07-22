@@ -79,12 +79,13 @@ class EntityFinderTest extends TamperPluginTestBase {
    */
   protected function instantiatePlugin() {
     $config = [
+      'source_definition' => $this->getMockSourceDefinition(),
       EntityFinder::SETTING_ENTITY_TYPE => 'entity_test',
       EntityFinder::SETTING_BUNDLE => 'entity_test',
       EntityFinder::SETTING_FIELD => 'name',
     ];
 
-    return new EntityFinder($config, 'default_value', [], $this->getMockSourceDefinition(), $this->entityTypeManager->reveal(), $this->entityTypeBundleInfo->reveal(), $this->entityFieldManager->reveal());
+    return new EntityFinder($config, 'default_value', [], $this->entityTypeManager->reveal(), $this->entityTypeBundleInfo->reveal(), $this->entityFieldManager->reveal());
   }
 
   /**

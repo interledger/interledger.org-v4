@@ -4,6 +4,7 @@ namespace Drupal\tamper_test\Plugin\Tamper;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
@@ -16,7 +17,7 @@ use Drupal\tamper\TamperableItemInterface;
   description: new TranslatableMarkup("Used for testing if this plugin is found by \\Drupal\\tamper\\TamperManager."),
   category: new TranslatableMarkup('Other'),
   handle_multiples: TRUE,
-  itemUsage: 'ignored',
+  itemUsage: ItemUsage::IGNORED,
 )]
 class AttributeTamperPlugin extends TamperBase {
 

@@ -5,6 +5,7 @@ namespace Drupal\Tests\tamper\Kernel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\tamper\TamperManager;
+use Drupal\tamper_test\Plugin\Tamper\AnnotateTamperPlugin;
 use Drupal\tamper_test\Plugin\Tamper\AttributeTamperPlugin;
 
 /**
@@ -37,13 +38,28 @@ class TamperManagerTest extends KernelTestBase {
   }
 
   /**
+   * Tests if Tamper plugins defined with annotation can be found.
+   */
+  public function testFindAnnotatedPlugins() {
+    $definitions = $this->pluginManager->getDefinitions();
+
+    $expected = [
+      'id' => 'annotate_tamper',
+      'label' => new TranslatableMarkup('Annotate Tamper plugin'),
+      'description' => new TranslatableMarkup('Used for testing if this plugin is found by TamperManager.'),
+      'category' => new TranslatableMarkup('Other'),
+      'handle_multiples' => TRUE,
+      'itemUsage' => 'ignored',
+      'provider' => 'tamper_test',
+      'class' => AnnotateTamperPlugin::class,
+    ];
+    $this->assertEquals($expected, $definitions['annotate_tamper']);
+  }
+
+  /**
    * Tests if Tamper plugins defined with attributes can be found.
    */
   public function testFindAttributedPlugins() {
-    if (!class_exists('\Drupal\Component\Plugin\Attribute\Plugin')) {
-      // No need to execute test.
-      $this->markTestSkipped('Attribute-plugins are not supported in Drupal 9.');
-    }
     $definitions = $this->pluginManager->getDefinitions();
 
     $expected = [
@@ -56,6 +72,9 @@ class TamperManagerTest extends KernelTestBase {
       'provider' => 'tamper_test',
       'class' => AttributeTamperPlugin::class,
     ];
+    // Attribute discovery adds a 'dependencies' key listing the plugin's class
+    // hierarchy (added in drupal:11.3.0). It is not relevant to this test.
+    unset($definitions['attribute_tamper']['dependencies']);
     $this->assertEquals($expected, $definitions['attribute_tamper']);
   }
 

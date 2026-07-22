@@ -3,22 +3,24 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tamper\Exception\MissingItemException;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperableItemInterface;
 use Drupal\tamper\TamperBase;
 
 /**
  * Plugin implementation for absolute url.
- *
- * @Tamper(
- *   id = "absolute_url",
- *   label = @Translation("Make URLs absolute"),
- *   description = @Translation("Make URLs in markup absolute. (i.e. href='/stuff/things' to href='http://example.com/stuff/things)."),
- *   category = @Translation("HTML"),
- *   itemUsage = "required"
- * )
  */
+#[Tamper(
+  id: 'absolute_url',
+  label: new TranslatableMarkup('Make URLs absolute'),
+  description: new TranslatableMarkup('Make URLs in markup absolute. (i.e. href="/stuff/things" to href="http://example.com/stuff/things").'),
+  category: new TranslatableMarkup('HTML'),
+  itemUsage: ItemUsage::REQUIRED,
+)]
 class AbsoluteUrl extends TamperBase {
 
   const SETTING_SOURCE = 'base_url_source';

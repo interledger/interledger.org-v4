@@ -269,7 +269,6 @@ class EncodeTest extends TamperPluginTestBase {
   public function testErrorOnCallbackNotDefined() {
     $class = new \ReflectionClass(Encode::class);
     $method = $class->getMethod('applyEncode');
-    $method->setAccessible(TRUE);
     $closure = $method->getClosure($this->plugin);
 
     $this->expectException(\LogicException::class);

@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for converting case.
- *
- * @Tamper(
- *   id = "convert_case",
- *   label = @Translation("Convert case"),
- *   description = @Translation("Convert case."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'convert_case',
+  label: new TranslatableMarkup('Convert case'),
+  description: new TranslatableMarkup('Convert case.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class ConvertCase extends TamperBase {
 
   const SETTING_OPERATION = 'operation';

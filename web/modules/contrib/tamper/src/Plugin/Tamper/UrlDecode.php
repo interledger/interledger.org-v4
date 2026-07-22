@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for url decode.
- *
- * @Tamper(
- *   id = "url_decode",
- *   label = @Translation("URL Decode"),
- *   description = @Translation("Run values through the <a href='http://us3.php.net/urldecode'>urldecode()</a> function."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'url_decode',
+  label: new TranslatableMarkup('URL Decode'),
+  description: new TranslatableMarkup('Run values through the <a href="http://us3.php.net/urldecode">urldecode()</a> function.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class UrlDecode extends TamperBase {
 
   const SETTING_METHOD = 'method';

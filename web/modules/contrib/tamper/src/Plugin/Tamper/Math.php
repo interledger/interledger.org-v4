@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for performing basic math.
- *
- * @Tamper(
- *   id = "math",
- *   label = @Translation("Math"),
- *   description = @Translation("Performs basic mathematical calculations on the imported value."),
- *   category = @Translation("Number"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'math',
+  label: new TranslatableMarkup('Math'),
+  description: new TranslatableMarkup('Performs basic mathematical calculations on the imported value.'),
+  category: new TranslatableMarkup('Number'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Math extends TamperBase {
 
   const SETTING_OPERATION = 'operation';
