@@ -4,22 +4,24 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\SkipTamperItemException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for filtering based on a list of words/phrases.
- *
- * @Tamper(
- *   id = "keyword_filter",
- *   label = @Translation("Keyword filter"),
- *   description = @Translation("Filter based on a list of words/phrases."),
- *   category = @Translation("Filter"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'keyword_filter',
+  label: new TranslatableMarkup('Keyword filter'),
+  description: new TranslatableMarkup('Filter based on a list of words/phrases.'),
+  category: new TranslatableMarkup('Filter'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
 class KeywordFilter extends TamperBase {
 
   /**

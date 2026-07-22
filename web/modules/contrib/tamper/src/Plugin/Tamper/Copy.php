@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\MissingItemException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the copy plugin.
- *
- * @Tamper(
- *   id = "copy",
- *   label = @Translation("Copy"),
- *   description = @Translation("Copy value from one source to another."),
- *   category = @Translation("Other"),
- *   itemUsage = "required"
- * )
  */
+#[Tamper(
+  id: 'copy',
+  label: new TranslatableMarkup('Copy'),
+  description: new TranslatableMarkup('Copy value from one source to another.'),
+  category: new TranslatableMarkup('Other'),
+  itemUsage: ItemUsage::REQUIRED,
+)]
 class Copy extends TamperBase {
 
   const SETTING_TO_FROM = 'to_from';

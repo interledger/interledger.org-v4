@@ -4,23 +4,25 @@ namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Plugin implementation for encoding / decoding.
- *
- * @Tamper(
- *   id = "encode",
- *   label = @Translation("Encode/Decode"),
- *   description = @Translation("Encode (or Decode) the field contents."),
- *   category = @Translation("Text"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'encode',
+  label: new TranslatableMarkup('Encode/Decode'),
+  description: new TranslatableMarkup('Encode (or Decode) the field contents.'),
+  category: new TranslatableMarkup('Text'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Encode extends TamperBase {
 
   const SETTING_MODE = 'mode';

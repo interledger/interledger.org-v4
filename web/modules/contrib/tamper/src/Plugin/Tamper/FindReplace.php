@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the find_replace plugin.
- *
- * @Tamper(
- *   id = "find_replace",
- *   label = @Translation("Find replace"),
- *   description = @Translation("Find and replace text"),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'find_replace',
+  label: new TranslatableMarkup('Find replace'),
+  description: new TranslatableMarkup('Find and replace text'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class FindReplace extends TamperBase {
 
   const SETTING_FIND = 'find';

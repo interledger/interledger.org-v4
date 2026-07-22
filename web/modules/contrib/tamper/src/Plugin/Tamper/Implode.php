@@ -3,22 +3,24 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the implode plugin.
- *
- * @Tamper(
- *   id = "implode",
- *   label = @Translation("Implode"),
- *   description = @Translation("Converts an array to a string."),
- *   category = @Translation("List"),
- *   handle_multiples = TRUE,
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'implode',
+  label: new TranslatableMarkup('Implode'),
+  description: new TranslatableMarkup('Converts an array to a string.'),
+  category: new TranslatableMarkup('List'),
+  handle_multiples: TRUE,
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Implode extends TamperBase {
 
   const SETTING_GLUE = 'glue';

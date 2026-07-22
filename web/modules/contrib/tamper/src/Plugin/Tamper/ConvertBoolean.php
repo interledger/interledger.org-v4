@@ -3,20 +3,22 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for converting text value to boolean value.
- *
- * @Tamper(
- *   id = "convert_boolean",
- *   label = @Translation("Convert to Boolean"),
- *   description = @Translation("Convert to boolean."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'convert_boolean',
+  label: new TranslatableMarkup('Convert to Boolean'),
+  description: new TranslatableMarkup('Convert to boolean.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class ConvertBoolean extends TamperBase {
 
   const SETTING_TRUTH_VALUE = 'true_value';

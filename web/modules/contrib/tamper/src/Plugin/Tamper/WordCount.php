@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the Word Count plugin.
- *
- * @Tamper(
- *   id = "word_count",
- *   label = @Translation("Get number of words"),
- *   description = @Translation("Get the number of words in a string"),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'word_count',
+  label: new TranslatableMarkup('Get number of words'),
+  description: new TranslatableMarkup('Get the number of words in a string'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class WordCount extends TamperBase {
 
   const SETTING_LIMIT = 'limit';

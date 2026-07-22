@@ -3,20 +3,22 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the hash plugin.
- *
- * @Tamper(
- *   id = "hash",
- *   label = @Translation("Hash"),
- *   description = @Translation("Makes the value a hash of the values of item being tampered."),
- *   category = @Translation("Other"),
- *   itemUsage = "optional"
- * )
  */
+#[Tamper(
+  id: 'hash',
+  label: new TranslatableMarkup('Hash'),
+  description: new TranslatableMarkup('Makes the value a hash of the values of item being tampered.'),
+  category: new TranslatableMarkup('Other'),
+  itemUsage: ItemUsage::OPTIONAL,
+)]
 class Hash extends TamperBase {
 
   const SETTING_DATA_TO_HASH = 'data_to_hash';

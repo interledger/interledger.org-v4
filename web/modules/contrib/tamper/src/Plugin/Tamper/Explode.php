@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation of the explode plugin.
- *
- * @Tamper(
- *   id = "explode",
- *   label = @Translation("Explode"),
- *   description = @Translation("Break up sequenced data into an array"),
- *   category = @Translation("List"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'explode',
+  label: new TranslatableMarkup('Explode'),
+  description: new TranslatableMarkup('Break up sequenced data into an array'),
+  category: new TranslatableMarkup('List'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class Explode extends TamperBase {
 
   const SETTING_SEPARATOR = 'separator';

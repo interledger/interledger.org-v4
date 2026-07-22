@@ -24,7 +24,10 @@ class TransliterationTest extends TamperPluginTestBase {
    * {@inheritdoc}
    */
   protected function instantiatePlugin() {
-    return new Transliteration([], 'transliteration', [], $this->getMockSourceDefinition(), $this->transliteration);
+    $config = [
+      'source_definition' => $this->getMockSourceDefinition(),
+    ];
+    return new Transliteration($config, 'transliteration', [], $this->transliteration);
   }
 
   /**
@@ -42,7 +45,7 @@ class TransliterationTest extends TamperPluginTestBase {
     $original = '90000012345678_Jäätelöä_Åbo_Spøgelsesjægerne_Günther_áé';
     $expected = '90000012345678_Jaateloa_Abo_Spogelsesjaegerne_Gunther_ae';
 
-    $plugin = new Transliteration([], 'transliteration', [], $this->getMockSourceDefinition(), $this->transliteration);
+    $plugin = $this->instantiatePlugin();
     $this->assertEquals($expected, $plugin->tamper($original));
   }
 

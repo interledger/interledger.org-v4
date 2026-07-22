@@ -2,21 +2,23 @@
 
 namespace Drupal\tamper\Plugin\Tamper;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * Plugin implementation for html entity decode.
- *
- * @Tamper(
- *   id = "html_entity_decode",
- *   label = @Translation("HTML entity decode"),
- *   description = @Translation("Convert all HTML entities such as &amp;amp; and &amp;quot; to &amp; and &quot;."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'html_entity_decode',
+  label: new TranslatableMarkup('HTML entity decode'),
+  description: new TranslatableMarkup('Convert all HTML entities such as &amp;amp; and &amp;quot; to &amp; and &quot;.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class HtmlEntityDecode extends TamperBase {
 
   /**

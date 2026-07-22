@@ -3,21 +3,23 @@
 namespace Drupal\tamper\Plugin\Tamper;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\tamper\Attribute\Tamper;
 use Drupal\tamper\Exception\TamperException;
+use Drupal\tamper\ItemUsage;
 use Drupal\tamper\TamperBase;
 use Drupal\tamper\TamperableItemInterface;
 
 /**
  * A plugin for performing a multiline search/replace.
- *
- * @Tamper(
- *   id = "find_replace_multiline",
- *   label = @Translation("Find replace (multiline)"),
- *   description = @Translation("Find and replace text, with multiple search/replacement patterns defined together."),
- *   category = @Translation("Text"),
- *   itemUsage = "ignored"
- * )
  */
+#[Tamper(
+  id: 'find_replace_multiline',
+  label: new TranslatableMarkup('Find replace (multiline)'),
+  description: new TranslatableMarkup('Find and replace text, with multiple search/replacement patterns defined together.'),
+  category: new TranslatableMarkup('Text'),
+  itemUsage: ItemUsage::IGNORED,
+)]
 class FindReplaceMultiline extends TamperBase {
 
   const SETTING_FIND_REPLACE = 'find_replace';

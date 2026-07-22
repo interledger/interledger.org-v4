@@ -24,14 +24,20 @@ class StrToTimeTest extends TamperPluginTestBase {
     return [
       'no values' => [
         // There should be no 'date_format' setting set if the format is empty.
-        'expected' => [],
+        'expected' => [
+          'date_format' => '',
+          'fallback' => FALSE,
+        ],
         'edit' => [
           'date_format' => '',
         ],
       ],
       'ignore fallback without date_format' => [
         // Fallback should be ignored if no date format was set.
-        'expected' => [],
+        'expected' => [
+          'date_format' => '',
+          'fallback' => FALSE,
+        ],
         'edit' => [
           'date_format' => '',
           'fallback' => '1',

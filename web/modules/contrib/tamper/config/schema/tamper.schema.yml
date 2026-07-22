@@ -54,6 +54,12 @@ tamper.url_decode:
       type: string
       label: 'Decode method'
 
+tamper.dateoffset:
+  mapping:
+    date_offset:
+      type: string
+      label: 'Date offset'
+
 tamper.default_value:
   mapping:
     default_value:
@@ -264,6 +270,12 @@ tamper.strtotime:
     fallback:
       type: boolean
       label: 'Fallback to strtotime() if the date could not be parsed.'
+
+tamper.timeoffset:
+  mapping:
+    timezone:
+      type: string
+      label: 'Timezone offset'
 
 tamper.trim:
   mapping:
