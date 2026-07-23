@@ -1,0 +1,20 @@
+uuid: e68b68f3-ec93-4445-9a0a-6556f7bb1f03
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_blockquote
+field_name: field_blockquote
+entity_type: node
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

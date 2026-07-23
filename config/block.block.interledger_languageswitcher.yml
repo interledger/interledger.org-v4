@@ -1,0 +1,20 @@
+uuid: 32d3b0af-ff4c-4244-82f1-ce2e15e61f50
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+  theme:
+    - interledger
+id: interledger_languageswitcher
+theme: interledger
+region: header
+weight: -2
+provider: null
+plugin: 'language_block:language_interface'
+settings:
+  id: 'language_block:language_interface'
+  label: 'Language switcher'
+  label_display: '0'
+  provider: language
+visibility: {  }

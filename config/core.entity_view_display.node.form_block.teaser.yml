@@ -1,0 +1,41 @@
+uuid: d80d38b2-57d6-4614-9a50-ade330279667
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.form_block.field_form_class
+    - field.field.node.form_block.field_form_heading
+    - field.field.node.form_block.field_form_heading_image
+    - field.field.node.form_block.field_form_id
+    - field.field.node.form_block.field_form_link
+    - field.field.node.form_block.field_form_name
+    - field.field.node.form_block.field_form_novalidate
+    - field.field.node.form_block.field_form_target
+    - field.field.node.form_block.field_form_text
+    - field.field.node.form_block.field_input_field
+    - node.type.form_block
+  module:
+    - user
+id: node.form_block.teaser
+targetEntityType: node
+bundle: form_block
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_form_class: true
+  field_form_heading: true
+  field_form_heading_image: true
+  field_form_id: true
+  field_form_link: true
+  field_form_name: true
+  field_form_novalidate: true
+  field_form_target: true
+  field_form_text: true
+  field_input_field: true
+  langcode: true

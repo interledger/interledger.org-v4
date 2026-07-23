@@ -1,0 +1,42 @@
+uuid: ffd18735-cef7-4665-bab0-a087f77a1fb4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.event_card.field_event_card_border
+    - field.field.node.event_card.field_event_item
+    - node.type.event_card
+  module:
+    - entity_reference_revisions
+    - user
+id: node.event_card.default
+targetEntityType: node
+bundle: event_card
+mode: default
+content:
+  field_event_card_border:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_event_item:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

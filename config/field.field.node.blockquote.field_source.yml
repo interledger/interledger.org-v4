@@ -1,0 +1,24 @@
+uuid: cb2e436a-09df-4ce4-9a35-591c1516296d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_source
+    - filter.format.basic_html
+    - node.type.blockquote
+  module:
+    - text
+id: node.blockquote.field_source
+field_name: field_source
+entity_type: node
+bundle: blockquote
+label: Source
+description: 'Enter the source of this quote'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text

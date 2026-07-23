@@ -1,0 +1,31 @@
+uuid: 598f3d0d-51d5-4282-85a3-246bcba36a1c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.split_card.field_split_card_blurb
+    - field.field.node.split_card.field_split_card_image
+    - field.field.node.split_card.field_split_card_link
+    - field.field.node.split_card.field_split_card_title
+    - field.field.node.split_card.field_split_card_umami
+    - node.type.split_card
+  module:
+    - user
+id: node.split_card.teaser
+targetEntityType: node
+bundle: split_card
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_split_card_blurb: true
+  field_split_card_image: true
+  field_split_card_link: true
+  field_split_card_title: true
+  field_split_card_umami: true
+  langcode: true

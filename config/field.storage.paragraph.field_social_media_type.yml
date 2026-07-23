@@ -1,0 +1,36 @@
+uuid: 89d5d3f5-0e6c-4de0-9722-18416e418ae4
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_social_media_type
+field_name: field_social_media_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: LinkedIn
+      label: LinkedIn
+    -
+      value: GitHub
+      label: GitHub
+    -
+      value: Mastadon
+      label: Mastadon
+    -
+      value: Twitter
+      label: Twitter
+    -
+      value: Instagram
+      label: Instagram
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

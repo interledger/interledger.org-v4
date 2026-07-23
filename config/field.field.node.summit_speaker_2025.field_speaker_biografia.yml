@@ -1,0 +1,24 @@
+uuid: 3c4b73e9-2e6b-4a84-8455-360491b8e7e5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_biografia
+    - filter.format.basic_html
+    - node.type.summit_speaker_2025
+  module:
+    - text
+id: node.summit_speaker_2025.field_speaker_biografia
+field_name: field_speaker_biografia
+entity_type: node
+bundle: summit_speaker_2025
+label: 'Speaker biografia'
+description: 'Pulls `biografía` from https://sessionize.com/api/v2/ts62m835/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

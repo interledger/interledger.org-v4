@@ -1,0 +1,19 @@
+uuid: 674b17fb-1e17-452d-8e5f-4f5d3f756f22
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_split_card_title
+    - node.type.split_card
+id: node.split_card.field_split_card_title
+field_name: field_split_card_title
+entity_type: node
+bundle: split_card
+label: 'Split card title'
+description: 'Provide a title for this card'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

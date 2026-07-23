@@ -1,0 +1,33 @@
+uuid: 44017075-0be9-46f1-ba6a-e8af968311c0
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: spanish_page_slugs
+label: 'Spanish Page slugs'
+type: 'canonical_entities:node'
+pattern: '[node:title]'
+selection_criteria:
+  372d2cd7-44e3-407d-acab-1430e66b5cbc:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 372d2cd7-44e3-407d-acab-1430e66b5cbc
+    context_mapping:
+      node: node
+    bundles:
+      page: page
+  16390fa6-dbd7-4f64-af87-2a02c2e21cfc:
+    id: language
+    negate: false
+    uuid: 16390fa6-dbd7-4f64-af87-2a02c2e21cfc
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language

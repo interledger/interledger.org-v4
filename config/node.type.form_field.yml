@@ -1,0 +1,17 @@
+uuid: 03d5fb00-d604-4f48-a7c4-12b88fcd7eee
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Form Field'
+type: form_field
+description: 'A form field component allows the creation of individual form inputs such as text, email, and number fields. Each form field can be customized with a label, input type, placeholder text, required status, etc. Use this content type to build forms by adding them to the Form Block content type.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

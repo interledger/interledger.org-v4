@@ -1,0 +1,19 @@
+uuid: b1cc518c-fe51-4ccb-828c-b1978e20c47a
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_footer_notes
+field_name: field_footer_notes
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: 52bd2c4a-de32-4380-96ce-ef661bc0caad
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_input_id
+    - node.type.radio_field
+id: node.radio_field.field_input_id
+field_name: field_input_id
+entity_type: node
+bundle: radio_field
+label: 'Input id'
+description: 'Enter the ID of the form input field'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

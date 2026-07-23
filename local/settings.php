@@ -71,7 +71,7 @@ if (getenv('DRUPAL_DB_HOST')) {
   ];
 
   // Configuration sync directory
-  $settings['config_sync_directory'] = '/var/drupal/files/config';
+  $settings['config_sync_directory'] = '/var/www/html/config';
 
   // Hash salt for security
   $settings['hash_salt'] = 'docker-development-salt-change-in-production';

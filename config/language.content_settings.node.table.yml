@@ -1,0 +1,18 @@
+uuid: a22d4a87-ba93-4024-a8f1-45c6ed582f6d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.table
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.table
+target_entity_type_id: node
+target_bundle: table
+default_langcode: site_default
+language_alterable: true

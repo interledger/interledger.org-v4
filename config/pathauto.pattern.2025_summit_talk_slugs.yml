@@ -1,0 +1,33 @@
+uuid: a19b41c6-c94e-4d40-ab23-04aeecdd814d
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - language
+    - node
+id: 2025_summit_talk_slugs
+label: '2025 Summit talk slugs'
+type: 'canonical_entities:node'
+pattern: 'summit/2025/talk/[node:title]'
+selection_criteria:
+  36ea2814-be82-45f1-b480-c7983aeb24a8:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 36ea2814-be82-45f1-b480-c7983aeb24a8
+    context_mapping:
+      node: node
+    bundles:
+      summit_talk_2025: summit_talk_2025
+  1befc140-3a35-4d52-b335-0f2d36eba313:
+    id: language
+    negate: false
+    uuid: 1befc140-3a35-4d52-b335-0f2d36eba313
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      en-gb: en-gb
+selection_logic: and
+weight: -5
+relationships:
+  'node:langcode:language':
+    label: Language

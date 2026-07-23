@@ -1,0 +1,21 @@
+uuid: 7cb647da-11d8-4850-95be-9ea70bc7074b
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hero_text_colour
+    - node.type.hero_banner
+id: node.hero_banner.field_hero_text_colour
+field_name: field_hero_text_colour
+entity_type: node
+bundle: hero_banner
+label: 'Hero text colour'
+description: 'Enter the colour code of the colour you want the hero text to be. The value must be recognised by CSS.'
+required: false
+translatable: true
+default_value:
+  -
+    value: '#fff'
+default_value_callback: ''
+settings: {  }
+field_type: string

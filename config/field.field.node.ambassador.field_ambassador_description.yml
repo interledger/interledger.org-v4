@@ -1,0 +1,26 @@
+uuid: 81fa2895-bcfd-40a3-9ce0-63e668fbd7bc
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ambassador_description
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.ambassador
+  module:
+    - text
+id: node.ambassador.field_ambassador_description
+field_name: field_ambassador_description
+entity_type: node
+bundle: ambassador
+label: 'Ambassador description'
+description: 'Provide a bio for the ambassador. Please keep to 180 characters thereabouts.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text_long

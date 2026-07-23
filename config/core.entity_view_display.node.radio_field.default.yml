@@ -1,0 +1,47 @@
+uuid: 1bf3307c-2368-4e51-b984-e3b9d8a75d3f
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.radio_field.field_input_id
+    - field.field.node.radio_field.field_input_name
+    - field.field.node.radio_field.field_input_value
+    - node.type.radio_field
+  module:
+    - user
+id: node.radio_field.default
+targetEntityType: node
+bundle: radio_field
+mode: default
+content:
+  field_input_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_input_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_input_value:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

@@ -1,0 +1,17 @@
+uuid: 265b436b-bfc5-4cca-ae1e-4c91f0fbc151
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Form Block'
+type: form_block
+description: 'This form collects information via customized fields (e.g. name, email, etc) which can be added as Form Fields content.  A submission button should be created and as a form field entity and added to this form.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

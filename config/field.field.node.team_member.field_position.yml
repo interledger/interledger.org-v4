@@ -1,0 +1,19 @@
+uuid: 059156b9-3dac-4fcb-b431-6bfcfa74bc67
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_position
+    - node.type.team_member
+id: node.team_member.field_position
+field_name: field_position
+entity_type: node
+bundle: team_member
+label: Position
+description: 'Enter the position of the team member'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

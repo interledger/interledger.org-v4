@@ -1,0 +1,17 @@
+uuid: a4450ae4-9fbd-49d7-a281-af2529981b5a
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Summit speaker (2023)'
+type: summit_speaker
+description: 'Used for displaying information about 2023 Summit speakers. Data is pulled from Sessionize (7ueublag).'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

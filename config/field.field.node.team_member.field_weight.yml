@@ -1,0 +1,24 @@
+uuid: 47af3aa3-1993-415f-9f65-ffdf02cd3c89
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_weight
+    - node.type.team_member
+  module:
+    - weight
+id: node.team_member.field_weight
+field_name: field_weight
+entity_type: node
+bundle: team_member
+label: Weight
+description: 'To allow customised sorting of team members. Lower values appear higher on lists'
+required: false
+translatable: true
+default_value:
+  -
+    value: '0'
+default_value_callback: ''
+settings:
+  range: '30'
+field_type: weight

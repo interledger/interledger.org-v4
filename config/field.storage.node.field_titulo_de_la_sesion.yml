@@ -1,0 +1,21 @@
+uuid: 6465416c-5e22-4211-94b8-a8e6d450ec11
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_titulo_de_la_sesion
+field_name: field_titulo_de_la_sesion
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

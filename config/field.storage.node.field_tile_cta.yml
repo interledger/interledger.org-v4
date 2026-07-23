@@ -1,0 +1,19 @@
+uuid: 0dc4dd10-5ff3-4f07-a11d-62d4e02da96d
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_tile_cta
+field_name: field_tile_cta
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

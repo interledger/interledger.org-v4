@@ -1,0 +1,45 @@
+uuid: 576732ba-f50f-45c9-9e7b-dc0058c47728
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_input_type
+field_name: field_input_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: button
+      label: button
+    -
+      value: checkbox
+      label: checkbox
+    -
+      value: email
+      label: email
+    -
+      value: hidden
+      label: hidden
+    -
+      value: number
+      label: number
+    -
+      value: submit
+      label: submit
+    -
+      value: text
+      label: text
+    -
+      value: radio
+      label: radio
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

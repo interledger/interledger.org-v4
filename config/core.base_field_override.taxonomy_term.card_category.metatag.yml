@@ -1,0 +1,20 @@
+uuid: 60ef9924-d1e1-4bd4-ab28-a7f6ed5cb840
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.card_category
+  module:
+    - metatag
+id: taxonomy_term.card_category.metatag
+field_name: metatag
+entity_type: taxonomy_term
+bundle: card_category
+label: 'Metatags (Hidden field for JSON support)'
+description: 'The computed meta tags for the entity.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: metatag_computed

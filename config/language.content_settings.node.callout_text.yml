@@ -1,0 +1,18 @@
+uuid: f3970a87-39a3-40bd-81d1-d8c8dab21477
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - node.type.callout_text
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.callout_text
+target_entity_type_id: node
+target_bundle: callout_text
+default_langcode: site_default
+language_alterable: true

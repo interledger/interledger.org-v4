@@ -1,0 +1,29 @@
+uuid: 0dfe6500-e0c5-44a8-b5c8-7b15a4b6b5d3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.ambassador.field_ambassador_description
+    - field.field.node.ambassador.field_ambassador_grant_report
+    - field.field.node.ambassador.field_ambassador_linkedin
+    - field.field.node.ambassador.field_ambassador_photo
+    - node.type.ambassador
+  module:
+    - user
+id: node.ambassador.teaser
+targetEntityType: node
+bundle: ambassador
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_ambassador_description: true
+  field_ambassador_grant_report: true
+  field_ambassador_linkedin: true
+  field_ambassador_photo: true
+  langcode: true

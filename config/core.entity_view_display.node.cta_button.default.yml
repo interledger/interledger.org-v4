@@ -1,0 +1,43 @@
+uuid: 9c21ee50-dfb1-4b2e-ba67-30395a214c60
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.cta_button.field_cta_link
+    - field.field.node.cta_button.field_umami_event
+    - node.type.cta_button
+  module:
+    - link
+    - user
+id: node.cta_button.default
+targetEntityType: node
+bundle: cta_button
+mode: default
+content:
+  field_cta_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_umami_event:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

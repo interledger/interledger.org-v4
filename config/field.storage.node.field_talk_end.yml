@@ -1,0 +1,20 @@
+uuid: f8bfe84a-871b-4f9a-a720-3c038351b1b7
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_talk_end
+field_name: field_talk_end
+entity_type: node
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

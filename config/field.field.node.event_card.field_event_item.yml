@@ -1,0 +1,43 @@
+uuid: 70b51e35-bdd9-4594-9ed3-1c4a858a8e62
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_item
+    - node.type.event_card
+    - paragraphs.paragraphs_type.event_item
+  module:
+    - entity_reference_revisions
+id: node.event_card.field_event_item
+field_name: field_event_item
+entity_type: node
+bundle: event_card
+label: 'Event Item'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      event_item: event_item
+    negate: 0
+    target_bundles_drag_drop:
+      article_bio:
+        weight: 6
+        enabled: false
+      event_item:
+        weight: 7
+        enabled: true
+      faq:
+        weight: 8
+        enabled: false
+      gradient:
+        weight: 9
+        enabled: false
+      social_media_link:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

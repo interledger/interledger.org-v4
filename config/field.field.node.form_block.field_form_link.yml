@@ -1,0 +1,23 @@
+uuid: e384a30c-0818-4566-85ab-ebcd68da20e8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_link
+    - node.type.form_block
+  module:
+    - link
+id: node.form_block.field_form_link
+field_name: field_form_link
+entity_type: node
+bundle: form_block
+label: 'Form link'
+description: 'Enter the HTML form action attribute that specifies where to post your form data'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 17
+field_type: link

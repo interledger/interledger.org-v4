@@ -1,0 +1,173 @@
+uuid: 10ee8b40-1b0c-4b56-af43-082c956f1fd2
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_talk_2025.field_session_languages
+    - field.field.node.summit_talk_2025.field_summit_year
+    - field.field.node.summit_talk_2025.field_talk_description
+    - field.field.node.summit_talk_2025.field_talk_end
+    - field.field.node.summit_talk_2025.field_talk_id
+    - field.field.node.summit_talk_2025.field_talk_speaker_entities
+    - field.field.node.summit_talk_2025.field_talk_start
+    - field.field.node.summit_talk_2025.field_talk_title
+    - node.type.summit_talk_2025
+  module:
+    - feeds_ex
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      6a19e32a-40cc-4df8-ae66-5dfbee93336c:
+        default_value: '2025'
+        only_if_empty: false
+        uuid: 6a19e32a-40cc-4df8-ae66-5dfbee93336c
+        plugin: default_value
+        source: year
+        weight: 0
+        label: 'Set value or default value'
+label: '2025 Summit talks'
+id: 2025_summit_talks
+description: 'List of talks for 2025 Summit'
+help: ''
+import_period: -1
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: false
+  use_pubsubhubbub: false
+  always_download: true
+  fallback_hub: ''
+  request_timeout: 30
+parser: jsonpath
+parser_configuration:
+  context:
+    value: '$.[*].sessions.*'
+  source_encoding:
+    - auto
+  display_errors: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: summit_talk_2025
+  langcode: en-gb
+  insert_new: 1
+  update_existing: 2
+  update_non_existent: 'entity:unpublish_action:node'
+  skip_hash_check: false
+  skip_validation: false
+  skip_validation_types: {  }
+  authorize: true
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 5
+custom_sources:
+  id:
+    value: id
+    label: id
+    machine_name: id
+    type: json
+  startsat:
+    value: startsAt
+    label: startsAt
+    machine_name: startsat
+    type: json
+  endsat:
+    value: endsAt
+    label: endsAt
+    machine_name: endsat
+    type: json
+  speakers_name:
+    value: 'speakers[*].name'
+    label: 'speakers[*].name'
+    machine_name: speakers_name
+    type: json
+  title:
+    value: title
+    label: title
+    machine_name: title
+    type: json
+  description:
+    value: description
+    label: description
+    machine_name: description
+    type: json
+  year:
+    value: year
+    label: year
+    machine_name: year
+    type: blank
+  sessionlanguage:
+    value: 'categories[?(@.id == 107734)].categoryItems[*].name'
+    label: sessionLanguage
+    machine_name: sessionlanguage
+    type: json
+mappings:
+  -
+    target: field_talk_id
+    map:
+      value: id
+    settings:
+      language: null
+    unique:
+      value: 1
+  -
+    target: field_talk_start
+    map:
+      value: startsat
+    settings:
+      language: null
+      timezone: UTC
+  -
+    target: field_talk_end
+    map:
+      value: endsat
+    settings:
+      language: null
+      timezone: UTC
+  -
+    target: field_talk_speaker_entities
+    map:
+      target_id: speakers_name
+    settings:
+      language: null
+      reference_by: title
+      autocreate: false
+      autocreate_bundle: summit_speaker_2025
+      feeds_item: false
+  -
+    target: title
+    map:
+      value: title
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_talk_description
+    map:
+      value: description
+    settings:
+      language: null
+  -
+    target: field_summit_year
+    map:
+      value: year
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_talk_title
+    map:
+      value: title
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_session_languages
+    map:
+      value: sessionlanguage
+    settings:
+      language: null
+    unique: {  }

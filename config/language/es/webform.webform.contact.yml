@@ -1,0 +1,33 @@
+title: Contacto
+settings:
+  confirmation_message: '<p>Su mensaje ha sido enviado.</p>'
+handlers:
+  email_confirmation:
+    label: 'Confirmación por correo electrónico'
+  email_notification:
+    label: 'Aviso por correo electrónico'
+description: '<p>Basic email contact webform.</p>'
+elements: |
+  name:
+    '#title': Nombre
+    '#description': '<p><span style="background-color:transparent;color:#000000;font-family:Calibri,sans-serif;font-size:11pt;font-style:normal;font-variant:normal;font-weight:400;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Escriba el nombre de su preferencia</span></p>'
+    '#required_error': 'Por favor, rellena este campo.'
+  email:
+    '#title': 'Correo electrónico'
+    '#description': '<p><span style="background-color:transparent;color:#000000;font-family:Calibri,sans-serif;font-size:11pt;font-style:normal;font-variant:normal;font-weight:400;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Indique la dirección de correo electrónico a la que desea que nos comuniquemos con usted</span></p>'
+    '#required_error': 'Por favor, rellena este campo.'
+    '#pattern_error': 'Por favor, introduce una dirección de correo electrónico válida.'
+  topic:
+    '#title': Tema
+    '#description': '<p><span style="background-color:transparent;color:#000000;font-family:Calibri,sans-serif;font-size:11pt;font-style:normal;font-variant:normal;font-weight:400;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">Seleccione un tema relacionado con su mensaje</span></p>'
+    '#options':
+      Grants: Subvenciones
+      Media: Medios
+      Technology: Tecnología
+      Other: Otra
+    '#required_error': 'Por favor, selecciona un elemento de la lista.'
+  message:
+    '#title': Mensaje
+    '#required_error': 'Por favor, rellena este campo.'
+  actions:
+    '#submit__label': 'Enviar mensaje'

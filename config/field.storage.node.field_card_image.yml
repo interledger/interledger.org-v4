@@ -1,0 +1,20 @@
+uuid: 6eeaf13d-b64f-47bc-8af2-e91586cfd93d
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - media
+    - node
+id: node.field_card_image
+field_name: field_card_image
+entity_type: node
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

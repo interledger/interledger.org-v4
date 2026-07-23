@@ -1,0 +1,26 @@
+uuid: 667d49a0-dfaf-4d4c-8130-a7bda804a55e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_form_text
+    - filter.format.full_html
+    - filter.format.plain_text
+    - node.type.form_block
+  module:
+    - text
+id: node.form_block.field_form_text
+field_name: field_form_text
+entity_type: node
+bundle: form_block
+label: 'Form text'
+description: 'Text that explains the form and convinces users to complete it'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+    - plain_text
+field_type: text_long

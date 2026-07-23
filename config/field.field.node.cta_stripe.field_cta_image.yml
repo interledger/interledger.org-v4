@@ -1,0 +1,31 @@
+uuid: 9a9a8f72-d142-4fb7-bd70-cebe1c28a1f0
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cta_image
+    - media.type.image
+    - media.type.svg
+    - node.type.cta_stripe
+id: node.cta_stripe.field_cta_image
+field_name: field_cta_image
+entity_type: node
+bundle: cta_stripe
+label: 'CTA image'
+description: 'Upload an image to be used in this CTA block. SVG preferred.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      svg: svg
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

@@ -1,0 +1,70 @@
+uuid: 529e4afe-0ba3-4002-96e3-4368874c6aaf
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.split_card.field_split_card_blurb
+    - field.field.node.split_card.field_split_card_image
+    - field.field.node.split_card.field_split_card_link
+    - field.field.node.split_card.field_split_card_title
+    - field.field.node.split_card.field_split_card_umami
+    - node.type.split_card
+  module:
+    - link
+    - text
+    - user
+id: node.split_card.default
+targetEntityType: node
+bundle: split_card
+mode: default
+content:
+  field_split_card_blurb:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_split_card_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_split_card_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_split_card_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_split_card_umami:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

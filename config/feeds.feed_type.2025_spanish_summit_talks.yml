@@ -1,0 +1,203 @@
+uuid: dddd7398-c6c8-4e87-a38a-60f450283679
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.summit_talk_2025.field_descripcion
+    - field.field.node.summit_talk_2025.field_session_languages
+    - field.field.node.summit_talk_2025.field_summit_year
+    - field.field.node.summit_talk_2025.field_talk_description
+    - field.field.node.summit_talk_2025.field_talk_end
+    - field.field.node.summit_talk_2025.field_talk_id
+    - field.field.node.summit_talk_2025.field_talk_speaker_entities
+    - field.field.node.summit_talk_2025.field_talk_start
+    - field.field.node.summit_talk_2025.field_talk_title
+    - field.field.node.summit_talk_2025.field_titulo_de_la_sesion
+    - node.type.summit_talk_2025
+  module:
+    - feeds_ex
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      6cd68d5a-f5b2-4377-8ef1-c15d604ac4dc:
+        default_value: '2025'
+        only_if_empty: false
+        uuid: 6cd68d5a-f5b2-4377-8ef1-c15d604ac4dc
+        plugin: default_value
+        source: year
+        weight: 0
+        label: 'Set value or default value'
+label: '2025 Spanish Summit talks '
+id: 2025_spanish_summit_talks
+description: 'Spanish list of talks for 2025 Summit'
+help: ''
+import_period: -1
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: false
+  use_pubsubhubbub: false
+  always_download: true
+  fallback_hub: ''
+  request_timeout: 30
+parser: jsonpath
+parser_configuration:
+  context:
+    value: '$.[*].sessions.*'
+  source_encoding:
+    - auto
+  display_errors: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: summit_talk_2025
+  langcode: es
+  insert_new: 0
+  update_existing: 2
+  update_non_existent: 'entity:unpublish_action:node'
+  skip_hash_check: false
+  skip_validation: false
+  skip_validation_types: {  }
+  authorize: true
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 5
+custom_sources:
+  id:
+    value: id
+    label: id
+    machine_name: id
+    type: json
+  startsat:
+    value: startsAt
+    label: startsAt
+    machine_name: startsat
+    type: json
+  endsat:
+    value: endsAt
+    label: endsAt
+    machine_name: endsat
+    type: json
+  speakers_name:
+    value: 'speakers[*].name'
+    label: 'speakers[*].name'
+    machine_name: speakers_name
+    type: json
+  title:
+    value: title
+    label: title
+    machine_name: title
+    type: json
+  description:
+    value: description
+    label: description
+    machine_name: description
+    type: json
+  year:
+    value: year
+    label: year
+    machine_name: year
+    type: blank
+  title_name:
+    value: title
+    label: title
+    machine_name: title_name
+    type: json
+  sessionlanguage:
+    value: 'categories[?(@.id == 107734)].categoryItems[*].name'
+    label: sessionLanguage
+    machine_name: sessionlanguage
+    type: json
+  descripcion:
+    value: 'questionAnswers[?(@.question=="Descripción")].answer'
+    label: descripcion
+    machine_name: descripcion
+    type: json
+  titulodelasesion:
+    value: 'questionAnswers[?(@.question=="Título de la sesión")].answer'
+    label: tituloDeLaSesion
+    machine_name: titulodelasesion
+    type: json
+mappings:
+  -
+    target: field_talk_id
+    map:
+      value: id
+    settings:
+      language: es
+    unique:
+      value: 1
+  -
+    target: field_talk_start
+    map:
+      value: startsat
+    settings:
+      language: es
+      timezone: UTC
+  -
+    target: field_talk_end
+    map:
+      value: endsat
+    settings:
+      language: es
+      timezone: UTC
+  -
+    target: field_talk_speaker_entities
+    map:
+      target_id: speakers_name
+    settings:
+      language: es
+      reference_by: title
+      feeds_item: guid
+      autocreate: 0
+      autocreate_bundle: summit_speaker_2025
+  -
+    target: title
+    map:
+      value: title
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_talk_description
+    map:
+      value: description
+    settings:
+      language: es
+  -
+    target: field_summit_year
+    map:
+      value: year
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_talk_title
+    map:
+      value: title
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_session_languages
+    map:
+      value: sessionlanguage
+    settings:
+      language: es
+    unique: {  }
+  -
+    target: field_descripcion
+    map:
+      value: descripcion
+    settings:
+      language: es
+  -
+    target: field_titulo_de_la_sesion
+    map:
+      value: titulodelasesion
+    settings:
+      language: es
+    unique: {  }

@@ -1,0 +1,35 @@
+uuid: 1b2f3636-5013-4576-aca6-ef380761a66e
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.entity_reference
+    - field.field.node.summit_speaker_2022.feeds_item
+    - field.field.node.summit_speaker_2022.field_speaker_bio
+    - field.field.node.summit_speaker_2022.field_speaker_id
+    - field.field.node.summit_speaker_2022.field_speaker_image
+    - field.field.node.summit_speaker_2022.field_speaker_name
+    - field.field.node.summit_speaker_2022.field_speaker_session_id
+    - field.field.node.summit_speaker_2022.field_speaker_tagline
+    - field.field.node.summit_speaker_2022.field_speaker_talk_entities
+    - field.field.node.summit_speaker_2022.field_summit_year
+    - node.type.summit_speaker_2022
+  module:
+    - user
+id: node.summit_speaker_2022.entity_reference
+targetEntityType: node
+bundle: summit_speaker_2022
+mode: entity_reference
+content: {  }
+hidden:
+  feeds_item: true
+  field_speaker_bio: true
+  field_speaker_id: true
+  field_speaker_image: true
+  field_speaker_name: true
+  field_speaker_session_id: true
+  field_speaker_tagline: true
+  field_speaker_talk_entities: true
+  field_summit_year: true
+  langcode: true
+  links: true

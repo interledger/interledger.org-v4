@@ -1,0 +1,19 @@
+uuid: ba312999-ad8c-40c1-895f-5fd1096c92ad
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_session_id
+    - node.type.summit_speaker
+id: node.summit_speaker.field_speaker_session_id
+field_name: field_speaker_session_id
+entity_type: node
+bundle: summit_speaker
+label: 'Speaker session id'
+description: 'Pulls `sessions[X].id` from https://sessionize.com/api/v2/7ueublag/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,21 @@
+uuid: 0f1dfdc0-2ff7-41b8-a925-45a6c4b95533
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_card_border
+    - node.type.event_card
+id: node.event_card.field_event_card_border
+field_name: field_event_card_border
+entity_type: node
+bundle: event_card
+label: 'Event card border'
+description: 'Check this box to give the event card a white border instead of a gradient background.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

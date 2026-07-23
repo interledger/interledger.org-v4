@@ -1,0 +1,19 @@
+uuid: 81a89012-44c7-4746-aeee-91395efd3a4c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ambassador_grant_report
+    - node.type.ambassador
+id: node.ambassador.field_ambassador_grant_report
+field_name: field_ambassador_grant_report
+entity_type: node
+bundle: ambassador
+label: 'Ambassador grant report'
+description: 'Enter the URL of the final grantee report, e.g. https://community.interledger.org/GRANTEE_USER_NAME/FINAL_GRANT_REPORT_TITLE'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

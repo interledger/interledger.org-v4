@@ -1,0 +1,19 @@
+uuid: f7a200b2-20bd-41b3-8b23-d96f3a34b413
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_speaker_tagline
+    - node.type.summit_speaker_2022
+id: node.summit_speaker_2022.field_speaker_tagline
+field_name: field_speaker_tagline
+entity_type: node
+bundle: summit_speaker_2022
+label: 'Speaker tagline'
+description: 'Pulls `tagLine` from https://sessionize.com/api/v2/lbapz770/view/Speakers'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

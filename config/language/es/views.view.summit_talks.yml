@@ -1,0 +1,16 @@
+display:
+  2025_summit_talks_listing:
+    display_options:
+      title: 'Sesiones de la Cumbre 2025'
+  2022_summit_talks_listing:
+    display_options:
+      title: 'Sesiones de la Cumbre 2022'
+  2024_summit_talks_listing:
+    display_options:
+      title: 'Sesiones de la Cumbre 2024'
+  summit_talks_listing:
+    display_options:
+      display_description: 'Sesiones de la Cumbre 2023'
+  default:
+    display_options:
+      title: 'Sesiones de la Cumbre 2023'

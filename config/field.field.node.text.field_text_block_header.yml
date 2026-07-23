@@ -1,0 +1,19 @@
+uuid: 6003223b-2c18-443d-8a0b-553454630ce5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text_block_header
+    - node.type.text
+id: node.text.field_text_block_header
+field_name: field_text_block_header
+entity_type: node
+bundle: text
+label: 'Text block header'
+description: 'Enter a heading for this text block (optional)'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

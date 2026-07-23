@@ -1,0 +1,22 @@
+uuid: 0405f2a0-ec1b-4f1f-aec3-239dcedd1948
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - interledger
+_core:
+  default_config_hash: a0Yyx1GeyKarZ4T_yXQBR_ZFKnXiFLtxAb6gWLd8nr0
+id: interledger_content
+theme: interledger
+region: content
+weight: -3
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

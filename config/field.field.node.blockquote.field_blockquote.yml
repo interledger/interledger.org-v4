@@ -1,0 +1,26 @@
+uuid: 585498dc-07e7-4755-9ae3-6b2c183c9aba
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_blockquote
+    - filter.format.basic_html
+    - filter.format.plain_text
+    - node.type.blockquote
+  module:
+    - text
+id: node.blockquote.field_blockquote
+field_name: field_blockquote
+entity_type: node
+bundle: blockquote
+label: Blockquote
+description: 'Used for text to be displayed in the style of a blockquote'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+    - plain_text
+field_type: text
