@@ -1,8 +1,14 @@
 # Interledger Foundation Website
 
-This is a Drupal-powered CMS that manages all the content for the Interledger Foundation website. 
+> **This repository is archived and is no longer actively maintained except as a temporary measure for all historic Summit pages which are still in need of full migration.**
 
-**⚠️ Note: We are currently in the process of migrating from AWS to Google Cloud Platform (GCP).**
+The Interledger Foundation Website has been migrated into the Interledger Foundation V5 website repository. All ongoing development, maintenance, and updates now take place in the V5 repository.
+
+Please do not open new issues or pull requests here.
+
+For the latest Interledger Foundation Website source code, documentation, and contribution guidelines, please refer to the V5 repository: [Interledger Foundation V5](https://github.com/interledger/interledger.org-v5)
+
+This is a Drupal-powered CMS that manages all the content for the Interledger Foundation website. 
 
 ## Documentation
 
