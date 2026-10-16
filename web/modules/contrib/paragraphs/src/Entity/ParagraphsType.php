@@ -68,6 +68,7 @@ use Drupal\Core\File\FileSystemInterface;
   label_singular: new TranslatableMarkup('Paragraphs type'),
   label_plural: new TranslatableMarkup('Paragraphs types'),
   config_prefix: 'paragraphs_type',
+  static_cache: TRUE,
   entity_keys: [
     'id' => 'id',
     'label' => 'label',
@@ -82,8 +83,8 @@ use Drupal\Core\File\FileSystemInterface;
     ],
   ],
   links: [
-    'edit-form' => '/admin/structure/paragraphs_type/[paragraphs_type]',
-    'delete-form' => '/admin/structure/paragraphs_type/[paragraphs_type]/delete',
+    'edit-form' => '/admin/structure/paragraphs_type/{paragraphs_type}',
+    'delete-form' => '/admin/structure/paragraphs_type/{paragraphs_type}/delete',
     'collection' => '/admin/structure/paragraphs_type',
   ],
   admin_permission: 'administer paragraphs types',

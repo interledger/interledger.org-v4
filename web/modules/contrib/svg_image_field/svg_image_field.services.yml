@@ -1,0 +1,4 @@
+services:
+  logger.channel.svg_image_field:
+    parent: logger.channel_base
+    arguments: ['svg_image_field']

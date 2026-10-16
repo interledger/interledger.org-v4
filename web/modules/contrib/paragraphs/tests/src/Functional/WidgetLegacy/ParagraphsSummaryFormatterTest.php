@@ -45,7 +45,7 @@ class ParagraphsSummaryFormatterTest extends ParagraphsTestBase {
     static::fieldUIAddNewField('admin/structure/paragraphs_type/' . $paragraph_type, 'user', 'User', 'entity_reference', ['settings[target_type]' => 'user'], []);
 
     // Set display format to paragraphs summary.
-    $this->drupalGet('admin/structure/types/manage/paragraphed_test/display');
+    $this->drupalGet('admin/structure/types/manage/paragraphed_test/display/default');
     $edit = ['fields[field_paragraphs][type]' => 'paragraph_summary'];
     $this->submitForm($edit, 'Save');
     // Add a paragraph.

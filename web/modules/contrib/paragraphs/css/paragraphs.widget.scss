@@ -150,7 +150,6 @@
       margin-top: 3px;
       margin-left: 0;
       padding-right: .25em;
-      vertical-align: baseline;
 
       // Fix active focus.
       &:focus {
@@ -162,7 +161,6 @@
 
       // Claro theme fix for the handle icon position.
       &::after {
-        margin-top: 0.9375rem;
         margin-left: 0;
         padding: .5rem;
       }

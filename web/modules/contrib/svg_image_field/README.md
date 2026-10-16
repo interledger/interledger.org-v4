@@ -6,7 +6,7 @@
   * Requirements
   * Installation
   * Configuration
-  * Author
+  * Known Issues
   * Similar projects and how they are different
 
 ## INTRODUCTION
@@ -68,6 +68,23 @@ and Acquia Site Studio components (if the requirements are installed).
    packages in the admin menu, and import the svg-components.package.yml file
    which can be found within the config/dx8 directory, inside the SVG Image
    Field Media Bundle submodule.
+
+## KNOWN ISSUES
+
+### Default Media value cannot be set via "Add Field" modal
+
+When adding a new Media (Vector Image) field via the Field UI modal dialog,
+attempting to set a default media value by selecting from the Media Library
+will fail. The Media Library modal closes but does not return to the parent
+field configuration modal, causing all modals to close without saving.
+
+**Workaround:** Save the field first, then edit it directly (not via modal)
+at `/admin/structure/types/manage/{type}/fields/{field}` to configure the
+default media value.
+
+**Related Drupal core issues:**
+- [#3567499: MediaLibraryFieldWidgetOpener throws InvalidArgumentException when setting default value during field creation](https://www.drupal.org/project/drupal/issues/3567499)
+- [#2741877: Nested modals don't work](https://www.drupal.org/project/drupal/issues/2741877)
 
 ## SIMILAR PROJECTS AND HOW THEY ARE DIFFERENT
 

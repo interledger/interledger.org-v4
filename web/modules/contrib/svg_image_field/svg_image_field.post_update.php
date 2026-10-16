@@ -34,3 +34,10 @@ function svg_image_field_post_update_rename_svg_media_source() {
     \Drupal::messenger()->addStatus($message);
   }
 }
+
+/**
+ * Rebuild the container to register the svg_image_field logger channel.
+ */
+function svg_image_field_post_update_logger_channel(): void {
+  // Empty post-update hook; running updates rebuilds the container.
+}

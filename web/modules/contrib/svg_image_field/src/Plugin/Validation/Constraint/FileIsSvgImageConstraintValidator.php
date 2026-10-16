@@ -34,6 +34,7 @@ class FileIsSvgImageConstraintValidator extends BaseFileConstraintValidator {
         $this->context->addViolation($constraint->invalidSvgFileMessage, [
           '%file-name' => $file->getFilename(),
         ]);
+        return;
       }
 
       $doc = new \DOMDocument();
@@ -52,9 +53,12 @@ class FileIsSvgImageConstraintValidator extends BaseFileConstraintValidator {
           );
         }, $errors);
 
-        $this->context->addViolation($constraint->xmlErrorMessage, [
-          '@errors' => implode(',', $error_messages),
-        ]);
+        // Add a summary message, then each XML error on its own line, so the UI
+        // renders a clean list of bullet items.
+        $this->context->addViolation($constraint->xmlErrorMessage);
+        foreach ($error_messages as $error_message) {
+          $this->context->addViolation($error_message);
+        }
         return;
       }
 
@@ -77,7 +81,8 @@ class FileIsSvgImageConstraintValidator extends BaseFileConstraintValidator {
 
       // Verify that the root element is <svg>.
       if ($root->tagName !== 'svg') {
-        $this->context->addViolation($constraint->notSvgMessage, [
+        $this->context->addViolation($constraint->notSvgMessage);
+        $this->context->addViolation($constraint->notSvgDetailsMessage, [
           '@expected' => '<svg>',
           '@actual' => '<' . $root->tagName . '>',
         ]);

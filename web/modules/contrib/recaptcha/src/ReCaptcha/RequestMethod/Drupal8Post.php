@@ -36,7 +36,7 @@ class Drupal8Post implements RequestMethod {
    * @return string
    *   Body of the reCAPTCHA response.
    */
-  public function submit(RequestParameters $params) {
+  public function submit(RequestParameters $params) : string {
 
     $options = [
       'headers' => [

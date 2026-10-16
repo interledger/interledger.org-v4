@@ -3,13 +3,17 @@
 namespace Drupal\svg_image_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\field\FieldConfigInterface;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use enshrined\svgSanitize\Sanitizer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -53,6 +57,13 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
+
+  /**
+   * The entity repository.
+   *
+   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   */
+  protected $entityRepository;
 
   /**
    * {@inheritdoc}
@@ -219,6 +230,13 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
+
+    $files = $this->getEntitiesToView($items, $langcode);
+    // Early opt-out if the field is empty.
+    if (empty($files)) {
+      return $elements;
+    }
+
     $attributes = [];
     if ($this->getSetting('apply_dimensions')) {
       $attributes['width'] = $this->getSetting('width');
@@ -238,7 +256,7 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
       }
     }
 
-    foreach ($items as $delta => $item) {
+    foreach ($files as $delta => $item) {
       if (!$item->entity) {
         continue;
       }
@@ -387,14 +405,17 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
-   *   Logger.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface|\Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
+   *   The svg_image_field logger channel. Passing the logger channel factory
+   *   is deprecated.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler service.
    * @param \Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator
    *   The file URL generator.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
    */
   public function __construct(
     $plugin_id,
@@ -404,15 +425,25 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
     $label,
     $view_mode,
     array $third_party_settings,
-    LoggerChannelFactoryInterface $logger,
+    LoggerChannelInterface|LoggerChannelFactoryInterface $logger,
     ModuleHandlerInterface $module_handler,
     FileUrlGeneratorInterface $file_url_generator,
     ConfigFactoryInterface $config_factory,
+    EntityRepositoryInterface $entity_repository,
   ) {
-    $this->logger = $logger->get('svg_image_field');
+    // @todo Remove support for LoggerChannelFactoryInterface in 3.0.0.
+    if ($logger instanceof LoggerChannelFactoryInterface) {
+      @trigger_error('Passing ' . LoggerChannelFactoryInterface::class . ' to ' . __METHOD__ . '() is deprecated in svg_image_field:2.3.8 and is removed from svg_image_field:3.0.0. Pass the logger.channel.svg_image_field service instead. See https://www.drupal.org/project/svg_image_field/issues/3629891', E_USER_DEPRECATED);
+      // Fetch the named channel from the container rather than from the
+      // factory, so the property still serializes as a service reference.
+      // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
+      $logger = \Drupal::service('logger.channel.svg_image_field');
+    }
+    $this->logger = $logger;
     $this->moduleHandler = $module_handler;
     $this->fileUrlGenerator = $file_url_generator;
     $this->configFactory = $config_factory;
+    $this->entityRepository = $entity_repository;
     parent::__construct($plugin_id, $plugin_definition, $field_definition,
       $settings, $label, $view_mode, $third_party_settings);
   }
@@ -434,11 +465,52 @@ class SvgImageFieldFormatter extends FormatterBase implements ContainerFactoryPl
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('logger.factory'),
+      $container->get('logger.channel.svg_image_field'),
       $container->get('module_handler'),
       $container->get('file_url_generator'),
       $container->get('config.factory'),
+      $container->get('entity.repository'),
     );
+  }
+
+  /**
+   * Load default values when field is empty.
+   *
+   * @param \Drupal\file\Plugin\Field\FieldType\FileFieldItemList $items
+   *   The field item list.
+   * @param string $langcode
+   *   The language code.
+   *
+   * @return \Drupal\file\Plugin\Field\FieldType\FileFieldItemList
+   *   The items with default image if needed.
+   */
+  protected function getEntitiesToView(FileFieldItemList $items, $langcode) {
+    // Add the default image if needed.
+    if ($items->isEmpty()) {
+      $default_image = $this->getFieldSetting('default_image');
+      // If we are dealing with a configurable field, look in both
+      // instance-level and field-level settings.
+      if (empty($default_image['uuid']) && $this->fieldDefinition instanceof FieldConfigInterface) {
+        $default_image = $this->fieldDefinition->getFieldStorageDefinition()->getSetting('default_image');
+      }
+      if (!empty($default_image['uuid']) && $file = $this->entityRepository->loadEntityByUuid('file', $default_image['uuid'])) {
+        // Clone the FieldItemList into a runtime-only object for the formatter,
+        // so that the fallback image can be rendered without affecting the
+        // field values in the entity being rendered.
+        $items = clone $items;
+        $items->setValue([
+          'target_id' => $file->id(),
+          'alt' => $default_image['alt'],
+          'title' => $default_image['title'],
+          'entity' => $file,
+          '_loaded' => TRUE,
+          '_is_default' => TRUE,
+        ]);
+        $file->_referringItem = $items[0];
+      }
+    }
+
+    return $items;
   }
 
 }

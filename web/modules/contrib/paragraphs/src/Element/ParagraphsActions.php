@@ -2,6 +2,7 @@
 
 namespace Drupal\paragraphs\Element;
 
+use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\RenderElementBase;
 
@@ -27,6 +28,7 @@ use Drupal\Core\Render\Element\RenderElementBase;
  *
  * @FormElement("paragraphs_actions")
  */
+#[FormElement('paragraphs_actions')]
 class ParagraphsActions extends RenderElementBase {
 
   /**
