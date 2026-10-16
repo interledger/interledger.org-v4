@@ -7,7 +7,7 @@ configure: recaptcha.admin_settings_form
 dependencies:
   - captcha:captcha
 
-# Information added by Drupal.org packaging script on 2024-08-13
-version: '8.x-3.4'
+# Information added by Drupal.org packaging script on 2026-08-10
+version: '8.x-3.5'
 project: 'recaptcha'
-datestamp: 1723563037
+datestamp: 1786398982

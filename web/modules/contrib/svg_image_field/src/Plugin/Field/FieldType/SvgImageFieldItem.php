@@ -245,7 +245,15 @@ class SvgImageFieldItem extends FileItem {
       $fids[0] = $file->id();
     }
     $upload_validators = $this->getUploadValidators();
-    $upload_validators['svg_image_field_validate_mime_type'] = [];
+    // Add SVG-specific validators based on Drupal version.
+    if (version_compare(\Drupal::VERSION, '10.2.0', '<')) {
+      $upload_validators['file_validate_extensions'] = ['svg'];
+      $upload_validators['svg_image_field_validate_mime_type'] = [];
+    }
+    else {
+      $upload_validators['FileExtension'] = ['extensions' => 'svg'];
+      $upload_validators['FileIsSvgImage'] = [];
+    }
     $element['default_image']['uuid'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Image'),
@@ -254,7 +262,7 @@ class SvgImageFieldItem extends FileItem {
       '#upload_location' => $settings['uri_scheme'] . '://default_images/',
       '#element_validate' => [
         '\Drupal\file\Element\ManagedFile::validateManagedFile',
-            [get_class($this), 'validateDefaultImageForm'],
+        [get_class($this), 'validateDefaultImageForm'],
       ],
       '#upload_validators' => $upload_validators,
     ];

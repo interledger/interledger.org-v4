@@ -2,8 +2,8 @@
 
 namespace Drupal\paragraphs\Element;
 
+use Drupal\Core\Render\Attribute\RenderElement;
 use Drupal\Core\Render\Element\Operations;
-use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
@@ -11,7 +11,7 @@ use Drupal\Core\Render\Element\RenderElementBase;
  *
  * @RenderElement("paragraph_operations")
  */
-#[\Drupal\Core\Render\Attribute\RenderElement('paragraph_operations')]
+#[RenderElement('paragraph_operations')]
 class ParagraphOperations extends Operations {
 
   /**

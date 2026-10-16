@@ -471,12 +471,15 @@ class ParagraphsAdministrationTest extends ParagraphsTestBase {
       'settings[handler_settings][target_bundles][article]' => TRUE,
       'required' => TRUE,
     ]);
+    // In 11.4, inconsistent behavior in
+    // \Drupal\Core\Entity\Sql\SqlContentEntityStorage::loadFromDedicatedTables()
+    // requires a full cache flush to have field storage definitions in sync.
+    drupal_flush_all_caches();
     $node = $this->drupalGetNodeByTitle('Nested twins');
 
     // Create a node with a reference in a Paragraph.
     $this->drupalGet('node/add/article');
     $this->submitForm([], 'field_paragraphs_node_test_add_more');
-    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
     $edit = [
       'field_paragraphs[0][subform][field_entity_reference][0][target_id]' => $node->label() . ' (' . $node->id() . ')',
       'title[0][value]' => 'choke test',

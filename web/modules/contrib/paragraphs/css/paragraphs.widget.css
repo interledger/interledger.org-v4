@@ -185,14 +185,12 @@
   margin-top: 3px;
   margin-left: 0;
   padding-right: 0.25em;
-  vertical-align: baseline;
 }
 .js .field--widget-paragraphs .draggable .tabledrag-handle:focus::before {
   margin-right: 0.1em;
   margin-left: 0.1em;
 }
 .js .field--widget-paragraphs .draggable .tabledrag-handle::after {
-  margin-top: 0.9375rem;
   margin-left: 0;
   padding: 0.5rem;
 }

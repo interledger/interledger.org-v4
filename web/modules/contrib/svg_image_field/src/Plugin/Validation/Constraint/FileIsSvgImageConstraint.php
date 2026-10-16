@@ -35,7 +35,7 @@ class FileIsSvgImageConstraint extends SymfonyConstraint {
    *
    * @var string
    */
-  public $xmlErrorMessage = 'The file contains XML errors and cannot be parsed. Errors: @errors';
+  public $xmlErrorMessage = 'The file contains XML errors and cannot be parsed.';
 
   /**
    * The message for when an SVG file does not contain a root element.
@@ -49,6 +49,13 @@ class FileIsSvgImageConstraint extends SymfonyConstraint {
    *
    * @var string
    */
-  public $notSvgMessage = 'The file contains an invalid root element. Expected <code>@expected</code> but found <code>@actual</code>.';
+  public $notSvgMessage = 'The file contains an invalid root element.';
+
+  /**
+   * The details message for when an SVG file contains an invalid root element.
+   *
+   * @var string
+   */
+  public $notSvgDetailsMessage = 'Expected @expected but found @actual.';
 
 }

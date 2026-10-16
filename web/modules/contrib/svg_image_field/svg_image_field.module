@@ -8,6 +8,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\media_library\Form\FileUploadForm;
 
 // Provide a BC layer for previous versions of the media source class.
@@ -130,7 +131,58 @@ function svg_image_field_validate_mime_type(FileInterface $file) {
  * Implements hook_media_source_info_alter().
  */
 function svg_image_field_media_source_info_alter(array &$sources) {
+  // Ensure the Media Library uses the core file upload form for the SVG source.
+  // SVG-specific validation is added via hook_form_alter below.
   $sources['svg']['forms']['media_library_add'] = FileUploadForm::class;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for media library upload form.
+ */
+function svg_image_field_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+  if (!isset($form['container']['upload']['#upload_validators']) || !is_array($form['container']['upload']['#upload_validators'])) {
+    return;
+  }
+
+  if (!svg_image_field_is_svg_media_library_upload($form_state)) {
+    return;
+  }
+
+  if (version_compare(\Drupal::VERSION, '10.2.0', '<')) {
+    // Avoid assumptions about existing validator array shapes.
+    $form['container']['upload']['#upload_validators']['file_validate_extensions'] = ['svg'];
+    $form['container']['upload']['#upload_validators']['svg_image_field_validate_mime_type'] = [];
+  }
+  else {
+    // Keep any core validators (size, extension), but ensure SVG validity too.
+    $form['container']['upload']['#upload_validators']['FileIsSvgImage'] = [];
+  }
+}
+
+/**
+ * Checks whether the current Media Library upload form is for an SVG source.
+ *
+ * The Media Library widget can allow multiple media bundles. SVG-specific
+ * validation must only be added when the selected bundle uses the SVG media
+ * source plugin.
+ */
+function svg_image_field_is_svg_media_library_upload(FormStateInterface $form_state): bool {
+  $state = $form_state->get('media_library_state');
+  if (!$state || !method_exists($state, 'getSelectedTypeId')) {
+    return FALSE;
+  }
+
+  $selected_type_id = $state->getSelectedTypeId();
+  if (!is_string($selected_type_id) || $selected_type_id === '') {
+    return FALSE;
+  }
+
+  /** @var \Drupal\media\MediaTypeInterface|null $media_type */
+  $media_type = \Drupal::entityTypeManager()
+    ->getStorage('media_type')
+    ->load($selected_type_id);
+
+  return $media_type?->getSource()->getPluginId() === 'svg';
 }
 
 /**
