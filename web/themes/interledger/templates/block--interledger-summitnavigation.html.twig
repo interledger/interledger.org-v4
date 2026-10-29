@@ -25,8 +25,8 @@
   <div class="site-links-wrapper" data-nav-wrapper id="siteNavLinks">
     {{ content }}
     
-    {# node 1 = / #}
-    <a class="switch-link" href={{ path('entity.node.canonical', {'node': 1}) }} data-umami-event="Summit Nav - ILF">Interledger Foundation</a>
+    {# Front page in the current language: / or /es #}
+    <a class="switch-link" href="{{ path('<front>') }}" data-umami-event="Summit Nav - ILF">Interledger Foundation</a>
   </div>
   <button
     type="button"
