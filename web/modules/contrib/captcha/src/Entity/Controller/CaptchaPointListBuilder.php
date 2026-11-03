@@ -12,10 +12,13 @@ class CaptchaPointListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   A render array structure of header strings.
    */
   public function buildHeader() {
-    $header['form_id'] = $this->t('Captcha Point form ID');
-    $header['captcha_type'] = $this->t('Captcha Point challenge type');
+    $header['form_id'] = $this->t('CAPTCHA Point form ID');
+    $header['captcha_type'] = $this->t('CAPTCHA Point challenge type');
     $header['captcha_status'] = $this->t('Status');
 
     return $header + parent::buildHeader();
@@ -23,6 +26,9 @@ class CaptchaPointListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   A render array structure of fields for this entity.
    */
   public function buildRow(EntityInterface $entity) {
     $row['form_id'] = $entity->id();

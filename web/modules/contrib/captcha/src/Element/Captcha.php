@@ -6,8 +6,10 @@ use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Render\Attribute\FormElement;
+use Drupal\Core\Render\Element\FormElementBase;
 use Drupal\captcha\Constants\CaptchaConstants;
+use Drupal\captcha\Render\MathCaptchaQuestion;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @FormElement("captcha")
  */
-class Captcha extends FormElement implements ContainerFactoryPluginInterface {
+#[FormElement('captcha')]
+class Captcha extends FormElementBase implements ContainerFactoryPluginInterface {
 
   /**
    * The config factory.
@@ -70,13 +73,26 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
       // @todo should this be a single string or an array of strings?
       '#captcha_validate' => 'captcha_validate_strict_equality',
     ];
+
+    $config = $this->configFactory->get('captcha.settings');
+
     // Override the default CAPTCHA validation function for case
     // insensitive validation.
     // @todo shouldn't this be done somewhere else, e.g. in form_alter?
-    if (CaptchaConstants::CAPTCHA_DEFAULT_VALIDATION_CASE_INSENSITIVE == $this->configFactory->get('captcha.settings')
-      ->get('default_validation')
-    ) {
+    if (CaptchaConstants::CAPTCHA_DEFAULT_VALIDATION_CASE_INSENSITIVE == $config->get('default_validation')) {
       $captcha_element['#captcha_validate'] = 'captcha_validate_case_insensitive_equality';
+    }
+
+    // Add session cache context to ensure CAPTCHA persistence works correctly
+    // for case "skip once successful (per form type)" which depend on session.
+    // @see captcha_validate
+    if (in_array($config->get('persistence'), [
+      CaptchaConstants::CAPTCHA_PERSISTENCE_SKIP_ONCE_SUCCESSFUL,
+      CaptchaConstants::CAPTCHA_PERSISTENCE_SKIP_ONCE_SUCCESSFUL_PER_FORM_TYPE,
+    ])) {
+      $captcha_element['#cache'] = [
+        'contexts' => ['session'],
+      ];
     }
     return $captcha_element;
   }
@@ -91,13 +107,20 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
     // Add JavaScript for general CAPTCHA functionality.
     $element['#attached']['library'][] = 'captcha/base';
 
-    if ($form_state->getTriggeringElement() && isset($form_state->getTriggeringElement()['#limit_validation_errors']) && is_array($form_state->getTriggeringElement()['#limit_validation_errors'])) {
-      // This is a partial (ajax) submission with limited validation. Do not
-      // change anything about the captcha element, assume that it will not
-      // update the captcha element, do not generate anything, which keeps the
-      // current token intact for the real submission.
-      return $element;
-    }
+    // A triggering element with #limit_validation_errors (e.g. an AJAX button
+    // such as Commerce Shipping's "Recalculate shipping") submits the form
+    // without wanting the CAPTCHA validated. Such forms are often rebuilt and
+    // re-rendered, so the challenge must still be built, but in the posted
+    // session: a new session or a validation run would invalidate the token
+    // the browser holds for the real submission. The new challenge's solution
+    // is only stored when the element is rendered (see preRenderProcess()), so
+    // an AJAX response that leaves the CAPTCHA out keeps the old one valid.
+    $triggering_element = $form_state->getTriggeringElement();
+    // When the sections of #limit_validation_errors include the CAPTCHA, the
+    // submission must solve it like any other.
+    $limited_validation = isset($triggering_element['#limit_validation_errors'])
+      && is_array($triggering_element['#limit_validation_errors'])
+      && !self::limitValidationErrorsCoverCaptcha($element, $triggering_element['#limit_validation_errors']);
 
     // Get the form ID of the form we are currently processing (which is not
     // necessary the same form that is submitted (if any).
@@ -111,6 +134,12 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
     [$posted_form_id, $posted_captcha_sid] = _captcha_get_posted_captcha_info($element, $form_state, $this_form_id);
     if ($this_form_id == $posted_form_id && isset($posted_captcha_sid)) {
       $captcha_sid = $posted_captcha_sid;
+    }
+    elseif ($limited_validation) {
+      // There is no session to reuse. Do not change anything about the
+      // captcha element and do not generate anything for a partial
+      // submission.
+      return $element;
     }
     else {
       // Generate a new CAPTCHA session if we could
@@ -209,8 +238,8 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
       $element['captcha_widgets'] = $captcha['form'];
 
       // Add a validation callback for the CAPTCHA form element
-      // (when not in admin mode).
-      if (!$element['#captcha_admin_mode']) {
+      // (when not in admin mode and not a partial submission).
+      if (!$element['#captcha_admin_mode'] && !$limited_validation) {
         $element['#element_validate'] = ['captcha_validate'];
       }
 
@@ -254,6 +283,37 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
     }
 
     return $element;
+  }
+
+  /**
+   * Checks whether #limit_validation_errors sections include the CAPTCHA.
+   *
+   * A section includes the CAPTCHA when it is a prefix of the CAPTCHA
+   * element's #parents or of the top-level 'captcha_response' value, the same
+   * rule FormState::setErrorByName() uses to decide which errors to record.
+   *
+   * @param array $element
+   *   The CAPTCHA form element.
+   * @param array $sections
+   *   The #limit_validation_errors sections of the triggering element.
+   *
+   * @return bool
+   *   TRUE if the CAPTCHA must be validated, FALSE otherwise.
+   */
+  private static function limitValidationErrorsCoverCaptcha(array $element, array $sections): bool {
+    $candidates = [
+      array_map('strval', $element['#parents'] ?? []),
+      ['captcha_response'],
+    ];
+    foreach ($sections as $section) {
+      $section = array_map('strval', (array) $section);
+      foreach ($candidates as $parents) {
+        if (array_slice($parents, 0, count($section)) === $section) {
+          return TRUE;
+        }
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -308,6 +368,7 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
         // empty the value of the captcha_response form item.
         $value = $element['#captcha_admin_mode'] ? $captcha_info['solution'] : '';
         $element['captcha_widgets']['captcha_response']['#value'] = $value;
+        $element['captcha_widgets']['captcha_response'] = MathCaptchaQuestion::keepQuestionVisible($element['captcha_widgets']['captcha_response']);
       }
     }
     else {

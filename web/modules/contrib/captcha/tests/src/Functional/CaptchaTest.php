@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\captcha\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\captcha\Constants\CaptchaConstants;
 
@@ -10,6 +12,8 @@ use Drupal\captcha\Constants\CaptchaConstants;
  *
  * @group captcha
  */
+#[Group('captcha')]
+#[RunTestsInSeparateProcesses]
 class CaptchaTest extends CaptchaWebTestBase {
 
   use StringTranslationTrait;
@@ -65,14 +69,14 @@ class CaptchaTest extends CaptchaWebTestBase {
   }
 
   /**
-   * Testing the response error menssage.
+   * Testing the response error message.
    */
   public function testCaptchaResponseErrorMessage() {
     // Customize the response error message.
     $this->drupalLogin($this->adminUser);
-    $customized_menssage = 'The answer you entered is wrong.';
+    $customized_message = 'The answer you entered is wrong.';
     $edit = [
-      'wrong_captcha_response_message' => $customized_menssage,
+      'wrong_captcha_response_message' => $customized_message,
     ];
     $this->drupalGet("admin/config/people/captcha");
     $this->submitForm($edit, 'Save configuration');
@@ -85,7 +89,7 @@ class CaptchaTest extends CaptchaWebTestBase {
     $captcha_point->setCaptchaType(CaptchaConstants::CAPTCHA_MATH_CAPTCHA_TYPE);
     $captcha_point->enable()->save();
 
-    // Check if the menssage is default.
+    // Check if the message is default.
     $this->drupalLogout();
     $this->drupalGet('user');
     // Try to log in, which should fail.
@@ -95,7 +99,7 @@ class CaptchaTest extends CaptchaWebTestBase {
       'captcha_response' => '?',
     ];
     $this->submitForm($edit, 'Log in', self::LOGIN_HTML_FORM_ID);
-    $this->assertSession()->pageTextContains($customized_menssage);
+    $this->assertSession()->pageTextContains($customized_message);
 
   }
 
@@ -277,7 +281,7 @@ class CaptchaTest extends CaptchaWebTestBase {
     // Create intentionally long id Captcha Point.
     $this->drupalGet(self::CAPTCHA_ADMIN_PATH . '/captcha-points/add');
     $this->submitForm($form_values, 'Save');
-    $this->assertSession()->responseContains($this->t('Captcha Point for %label form was created.', ['%label' => $formId]));
+    $this->assertSession()->responseContains($this->t('CAPTCHA Point for %label form was created.', ['%label' => $formId]));
 
     // We need to log out to test the captcha.
     $this->drupalLogout();
@@ -455,6 +459,41 @@ class CaptchaTest extends CaptchaWebTestBase {
     $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"] > div.captcha__element > div.form-item-captcha-response > input.form-text');
     $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"] > div.captcha__element > div.form-item-captcha-response > div#edit-captcha-response--description');
     $session->elementTextContains('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"] > div.captcha__element > div.form-item-captcha-response > div#edit-captcha-response--description', 'Solve this simple math problem and enter the result. E.g. for 1+3, enter 4.');
+
+    // The response stays a text field, but asks touch devices for a numeric
+    // keypad.
+    $input = $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"] > div.captcha__element > div.form-item-captcha-response > input');
+    $this->assertSame('text', $input->getAttribute('type'));
+    $this->assertSame('numeric', $input->getAttribute('inputmode'));
+
+    // An admin mode challenge is presolved with the sum from the label.
+    $label = $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"] > div.captcha__element > div.form-item-captcha-response > label')->getText();
+    $this->assertMatchesRegularExpression('/\((\d+) \+ (\d+) =\)/', $label);
+    preg_match('/\((\d+) \+ (\d+) =\)/', $label, $matches);
+    $this->assertSame((string) ($matches[1] + $matches[2]), $input->getAttribute('value'));
+  }
+
+  /**
+   * Tests that a wrong math answer is not shown again after submission.
+   */
+  public function testMathResponseClearedAfterWrongAnswer() {
+    $user = $this->drupalCreateUser();
+    /** @var \Drupal\captcha\Entity\CaptchaPoint $captcha_point */
+    $captcha_point = \Drupal::entityTypeManager()
+      ->getStorage('captcha_point')
+      ->load('user_login_form');
+    $captcha_point->setCaptchaType(CaptchaConstants::CAPTCHA_MATH_CAPTCHA_TYPE);
+    $captcha_point->enable()->save();
+
+    // The sum is at most 20, so 99 is always wrong.
+    $this->drupalGet('user');
+    $this->submitForm([
+      'name' => $user->getDisplayName(),
+      'pass' => $user->pass_raw,
+      'captcha_response' => '99',
+    ], 'Log in', self::LOGIN_HTML_FORM_ID);
+    $this->assertSession()->pageTextContains(self::CAPTCHA_WRONG_RESPONSE_ERROR_MESSAGE);
+    $this->assertSession()->fieldValueEquals('captcha_response', '');
   }
 
   /**
@@ -462,8 +501,8 @@ class CaptchaTest extends CaptchaWebTestBase {
    *
    * @todo This test will fail, because the "skip CAPTCHA" permission doesn't
    * work for Captcha form elements, but only in conjunction with captcha
-   * points. The problem is the captcha rendering on two seperate levels. For
-   * more informations, see
+   * points. The problem is the captcha rendering on two separate levels. For
+   * more information, see
    * https://www.drupal.org/project/captcha/issues/2941496
    */
   public function todoTestMathFormElementBehaviour() {
@@ -491,6 +530,38 @@ class CaptchaTest extends CaptchaWebTestBase {
     $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-true"]');
     $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-false"]');
     $session->elementExists('css', '#captcha-test-test > fieldset[data-drupal-selector="edit-math-captcha-admin-not-set"]');
+  }
+
+  /**
+   * Tests that the math question survives a replaced title.
+   *
+   * Webform's "Question title" replaces the captcha_response #title, which
+   * holds the question since #3221197.
+   *
+   * @see https://www.drupal.org/project/captcha/issues/3546698
+   */
+  public function testMathQuestionWithReplacedTitle() {
+    $session = $this->assertSession();
+
+    // Unchanged title: the question stays in the label, without a prefix.
+    $this->drupalGet('/captcha-test/test');
+    $label = $session->elementExists('css', '#captcha-test-test div.form-item-captcha-response label');
+    $this->assertMatchesRegularExpression('/Math question \\(\\d+ \\+ \\d+ =\\)/', $label->getText());
+    $session->elementNotExists('css', '#captcha-test-test .field-prefix');
+    $session->elementNotExists('css', '[id$="--math-question"]');
+
+    // Replaced title: the question is shown as a prefix and described.
+    $this->drupalGet('/captcha-test/title-override');
+    $session->elementTextEquals('css', '#captcha-test-title-override div.form-item-captcha-response label', 'Prove you are human');
+    $question = $session->elementExists('css', '#edit-captcha-response--math-question')->getText();
+    $this->assertMatchesRegularExpression('/^\\d+ \\+ \\d+ =$/', $question);
+    $session->elementAttributeContains('css', '#edit-captcha-response', 'aria-describedby', 'edit-captcha-response--math-question edit-captcha-response--description');
+    $session->elementExists('css', '#edit-captcha-response--description');
+
+    // The challenge can still be solved from the prefix.
+    preg_match('/(\\d+) \\+ (\\d+)/', $question, $matches);
+    $this->submitForm(['captcha_response' => (int) $matches[1] + (int) $matches[2]], 'Submit');
+    $session->pageTextContains('Form submitted!');
   }
 
 }

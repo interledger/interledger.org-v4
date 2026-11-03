@@ -1,6 +1,6 @@
 image_captcha.settings:
   type: config_object
-  label: 'Image Captcha settings'
+  label: 'Image CAPTCHA settings'
   mapping:
     image_captcha_fonts_preview_map_cache:
       type: sequence
@@ -25,7 +25,7 @@ image_captcha.settings:
         label: 'Font filepath'
     image_captcha_font_size:
       type: integer
-      label: 'Font Size in Image Captcha'
+      label: 'Font Size in Image CAPTCHA'
     image_captcha_character_spacing:
       type: string
       label: 'Spacing between characters'
@@ -34,7 +34,7 @@ image_captcha.settings:
       label: 'String with allowed characters'
     image_captcha_code_length:
       type: integer
-      label: 'Captcha code length'
+      label: 'CAPTCHA code length'
     image_captcha_rtl_support:
       type: integer
       label: 'Right to left support'
@@ -67,4 +67,4 @@ image_captcha.settings:
       label: 'Noise level'
     image_captcha_text_refresh:
       type: label
-      label: 'String with allowed characters'
+      label: 'Refresh button text'

@@ -1,0 +1,15 @@
+captcha_ajax_form_test.form:
+  path: '/captcha_ajax_form_test/ajax'
+  defaults:
+    _controller: '\Drupal\captcha_ajax_form_test\Controller\TestFormController::response'
+  methods: ['POST']
+  requirements:
+    _access: 'TRUE'
+
+captcha_ajax_form_test.loader:
+  path: '/captcha_ajax_form_test'
+  defaults:
+    _form: '\Drupal\captcha_ajax_form_test\Form\TestFormLoaderForm'
+    _title: 'AJAX Form Loader'
+  requirements:
+    _access: 'TRUE'

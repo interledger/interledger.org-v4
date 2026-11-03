@@ -11,7 +11,7 @@ use Drupal\Tests\metatag\Functional\MetatagHelperTrait;
  *
  * @group metatag
  */
-class TestCoreTagRemoval extends BrowserTestBase {
+class CoreTagRemovalTest extends BrowserTestBase {
 
   // Contains helper methods.
   use FieldUiTestTrait;
@@ -35,17 +35,13 @@ class TestCoreTagRemoval extends BrowserTestBase {
   ];
 
   /**
-   * Use the full install profile, with the full theme.
-   *
-   * @var string
-   */
-  protected $profile = 'standard';
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
+
+    // Create the content type that will be tested.
+    $this->drupalCreateContentType(['type' => 'page', 'name' => 'Basic page']);
 
     // Log in as user 1.
     $this->loginUser1();

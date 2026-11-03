@@ -1,0 +1,9 @@
+# Patterns ignored while testing for use of deprecated code. The GitLab CI
+# templates append core's .deprecation-ignore.txt to this file.
+# See https://www.drupal.org/node/3285162 for the format.
+
+# The Drupal 7 captcha point migration keeps working on Drupal 10 and 11.
+# DrupalSqlBase has no replacement, and core ignores the same deprecation for
+# its own Drupal 7 source plugins. Remove with the Drupal 7 migration once
+# Drupal 11 is no longer supported.
+%Class "Drupal\\migrate_drupal\\Plugin\\migrate\\source\\DrupalSqlBase" as extended by "Drupal\\captcha\\Plugin\\migrate\\source\\CaptchaPoints" is deprecated in drupal:11\.3\.0 and is removed from drupal:12\.0\.0%

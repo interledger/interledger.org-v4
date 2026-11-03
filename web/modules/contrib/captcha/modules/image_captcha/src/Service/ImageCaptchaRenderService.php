@@ -2,12 +2,14 @@
 
 namespace Drupal\image_captcha\Service;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\image_captcha\Constants\ImageCaptchaConstants;
+use Random\Randomizer;
 
 /**
  * Helper service to render specific parts of the image captcha.
@@ -125,12 +127,12 @@ class ImageCaptchaRenderService {
     $distortion_amplitude = .25 * $font_size * $this->config->get('image_captcha_distortion_amplitude') / 10.0;
 
     if ($distortion_amplitude > 1) {
-      $wavelength_xr = (2 + 3 * lcg_value()) * $font_size;
-      $wavelength_yr = (2 + 3 * lcg_value()) * $font_size;
+      $wavelength_xr = (2 + 3 * $this->randomFloat()) * $font_size;
+      $wavelength_yr = (2 + 3 * $this->randomFloat()) * $font_size;
       $freq_xr = 2 * 3.141592 / $wavelength_xr;
       $freq_yr = 2 * 3.141592 / $wavelength_yr;
-      $wavelength_xt = (2 + 3 * lcg_value()) * $font_size;
-      $wavelength_yt = (2 + 3 * lcg_value()) * $font_size;
+      $wavelength_xt = (2 + 3 * $this->randomFloat()) * $font_size;
+      $wavelength_yt = (2 + 3 * $this->randomFloat()) * $font_size;
       $freq_xt = 2 * 3.141592 / $wavelength_xt;
       $freq_yt = 2 * 3.141592 / $wavelength_yt;
 
@@ -267,7 +269,7 @@ class ImageCaptchaRenderService {
    * @param int $height
    *   Suggested input image width.
    * @param array $fonts
-   *   Array of fonts names and paths.
+   *   Font tokens, as stored in the image_captcha_fonts setting.
    * @param int $font_size
    *   Suggested font size.
    * @param string $text
@@ -305,6 +307,20 @@ class ImageCaptchaRenderService {
     $ccage_width = $width / $character_quantity;
     $ccage_height = $height;
 
+    // Resolve the font tokens to paths once. Tokens that no longer match an
+    // available font (e.g. after the module or the font files moved) are
+    // skipped, falling back to the built-in font if none are left.
+    $available_fonts = _image_captcha_get_font_uri();
+    $font_paths = [];
+    foreach ($fonts as $font_token) {
+      if (is_string($font_token) && isset($available_fonts[$font_token])) {
+        $font_paths[] = $available_fonts[$font_token];
+      }
+    }
+    if (!$font_paths) {
+      $font_paths = ['BUILTIN'];
+    }
+
     foreach ($characters as $c => $character) {
       // Initial position of character: in the center of its cage.
       $center_x = ($c + 0.5) * $ccage_width;
@@ -314,8 +330,7 @@ class ImageCaptchaRenderService {
       $center_y = 0.5 * $height;
 
       // Pick a random font from the list.
-      $font = $fonts[array_rand($fonts)];
-      $font = _image_captcha_get_font_uri($font);
+      $font = $font_paths[array_rand($font_paths)];
 
       // Get character dimensions for TrueType fonts.
       if ($font != 'BUILTIN') {
@@ -400,34 +415,57 @@ class ImageCaptchaRenderService {
    * @see image_captcha_element_info_alter()
    */
   public static function imageCaptchaAfterBuildProcess(array $element) {
-    $isCaptchaType = !empty($element['#captcha_type']) ?
-    $element['#captcha_type'] == ImageCaptchaConstants::IMAGE_CAPTCHA_CAPTCHA_TYPE : NULL;
-    // Only proceed, if we can determine the form_id and the captcha type:
-    if (!empty($element['#captcha_type']) && !empty($isCaptchaType)) {
-      if (!empty($element['#captcha_info']['form_id']) && !empty($element['#captcha_type'])) {
-        // We need the form_id for regenerating the image captcha:
-        $form_id = $element['#captcha_info']['form_id'];
-        // Check if this is an image_captcha:
-        if (isset($element['captcha_widgets']['captcha_image_wrapper']['captcha_image'])) {
-          $uri = Link::fromTextAndUrl(t('Get new captcha!'),
-            new Url('image_captcha.refresh',
-              ['form_id' => $form_id],
-              ['attributes' => ['class' => ['reload-captcha']]]
-            )
-          );
-          $element['captcha_widgets']['captcha_image_wrapper']['captcha_refresh'] = [
-            '#theme' => 'image_captcha_refresh',
-            '#captcha_refresh_link' => $uri,
-          ];
-        }
-      }
-      else {
-        \Drupal::service('logger.factory')->get('image_captcha')->error('Missing required form ID on route @route', [
-          '@route' => \Drupal::routeMatch()->getRouteName() ?? 'Unknown',
-        ]);
-      }
+    // Only an image CAPTCHA whose image was built gets a refresh link. The
+    // image is missing when the CAPTCHA element was not processed, e.g. on a
+    // #limit_validation_errors submission such as an AJAX file upload, or
+    // when the current user does not have to solve the CAPTCHA.
+    if (empty($element['#captcha_type'])) {
+      return $element;
     }
+    // Resolve the symbolic 'default' type to the configured default challenge.
+    \Drupal::moduleHandler()->loadInclude('captcha', 'inc');
+    if (implode('/', _captcha_parse_captcha_type($element['#captcha_type'])) != ImageCaptchaConstants::IMAGE_CAPTCHA_CAPTCHA_TYPE
+      || !isset($element['captcha_widgets']['captcha_image_wrapper']['captcha_image'])) {
+      return $element;
+    }
+    // We need the form_id for regenerating the image captcha:
+    if (empty($element['#captcha_info']['form_id'])) {
+      \Drupal::service('logger.factory')->get('image_captcha')->error('Missing required form ID on route @route', [
+        '@route' => \Drupal::routeMatch()->getRouteName() ?? 'Unknown',
+      ]);
+      return $element;
+    }
+    $config = \Drupal::config('image_captcha.settings');
+    $uri = Link::fromTextAndUrl($config->get('image_captcha_text_refresh') ?: t('Get new CAPTCHA!'),
+      new Url('image_captcha.refresh',
+        ['form_id' => $element['#captcha_info']['form_id']],
+        ['attributes' => ['class' => ['reload-captcha']]]
+      )
+    );
+    $element['captcha_widgets']['captcha_image_wrapper']['captcha_refresh'] = [
+      '#theme' => 'image_captcha_refresh',
+      '#captcha_refresh_link' => $uri,
+    ];
+    CacheableMetadata::createFromObject($config)
+      ->applyTo($element['captcha_widgets']['captcha_image_wrapper']['captcha_refresh']);
     return $element;
+  }
+
+  /**
+   * Returns a random float in the range [0, 1).
+   *
+   * Replaces lcg_value(), which PHP 8.4 deprecates.
+   * Random\Randomizer::getFloat() only exists from PHP 8.3, while Drupal 10
+   * still supports PHP 8.1 and 8.2.
+   *
+   * @return float
+   *   The random number.
+   */
+  private function randomFloat(): float {
+    if (method_exists(Randomizer::class, 'getFloat')) {
+      return (new Randomizer())->getFloat(0, 1);
+    }
+    return mt_rand() / (mt_getrandmax() + 1);
   }
 
 }

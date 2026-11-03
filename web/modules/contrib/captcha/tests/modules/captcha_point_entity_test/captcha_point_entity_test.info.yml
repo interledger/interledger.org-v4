@@ -1,0 +1,10 @@
+name: 'CAPTCHA point entity test'
+type: module
+description: 'Provides an entity type with the ID "point" for tests.'
+package: Testing
+hidden: true
+
+# Information added by Drupal.org packaging script on 2026-11-03
+version: '2.0.12'
+project: 'captcha'
+datestamp: 1793669218

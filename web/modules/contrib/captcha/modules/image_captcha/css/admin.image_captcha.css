@@ -16,8 +16,8 @@
  * Stop floating with the item for the built in font.
  */
 .image-captcha-admin-fonts-selection .form-item-image-captcha-fonts-BUILTIN {
-  clear: both;
   float: none;
+  clear: both;
   width: 100%;
 }
 

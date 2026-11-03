@@ -27,3 +27,6 @@ image_captcha.refresh:
   requirements:
     # Allow access, because anybody is allowed to refresh the image captcha:
     _access: 'TRUE'
+    # Form IDs are machine names, so anything else is a 404 rather than a new
+    # CAPTCHA session for a form that cannot exist.
+    form_id: '[A-Za-z0-9_]+'

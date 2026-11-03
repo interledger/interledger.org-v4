@@ -6,47 +6,47 @@
  */
 
 (function ($) {
-  'use strict';
-
   Drupal.behaviors.captchaAdmin = {
-    attach: function (context) {
-
+    attach(context) {
       // Helper function to show/hide noise level widget.
-      var noise_level_shower = function (speed) {
-        speed = (typeof speed == 'undefined') ? 'slow' : speed;
-        if ($('#edit-image-captcha-dot-noise').is(':checked')
-            || $('#edit-image-captcha-line-noise').is(':checked')) {
+      const noiseLevelShower = function (speed) {
+        speed = typeof speed === 'undefined' ? 'slow' : speed;
+        if (
+          document.querySelector('#edit-image-captcha-dot-noise')?.checked ||
+          document.querySelector('#edit-image-captcha-line-noise')?.checked
+        ) {
           $('.form-item-image-captcha-noise-level').show(speed);
-        }
-        else {
+        } else {
           $('.form-item-image-captcha-noise-level').hide(speed);
         }
       };
 
       // Add onclick handler to the dot and line noise check boxes.
-      $('#edit-image-captcha-dot-noise').click(noise_level_shower);
-      $('#edit-image-captcha-line-noise').click(noise_level_shower);
+      $('#edit-image-captcha-dot-noise').on('click', noiseLevelShower);
+      $('#edit-image-captcha-line-noise').on('click', noiseLevelShower);
       // Show or hide appropriately on page load.
-      noise_level_shower(0);
+      noiseLevelShower(0);
 
       // Helper function to show/hide smooth distortion widget.
-      var smooth_distortion_shower = function (speed) {
-        speed = (typeof speed == 'undefined') ? 'slow' : speed;
-        if ($('#edit-image-captcha-distortion-amplitude').val() > 0) {
+      const smoothDistortionShower = function (speed) {
+        speed = typeof speed === 'undefined' ? 'slow' : speed;
+        if (
+          document.querySelector('#edit-image-captcha-distortion-amplitude')
+            ?.value > 0
+        ) {
           $('.form-item-image-captcha-bilinear-interpolation').show(speed);
-        }
-        else {
+        } else {
           $('.form-item-image-captcha-bilinear-interpolation').hide(speed);
         }
       };
 
       // Add onchange handler to the distortion level select widget.
-      $('#edit-image-captcha-distortion-amplitude').change(
-          smooth_distortion_shower);
+      $('#edit-image-captcha-distortion-amplitude').on(
+        'change',
+        smoothDistortionShower,
+      );
       // Show or hide appropriately on page load.
-      smooth_distortion_shower(0);
-
-    }
+      smoothDistortionShower(0);
+    },
   };
-
 })(jQuery);

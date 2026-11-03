@@ -128,40 +128,7 @@ function _image_captcha_check_fonts(array $fonts) {
  *   List of characters given string consists of.
  */
 function _image_captcha_utf8_split($str) {
-  $characters = [];
-  $len = mb_strlen($str);
-
-  for ($i = 0; $i < $len;) {
-    $chr = ord($str[$i]);
-    // One byte character (0zzzzzzz).
-    if (($chr & 0x80) == 0x00) {
-      $width = 1;
-    }
-    else {
-      // Two byte character (first byte: 110yyyyy).
-      if (($chr & 0xE0) == 0xC0) {
-        $width = 2;
-      }
-      // Three byte character (first byte: 1110xxxx).
-      elseif (($chr & 0xF0) == 0xE0) {
-        $width = 3;
-      }
-      // Four byte character (first byte: 11110www).
-      elseif (($chr & 0xF8) == 0xF0) {
-        $width = 4;
-      }
-      else {
-        \Drupal::logger('CAPTCHA')
-          ->error('Encountered an illegal byte while splitting an utf8 string in characters.');
-        return $characters;
-      }
-    }
-
-    $characters[] = mb_substr($str, $i, $width);
-    $i += $width;
-  }
-
-  return $characters;
+  return mb_str_split($str);
 }
 
 /**

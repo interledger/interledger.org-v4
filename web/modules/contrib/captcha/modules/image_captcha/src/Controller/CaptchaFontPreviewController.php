@@ -96,8 +96,7 @@ class CaptchaFontPreviewController implements ContainerInjectionInterface {
       }
       // Dump image data to client.
       imagepng($image);
-        // Release image memory.
-      imagedestroy($image);
+      // Release image memory.
       unset($image);
     }, 200, ['Content-Type' => 'image/png']);
   }

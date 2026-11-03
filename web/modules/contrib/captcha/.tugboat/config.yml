@@ -1,6 +1,6 @@
 services:
   php:
-    image: q0rban/tugboat-drupal:9.4
+    image: q0rban/tugboat-drupal:11
     default: true
     http: false
     depends: mysql

@@ -5,6 +5,7 @@
  * General CAPTCHA functionality and helper functions.
  */
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Render\Element;
 use Drupal\captcha\Constants\CaptchaConstants;
@@ -87,12 +88,18 @@ function _captcha_generate_captcha_session($form_id = NULL, $status = CaptchaCon
   // Initialize solution with random data.
   $solution = hash('sha256', mt_rand());
 
+  // Store a hash of the PHP session ID, as core does in its sessions table.
+  // The raw ID can be up to 256 characters long (session.sid_length) and is
+  // a credential that should not be kept in plain text.
+  $session_id = (string) session_id();
+  $session_id_hash = $session_id === '' ? '' : Crypt::hashBase64($session_id);
+
   // Insert an entry and thankfully receive the value
   // of the autoincrement field 'csid'.
   $captcha_sid = \Drupal::database()->insert('captcha_sessions')
     ->fields([
       'uid' => $user->id(),
-      'sid' => session_id(),
+      'sid' => $session_id_hash,
       'ip_address' => \Drupal::request()->getClientIp(),
       'timestamp' => \Drupal::time()->getRequestTime(),
       'form_id' => $form_id,
@@ -118,6 +125,7 @@ function _captcha_update_captcha_session($captcha_sid, $solution) {
     ->fields([
       'timestamp' => \Drupal::time()->getRequestTime(),
       'solution' => $solution,
+      'status' => CaptchaConstants::CAPTCHA_STATUS_UNSOLVED,
     ])
     ->execute();
 }
@@ -158,7 +166,8 @@ function _captcha_required_for_user($captcha_sid, $form_id) {
     return TRUE;
   }
   else {
-    $captcha_success_form_ids = isset($_SESSION['captcha_success_form_ids']) ? (array) ($_SESSION['captcha_success_form_ids']) : [];
+    $request = \Drupal::request();
+    $captcha_success_form_ids = $request->hasSession() ? (array) $request->getSession()->get('captcha_success_form_ids', []) : [];
     switch ($captcha_persistence) {
       case CaptchaConstants::CAPTCHA_PERSISTENCE_SKIP_ONCE_SUCCESSFUL:
         return (count($captcha_success_form_ids) == 0);
@@ -268,9 +277,27 @@ function _captcha_get_captcha_placement($form_id, $form) {
   // If no placement info is available in placement map:
   // make a best effort guess.
   else {
+    // Webform renders customized submit buttons from a "webform_actions"
+    // element in $form['elements'] and hides $form['actions'], so place the
+    // CAPTCHA just before the last of those elements.
+    $webform_actions_key = NULL;
+    if (isset($form['elements']) && is_array($form['elements'])) {
+      foreach (Element::children($form['elements']) as $key) {
+        if (($form['elements'][$key]['#type'] ?? NULL) === 'webform_actions') {
+          $webform_actions_key = $key;
+        }
+      }
+    }
+    if ($webform_actions_key !== NULL) {
+      $placement = [
+        'path' => ['elements'],
+        'key' => $webform_actions_key,
+        'weight' => $form['elements'][$webform_actions_key]['#weight'] ?? NULL,
+      ];
+    }
     // If there is an "actions" button group, a good placement
     // is just before that.
-    if (isset($form['actions']) && isset($form['actions']['#type']) && $form['actions']['#type'] === 'actions') {
+    elseif (isset($form['actions']['#type']) && $form['actions']['#type'] === 'actions') {
       $placement = [
         'path' => [],
         'key' => 'actions',
@@ -283,7 +310,7 @@ function _captcha_get_captcha_placement($form_id, $form) {
       $buttons = _captcha_search_buttons($form);
       if (count($buttons)) {
         // Pick first button.
-        // @todo make this more sofisticated? Use cases needed.
+        // @todo make this more sophisticated? Use cases needed.
         $placement = (isset($buttons[count($buttons) - 1])) ? $buttons[count($buttons) - 1] : $buttons[0];
       }
       else {

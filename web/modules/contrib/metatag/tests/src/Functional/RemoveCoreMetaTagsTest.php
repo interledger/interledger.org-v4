@@ -11,7 +11,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group metatag
  */
-class RemoveCoreMetaTags extends BrowserTestBase {
+class RemoveCoreMetaTagsTest extends BrowserTestBase {
 
   // Contains helper methods.
   use MetatagHelperTrait;
@@ -59,6 +59,40 @@ class RemoveCoreMetaTags extends BrowserTestBase {
     $this->drupalGet('taxonomy/term/' . $term->id());
     $xpath = $this->xpath("//link[@rel='canonical']");
     $this->assertCount(1, $xpath, 'Exactly one canonical rel meta tag found.');
+  }
+
+  /**
+   * Tests core tags are removed on taxonomy term pages when set to <none>.
+   */
+  public function testTaxonomyPageNone() {
+    $this->loginUser1();
+
+    // Set up a vocabulary.
+    $vocabulary = Vocabulary::create([
+      'vid' => 'metatag_vocab_none',
+      'name' => $this->randomTitle(),
+    ]);
+    $vocabulary->save();
+    $term = Term::create([
+      'vid' => $vocabulary->id(),
+      'name' => $this->randomTitle(),
+    ]);
+    $term->save();
+
+    // Set up meta tags for taxonomy with <none>.
+    $edit = [
+      'canonical_url' => '<none>',
+      'shortlink' => '<none>',
+    ];
+    $this->drupalGet('admin/config/search/metatag/taxonomy_term');
+    $this->submitForm($edit, 'Save');
+
+    // Ensure canonical and shortlink are removed.
+    $this->drupalGet('taxonomy/term/' . $term->id());
+    $xpath = $this->xpath("//link[@rel='canonical']");
+    $this->assertEmpty($xpath, 'Canonical link tag is suppressed on taxonomy term page when set to <none>.');
+    $xpath = $this->xpath("//link[@rel='shortlink']");
+    $this->assertEmpty($xpath, 'Shortlink link tag is suppressed on taxonomy term page when set to <none>.');
   }
 
 }

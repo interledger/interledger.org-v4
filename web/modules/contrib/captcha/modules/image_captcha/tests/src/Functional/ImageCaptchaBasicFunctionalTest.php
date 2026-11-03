@@ -2,13 +2,18 @@
 
 namespace Drupal\Tests\image_captcha\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\image_captcha\Constants\ImageCaptchaConstants;
 
 /**
  * This class provides methods specifically for testing basic functionalities.
  *
  * @group image_captcha
  */
+#[Group('image_captcha')]
+#[RunTestsInSeparateProcesses]
 class ImageCaptchaBasicFunctionalTest extends BrowserTestBase {
 
   /**
@@ -100,6 +105,67 @@ class ImageCaptchaBasicFunctionalTest extends BrowserTestBase {
     // Check refresh button:
     $session->elementExists('css', '#edit-captcha-image-wrapper > div.reload-captcha-wrapper');
     $session->elementExists('css', '#edit-captcha-image-wrapper > div.reload-captcha-wrapper > a.reload-captcha');
+    $session->elementTextEquals('css', '#edit-captcha-image-wrapper > div.reload-captcha-wrapper > a.reload-captcha', 'Reload Captcha');
+  }
+
+  /**
+   * Tests the "default" CAPTCHA type resolves to the image challenge.
+   *
+   * @see https://www.drupal.org/project/captcha/issues/3375618
+   */
+  public function testDefaultTypeImageFormElement() {
+    $session = $this->assertSession();
+    $this->config('captcha.settings')
+      ->set('default_challenge', ImageCaptchaConstants::IMAGE_CAPTCHA_CAPTCHA_TYPE)
+      ->save();
+
+    $this->drupalGet('/captcha-test/image-test-default');
+    $session->statusCodeEquals(200);
+    $session->elementAttributeContains('css', '#image-captcha-test-default-type > fieldset', 'class', 'captcha-type-challenge--image');
+    $session->elementExists('css', '#edit-captcha-image-wrapper > img[src*="/image-captcha-generate"]');
+    // The refresh button must be added for the resolved "default" type too.
+    $session->elementExists('css', '#edit-captcha-image-wrapper > div.reload-captcha-wrapper > a.reload-captcha');
+  }
+
+  /**
+   * Tests the image captcha refresh link uses the configured text.
+   */
+  public function testImageCaptchaRefreshText() {
+    $session = $this->assertSession();
+
+    $this->config('image_captcha.settings')
+      ->set('image_captcha_text_refresh', 'Refresh image')
+      ->save();
+
+    $this->drupalGet('/captcha-test/image-test');
+    $session->statusCodeEquals(200);
+    $session->elementTextEquals('css', '#edit-captcha-image-wrapper > div.reload-captcha-wrapper > a.reload-captcha', 'Refresh image');
+    $session->pageTextNotContains('Get new CAPTCHA!');
+  }
+
+  /**
+   * Tests that the refresh route only accepts valid form IDs.
+   */
+  public function testRefreshRouteFormIdValidation() {
+    $session = $this->assertSession();
+    $database = $this->container->get('database');
+    $count_sessions = function () use ($database) {
+      return (int) $database->select('captcha_sessions')->countQuery()->execute()->fetchField();
+    };
+
+    $this->drupalGet('/image-captcha-refresh/image_captcha_test_test');
+    $session->statusCodeEquals(200);
+    $result = json_decode($this->getSession()->getPage()->getContent(), TRUE);
+    $this->assertSame(1, $result['status']);
+    $this->assertStringContainsString('/image-captcha-generate/', $result['data']['url']);
+
+    $sessions = $count_sessions();
+    foreach (['image_captcha_test_test.exe', 'image_captcha_test_test.asdfadf', 'some-form', 'a%20b'] as $form_id) {
+      $this->drupalGet('/image-captcha-refresh/' . $form_id);
+      $session->statusCodeEquals(404);
+    }
+    // No CAPTCHA session was created for the invalid form IDs.
+    $this->assertSame($sessions, $count_sessions());
   }
 
 }
