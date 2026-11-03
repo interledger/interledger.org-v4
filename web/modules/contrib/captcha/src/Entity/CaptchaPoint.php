@@ -3,8 +3,15 @@
 namespace Drupal\captcha\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\Attribute\ConfigEntityType;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\captcha\CaptchaPointInterface;
 use Drupal\captcha\Constants\CaptchaConstants;
+use Drupal\captcha\Entity\Controller\CaptchaPointListBuilder;
+use Drupal\captcha\Form\CaptchaPointDeleteForm;
+use Drupal\captcha\Form\CaptchaPointDisableForm;
+use Drupal\captcha\Form\CaptchaPointEnableForm;
+use Drupal\captcha\Form\CaptchaPointForm;
 
 /**
  * Defines the CaptchaPoint entity.
@@ -15,7 +22,7 @@ use Drupal\captcha\Constants\CaptchaConstants;
  *
  * @ConfigEntityType(
  *   id = "captcha_point",
- *   label = @Translation("Captcha Point"),
+ *   label = @Translation("CAPTCHA Point"),
  *   handlers = {
  *     "list_builder" = "Drupal\captcha\Entity\Controller\CaptchaPointListBuilder",
  *     "form" = {
@@ -50,6 +57,40 @@ use Drupal\captcha\Constants\CaptchaConstants;
  *   }
  * )
  */
+#[ConfigEntityType(
+  id: 'captcha_point',
+  label: new TranslatableMarkup('CAPTCHA Point'),
+  config_prefix: 'captcha_point',
+  entity_keys: [
+    'id' => 'formId',
+    'label' => 'label',
+    'status' => 'status',
+  ],
+  handlers: [
+    'list_builder' => CaptchaPointListBuilder::class,
+    'form' => [
+      'add' => CaptchaPointForm::class,
+      'edit' => CaptchaPointForm::class,
+      'disable' => CaptchaPointDisableForm::class,
+      'enable' => CaptchaPointEnableForm::class,
+      'delete' => CaptchaPointDeleteForm::class,
+    ],
+  ],
+  links: [
+    'edit-form' => '/admin/config/people/captcha/captcha-points/{captcha_point}',
+    'disable' => '/admin/config/people/captcha/captcha-points/{captcha_point}/disable',
+    'enable' => '/admin/config/people/captcha/captcha-points/{captcha_point}/enable',
+    'delete-form' => '/admin/config/people/captcha/captcha-points/{captcha_point}/delete',
+  ],
+  admin_permission: 'administer CAPTCHA settings',
+  list_cache_tags: ['rendered'],
+  config_export: [
+    'formId',
+    'captchaType',
+    'label',
+    'uuid',
+  ],
+)]
 class CaptchaPoint extends ConfigEntityBase implements CaptchaPointInterface {
 
   /**
@@ -75,6 +116,9 @@ class CaptchaPoint extends ConfigEntityBase implements CaptchaPointInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @return string|null
+   *   The form ID this CAPTCHA point applies to.
    */
   public function id() {
     return $this->formId;

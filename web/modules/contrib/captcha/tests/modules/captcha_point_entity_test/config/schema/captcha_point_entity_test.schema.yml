@@ -1,0 +1,10 @@
+captcha_point_entity_test.point.*:
+  type: config_entity
+  label: 'Point'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'

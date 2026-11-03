@@ -8,6 +8,9 @@
     "issues": "https://www.drupal.org/project/issues/captcha",
     "source": "https://git.drupalcode.org/project/captcha"
   },
+  "require-dev": {
+    "drupal/crowdsec": "^1"
+  },
   "extra": {
     "branch-alias": {
       "dev-8.x-1.x": "1.x-dev"

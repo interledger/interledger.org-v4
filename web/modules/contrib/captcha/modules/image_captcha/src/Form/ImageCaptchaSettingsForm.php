@@ -2,6 +2,7 @@
 
 namespace Drupal\image_captcha\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\DrupalKernel;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -32,6 +33,9 @@ class ImageCaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return static
+   *   The created instance.
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
@@ -43,6 +47,9 @@ class ImageCaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return string
+   *   The unique string identifying the form.
    */
   public function getFormId() {
     return 'image_captcha_settings';
@@ -50,6 +57,9 @@ class ImageCaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   An array of configuration object names that are editable.
    */
   protected function getEditableConfigNames() {
     return ['image_captcha.settings'];
@@ -57,6 +67,9 @@ class ImageCaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('image_captcha.settings');
@@ -368,11 +381,12 @@ class ImageCaptchaSettingsForm extends ConfigFormBase {
 
       // Append the PHP built-in font at the end.
       $title = $this->t('Preview of built-in font');
-      $available_fonts['BUILTIN'] = $this->t('PHP built-in font: <img src="@font_preview_url" alt="@title" title="@title">', [
-        '@font_preview_url' => Url::fromRoute('image_captcha.font_preview', ['token' => 'BUILTIN'])
+      $available_fonts['BUILTIN'] = (string) new FormattableMarkup('@label: <img src=":font_preview_url" alt="@title" title="@title">', [
+        '@label' => $this->t('PHP built-in font'),
+        ':font_preview_url' => Url::fromRoute('image_captcha.font_preview', ['token' => 'BUILTIN'])
           ->toString(),
         '@title' => $title,
-      ])->__toString();
+      ]);
 
       $default_fonts = _image_captcha_get_enabled_fonts();
       $conf_path = DrupalKernel::findSitePath($this->getRequest());

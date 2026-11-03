@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\captcha\Kernel;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Form\FormState;
 use Drupal\KernelTests\KernelTestBase;
@@ -11,6 +13,8 @@ use Drupal\KernelTests\KernelTestBase;
  *
  * @group captcha
  */
+#[Group('captcha')]
+#[RunTestsInSeparateProcesses]
 class CaptchaTokenInvalidationTest extends KernelTestBase {
 
   /**

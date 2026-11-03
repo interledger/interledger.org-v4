@@ -2,6 +2,7 @@
 
 namespace Drupal\captcha\Plugin\migrate\process;
 
+use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
@@ -21,6 +22,7 @@ use Drupal\migrate\Row;
  *   source: text
  * @endcode
  */
+#[MigrateProcess('captcha_type_formatter')]
 class CaptchaTypeFormatter extends ProcessPluginBase {
 
   /**

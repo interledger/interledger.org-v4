@@ -5,3 +5,19 @@ image_captcha_test.test:
     _form: 'Drupal\image_captcha_test\Form\ImageCaptchaTestForm'
   requirements:
     _permission: 'access content'
+
+image_captcha_test.limited_validation:
+  path: '/captcha-test/image-test-limited-validation'
+  defaults:
+    _title: 'Test'
+    _form: 'Drupal\image_captcha_test\Form\ImageCaptchaLimitedValidationTestForm'
+  requirements:
+    _permission: 'access content'
+
+image_captcha_test.default_type:
+  path: '/captcha-test/image-test-default'
+  defaults:
+    _title: 'Test'
+    _form: 'Drupal\image_captcha_test\Form\ImageCaptchaDefaultTypeTestForm'
+  requirements:
+    _permission: 'access content'

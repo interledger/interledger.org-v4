@@ -106,7 +106,7 @@ class CaptchaImageGeneratorController implements ContainerInjectionInterface {
     $response_headers['cache-control'] = 'no-store, must-revalidate';
 
     // Check for existing session IDs.
-    $session_id = $request->get('session_id');
+    $session_id = $request->attributes->get('session_id');
     $code = $this->connection
       ->select('captcha_sessions', 'cs')
       ->fields('cs', ['solution'])
@@ -140,8 +140,7 @@ class CaptchaImageGeneratorController implements ContainerInjectionInterface {
         imagepng($image);
 
       }
-        // Release image memory.
-      imagedestroy($image);
+      // Release image memory.
       unset($image);
       return $this;
 

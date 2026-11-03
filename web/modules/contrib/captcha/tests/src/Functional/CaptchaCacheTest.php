@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\captcha\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\Core\Database\Database;
 use Drupal\captcha\Constants\CaptchaConstants;
 use Drupal\image_captcha\Constants\ImageCaptchaConstants;
@@ -11,6 +13,8 @@ use Drupal\image_captcha\Constants\ImageCaptchaConstants;
  *
  * @group captcha
  */
+#[Group('captcha')]
+#[RunTestsInSeparateProcesses]
 class CaptchaCacheTest extends CaptchaWebTestBase {
 
   /**
@@ -22,6 +26,9 @@ class CaptchaCacheTest extends CaptchaWebTestBase {
     'block',
     'image_captcha',
     'captcha_test',
+    // The testing profile stops installing these in Drupal 12.
+    'page_cache',
+    'dynamic_page_cache',
   ];
 
   /**

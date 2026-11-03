@@ -1,0 +1,21 @@
+# The GitLab CI templates' default assets/phpstan.neon, plus the module's own
+# ignore list.
+#
+# The ignore list is not named phpstan-baseline.neon: the templates delete that
+# file before generating their downloadable baseline artifact, which fails when
+# the config still includes it.
+includes:
+  - phpstan-ignore.neon
+parameters:
+  level: 0
+  fileExtensions:
+    - php
+    - module
+    - inc
+    - install
+    - theme
+    - profile
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    # new static() is a best practice in Drupal, so we cannot fix that.
+    - "#^Unsafe usage of new static#"

@@ -64,7 +64,6 @@ function image_captcha_font_preview($font_token) {
   // Dump image data to client.
   imagepng($image);
   // Release image memory.
-  imagedestroy($image);
   unset($image);
 
   // Close connection.

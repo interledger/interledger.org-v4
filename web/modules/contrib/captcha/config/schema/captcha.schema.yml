@@ -7,7 +7,7 @@ captcha.captcha_point.*:
       label: 'Form ID'
     captchaType:
       type: string
-      label: 'Captcha Type'
+      label: 'CAPTCHA Type'
     label:
       type: label
       label: 'Label'
@@ -29,7 +29,7 @@ captcha.settings:
       type: string
       label: 'The default challenge for captcha.'
     description:
-      type: label
+      type: text
       label: 'The default captcha description.'
     title:
       type: label
@@ -44,7 +44,7 @@ captcha.settings:
       type: string
       label: 'IP addresses list'
     wrong_captcha_response_message:
-      type: label
+      type: text
       label: 'The error message when a user has entered an incorrect CAPTCHA answer.'
     default_validation:
       type: integer

@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\captcha\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\captcha\Constants\CaptchaConstants;
 
 /**
@@ -9,7 +11,9 @@ use Drupal\captcha\Constants\CaptchaConstants;
  *
  * @group captcha
  */
-class CaptchaSessionReuseAttackTestCase extends CaptchaWebTestBase {
+#[Group('captcha')]
+#[RunTestsInSeparateProcesses]
+class CaptchaSessionReuseAttackTest extends CaptchaWebTestBase {
 
   /**
    * Assert that the CAPTCHA session ID reuse attack was detected.

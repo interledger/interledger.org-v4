@@ -1,5 +1,5 @@
 id: d7_captcha_points
-label: 'Captcha Points Table'
+label: 'CAPTCHA Points Table'
 migration_tags:
   - Drupal 7
   - Configuration

@@ -48,21 +48,56 @@ information, see
 
 ## Configuration
 
-The configuration page is at `admin/config/people/captcha`,
-where you can configure the CAPTCHA module
-and enable challenges for the desired forms.
-You can also tweak the image CAPTCHA to your liking.
+The settings page is at Administration > Configuration > People > CAPTCHA
+module settings (`admin/config/people/captcha`).
 
-1. Navigate to Administration > Extend and enable the module.
-1. Navigate to Administration > Configuration > People > Captcha module
-   settings to administer how and when Captcha is used.
-1. Select the challenge type you want for each of the listed forms.
-1. Select "Add a description to the CAPTCHA" to add a configurable
-   description to explain the purpose of the CAPTCHA to the visitor.
-1. For Default CAPTCHA validation, define how the response should be
-   processed by default. Note that the modules that provide the actual
-   challenges can override or ignore this.
+1. On the "CAPTCHA Settings" tab, pick the "Default challenge type". This is
+   used for every form that does not set its own challenge.
+1. Decide which forms get a CAPTCHA. Either:
+   - check "Add CAPTCHA challenges on all forms" to protect every form on
+     non-administrative pages, or
+   - add a CAPTCHA point for each form you want to protect, on the
+     "Captcha Points" tab (`admin/config/people/captcha/captcha-points`).
+1. Optionally, add a description for the CAPTCHA and choose how responses are
+   validated. Modules that provide the challenges can override or ignore the
+   validation setting.
 1. Save configuration.
+
+### Finding a form ID
+
+A CAPTCHA point is matched against the form ID, the internal machine name
+Drupal gives every form. It is not the page path or the form title. Some
+examples:
+
+- User login: `user_login_form`
+- User registration: `user_register_form`
+- Request new password: `user_pass`
+- A contact form with machine name `feedback`: `contact_message_feedback_form`
+- Comments of the default comment type `comment`: `comment_comment_form`
+- Creating an Article node: `node_article_form`
+
+The base form ID also works, for example `contact_message_form` covers every
+contact form.
+
+You do not have to look the form ID up. Check "Add CAPTCHA administration
+information to forms" on the "CAPTCHA Settings" tab, then visit the form as a
+user with the "Administer CAPTCHA settings" permission. A CAPTCHA box on the
+form links to "Place a CAPTCHA here for untrusted users", which opens a new
+CAPTCHA point with the form ID filled in. Forms that already have a point link
+to its settings instead. This box is not shown on administrative pages unless
+"Additionally add administration informations on admin pages" is checked too.
+
+### Why don't I see the CAPTCHA?
+
+Users with the "Skip CAPTCHA" permission are never shown a CAPTCHA. User 1 and
+the administrator role have every permission, so a CAPTCHA you configured is
+not shown to you while you are logged in as an administrator. Test it logged out,
+or as a user whose role does not have "Skip CAPTCHA" (Administration > People >
+Permissions).
+
+The CAPTCHA is also skipped for IP addresses listed under "Whitelisted IP
+Addresses" on the settings page, and when `$settings['disable_captcha']` is
+set (see Development below).
 
 
 ## Development

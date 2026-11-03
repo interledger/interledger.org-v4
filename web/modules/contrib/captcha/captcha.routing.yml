@@ -38,7 +38,7 @@ entity.captcha_point.edit_form:
     _entity_form: 'captcha_point.edit'
     _title: 'Edit CAPTCHA point'
   options:
-      _admin_route: TRUE
+    _admin_route: TRUE
   requirements:
     _permission: 'administer CAPTCHA settings'
 
@@ -68,6 +68,6 @@ entity.captcha_point.delete_form:
     _entity_form: 'captcha_point.delete'
     _title: 'Delete CAPTCHA point'
   options:
-      _admin_route: TRUE
+    _admin_route: TRUE
   requirements:
     _permission: 'administer CAPTCHA settings'

@@ -1,0 +1,22 @@
+# PHPStan errors that are expected on the current and next core majors.
+#
+# Included from phpstan.neon, which turns reportUnmatchedIgnoredErrors off, so
+# an entry that only applies to one core major is silently unused on the
+# others. The previous-major jobs are expected to report classes and
+# attributes that only exist in newer core, and are not covered here.
+parameters:
+  excludePaths:
+    analyse:
+      # The Drupal 7 migration source extends migrate_drupal's DrupalSqlBase,
+      # which is deprecated in 11.3 with no replacement and removed in 12.
+      # PHPStan cannot ignore a class whose parent is unknown. Plugin discovery
+      # skips the plugin on Drupal 12; it keeps working on Drupal 10 and 11.
+      - src/Plugin/migrate/source/CaptchaPoints.php
+  ignoreErrors:
+    # Drupal 12: core removed the Drupal 7 migration test classes. These tests
+    # skip themselves there.
+    -
+      message: '#^(Call to an undefined (static )?method |Access to an undefined property |\\Drupal calls should be avoided in classes)#'
+      paths:
+        - tests/src/Kernel/Migrate/d7/MigrateCaptchaPointsTest.php
+        - tests/src/Kernel/Migrate/d7/MigrateCaptchaSimpleConfigurationTest.php

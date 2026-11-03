@@ -43,6 +43,9 @@ class CaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return static
+   *   The created instance.
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
@@ -56,6 +59,9 @@ class CaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   An array of configuration object names that are editable.
    */
   protected function getEditableConfigNames() {
     return ['captcha.settings'];
@@ -63,6 +69,9 @@ class CaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * Implements \Drupal\Core\Form\FormInterface::getFormID().
+   *
+   * @return string
+   *   The unique string identifying the form.
    */
   public function getFormId() {
     return 'captcha_settings';
@@ -70,6 +79,9 @@ class CaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('captcha.settings');
@@ -87,7 +99,7 @@ class CaptchaSettingsForm extends ConfigFormBase {
     $form['enable_globally'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Add CAPTCHA challenges on all forms'),
-      '#description' => $this->t('Adds CAPTCHA to all Drupal forms, regardless of the Captcha Points list. Note, that the captcha point <em>default challenge</em> will be used as the challenge type for the created CAPTCHA challenges.'),
+      '#description' => $this->t('Adds CAPTCHA to all Drupal forms, regardless of the CAPTCHA Points list. Note, that the CAPTCHA point <em>default challenge</em> will be used as the challenge type for the created CAPTCHA challenges.'),
       '#default_value' => $config->get('enable_globally'),
     ];
     $form['enable_globally_on_admin_routes'] = [
@@ -105,12 +117,12 @@ class CaptchaSettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Add CAPTCHA administration information to forms'),
       '#default_value' => $config->get('administration_mode'),
-      '#description' => $this->t('This option makes it easy to manage CAPTCHA settings on forms. When enabled, users with the <em>administer CAPTCHA settings</em> permission will see a fieldset with CAPTCHA administration links and informations on all forms, except on administrative pages.'),
+      '#description' => $this->t('This option makes it easy to manage CAPTCHA settings on forms. When enabled, users with the <em>administer CAPTCHA settings</em> permission will see a fieldset with CAPTCHA administration links and information on all forms, except on administrative pages.'),
     ];
     // Field for the CAPTCHAs on admin pages.
     $form['administration_mode_on_admin_routes'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Additionally add administration informations on admin pages'),
+      '#title' => $this->t('Additionally add administration information on admin pages'),
       '#description' => $this->t("Typically this isn't needed. In some situations, e.g. in the case of demo sites, it can be useful to allow CAPTCHAs on administrative pages."),
       '#default_value' => $config->get('administration_mode_on_admin_routes'),
       '#states' => [
@@ -159,20 +171,20 @@ class CaptchaSettingsForm extends ConfigFormBase {
     ];
 
     $form['description'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('Challenge description'),
       '#description' => $this->t('Configurable description of the CAPTCHA. Leave empty to show no description. Default: "@description_default"', ['@description_default' => $this->t('This question is for testing whether or not you are a human visitor and to prevent automated spam submissions.')]),
       '#default_value' => _captcha_get_description(),
-      '#maxlength' => 256,
+      '#rows' => 4,
     ];
 
     // Field for the wrong captcha response error message.
     $form['wrong_captcha_response_message'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('Wrong CAPTCHA response error message'),
       '#description' => $this->t('Configurable error message that the user gets when it enters an incorrect CAPTCHA answer.'),
       '#default_value' => _captcha_get_error_message(),
-      '#maxlength' => 256,
+      '#rows' => 4,
       '#required' => TRUE,
     ];
 

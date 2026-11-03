@@ -180,7 +180,7 @@ function hook_captcha_custom_advance_validation($solution, $response, array $ele
  * For example:
  * This will place the CAPTCHA element
  * in the 'my_fancy_form' form inside the container $form['items']['buttons'],
- * just before the element $form['items']['buttons']['sacebutton'].
+ * just before the element $form['items']['buttons']['savebutton'].
  * in the 'another_form' form at the toplevel of the form, with a weight 34.
  */
 function hook_captcha_placement_map() {

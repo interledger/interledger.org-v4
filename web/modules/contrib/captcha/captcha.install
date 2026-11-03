@@ -5,7 +5,9 @@
  * Install, update and uninstall functions for the CAPTCHA module.
  */
 
+use Drupal\Core\Hook\Attribute\LegacyRequirementsHook;
 use Drupal\captcha\Constants\CaptchaConstants;
+use Drupal\captcha\Hook\CaptchaRequirementsHooks;
 
 /**
  * Implements hook_schema().
@@ -32,7 +34,7 @@ function captcha_schema() {
         'default' => 0,
       ],
       'sid' => [
-        'description' => "Session ID of the user.",
+        'description' => "Base64-encoded SHA-256 hash of the user's session ID.",
         'type' => 'varchar',
         'length' => 64,
         'not null' => TRUE,
@@ -87,24 +89,17 @@ function captcha_schema() {
 
 /**
  * Implements hook_requirements().
+ *
+ * Core 11.2 also calls
+ * \Drupal\captcha\Hook\CaptchaRequirementsHooks::runtimeRequirements(),
+ * whose row has the same key; from 11.3 only that method is called.
  */
+#[LegacyRequirementsHook]
 function captcha_requirements($phase) {
-  $requirements = [];
-  $config = \Drupal::config('captcha.settings');
-
-  if ($phase == 'runtime' && $config->get('enable_stats')) {
-    // Show the wrong response counter in the status report.
-    $requirements['captcha_wrong_response_counter'] = [
-      'title' => \Drupal::translation()->translate('CAPTCHA'),
-      'value' => \Drupal::translation()->formatPlural(
-        \Drupal::state()->get('captcha.wrong_response_counter', 0),
-        'Already 1 blocked form submission',
-        'Already @count blocked form submissions'
-      ),
-      'severity' => REQUIREMENT_INFO,
-    ];
+  if ($phase !== 'runtime') {
+    return [];
   }
-  return $requirements;
+  return \Drupal::service(CaptchaRequirementsHooks::class)->runtimeRequirements();
 }
 
 /**
@@ -116,7 +111,8 @@ function captcha_install() {
     $form_ids = [];
     $label = [];
     // Add form_ids of all currently known node types too.
-    foreach (node_type_get_names() as $type => $name) {
+    $node_types = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
+    foreach (array_keys($node_types) as $type) {
       $form_ids[] = 'node_' . $type . '_form';
       $label[] = 'node_' . $type . '_form';
     }
@@ -225,7 +221,7 @@ function captcha_update_8905() {
   $captchaConfig = \Drupal::configFactory()->getEditable('captcha.settings');
   if ($captchaConfig->get('title') === NULL) {
     // Set the title in config, if it wasn't existing before:
-    $captchaConfig->set('title', 'CAPTCHA')->save(TRUE);
+    $captchaConfig->set('title', 'CAPTCHA')->save();
   }
 }
 

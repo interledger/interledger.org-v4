@@ -53,4 +53,19 @@ variables:
   OPT_IN_TEST_NEXT_MINOR: 1
   OPT_IN_TEST_NEXT_MAJOR: 1
   OPT_IN_TEST_MAX_PHP: 1
-  
+  # Core 11.5+ only reads the project's .deprecation-ignore.txt (which the
+  # templates append core's to) when this points at it.
+  DRUPAL_DEPRECATION_FILTER_CONFIG: '{"projectIgnoreFile":"$CI_PROJECT_DIR/.deprecation-ignore.txt"}'
+
+###################################################################################
+#
+# The previous-major jobs default to the oldest PHP Drupal 10 supports. Those
+# PHP 8.1 images are Debian bullseye, whose apt repositories are gone, so any
+# before_script that installs packages fails before the tests start. Run them on
+# PHP 8.3 instead; the phpstan and phpunit previous-major jobs inherit this.
+# This only changes CI, not the module's PHP requirement.
+#
+###################################################################################
+composer (previous major):
+  variables:
+    PHP_VERSION: '8.3'

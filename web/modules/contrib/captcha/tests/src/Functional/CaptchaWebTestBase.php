@@ -4,9 +4,9 @@ namespace Drupal\Tests\captcha\Functional;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\user\Entity\Role;
 
 /**
  * Base class for CAPTCHA tests.
@@ -100,7 +100,7 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
     $this->enableComments();
 
     // @todo do not enable this globally in this base class, only where it's
-    // needed instead. It polutes tests and prevents us from being able to
+    // needed instead. It pollutes tests and prevents us from being able to
     // switch users in tests:
     $this->enableLoginCaptchaPoint();
   }
@@ -114,7 +114,9 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
 
     // Put comments on page nodes on a separate page.
     $comment_field = FieldConfig::loadByName($entity_type, $entity_bundle, 'comment');
-    $comment_field->setSetting('form_location', CommentItemInterface::FORM_SEPARATE_PAGE);
+    // FormLocation::SeparatePage on Drupal 11.4+, which deprecates
+    // CommentItemInterface::FORM_SEPARATE_PAGE. Both are 0.
+    $comment_field->setSetting('form_location', 0);
     $comment_field->save();
   }
 
@@ -215,10 +217,10 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
    */
   protected function getCaptchaSidFromForm($form_html_id = NULL) {
     if (!$form_html_id) {
-      $elements = $this->xpath('//input[@name="captcha_sid"]');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//input[@name="captcha_sid"]');
     }
     else {
-      $elements = $this->xpath('//form[@id="' . $form_html_id . '"]//input[@name="captcha_sid"]');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//form[@id="' . $form_html_id . '"]//input[@name="captcha_sid"]');
     }
 
     $element = current($elements);
@@ -233,18 +235,18 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
    * @param null|string $form_html_id
    *   HTML form id attribute.
    *
-   * @return int
-   *   Captcha token integer.
+   * @return string
+   *   Captcha token.
    */
   protected function getCaptchaTokenFromForm($form_html_id = NULL) {
     if (!$form_html_id) {
-      $elements = $this->xpath('//input[@name="captcha_token"]');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//input[@name="captcha_token"]');
     }
     else {
-      $elements = $this->xpath('//form[@id="' . $form_html_id . '"]//input[@name="captcha_token"]');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//form[@id="' . $form_html_id . '"]//input[@name="captcha_token"]');
     }
     $element = current($elements);
-    $captcha_token = (int) $element->getValue();
+    $captcha_token = (string) $element->getValue();
 
     return $captcha_token;
   }
@@ -262,10 +264,10 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
     // Get the math challenge from the label element.
     // The math question is now in the title/label: "Math question (@x + @y =)".
     if (!$form_html_id) {
-      $elements = $this->xpath('//div[contains(@class, "form-item-captcha-response")]//label');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//div[contains(@class, "form-item-captcha-response")]//label');
     }
     else {
-      $elements = $this->xpath('//form[@id="' . $form_html_id . '"]//div[contains(@class, "form-item-captcha-response")]//label');
+      $elements = $this->getSession()->getPage()->findAll('xpath', '//form[@id="' . $form_html_id . '"]//div[contains(@class, "form-item-captcha-response")]//label');
     }
     $this->assertNotEmpty($elements, 'Math CAPTCHA label element found');
     $challenge = (string) $elements[0]->getText();
@@ -286,11 +288,11 @@ abstract class CaptchaWebTestBase extends BrowserTestBase {
    */
   protected function allowCommentPostingForAnonymousVisitors() {
     // Enable anonymous comments.
-    user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, [
-      'access comments',
-      'post comments',
-      'skip comment approval',
-    ]);
+    $role = Role::load(AccountInterface::ANONYMOUS_ROLE);
+    foreach (['access comments', 'post comments', 'skip comment approval'] as $permission) {
+      $role->grantPermission($permission);
+    }
+    $role->save();
   }
 
 }

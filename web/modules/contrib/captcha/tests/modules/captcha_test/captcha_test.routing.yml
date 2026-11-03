@@ -5,3 +5,27 @@ captcha_test.test:
     _form: 'Drupal\captcha_test\Form\TestForm'
   requirements:
     _permission: 'access content'
+captcha_test.title_override:
+  path: '/captcha-test/title-override'
+  defaults:
+    _title: 'Title override'
+    _form: 'Drupal\captcha_test\Form\TitleOverrideForm'
+  requirements:
+    _permission: 'access content'
+
+captcha_test.limited_rebuild:
+  path: '/captcha-test/limited-rebuild'
+  defaults:
+    _title: 'Limited validation rebuild'
+    _form: 'Drupal\captcha_test\Form\LimitedValidationRebuildForm'
+  requirements:
+    _permission: 'access content'
+
+captcha_test.limit_validation_errors:
+  path: '/captcha-test/limit-validation-errors'
+  defaults:
+    _title: 'Limit validation errors'
+    _form: 'Drupal\captcha_test\Form\LimitValidationErrorsForm'
+  requirements:
+    # Test form, open so that anonymous visitors get the CAPTCHA.
+    _access: 'TRUE'

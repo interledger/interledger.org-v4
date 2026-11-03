@@ -43,8 +43,8 @@ class CaptchaPoints extends DrupalSqlBase {
   public function fields() {
     return [
       'form_id' => $this->t('The name of the form'),
-      'module' => $this->t('The captcha point providing module.'),
-      'captcha_type' => $this->t('The captcha type.'),
+      'module' => $this->t('The CAPTCHA point providing module.'),
+      'captcha_type' => $this->t('The CAPTCHA type.'),
     ];
   }
 
