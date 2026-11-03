@@ -130,8 +130,9 @@ abstract class Mapping extends StylePluginBase {
    */
   public function render() {
     return [
-      '#theme' => $this->themeFunctions(),
+      '#theme' => $this->definition['theme'],
       '#view' => $this->view,
+      '#views_plugin' => $this,
       '#options' => $this->options,
       '#rows' => $this->view->result,
       '#mapping' => $this->defineMapping(),
