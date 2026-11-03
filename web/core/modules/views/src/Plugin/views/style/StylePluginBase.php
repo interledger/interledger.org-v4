@@ -448,8 +448,9 @@ abstract class StylePluginBase extends PluginBase {
    */
   protected function renderRowGroup(array $rows = []) {
     return [
-      '#theme' => $this->themeFunctions(),
+      '#theme' => $this->definition['theme'],
       '#view' => $this->view,
+      '#views_plugin' => $this,
       '#rows' => $rows,
     ];
   }

@@ -97,7 +97,8 @@ class Mini extends SqlBase {
     ];
 
     return [
-      '#theme' => $this->themeFunctions(),
+      '#theme' => $this->definition['theme'],
+      '#views_plugin' => $this,
       '#tags' => $tags,
       '#element' => $this->options['id'],
       '#pagination_heading_level' => parent::getHeadingLevel(),

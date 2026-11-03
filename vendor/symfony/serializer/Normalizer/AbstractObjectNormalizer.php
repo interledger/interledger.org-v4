@@ -25,6 +25,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
@@ -330,7 +331,11 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
 
         if (XmlEncoder::FORMAT === $format && !\is_array($data)) {
             $data = ['#' => $data];
+        } elseif (isset($context['_union_member']) && !\is_array($data) && !\is_object($data)) {
+            throw new UnsupportedException(\sprintf('Data expected to be an array or an object to denormalize "%s" as a member of a union type, "%s" given.', $type, get_debug_type($data)));
         }
+
+        unset($context['_union_member']);
 
         $allowedAttributes = $this->getAllowedAttributes($type, $context, true);
         $normalizedData = $this->prepareForDenormalization($data);
@@ -469,16 +474,22 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
         $extraAttributesException = null;
         $missingConstructorArgumentsException = null;
         $isNullable = false;
+        $originalData = $data;
         foreach ($types as $type) {
+            // each type of a union gets the data as given, not as changed for the previous type
+            $data = $originalData;
+
             if (null === $data && $type->isNullable()) {
                 return null;
             }
 
             $collectionValueType = $type->isCollection() ? $type->getCollectionValueTypes()[0] ?? null : null;
+            $collectionKeyTypes = array_map(static fn (Type $t) => $t->getBuiltinType(), $type->getCollectionKeyTypes());
 
             // Fix a collection that contains the only one element
             // This is special to xml format only
-            if ('xml' === $format && null !== $collectionValueType && (!\is_array($data) || !\is_int(key($data)))) {
+            // When the keys cannot be int, an array with other keys is the collection itself, not its only element
+            if ('xml' === $format && null !== $collectionValueType && (!\is_array($data) || (!\is_int(key($data)) && (!$collectionKeyTypes || \in_array(Type::BUILTIN_TYPE_INT, $collectionKeyTypes, true))))) {
                 $data = [$data];
             }
 
@@ -590,6 +601,10 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
                     }
 
                     $childContext = $this->createChildContext($context, $attribute, $format);
+                    if (($isUnionType || $type->isNullable()) && !\is_array($data) && !\is_object($data)) {
+                        // object normalizers leave a scalar to the other types of the union instead of building an empty object from it
+                        $childContext['_union_member'] = true;
+                    }
                     if ($this->serializer->supportsDenormalization($data, $class, $format, $childContext)) {
                         return $this->serializer->denormalize($data, $class, $format, $childContext);
                     }
@@ -625,6 +640,11 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
                         }
 
                         break;
+                }
+            } catch (UnsupportedException $unsupported) {
+                // a type that does not accept the data has no error of its own to report
+                if (!$isUnionType && !$type->isNullable()) {
+                    throw $unsupported;
                 }
             } catch (NotNormalizableValueException|InvalidArgumentException $e) {
                 if (!$isUnionType && !$isNullable) {
